@@ -1,0 +1,44 @@
+.subHeaderContainer {
+  margin-bottom: 8px;
+  @media screen and (max-width: 1080px) {
+    display: none;
+  }
+}
+.subHeader {
+  display: flex;
+  padding: 0 7px;
+  height: 40px;
+  background-color: var(--primary-color, #af1ebe);
+  border-radius: 8px;
+}
+
+.headerCategory {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 26px;
+
+  &:hover {
+    background: linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.12),
+        rgba(255, 255, 255, 0.12)
+      ),
+      var(--primary-color, #af1ebe);
+  }
+
+  @media screen and (max-width: 1140px) {
+    font-size: 13px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+.headerCategoryAll {
+  font-weight: 700;
+}
+.categoryAllIcon {
+  margin-right: 8px;
+}

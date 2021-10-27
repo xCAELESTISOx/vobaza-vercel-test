@@ -1,0 +1,144 @@
+.mainHeader {
+  display: flex;
+  align-items: center;
+  padding-top: 24px;
+  padding-bottom: 20px;
+
+  @media screen and (max-width: 1223px) {
+    justify-content: space-between;
+  }
+  @media screen and (max-width: 767px) {
+    padding-top: 18px;
+  }
+}
+
+.mainHeaderMobile {
+  display: flex;
+
+  @media screen and (max-width: 767px) {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+.burgerMenu {
+  display: none;
+  margin-right: 10px;
+  &:hover {
+    color: var(--primary-color, #af1ebe);
+  }
+
+  @media screen and (max-width: 1080px) {
+    display: block;
+  }
+  @media screen and (max-width: 767px) {
+    margin: 0;
+  }
+}
+.logo {
+  svg {
+    width: 160px;
+    height: 27px;
+
+    @media screen and (max-width: 1080px) {
+      width: 116px;
+      height: 22px;
+    }
+  }
+}
+.phoneButton {
+  display: none;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--primary-color, #af1ebe);
+  }
+
+  @media screen and (max-width: 767px) {
+    display: block;
+  }
+}
+
+.headerCity {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  max-width: 280px;
+  font-size: 16px;
+  line-height: 24px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+
+  @media screen and (min-width: 1224px) {
+    margin-left: 30px;
+  }
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
+}
+
+.headerSearch {
+  @media screen and (min-width: 1224px) {
+    flex: 1;
+    margin-left: 26px;
+  }
+  @media screen and (max-width: 1080px) {
+    display: none;
+  }
+}
+.headerSearchFull {
+  display: none;
+  margin-bottom: 16px;
+
+  @media screen and (max-width: 1080px) {
+    display: block;
+  }
+}
+
+.phoneWraper {
+  @media screen and (min-width: 1224px) {
+    margin-left: 3%;
+  }
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
+}
+.phone {
+  font-size: 16px;
+  line-height: 24px;
+  white-space: nowrap;
+}
+.phoneLink {
+  font-size: 14px;
+  line-height: 140%;
+  color: var(--primary-color, #af1ebe);
+  border-bottom: 1px dashed var(--primary-color, #af1ebe);
+}
+
+.headerButtons {
+  display: flex;
+  align-items: center;
+
+  @media screen and (min-width: 1224px) {
+    margin-left: 3%;
+  }
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
+}
+.headerButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 10px;
+  line-height: 12px;
+  cursor: pointer;
+
+  + .headerButton {
+    margin-left: 16px;
+  }
+
+  &:hover {
+    color: var(--primary-color, #af1ebe);
+  }
+}

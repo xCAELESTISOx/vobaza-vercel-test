@@ -1,0 +1,35 @@
+.subscription {
+  background: #f3ddf5;
+  padding: 16px 0;
+}
+.subscriptionContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subscriptionContent {
+  text-align: right;
+  line-height: initial;
+}
+.subscriptionTitle {
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.subscriptionText {
+  font-size: 12px;
+}
+.subscriptionLink {
+  color: var(--primary-color, #af1ebe);
+  transition: color 0.15s ease-in;
+
+  &:hover {
+    color: #9b1ba8;
+  }
+}
+.subscriptionInput {
+  width: 320px;
+  margin-left: 24px;
+  background-color: white;
+  border-radius: 8px;
+}

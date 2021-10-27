@@ -1,0 +1,36 @@
+.mainFooter {
+  padding: 94px 0;
+}
+.mainFooterContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  column-gap: 24px;
+}
+
+.mainFooterColumnTitle {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: initial;
+  margin-bottom: 14px;
+}
+
+.mainFooterColumnItem {
+  &.mainFooterColumnItem {
+    margin-top: 14px;
+  }
+}
+.mainFooterColumnSubtitle {
+  font-weight: 500;
+}
+.mainFooterColumnEmail {
+  color: var(--primary-color, #af1ebe);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+.mainFooterColumnLink {
+  &:hover {
+    color: var(--primary-color, #af1ebe);
+  }
+}
