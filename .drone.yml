@@ -1,0 +1,141 @@
+---
+kind: pipeline
+name: build
+
+trigger:
+  event:
+    exclude: [promote, rollback]
+
+steps:
+  - name: build/app
+    image: oss.help/drone/docker
+    settings: &build_settings
+      registry: nebo-registry.ossbuild.ru
+      repo: nebo/vobaza-frontend
+      tags: build
+      username:
+        from_secret: registry_rw_user
+      password:
+        from_secret: registry_rw_secret
+      linter_exclude_regex: '(README.md)'
+
+---
+kind: pipeline
+name: test
+
+clone:
+  disable: true
+
+depends_on: [build]
+trigger:
+  event:
+    exclude: [promote, rollback]
+
+image_pull_secrets:
+  - dockerconfigjson
+
+services:
+  - name: frontend
+    image: nebo-registry.ossbuild.ru/nebo/vobaza-frontend:build
+    pull: always
+    environment: &frontend_envs
+      NEXT_PUBLIC_BASE_URL: 'http://test-api-host'
+
+steps:
+  - name: test/lint
+    image: nebo-registry.ossbuild.ru/nebo/vobaza-frontend:build
+    commands:
+      - cd /app
+      - yarn lint
+
+  - name: test/request
+    image: nebo-registry.ossbuild.ru/nebo/vobaza-frontend:build
+    environment:
+      APP_TIMEOUT: 15
+    commands:
+      - until nc -z frontend 3000; do APP_TIMEOUT=$((APP_TIMEOUT-1)); sleep 1; test $APP_TIMEOUT -eq 0 && exit 1; done 2>/dev/null
+      - curl -is frontend:3000 | tee -a /tmp/result.txt
+      - grep '200 OK' /tmp/result.txt
+
+---
+kind: pipeline
+name: publish
+
+depends_on: [test]
+trigger:
+  event: [push, tag]
+  ref:
+    - "refs/tags/v[0-9]*.[0-9]*.[0-9]*"
+    - "refs/heads/master"
+    - "refs/heads/develop"
+
+steps:
+  - name: build/app
+    image: oss.help/drone/docker
+    settings: &build_settings
+      registry: nebo-registry.ossbuild.ru
+      repo: nebo/vobaza-frontend
+      username:
+        from_secret: registry_rw_user
+      password:
+        from_secret: registry_rw_secret
+      linter_exclude_regex: '(README.md)'
+
+---
+kind: pipeline
+name: notify/build
+
+clone:
+  disable: true
+
+depends_on: [publish]
+trigger:
+  event: [push, tag]
+  ref:
+    - "refs/tags/v[0-9]*.[0-9]*.[0-9]*"
+    - "refs/heads/master"
+  status: [success, failure]
+
+steps:
+  - name: redmine
+    image: oss.help/drone/redmine
+    settings:
+      redmine_project: nebo
+    environment:
+      REDMINE_TOKEN:
+        from_secret: redmine_token
+  - name: google chat
+    image: oss.help/drone/google-chat
+    settings:
+      chat_room: AAAAQT--SPU
+    environment:
+      GOOGLE_CHAT_KEY:
+        from_secret: google_chat_key
+      GOOGLE_CHAT_SECRET:
+        from_secret: google_chat_secret
+
+---
+kind: pipeline
+type: exec
+name: deploy/devel
+
+depends_on: [publish]
+trigger:
+  event: [push]
+  branch: [develop]
+
+node:
+  instance: "nebo-dev1/vobaza-dev"
+
+clone:
+  disable: true
+
+steps:
+  - name: prepare
+    commands:
+      - mkdir -p "$HOME"
+      - cp -r /root/.docker "$HOME"/
+  - name: deploy
+    commands:
+      - "docker pull -q nebo-registry.ossbuild.ru/nebo/vobaza-frontend:develop"
+      - "docker service update -q --with-registry-auth --image nebo-registry.ossbuild.ru/nebo/vobaza-frontend:develop devel_frontend"
