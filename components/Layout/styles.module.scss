@@ -12,16 +12,6 @@
   flex-grow: 1;
 }
 
-.container {
-  display: flex;
-  flex: 1;
-  height: 100%;
-  width: 100%;
-  max-width: var(--container-size);
-  padding: 40px 20px;
-  margin: 0 auto;
-}
-
 .navigation {
   flex-grow: 1;
   max-width: 195px;

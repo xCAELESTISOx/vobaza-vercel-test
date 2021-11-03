@@ -12,10 +12,11 @@ const Subscription: FC = () => {
       <div className={`${styles.subscriptionContainer} container`}>
         <div className={styles.subscriptionContent}>
           <div className={styles.subscriptionTitle}>
-            Подпишитесь на рассылку и будьте в курсе наших новинок и акций!
+            Подпишитесь на&nbsp;рассылку и&nbsp;будьте в&nbsp;курсе наших
+            новинок и&nbsp;акций!
           </div>
           <div className={styles.subscriptionText}>
-            Подтверждаю согласие на рассылку и{' '}
+            Подтверждаю согласие на&nbsp;рассылку и&nbsp;
             <Link href="/politika-obrabotki-dannyh">
               <a className={styles.subscriptionLink}>
                 обработку персональных данных

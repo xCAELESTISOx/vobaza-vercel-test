@@ -1,20 +1,35 @@
 .subscription {
-  background: #f3ddf5;
-  padding: 16px 0;
+  background-color: #f3ddf5;
+  padding: 8px 0 16px 0;
+
+  @media screen and (max-width: 767px) {
+    background-color: transparent;
+    padding: 24px 0 16px;
+    border-top: 1px solid #e3e3e3;
+  }
 }
 .subscriptionContainer {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .subscriptionContent {
   text-align: right;
   line-height: initial;
+
+  @media screen and (max-width: 767px) {
+    text-align: center;
+  }
 }
 .subscriptionTitle {
-  margin-bottom: 8px;
+  margin: 8px 0;
   font-weight: 500;
+
+  @media screen and (max-width: 767px) {
+    margin-top: 0;
+  }
 }
 .subscriptionText {
   font-size: 12px;
@@ -29,7 +44,12 @@
 }
 .subscriptionInput {
   width: 320px;
-  margin-left: 24px;
+  margin: 8px 24px 0;
   background-color: white;
   border-radius: 8px;
+
+  @media screen and (max-width: 767px) {
+    width: 100%;
+    margin: 16px 0 0;
+  }
 }

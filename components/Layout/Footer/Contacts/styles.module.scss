@@ -1,0 +1,44 @@
+.contactsBlock {
+  display: none;
+
+  @media screen and (max-width: 767px) {
+    display: block;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+.contactsItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  + .contactsItem {
+    margin-top: 24px;
+  }
+}
+.contactsTitle {
+  font-weight: 500;
+}
+.contactsPhone {
+  margin-top: 6px;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--primary-color, #af1ebe);
+}
+.contactsWorkTime {
+  margin-top: 6px;
+  color: #b3b3b3;
+}
+.contactsButton {
+  margin-top: 20px;
+}
+.contactsEmail {
+  margin-top: 6px;
+  color: var(--primary-color, #af1ebe);
+
+  &:hover {
+    text-decoration: underline;
+    color: var(--primary-color, #af1ebe);
+  }
+}

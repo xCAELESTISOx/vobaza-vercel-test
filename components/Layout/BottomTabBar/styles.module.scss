@@ -1,0 +1,32 @@
+.tabbar {
+  display: none;
+
+  @media screen and (max-width: 767px) {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    width: 100%;
+    background: #fff;
+    border-top: 1px solid rgba(224, 227, 230, 0.4);
+    z-index: 660;
+  }
+}
+.tab {
+  flex: 1;
+  padding: 10px 4px 8px;
+  color: #8d8d8d;
+  text-align: center;
+  transition: color 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--primary-color, #af1ebe);
+  }
+}
+.tabTitle {
+  margin-top: 3px;
+  font-size: 11px;
+}

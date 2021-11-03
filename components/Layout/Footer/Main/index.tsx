@@ -3,6 +3,8 @@ import Link from 'next/link';
 
 import styles from './styles.module.scss';
 
+import Accordeon from '../../../UI/Accordeon';
+
 const footerLinks = [
   {
     title: 'Каталог',
@@ -112,44 +114,65 @@ const footerLinks = [
 
 const MainFooter: FC = () => {
   return (
-    <div className={styles.mainFooter}>
-      <div className="container">
-        <div className={styles.mainFooterContent}>
-          <div className={styles.mainFooterColumn}>
-            <div className={styles.mainFooterColumnTitle}>
-              Контактная информация
-            </div>
-            <div className={styles.mainFooterColumnItem}>
-              <div className={styles.mainFooterColumnSubtitle}>
-                Горячая линия
+    <>
+      <div className={styles.mainFooter}>
+        <div className="container">
+          <div className={styles.mainFooterContent}>
+            <div className={styles.mainFooterColumn}>
+              <div className={styles.mainFooterColumnTitle}>
+                Контактная информация
               </div>
-              <a href="tel:+74951725526">+7(495) 172-55-26</a>
-              <div>ежедневно</div>
-              <div>с 9:00 до 21:00</div>
-            </div>
-            <div className={styles.mainFooterColumnItem}>
-              <div className={styles.mainFooterColumnSubtitle}>
-                Доставка заказов
+              <div className={styles.mainFooterColumnItem}>
+                <div className={styles.mainFooterColumnSubtitle}>
+                  Горячая линия
+                </div>
+                <a href="tel:+74951725526">+7(495) 172-55-26</a>
+                <div>ежедневно</div>
+                <div>с 9:00 до 21:00</div>
               </div>
-              <a href="tel:+74951725526">+7(495) 172-55-26 </a>
-              <div>ежедневно</div>
-              <div>с 9:00 до 21:00</div>
-            </div>
-            <div className={styles.mainFooterColumnItem}>
-              <div className={styles.mainFooterColumnSubtitle}>
-                Электронная почта
+              <div className={styles.mainFooterColumnItem}>
+                <div className={styles.mainFooterColumnSubtitle}>
+                  Доставка заказов
+                </div>
+                <a href="tel:+74951725526">+7(495) 172-55-26 </a>
+                <div>ежедневно</div>
+                <div>с 9:00 до 21:00</div>
               </div>
-              <a
-                href="mailto:notify@vobaza.ru"
-                className={styles.mainFooterColumnEmail}
-              >
-                notify@vobaza.ru
-              </a>
+              <div className={styles.mainFooterColumnItem}>
+                <div className={styles.mainFooterColumnSubtitle}>
+                  Электронная почта
+                </div>
+                <a
+                  href="mailto:notify@vobaza.ru"
+                  className={styles.mainFooterColumnEmail}
+                >
+                  notify@vobaza.ru
+                </a>
+              </div>
             </div>
+            {footerLinks.map((item) => (
+              <div className={styles.mainFooterColumn} key={item.title}>
+                <div className={styles.mainFooterColumnTitle}>{item.title}</div>
+                {item.links.map((link) => (
+                  <div
+                    className={styles.mainFooterColumnItem}
+                    key={link.title}
+                    style={{ lineHeight: 'initial' }}
+                  >
+                    <Link href={link.href} key={link.title}>
+                      <a className={styles.mainFooterColumnLink}>
+                        {link.title}
+                      </a>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            ))}
           </div>
+        </div>
+        <div className={styles.mainFooterContentPhone}>
           {footerLinks.map((item) => (
-            <div className={styles.mainFooterColumn} key={item.title}>
-              <div className={styles.mainFooterColumnTitle}>{item.title}</div>
+            <Accordeon key={item.title} title={item.title}>
               {item.links.map((link) => (
                 <div
                   className={styles.mainFooterColumnItem}
@@ -161,11 +184,11 @@ const MainFooter: FC = () => {
                   </Link>
                 </div>
               ))}
-            </div>
+            </Accordeon>
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

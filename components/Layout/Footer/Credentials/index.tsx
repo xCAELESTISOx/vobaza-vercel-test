@@ -1,10 +1,12 @@
 import React, { FC } from 'react';
-import FbIcon from './FbIcon';
-import InstaIcon from './InstaIcon';
-import MastercardIcon from './MastercardIcon';
 
 import styles from './styles.module.scss';
+
+import MastercardIcon from './MastercardIcon';
 import VisaIcon from './VisaIcon';
+import MirIcon from './MirIcon';
+import InstaIcon from './InstaIcon';
+import FbIcon from './FbIcon';
 import VkIcon from './VkIcon';
 
 const Credentials: FC = () => {
@@ -23,7 +25,7 @@ const Credentials: FC = () => {
           <VisaIcon />
         </div>
         <div className={styles.payment}>
-          <MastercardIcon />
+          <MirIcon />
         </div>
       </div>
       <div className={styles.social}>
