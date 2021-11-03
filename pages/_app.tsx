@@ -1,7 +1,10 @@
-import type { AppProps } from "next/app";
-import "../styles/globals.css";
+import type { AppProps } from 'next/app';
+import '../styles/globals.css';
 
-import Layout from "../components/Layout";
+// Import Swiper styles
+import 'swiper/scss';
+
+import Layout from '../components/Layout';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

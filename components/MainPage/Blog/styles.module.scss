@@ -1,0 +1,44 @@
+.blog {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 16px;
+}
+.post {
+  &:hover {
+    .postTitle {
+      color: var(--primary-color, #af1ebe);
+    }
+  }
+}
+.postImage {
+  display: flex;
+
+  img {
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+    object-fit: cover;
+    object-position: left;
+    vertical-align: middle;
+  }
+}
+.postTitle {
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 20px;
+  line-height: initial;
+  font-weight: 500;
+  transition: color 150ms;
+
+  @media screen and (max-width: 979px) {
+    font-size: 16px;
+    margin-top: 8px;
+  }
+}
+.postDate {
+  margin-top: 8px;
+
+  @media screen and (max-width: 979px) {
+    font-size: 12px;
+  }
+}
