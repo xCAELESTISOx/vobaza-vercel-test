@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@nebo-team/vobaza.ui.button": "^0.0.9",
-    "@nebo-team/vobaza.ui.icon": "^0.0.6",
+    "@nebo-team/vobaza.ui.icon": "^0.0.7",
     "@nebo-team/vobaza.ui.inputs.input-text": "^0.0.18",
     "@nebo-team/vobaza.ui.title": "^0.0.2",
     "axios": "0.21.3",

@@ -1,22 +1,79 @@
+.cardWrapper {
+  position: relative;
+  padding-left: 12px;
+  padding-right: 12px;
+
+  @media screen and (max-width: 979px) {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+.cardContainer {
+  position: relative;
+}
 .card {
   border: 1px solid transparent;
   box-sizing: border-box;
   margin: -24px;
-  padding: 24px 36px;
-  // background-color: lightcoral;
+  padding: 24px;
+
+  &:hover {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(100% + 48px);
+    border-color: #f2f2f2;
+    background: #fff;
+    box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    z-index: 12;
+
+    .cardInfo {
+      display: block;
+    }
+    .cardHeader {
+      top: calc(4px - 1px);
+      right: calc(32px - 1px);
+    }
+  }
 }
 
 .cardHeader {
   display: flex;
   justify-content: space-between;
+
+  @media screen and (max-width: 979px) {
+    position: absolute;
+    top: 4px;
+    right: 8px;
+  }
 }
 .cardLabel {
   color: #808080;
+
+  @media screen and (max-width: 979px) {
+    display: none;
+  }
 }
 .cardIcon {
   color: #b3b3b3;
   cursor: pointer;
   transition: color 150ms;
+
+  @media screen and (max-width: 979px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 4px 3px;
+    width: 28px;
+    height: 28px;
+    color: #b3b3b3;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+    line-height: 1;
+    z-index: 1;
+  }
 
   &:hover {
     color: var(--primary-color, #af1ebe);
@@ -27,6 +84,10 @@
   position: relative;
   text-align: center;
   margin: 0 16px;
+
+  @media screen and (max-width: 979px) {
+    margin: 0 12px;
+  }
 
   img {
     border-radius: 8px;
@@ -39,10 +100,13 @@
 
 .cardVariants {
   display: grid;
-  grid-template-columns: repeat(6, 38px);
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
-  margin-top: 12px;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 4px;
+  margin-top: 8px;
+
+  @media screen and (max-width: 767px) {
+    margin-top: 4px;
+  }
 }
 .cardVariant {
   display: flex;
@@ -61,5 +125,171 @@
     vertical-align: middle;
     font-size: 0;
     border-radius: 4px;
+  }
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+}
+.cardTitle {
+  display: inline-block;
+  min-height: 40px;
+  font-size: 16px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  @media screen and (max-width: 979px) {
+    font-size: 13px;
+  }
+  @media screen and (max-width: 767px) {
+    margin-top: 8px;
+    min-height: initial;
+    order: 3;
+  }
+}
+.cardPriceBlock {
+  display: flex;
+  margin-top: 8px;
+
+  @media screen and (max-width: 767px) {
+    margin-top: 0;
+  }
+}
+.cardPrice {
+  font-size: 18px;
+  font-weight: 700;
+  white-space: nowrap;
+
+  @media screen and (max-width: 979px) {
+    font-size: 13px;
+    font-weight: normal;
+  }
+}
+.cardPriceOld {
+  display: flex;
+  align-items: center;
+  margin: 0 8px;
+  color: #b3b3b3;
+  font-weight: 500;
+  text-decoration: line-through;
+
+  @media screen and (max-width: 979px) {
+    font-size: 11px;
+  }
+}
+.cardSale {
+  margin-left: auto;
+  padding: 3px 8px 5px;
+  max-width: max-content;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  background: #4db45e;
+  border-radius: 4px;
+
+  @media screen and (max-width: 979px) {
+    display: none;
+  }
+}
+.cardSaleMobile {
+  display: none;
+  position: absolute;
+  left: -12px;
+  bottom: 5px;
+  font-size: 10px;
+
+  @media screen and (max-width: 979px) {
+    display: block;
+  }
+}
+
+.cardReviewsBlock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+
+  @media screen and (max-width: 979px) {
+    justify-content: flex-start;
+    margin-top: 8px;
+  }
+}
+.cardStars {
+  display: flex;
+}
+.cardStar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  + .cardStar {
+    margin-left: 8px;
+
+    @media screen and (max-width: 1224px) {
+      margin-left: 4px;
+    }
+  }
+}
+.cardReviews {
+  font-size: 16px;
+  font-weight: 500;
+  color: #a0a0a0;
+
+  @media screen and (max-width: 1224px) {
+    font-size: 14px;
+  }
+  @media screen and (max-width: 979px) {
+    margin-left: 4px;
+    font-size: 13px;
+    font-weight: 400;
+  }
+
+  span {
+    @media screen and (max-width: 979px) {
+      display: none;
+    }
+  }
+}
+
+.cardInfo {
+  display: none;
+  margin-top: 8px;
+  order: 10;
+}
+.cardFeature {
+  + .cardFeature {
+    margin-top: 8px;
+  }
+}
+.cardFeatureTitle {
+  font-size: 15px;
+  color: #808080;
+}
+.cardFeatureValue {
+  font-weight: 700;
+}
+.cardCart {
+  margin-top: 12px;
+  white-space: nowrap;
+}
+.cardProvider {
+  margin-top: 12px;
+  max-width: 70%;
+  color: #808080;
+}
+
+.labelMobile {
+  display: none;
+  margin-top: 4px;
+
+  @media screen and (max-width: 979px) {
+    display: block;
+  }
+
+  .cardLabel {
+    display: block;
+    font-size: 11px;
   }
 }
