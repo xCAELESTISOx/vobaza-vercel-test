@@ -100,10 +100,13 @@
 
 .cardVariants {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(6, 38px);
   grid-gap: 4px;
   margin-top: 8px;
 
+  @media screen and (max-width: 1140px) {
+    grid-template-columns: repeat(6, 1fr);
+  }
   @media screen and (max-width: 767px) {
     margin-top: 4px;
   }
