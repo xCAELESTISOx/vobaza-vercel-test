@@ -1,4 +1,7 @@
 .homePage > section + section {
+  margin-top: 60px;
+}
+.homePage > .bannersBlock + section {
   margin-top: 28px;
 }
 .sectionTitle {
@@ -9,6 +12,9 @@
 }
 
 @media screen and (max-width: 1024px) {
+  .homePage > section + section {
+    margin-top: 40px;
+  }
   .sectionTitle {
     font-size: 28px;
   }
