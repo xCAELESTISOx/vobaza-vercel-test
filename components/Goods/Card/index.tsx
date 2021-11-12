@@ -180,7 +180,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
                 </div>
               </div>
               <div className={styles.cardCart}>
-                <Button icon="Bell" text="В корзину" onClick={addToCart} />
+                <Button icon="Cart" text="В корзину" onClick={addToCart} />
               </div>
               <div className={styles.cardProvider}>ВоБаза</div>
             </div>
