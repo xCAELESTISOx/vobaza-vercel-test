@@ -17,23 +17,23 @@ const BottomTabBar: FC = () => {
     <div className={styles.tabbar}>
       <Link href="/">
         <a className={styles.tab}>
-          <Icon name="Person" />
+          <Icon name="SmallLogo" />
           <div className={styles.tabTitle}>Главная</div>
         </a>
       </Link>
       <div className={styles.tab} onClick={openMenu}>
-        <Icon name="Person" />
+        <Icon name="Catalog" />
         <div className={styles.tabTitle}>Каталог</div>
       </div>
       <Link href="/cart">
         <a className={styles.tab}>
-          <Icon name="Person" />
+          <Icon name="Cart" />
           <div className={styles.tabTitle}>Корзина</div>
         </a>
       </Link>
       <Link href="/wishlist">
         <a className={styles.tab}>
-          <Icon name="Person" />
+          <Icon name="Favorite" />
           <div className={styles.tabTitle}>Избранное</div>
         </a>
       </Link>

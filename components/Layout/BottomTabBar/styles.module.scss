@@ -24,6 +24,15 @@
 
   &:hover {
     color: var(--primary-color, #af1ebe);
+
+    svg {
+      color: var(--primary-color, #af1ebe);
+    }
+  }
+
+  svg {
+    color: #c6c6c6;
+    transition: color 0.2s;
   }
 }
 .tabTitle {

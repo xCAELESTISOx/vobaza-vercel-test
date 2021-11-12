@@ -43,19 +43,19 @@ const MainHeader: FC = () => {
           </div>
           <Link href="/wishlist">
             <a className={styles.headerButton}>
-              <Icon name="Person"></Icon>
+              <Icon name="Favorite"></Icon>
               <span>Избранное</span>
             </a>
           </Link>
           <Link href="/compare">
             <a className={styles.headerButton}>
-              <Icon name="Person"></Icon>
+              <Icon name="Compare"></Icon>
               <span>Сравнение</span>
             </a>
           </Link>
           <Link href="/cart">
             <a className={styles.headerButton}>
-              <Icon name="Person"></Icon>
+              <Icon name="Cart"></Icon>
               <span>Корзина</span>
             </a>
           </Link>
