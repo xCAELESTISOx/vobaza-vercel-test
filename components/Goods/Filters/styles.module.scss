@@ -1,0 +1,99 @@
+.filtersBlock {
+  display: flex;
+  margin-top: 16px;
+}
+.filters {
+  display: flex;
+
+  > * + * {
+    margin-left: 8px;
+  }
+
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
+}
+.filtersButton {
+  padding: 5px 16px 6px;
+  text-align: center;
+  color: var(--primary-color, #af1ebe);
+  font-size: 12px;
+  border: 1px solid #ebebeb;
+  border-radius: 32px;
+  background-color: #fff;
+  white-space: nowrap;
+  transition: background-color 0.4s, border-color 0.4s;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #fafafa;
+    background-color: #fafafa;
+  }
+
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
+}
+.filtersMobileButton {
+  display: none;
+  position: relative;
+  align-items: center;
+  font-size: 16px;
+
+  @media screen and (max-width: 767px) {
+    display: flex;
+  }
+
+  &:hover {
+    color: var(--primary-color, #af1ebe);
+  }
+
+  svg {
+    margin-right: 8px;
+    color: var(--primary-color, #af1ebe);
+  }
+}
+.filtersBadge {
+  position: absolute;
+  top: 0px;
+  left: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  min-height: 16px;
+  padding: 0 2px;
+  background: var(--primary-color, #af1ebe);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: inherit;
+  text-align: center;
+  box-sizing: border-box;
+  border-radius: 50%;
+  transition: color 0.2s;
+}
+
+.sort {
+  margin-left: auto;
+}
+.sortItem {
+  @media screen and (max-width: 767px) {
+    display: flex;
+    > div:first-child {
+      padding: 0;
+      font-size: 16px;
+      border: none;
+      background-color: transparent;
+
+      &:hover {
+        color: var(--primary-color, #af1ebe);
+      }
+
+      svg {
+        height: 20px;
+        color: var(--primary-color, #af1ebe);
+      }
+    }
+  }
+}

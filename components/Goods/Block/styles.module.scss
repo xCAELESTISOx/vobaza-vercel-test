@@ -1,0 +1,32 @@
+.goodsBlock {
+  margin-top: 40px;
+
+  @media screen and (max-width: 1024px) {
+    margin-top: 28px;
+  }
+  @media screen and (max-width: 767px) {
+    margin-top: 24px;
+  }
+}
+
+.goodsExpress {
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
+}
+.filtersBlock {
+  margin-top: 16px;
+}
+
+.goodsList {
+  margin-top: 48px;
+
+  @media screen and (max-width: 1024px) {
+    margin-top: 32px;
+  }
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 72px 0;
+}

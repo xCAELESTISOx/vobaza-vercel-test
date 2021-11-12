@@ -3,14 +3,16 @@ import GoodsCard from '../Card';
 
 import styles from './styles.module.scss';
 
-const GoodsList: FC = () => {
+type Props = {
+  goods: any[];
+};
+
+const GoodsList: FC<Props> = ({ goods }) => {
   return (
-    <div className="container">
-      <div className={styles.goodsList}>
-        {[1, 2, 3, 4, 5, 6].map((good) => (
-          <GoodsCard key={good} />
-        ))}
-      </div>
+    <div className={styles.goodsList}>
+      {goods.map((good) => (
+        <GoodsCard key={good} />
+      ))}
     </div>
   );
 };

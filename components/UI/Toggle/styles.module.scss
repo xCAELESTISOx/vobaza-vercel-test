@@ -1,0 +1,40 @@
+.toggleBlock {
+  display: flex;
+  align-items: center;
+  max-width: max-content;
+  cursor: pointer;
+}
+.toggleBlockActive {
+  .toggle {
+    background-color: var(--primary-color, #af1ebe);
+    &::after {
+      left: calc(100% - 20px);
+    }
+  }
+}
+.toggle {
+  position: relative;
+  width: 40px;
+  height: 24px;
+  background-color: #d9d9d9;
+  border-radius: 26px;
+  transition: background-color 0.2s;
+
+  &::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    transform: translateY(-50%);
+    transition-property: left;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in;
+  }
+}
+.toggleText {
+  margin-left: 12px;
+}

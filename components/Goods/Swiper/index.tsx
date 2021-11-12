@@ -7,7 +7,7 @@ import GoodsCard from '../Card';
 
 import styles from './styles.module.scss';
 
-const GoodsList: FC = () => {
+const GoodsSwiper: FC = () => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
@@ -74,4 +74,4 @@ const GoodsList: FC = () => {
   );
 };
 
-export default GoodsList;
+export default GoodsSwiper;

@@ -13,42 +13,42 @@ import tmpImg5 from './tmp/categ5.png';
 const categories = [
   {
     title: 'Диваны',
-    href: '/divany',
+    href: '/katalog/divany',
     image: tmpImg1,
   },
   {
     title: 'Кресла',
-    href: '/kresla',
+    href: '/katalog/kresla',
     image: tmpImg2,
   },
   {
     title: 'Кровати',
-    href: '/krovati',
+    href: '/katalog/krovati',
     image: tmpImg3,
   },
   {
     title: 'Шкафы',
-    href: '/shkafy',
+    href: '/katalog/shkafy',
     image: tmpImg4,
   },
   {
     title: 'Диваны',
-    href: '/divany',
+    href: '/katalog/divany',
     image: tmpImg1,
   },
   {
     title: 'Кресла',
-    href: '/kresla',
+    href: '/katalog/kresla',
     image: tmpImg2,
   },
   {
     title: 'Кровати',
-    href: '/krovati',
+    href: '/katalog/krovati',
     image: tmpImg3,
   },
   {
     title: 'Шкафы',
-    href: '/shkafy',
+    href: '/katalog/shkafy',
     image: tmpImg4,
   },
   // {

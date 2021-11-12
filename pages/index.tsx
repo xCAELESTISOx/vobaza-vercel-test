@@ -34,8 +34,8 @@ export default function Home() {
       <section className={styles.newGoodsBlock}>
         <div className="container">
           <h2 className={styles.sectionTitle}>Новые предложения </h2>
+          <GoodsList goods={[...Array(6)]} />
         </div>
-        <GoodsList />
       </section>
       <section className={styles.blogBlock}>
         <div className="container">

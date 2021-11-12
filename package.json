@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@nebo-team/vobaza.ui.button": "^0.0.9",
-    "@nebo-team/vobaza.ui.icon": "^0.0.7",
+    "@nebo-team/vobaza.ui.filter-select": "^0.0.9",
+    "@nebo-team/vobaza.ui.icon": "^0.0.8",
     "@nebo-team/vobaza.ui.inputs.input-text": "^0.0.18",
+    "@nebo-team/vobaza.ui.pagination": "^0.0.3",
     "@nebo-team/vobaza.ui.title": "^0.0.2",
     "axios": "0.21.3",
     "formik": "2.2.9",

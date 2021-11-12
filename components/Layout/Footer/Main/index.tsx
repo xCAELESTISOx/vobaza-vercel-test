@@ -11,31 +11,31 @@ const footerLinks = [
     links: [
       {
         title: 'Диваны',
-        href: '/divany',
+        href: '/katalog/divany',
       },
       {
         title: 'Кресла',
-        href: '/kresla',
+        href: '/katalog/kresla',
       },
       {
         title: 'Кровати',
-        href: '/krovati',
+        href: '/katalog/krovati',
       },
       {
         title: 'Матрасы',
-        href: '/matrasy',
+        href: '/katalog/matrasy',
       },
       {
         title: 'Шкафы',
-        href: '/shkafy',
+        href: '/katalog/shkafy',
       },
       {
         title: 'Тумбы',
-        href: '/tumby',
+        href: '/katalog/tumby',
       },
       {
         title: 'Столы',
-        href: '/stoly',
+        href: '/katalog/stoly',
       },
       {
         title: 'Все товары',
