@@ -8,10 +8,14 @@ import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 import tmpImg1 from './tmp/categ1.png';
 
-const CatalogList: FC = () => {
+type Props = {
+  list?: any[];
+};
+
+const CatalogList: FC<Props> = ({ list = [...Array(20)] }) => {
   return (
     <nav className={styles.catalog}>
-      {[...Array(20)].map((category) => (
+      {list.map((category) => (
         <Link key={category} href="/katalog/divany">
           <a className={styles.category}>
             <div className={styles.categoryImage}>

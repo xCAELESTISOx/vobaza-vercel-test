@@ -1,4 +1,4 @@
-import styles from '../styles/Home.module.css';
+import styles from '../styles/Home.module.scss';
 
 import Banners from '../components/MainPage/Banners';
 import PopularCategories from '../components/MainPage/CategoriesList';

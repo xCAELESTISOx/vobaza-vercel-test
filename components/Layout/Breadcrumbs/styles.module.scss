@@ -12,6 +12,15 @@
 .breadcrumbBlock {
   display: flex;
   align-items: center;
+
+  &:last-child .breadcrumb {
+    color: #b3b3b3;
+    pointer-events: none;
+
+    @media screen and (max-width: 767px) {
+      color: #808080;
+    }
+  }
 }
 .breadcrumb {
   font-size: 12px;
@@ -25,18 +34,11 @@
   &:hover {
     color: var(--primary-color, #9b1ba8);
   }
-
-  &:last-child {
-    color: #b3b3b3;
-    pointer-events: none;
-
-    @media screen and (max-width: 767px) {
-      color: #808080;
-    }
-  }
 }
 .breadcrumbsSeparator {
   margin: 0 16px;
+  padding-bottom: 2px;
+  color: #b3b3b3;
 
   @media screen and (max-width: 767px) {
     margin-left: 10px;

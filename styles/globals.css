@@ -63,8 +63,38 @@ button {
   padding: 0 20px;
 }
 
+.seoText {
+  font-size: 16px;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+.seoText .text-justify {
+  text-align: justify;
+}
+.seoText p {
+  padding: 0;
+  margin-bottom: 12px;
+}
+.seoText ul {
+  padding: 0 0 0 20px;
+  margin: 0;
+  list-style: none;
+  list-style-type: disc;
+}
+.seoText ul > li {
+  list-style-type: inherit;
+}
+
 @media screen and (max-width: 767px) {
   .container {
     padding: 0 16px;
+  }
+
+  .seoText {
+    font-size: 14px;
+    color: #808080;
+  }
+  .seoText p {
+    margin-bottom: 8px;
   }
 }

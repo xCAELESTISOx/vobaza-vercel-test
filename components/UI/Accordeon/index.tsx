@@ -6,7 +6,7 @@ import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 type Props = {
   title: string;
-  className: any;
+  className?: any;
 };
 
 const Accordeon: FC<Props> = ({ children, title, className }) => {
