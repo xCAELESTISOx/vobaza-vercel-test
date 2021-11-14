@@ -6,9 +6,10 @@ import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 type Props = {
   title: string;
+  className: any;
 };
 
-const Accordeon: FC<Props> = ({ children, title }) => {
+const Accordeon: FC<Props> = ({ children, title, className }) => {
   const refPanel = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -18,6 +19,7 @@ const Accordeon: FC<Props> = ({ children, title }) => {
     setIsLoading(true);
     if (isOpen) {
       refPanel.current.style.height = refPanel.current.scrollHeight + 'px';
+      refPanel.current.style.overflow = 'hidden';
       setTimeout(() => {
         refPanel.current.style.height = 0;
         setIsLoading(false);
@@ -25,6 +27,7 @@ const Accordeon: FC<Props> = ({ children, title }) => {
     } else {
       refPanel.current.style.height = refPanel.current.scrollHeight + 'px';
       setTimeout(() => {
+        refPanel.current.style.overflow = 'visible';
         refPanel.current.style.height = 'auto';
         setIsLoading(false);
       }, 400);
@@ -34,7 +37,7 @@ const Accordeon: FC<Props> = ({ children, title }) => {
   };
 
   return (
-    <div className={styles.accordeonBlock}>
+    <div className={`${styles.accordeonBlock} ${className}`}>
       <div className={styles.accordeon} onClick={toggleActive}>
         <div className={styles.accordeonTitle}>{title}</div>
         <div

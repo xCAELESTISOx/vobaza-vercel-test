@@ -308,7 +308,7 @@
     core-js "^3.0.0"
     styled-components "5.3.1"
 
-"@nebo-team/vobaza.ui.range@0.0.3":
+"@nebo-team/vobaza.ui.range@0.0.3", "@nebo-team/vobaza.ui.range@^0.0.3":
   version "0.0.3"
   resolved "https://node.bit.dev/@nebo-team/vobaza.ui.range/-/@nebo-team-vobaza.ui.range-0.0.3.tgz#487c5f9a4f9bf56c98ed6e349a4d76bf0d64b4d3"
   integrity sha1-SHxfmk+b9WyY7W40mk12vw1ktNM=

@@ -1,12 +1,21 @@
-import { FC } from 'react';
-import { FilterSelect } from '@nebo-team/vobaza.ui.filter-select';
+import { FC, useState } from 'react';
 
 import styles from './styles.module.scss';
+
+import { FilterSelect } from '@nebo-team/vobaza.ui.filter-select';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
+import FiltersModal from './Modal';
 
 const GoodsFilters: FC = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <div className={styles.filtersBlock}>
+      <FiltersModal isOpen={isMenuOpen} close={toggleMenu} />
       <div className={styles.filters}>
         <FilterSelect
           variation="secondary"
@@ -49,9 +58,11 @@ const GoodsFilters: FC = () => {
           onButtonClick={() => {}}
           withSearch
         />
-        <button className={styles.filtersButton}>Еще фильтры</button>
+        <button className={styles.filtersButton} onClick={toggleMenu}>
+          Еще фильтры
+        </button>
       </div>
-      <button className={styles.filtersMobileButton}>
+      <button className={styles.filtersMobileButton} onClick={toggleMenu}>
         <Icon name="Filters" />
         Фильтры
         <span className={styles.filtersBadge}>1</span>
