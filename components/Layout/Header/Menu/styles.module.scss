@@ -1,0 +1,142 @@
+.headerMenu {
+  position: absolute;
+  left: 0;
+  top: 40px;
+  display: flex;
+  flex-direction: column;
+  padding-top: 32px;
+  padding-bottom: 32px;
+  width: 100vw;
+  border: none;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1);
+  background: white;
+  z-index: 100;
+
+  @media screen and (max-width: 1140px) {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+}
+.headerMenuContent {
+  display: flex;
+  width: 100%;
+}
+
+.headerMenuTitle {
+  padding: 0 16px 0 64px;
+  margin-bottom: 4px;
+  margin-top: 12px;
+  max-width: max-content;
+  color: #6c6b6b;
+  font-weight: 500;
+  transition: color 0.15s;
+
+  &:hover {
+    color: var(--primary-color, #af1ebe);
+  }
+
+  @media screen and (max-width: 1140px) {
+    padding-left: 54px;
+  }
+}
+.rootMenu {
+  display: flex;
+  flex-direction: column;
+  width: 34%;
+  margin-right: 16px;
+  max-width: 274px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  overflow-y: auto;
+
+  + .subMenu {
+    padding-left: 16px;
+  }
+}
+.rootMenuLink {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 13px 22px;
+  font-weight: 500;
+  line-height: 1.1;
+  border-radius: 8px;
+  transition: color 0.2s, background-color 0.2s;
+
+  &:hover,
+  &.active {
+    color: var(--primary-color, #af1ebe);
+    background-color: #ededed;
+  }
+
+  svg {
+    margin-right: 12px;
+  }
+}
+.rootMenuLinkDivided {
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 22px;
+    width: calc(100% - 44px);
+    border-top: 1px solid #c4c4c4;
+  }
+}
+
+.subMenu {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  padding: 12px 16px 32px;
+  overflow-y: auto;
+  padding-left: 64px;
+
+  @media screen and (max-width: 1140px) {
+    padding-left: 54px;
+  }
+}
+.subMenuBlock {
+  display: flex;
+  flex-direction: column;
+
+  + .subMenuBlock {
+    margin-left: 64px;
+  }
+}
+.subMenuItem {
+  max-width: max-content;
+  font-weight: 500;
+  transition: color 0.15s;
+
+  &:hover {
+    color: var(--primary-color, #af1ebe);
+  }
+
+  + .subMenuItem {
+    margin-top: 12px;
+  }
+}
+.subMenuItemGray {
+  color: #4f4c4c;
+  font-weight: 400;
+}
+
+.headerMenuBottom {
+  padding: 12px 16px 12px 64px;
+  border-top: 1px solid #dbdbdb;
+
+  @media screen and (max-width: 1140px) {
+    padding-left: 54px;
+  }
+}
+.headerMenuBottomLink {
+  max-width: max-content;
+  color: #000;
+  font-weight: 500;
+  transition: color 0.15s;
+
+  &:hover {
+    color: var(--primary-color, #af1ebe);
+  }
+}

@@ -1,5 +1,7 @@
 .subHeaderContainer {
+  position: relative;
   margin-bottom: 8px;
+
   @media screen and (max-width: 1080px) {
     display: none;
   }

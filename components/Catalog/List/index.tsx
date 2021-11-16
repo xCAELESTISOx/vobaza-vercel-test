@@ -15,8 +15,8 @@ type Props = {
 const CatalogList: FC<Props> = ({ list = [...Array(20)] }) => {
   return (
     <nav className={styles.catalog}>
-      {list.map((category) => (
-        <Link key={category} href="/katalog/divany">
+      {list.map((category, index) => (
+        <Link key={'category' + index} href="/katalog/divany">
           <a className={styles.category}>
             <div className={styles.categoryImage}>
               <Image src={tmpImg1} alt="" />
