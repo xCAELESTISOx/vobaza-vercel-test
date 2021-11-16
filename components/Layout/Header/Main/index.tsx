@@ -1,17 +1,34 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import Link from 'next/link';
 
 import styles from './styles.module.scss';
+
 import { Icon } from '@nebo-team/vobaza.ui.icon';
-
 import Search from '../Search';
+import HeaderMobileMenu from '../MobileMenu';
+import CitySelect from '../CitySelect';
 
-const MainHeader: FC = () => {
+type Props = {
+  mobileCategories: any[];
+};
+
+const MainHeader: FC<Props> = ({ mobileCategories }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
     <div className="container">
+      <HeaderMobileMenu
+        isOpen={isMobileMenuOpen}
+        rootMenu={mobileCategories}
+        close={toggleMenu}
+      />
       <div className={`${styles.mainHeader}`}>
         <div className={styles.mainHeaderMobile}>
-          <button className={styles.burgerMenu}>
+          <button className={styles.burgerMenu} onClick={toggleMenu}>
             <Icon name="MenuBurger" />
           </button>
           <Link href="/">
@@ -23,10 +40,9 @@ const MainHeader: FC = () => {
             <Icon name="Phone" />
           </a>
         </div>
-        <button className={styles.headerCity}>
-          Ростов-на-Дону
-          <Icon name="SmallArrowDown" />
-        </button>
+        <div className={styles.headerCity}>
+          <CitySelect />
+        </div>
         <div className={styles.headerSearch}>
           <Search />
         </div>

@@ -22,13 +22,18 @@
   font-weight: 500;
   padding: 10px 26px;
 
-  &:hover {
+  &:hover,
+  &.active {
     background: linear-gradient(
         0deg,
         rgba(255, 255, 255, 0.12),
         rgba(255, 255, 255, 0.12)
       ),
       var(--primary-color, #af1ebe);
+  }
+
+  svg {
+    margin-right: 8px;
   }
 
   @media screen and (max-width: 1140px) {
@@ -40,7 +45,4 @@
 
 .headerCategoryAll {
   font-weight: 700;
-}
-.categoryAllIcon {
-  margin-right: 8px;
 }

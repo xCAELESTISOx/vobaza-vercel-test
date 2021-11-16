@@ -6,250 +6,6 @@ import styles from './styles.module.scss';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import HeaderMenu from '../Menu';
 
-const categories = [
-  {
-    title: 'Диваны',
-    menu: [
-      [
-        {
-          title: 'Прямые диваны ',
-          href: '/katalog/divany',
-        },
-        {
-          title: ' Угловые диваны ',
-          href: '/katalog/divany',
-        },
-        {
-          title: 'Диваны-кровати ',
-          href: '/katalog/divany',
-        },
-        {
-          title: 'Кушетки ',
-          href: '/katalog/divany',
-        },
-        {
-          title: ' Модульные диваны ',
-          href: '/katalog/divany',
-        },
-      ],
-      [
-        {
-          title: 'Софы ',
-          href: '/katalog/divany',
-        },
-        {
-          title: 'Садовые диваны  ',
-          href: '/katalog/divany',
-        },
-        {
-          title: 'Бескаркасные диваны ',
-          href: '/katalog/divany',
-        },
-        {
-          title: 'Подушки для диванов  ',
-          href: '/katalog/divany',
-        },
-      ],
-    ],
-    menuTitle: {
-      title: 'Диваны',
-      href: '/katalog/divany',
-    },
-    allLink: {
-      title: 'Все диваны ',
-      href: '/',
-    },
-  },
-  {
-    title: 'Кресла',
-    menu: [
-      [
-        {
-          title: 'Подушки',
-          href: '/',
-        },
-        {
-          title: 'Одеяла',
-          href: '/',
-        },
-        {
-          title: 'Наматрасники',
-          href: '/',
-        },
-      ],
-    ],
-    menuTitle: {
-      title: 'Текстиль для дома',
-      href: '/katalog/divany',
-    },
-    allLink: {
-      title: 'Весь текстиль для дома ',
-      href: '/',
-    },
-  },
-  {
-    title: 'Кровати',
-    menu: [
-      [
-        {
-          title: 'Подушки',
-          href: '/',
-        },
-        {
-          title: 'Одеяла',
-          href: '/',
-        },
-        {
-          title: 'Наматрасники',
-          href: '/',
-        },
-      ],
-    ],
-    menuTitle: {
-      title: 'Текстиль для дома',
-      href: '/katalog/divany',
-    },
-    allLink: {
-      title: 'Весь текстиль для дома ',
-      href: '/',
-    },
-  },
-  {
-    title: 'Матрасы',
-    menu: [
-      [
-        {
-          title: 'Подушки',
-          href: '/',
-        },
-        {
-          title: 'Одеяла',
-          href: '/',
-        },
-        {
-          title: 'Наматрасники',
-          href: '/',
-        },
-      ],
-    ],
-    menuTitle: {
-      title: 'Текстиль для дома',
-      href: '/katalog/divany',
-    },
-    allLink: {
-      title: 'Весь текстиль для дома ',
-      href: '/',
-    },
-  },
-  {
-    title: 'Шкафы',
-    menu: [
-      [
-        {
-          title: 'Подушки',
-          href: '/',
-        },
-        {
-          title: 'Одеяла',
-          href: '/',
-        },
-        {
-          title: 'Наматрасники',
-          href: '/',
-        },
-      ],
-    ],
-    menuTitle: {
-      title: 'Текстиль для дома',
-      href: '/katalog/divany',
-    },
-    allLink: {
-      title: 'Весь текстиль для дома ',
-      href: '/',
-    },
-  },
-  {
-    title: 'Тумбы',
-    menu: [
-      [
-        {
-          title: 'Подушки',
-          href: '/',
-        },
-        {
-          title: 'Одеяла',
-          href: '/',
-        },
-        {
-          title: 'Наматрасники',
-          href: '/',
-        },
-      ],
-    ],
-    menuTitle: {
-      title: 'Текстиль для дома',
-      href: '/katalog/divany',
-    },
-    allLink: {
-      title: 'Весь текстиль для дома ',
-      href: '/',
-    },
-  },
-  {
-    title: 'Столы',
-    menu: [
-      [
-        {
-          title: 'Подушки',
-          href: '/',
-        },
-        {
-          title: 'Одеяла',
-          href: '/',
-        },
-        {
-          title: 'Наматрасники',
-          href: '/',
-        },
-      ],
-    ],
-    menuTitle: {
-      title: 'Текстиль для дома',
-      href: '/katalog/divany',
-    },
-    allLink: {
-      title: 'Весь текстиль для дома ',
-      href: '/',
-    },
-  },
-  {
-    title: 'Текстиль',
-    menu: [
-      [
-        {
-          title: 'Подушки',
-          href: '/',
-        },
-        {
-          title: 'Одеяла',
-          href: '/',
-        },
-        {
-          title: 'Наматрасники',
-          href: '/',
-        },
-      ],
-    ],
-    menuTitle: {
-      title: 'Текстиль для дома',
-      href: '/katalog/divany',
-    },
-    allLink: {
-      title: 'Весь текстиль для дома ',
-      href: '/',
-    },
-  },
-];
 const rootMenu = [
   {
     title: 'Диваны и кресла',
@@ -426,7 +182,11 @@ const rootMenu = [
   },
 ];
 
-const MainHeader: FC = () => {
+type Props = {
+  categories: any[];
+};
+
+const MainHeader: FC<Props> = ({ categories }) => {
   const [currentMenu, setCurrentMenu] = useState(null);
   const [withRoot, setWithRoot] = useState(false);
 
@@ -439,6 +199,7 @@ const MainHeader: FC = () => {
     setCurrentMenu(categories[e.target.dataset.index]);
   };
   const closeMenu = () => {
+    setWithRoot(false);
     setCurrentMenu(undefined);
   };
 
@@ -450,16 +211,21 @@ const MainHeader: FC = () => {
       {currentMenu && <HeaderMenu rootMenu={currentMenu} withRoot={withRoot} />}
       <nav className={styles.subHeader}>
         <button
-          className={`${styles.headerCategory} ${styles.headerCategoryAll}`}
+          className={`${styles.headerCategory} ${styles.headerCategoryAll} ${
+            withRoot ? styles.active : ''
+          }`}
           onMouseEnter={openMenuAll}
         >
-          <Icon name="MenuBurger" className={styles.categoryAllIcon} /> Все
-          товары
+          <Icon name="MenuBurger" /> Все товары
         </button>
         {categories.map((category, index) => (
           <Link href="/" key={category.title}>
             <a
-              className={styles.headerCategory}
+              className={`${styles.headerCategory} ${
+                currentMenu && currentMenu.title === category.title
+                  ? styles.active
+                  : ''
+              }`}
               data-index={index}
               onMouseEnter={openMenu}
             >

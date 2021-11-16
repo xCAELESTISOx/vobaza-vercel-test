@@ -1,0 +1,53 @@
+.subMenuHeader {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 4px 0;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+}
+.subMenuLink {
+  display: flex;
+  align-items: center;
+  transition: color 0.15s;
+
+  &:hover {
+    color: var(--primary-color, #af1ebe);
+  }
+}
+.subMenuImage {
+  width: 32px;
+  margin-right: 12px;
+}
+.subMenuArrow {
+  margin-left: auto;
+  margin-right: 8px;
+  height: 18px;
+  width: 18px;
+  transform: rotate(90deg);
+  transition: transform 0.4s;
+
+  &.active {
+    transform: rotate(180deg);
+  }
+}
+
+.subMenuList {
+  display: flex;
+  flex-direction: column;
+  height: 0;
+  transition: height 0.4s ease-out;
+  overflow: hidden;
+}
+.subMenuListItem {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  min-height: 36px;
+  max-width: max-content;
+  margin-left: 45px;
+  font-size: 14px;
+  line-height: 24px;
+  color: #808080;
+}

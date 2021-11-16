@@ -47,6 +47,8 @@
 }
 .phoneButton {
   display: none;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
 
   &:hover {
@@ -54,20 +56,13 @@
   }
 
   @media screen and (max-width: 767px) {
-    display: block;
+    display: flex;
   }
 }
 
 .headerCity {
-  display: flex;
-  align-items: center;
   padding: 0 8px;
   max-width: 280px;
-  font-size: 16px;
-  line-height: 24px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  cursor: pointer;
 
   @media screen and (min-width: 1224px) {
     margin-left: 30px;
