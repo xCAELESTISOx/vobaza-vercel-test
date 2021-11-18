@@ -1,0 +1,125 @@
+.compareListItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > * + * {
+    margin-top: 8px;
+  }
+
+  &:hover {
+    .compareListItemDelete {
+      opacity: 1;
+    }
+  }
+}
+.compareListItemDelete {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #ccc;
+  vertical-align: middle;
+  white-space: nowrap;
+  opacity: 0;
+
+  &:hover {
+    svg {
+      color: #ccc;
+    }
+  }
+
+  svg {
+    margin-right: 4px;
+    color: #b3b3b3;
+  }
+}
+
+.compareListItemImage {
+  max-width: 278px;
+  max-height: 278px;
+  overflow: hidden;
+
+  img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+    font-size: 0;
+  }
+}
+
+.compareListItemTitle {
+  text-align: center;
+}
+
+.compareListItemPrices {
+  display: flex;
+  align-items: center;
+}
+.compareListItemOldPrice {
+  line-height: 100%;
+  font-size: 13px;
+  font-weight: 500;
+  color: #b3b3b3;
+  white-space: nowrap;
+  text-decoration: line-through;
+}
+.compareListItemPrice {
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.compareListItemCart {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.compareListItemCartLabel {
+  display: inline-block;
+  padding: 6px 0;
+  margin-right: 8px;
+  width: 90px;
+  text-align: center;
+}
+.compareListItemCartBlock {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 16px;
+  width: auto;
+  max-width: 100%;
+  background: #f2f2f2;
+  border-radius: 8px;
+
+  @media screen and (max-width: 767px) {
+    padding: 8px 16px;
+  }
+
+  svg {
+    margin: 0 8px;
+    color: var(--primary-color, #af1ebe);
+    cursor: pointer;
+  }
+}
+.compareListItemCartInput {
+  padding: 0 4px;
+  min-height: 24px;
+  height: auto;
+  width: 36px;
+  text-align: center;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  background: #fff;
+  outline: none;
+}
+
+.compareListItemCartButtons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 20px;
+
+  > * {
+    margin: 0 8px;
+  }
+}

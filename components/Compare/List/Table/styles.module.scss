@@ -1,0 +1,83 @@
+.compareListTable {
+  width: fit-content;
+  border-top: 1px solid #f2f2f2;
+}
+
+.compareListTableRow {
+  display: flex;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.compareListTableTitle {
+  flex: 5;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px;
+  min-width: 160px;
+  font-weight: bold;
+  border-left: 1px solid #f2f2f2;
+  border-right: 1px solid #f2f2f2;
+  vertical-align: middle;
+
+  &:hover {
+    svg {
+      visibility: visible;
+    }
+  }
+
+  svg {
+    display: inline;
+    visibility: hidden;
+    width: 16px;
+    height: 16px;
+    margin-left: 4px;
+    margin-bottom: -4px;
+    color: #b3b3b3;
+    cursor: pointer;
+
+    &:hover {
+      fill: #212121;
+    }
+  }
+}
+
+.compareListTableItem {
+  flex: 7;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 8px;
+  min-width: 235px;
+  border-right: 1px solid #f2f2f2;
+  vertical-align: middle;
+
+  @media screen and (max-width: 767px) {
+    min-width: 200px;
+  }
+}
+.compareListTableValue {
+  padding: 2px 0;
+}
+.compareListTableCheckbox {
+  position: relative;
+  display: inline-block;
+  top: 4px;
+  margin-right: 4px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #4d4d4d;
+  background-color: #fff;
+  color: transparent;
+  text-align: left;
+
+  &.active {
+    color: #5a5a5a;
+  }
+
+  svg {
+    width: 14px;
+    height: 16px;
+  }
+}

@@ -1,0 +1,26 @@
+.removedFeatures {
+  margin-top: 28px;
+}
+.removedFeaturesTitle {
+  margin: 0;
+  padding: 0;
+  font-size: 24px;
+  font-weight: 500;
+
+  @media screen and (max-width: 767px) {
+    font-size: 18px;
+  }
+}
+
+.removedFeaturesList {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 12px;
+
+  > * {
+    display: inline-flex;
+  }
+}
+.removedFeaturesButton {
+  margin-top: 20px;
+}
