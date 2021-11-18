@@ -1,0 +1,95 @@
+.cartSidebar {
+  position: sticky;
+  top: 0;
+  max-width: 320px;
+  min-width: 320px;
+  padding: 18px 24px 24px;
+  background-color: white;
+  border: 1px solid #f3f3f3;
+  border-radius: 8px;
+
+  @media screen and (max-width: 1024px) {
+    max-width: initial;
+    min-width: initial;
+  }
+  @media screen and (max-width: 767px) {
+    padding: 16px 16px 24px;
+  }
+}
+
+.cartSidebarTitle {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f3f3f3;
+}
+
+.cartSidebarOrder {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f3f3f3;
+}
+.cartSidebarOrderTitle {
+  font-size: 12px;
+  line-height: 24px;
+  color: #808080;
+}
+.cartSidebarOrderDecorator {
+  flex-grow: 1;
+  border-bottom: 1px dashed #b3b3b3;
+  margin: 0 10px;
+}
+.cartSidebarOrderPrice {
+  font-size: 12px;
+  line-height: 24px;
+}
+
+.cartSidebarTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 8px;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+}
+.cartSidebarTotalTitle {
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: #808080;
+}
+
+.cartSidebarButton {
+  display: block;
+  margin-top: 20px;
+}
+
+.cartSidebarCondition {
+  margin-top: 20px;
+
+  p {
+    font-size: 12px;
+    line-height: 17px;
+    padding: 0;
+
+    a {
+      font-size: 12px;
+      color: #3478f6;
+      border-bottom: 1px dotted transparent;
+      transition: border-bottom-color 0.15s;
+
+      &:hover {
+        border-bottom-color: rgba(52, 120, 246, 0.3);
+      }
+    }
+
+    + p {
+      margin-top: 16px;
+    }
+  }
+}

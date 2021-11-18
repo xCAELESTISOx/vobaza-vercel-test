@@ -1,0 +1,165 @@
+.cartListItem {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cartListItemImageBlock {
+  max-width: 30%;
+  width: 100px;
+  height: 100px;
+  padding: 0;
+
+  img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+    border-radius: 8px;
+  }
+
+  @media screen and (max-width: 767px) {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+.cartListItemContent {
+  flex: 10 1 0;
+  margin-left: 16px;
+  margin-top: -4px;
+  max-width: 295px;
+
+  @media screen and (max-width: 767px) {
+    margin-left: 12px;
+  }
+  @media screen and (max-width: 567px) {
+    margin-left: 24px;
+  }
+}
+.cartListItemTitle {
+  display: block;
+  max-width: max-content;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  @media screen and (max-width: 1140px) {
+    font-size: 14px;
+  }
+  @media screen and (max-width: 767px) {
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+.cartListItemFeatures {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+}
+.cartListItemFeature {
+  color: #808080;
+  font-size: 12px;
+  line-height: 17px;
+
+  @media screen and (max-width: 767px) {
+    font-size: 10px;
+    line-height: 15px;
+  }
+}
+.cartListItemButtons {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 16px;
+
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 12px;
+    margin-left: -92px;
+  }
+  @media screen and (max-width: 567px) {
+    margin-left: -104px;
+  }
+}
+.cartListItemButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  min-width: 128px;
+  font-size: 16px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+
+  @media screen and (max-width: 767px) {
+    padding: 4px 8px;
+    min-width: 96px;
+  }
+
+  svg {
+    color: var(--primary-color, #af1ebe);
+    cursor: pointer;
+  }
+}
+.cartListItemPriceForOne {
+  margin-left: 32px;
+  font-weight: normal;
+  font-size: 12px;
+  color: #808080;
+
+  @media screen and (max-width: 767px) {
+    margin-left: 0;
+    margin-top: 8px;
+  }
+}
+
+.cartListItemPriceBlock {
+  display: flex;
+  align-items: center;
+  height: fit-content;
+  margin-left: auto;
+
+  @media screen and (max-width: 767px) {
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    height: initial;
+  }
+}
+.cartListItemPrice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 16px;
+  line-height: 24px;
+
+  @media screen and (max-width: 767px) {
+    padding-left: 16px;
+    height: 60px;
+  }
+}
+.cartListItemPriceOld {
+  margin-bottom: 2px;
+  color: #808080;
+  line-height: 17px;
+  font-size: 12px;
+  text-decoration: line-through;
+  white-space: nowrap;
+}
+.cartListItemDelete {
+  display: flex;
+  align-items: center;
+  margin-left: 28px;
+  color: #b3b3b3;
+  transition: color 0.15s;
+
+  &:hover {
+    color: var(--primary-color, #af1ebe);
+  }
+
+  @media screen and (max-width: 767px) {
+    margin-left: auto;
+  }
+}
