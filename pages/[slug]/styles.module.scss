@@ -1,0 +1,289 @@
+@import '../../styles/Home.module.scss';
+
+.goodInfo {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.left {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 784px;
+  margin-right: 64px;
+}
+
+.leftContent {
+  position: sticky;
+  top: 16px;
+}
+
+.right {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  max-width: 752px;
+}
+
+.productInfoShort {
+  max-width: 388px;
+}
+
+.leftMenu {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -6px -12px 10px;
+}
+
+.leftMenuItem {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+}
+
+.leftMenuBadge {
+  composes: leftMenuItem;
+
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 130%;
+
+  user-select: none;
+
+  &.express_delivery {
+    color: #808080;
+  }
+
+  &.hit {
+    color: #5ea01c;
+  }
+
+  &.bestseller {
+    color: var(--primary-color);
+  }
+}
+
+.leftMenuActionBtn {
+  display: flex;
+  align-items: center;
+
+  font-size: 14px;
+  line-height: 140%;
+
+  transition: all 0.2s;
+
+  svg {
+    margin-right: 8px;
+  }
+
+  &:hover {
+    color: var(--primary-color);
+  }
+}
+
+.productRating {
+  display: flex;
+  align-items: center;
+}
+
+.productReviews {
+  margin-left: 12px;
+
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--primary-color);
+}
+
+.productTitle {
+  margin: 0;
+  font-size: 36px;
+  line-height: 44px;
+  font-weight: 500;
+  letter-spacing: -1px;
+}
+
+.productSubinfo {
+  margin-top: 4px;
+
+  color: #8d8d8d;
+  font-size: 18px;
+  line-height: 150%;
+}
+
+.productOptionList {
+  composes: productInfoShort;
+  margin-top: 24px;
+}
+
+.productOption {
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
+}
+
+.productInfoBlock {
+  &:not(:first-child) {
+    margin-top: 32px;
+  }
+}
+
+.productPriceInfo {
+  composes: productInfoShort;
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  // margin: 0 -6px;
+
+  letter-spacing: -1px;
+  cursor: default;
+}
+
+.productPriceEl {
+  padding: 0 6px;
+}
+
+.productPriceActual {
+  composes: productPriceEl;
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 58px;
+}
+
+.productPriceOld {
+  composes: productPriceEl;
+  padding-bottom: 6px;
+  margin-right: auto;
+
+  font-size: 24px;
+  line-height: 29px;
+  letter-spacing: -2px;
+  text-decoration-line: line-through;
+  color: #b3b3b3;
+}
+
+.productDiscount {
+  composes: productPriceEl;
+  padding-bottom: 16px;
+
+  span {
+    display: flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 0 6px;
+    background: #4db45e;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 130%;
+    color: #ffffff;
+  }
+}
+
+.productStockInfo {
+  composes: productInfoShort;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 4px;
+
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+
+  cursor: default;
+}
+
+.productStock {
+  display: flex;
+  align-items: center;
+  margin-right: 16px;
+
+  color: #1a1a1a;
+
+  svg {
+    width: 16px;
+    margin-right: 8px;
+    height: 16px;
+
+    &.productInStock {
+      color: #006400;
+    }
+
+    &.productOutStock {
+      color: #b81803;
+    }
+  }
+}
+
+.productLoyalty {
+  display: flex;
+  align-items: center;
+
+  color: var(--blue-color);
+
+  svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    color: var(--primary-color);
+  }
+}
+
+.productOrderBtns {
+  composes: productInfoBlock;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  button:first-child {
+    margin-right: 28px;
+  }
+}
+
+.productCredit {
+  composes: productInfoBlock;
+
+  display: flex;
+
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+}
+
+.productCreditPayment {
+  margin-right: 16px;
+
+  span {
+    font-weight: 700;
+  }
+}
+
+.productDelivery {
+  composes: productInfoBlock;
+}
+
+.productDeliveryTitle {
+  margin-bottom: 12px;
+
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.productDeliveryItem {
+  font-size: 14px;
+  line-height: 140%;
+
+  cursor: default;
+
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
+}
+
+.productDeliveryItemType {
+  color: var(--blue-color);
+}

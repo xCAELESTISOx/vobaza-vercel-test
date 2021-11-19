@@ -1,8 +1,9 @@
 :root {
-  --primary-color: #AF1EBE;
-  --primary-color-hover: #EFD2F2;
-  --light-primary-color: #EFD2F2;
-  
+  --primary-color: #af1ebe;
+  --primary-color-hover: #efd2f2;
+  --light-primary-color: #efd2f2;
+  --blue-color: #3478f6;
+
   --container-size: 1345px;
 }
 
@@ -39,20 +40,20 @@ input,
 optgroup,
 select,
 textarea {
-  font-family: inherit; 
-  font-size: 100%; 
+  font-family: inherit;
+  font-size: 100%;
   line-height: 1.15;
   margin: 0;
 }
 
 button,
-[type="button"],
-[type="reset"],
-[type="submit"] {
+[type='button'],
+[type='reset'],
+[type='submit'] {
   -webkit-appearance: button;
 }
 
-button { 
+button {
   border: none;
   background-color: transparent;
   padding: 0;

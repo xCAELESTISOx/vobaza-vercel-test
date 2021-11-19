@@ -266,6 +266,22 @@
   dependencies:
     core-js "^3.0.0"
 
+"@nebo-team/vobaza.ui.icon@0.0.8":
+  version "0.0.8"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.icon/-/@nebo-team-vobaza.ui.icon-0.0.8.tgz#a76ac70a81638f1561612cc0a2b8c57197cb9a91"
+  integrity sha1-p2rHCoFjjxVhYSzAorjFcZfLmpE=
+  dependencies:
+    core-js "^3.0.0"
+
+"@nebo-team/vobaza.ui.inputs.input-checkbox@0.0.7":
+  version "0.0.7"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-checkbox/-/@nebo-team-vobaza.ui.inputs.input-checkbox-0.0.7.tgz#64d0409b733e4d64345fcfb8f68cfb8540046e1f"
+  integrity sha1-ZNBAm3M+TWQ0X8+49oz7hUAEbh8=
+  dependencies:
+    "@nebo-team/vobaza.ui.icon" "0.0.8"
+    core-js "^3.0.0"
+    styled-components "5.3.1"
+
 "@nebo-team/vobaza.ui.inputs.input-checkbox@0.0.9":
   version "0.0.9"
   resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-checkbox/-/@nebo-team-vobaza.ui.inputs.input-checkbox-0.0.9.tgz#da7cc6cf3ae8a2fe25827d74b29a61318b25eed2"
@@ -289,6 +305,16 @@
   resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-radio/-/@nebo-team-vobaza.ui.inputs.input-radio-0.0.1.tgz#6b8bca6656afca6a4929b87e2decff98e257a061"
   integrity sha1-a4vKZlavympJKbh+Lez/mOJXoGE=
   dependencies:
+    core-js "^3.0.0"
+    styled-components "5.3.1"
+
+"@nebo-team/vobaza.ui.inputs.input-select@^0.0.16":
+  version "0.0.16"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-select/-/@nebo-team-vobaza.ui.inputs.input-select-0.0.16.tgz#cdd25ea3c4c99a83d4f58a3159a04d6c0ba19665"
+  integrity sha1-zdJeo8TJmoPU9YoxWaBNbAuhlmU=
+  dependencies:
+    "@nebo-team/vobaza.ui.icon" "0.0.8"
+    "@nebo-team/vobaza.ui.inputs.input-checkbox" "0.0.7"
     core-js "^3.0.0"
     styled-components "5.3.1"
 
