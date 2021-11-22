@@ -1,0 +1,55 @@
+.accordionBlock {
+  position: relative;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e3e3e3;
+}
+.accordion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0;
+
+  cursor: pointer;
+  user-select: none;
+}
+
+.accordionTitle {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  color: #000;
+
+  transition: all 0.4s ease-in-out;
+}
+
+.accordionArrow {
+  display: flex;
+  transition: transform 0.4s;
+
+  color: var(--primary-color);
+
+  svg {
+    height: 18px;
+    width: 18px;
+  }
+}
+
+.accordionActive {
+  composes: accordion;
+
+  .accordionTitle {
+    color: var(--primary-color);
+  }
+
+  .accordionArrow svg {
+    transform: rotate(-180deg);
+  }
+}
+
+.accordionPanel {
+  overflow: hidden;
+}
+
+.accordionPanelContent {
+  padding: 24px 0 16px;
+}

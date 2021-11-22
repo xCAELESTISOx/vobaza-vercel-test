@@ -1,0 +1,17 @@
+.tab {
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #f2f2f2;
+
+  font-size: 14px;
+  line-height: 140%;
+}
+
+.tabActive {
+  composes: tab;
+
+  // TODO: Возможно вынести в переменную
+  background: #f3ddf5;
+
+  color: var(--primary-color);
+}

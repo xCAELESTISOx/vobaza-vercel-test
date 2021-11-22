@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin-bottom: 8px;
+
+  font-size: 12px;
+  line-height: 150%;
+  color: #b3b3b3;
+}
+
+.itemList {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -10px -8px;
+}
+
+.item {
+  padding: 10px 8px;
+}

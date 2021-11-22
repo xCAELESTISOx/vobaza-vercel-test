@@ -1,17 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Button } from '@nebo-team/vobaza.ui.button';
 import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select';
 import Breadcrumbs from '../../components/Layout/Breadcrumbs';
 import { ImagesBlockMemo } from '../../components/DetailGoodPage/ImagesBlock';
 import { ProductVariants } from '../../components/DetailGoodPage/ProductVariants';
-
+import { ProductInfoAccordion } from '../../components/DetailGoodPage/ProductInfoAccordion';
+import { ProductCharacteristics } from '../../components/DetailGoodPage/ProductCharacteristics';
+import { SelectTabs } from '../../components/UI/SelectTabs';
 import type { BreadcrumbType } from '../../components/Layout/Breadcrumbs';
 
 import styles from './styles.module.scss';
 
-import { product as mockProduct, product } from './mock';
-import { Icon } from '@nebo-team/vobaza.ui.icon';
-import { Button } from '@nebo-team/vobaza.ui.button';
+import { product as mockProduct } from './mock';
 
 interface props {}
 
@@ -54,6 +56,32 @@ const DetailGoodPage = ({}) => {
     options[name] = e;
 
     setSelectedOptions(options);
+  };
+
+  const renderOptions = () => {
+    return mockProduct.options.map((option) => (
+      <div className={styles.productOption} key={option.id}>
+        {option.variants.length > 5 ? (
+          <InputSelect
+            name={option.id}
+            label={option.label}
+            currentValue={selectedOptions[option.id]}
+            variants={option.variants}
+            onChange={(e) => handelSelectOption(option.id, e)}
+          />
+        ) : (
+          <SelectTabs
+            label={option.label}
+            value={selectedOptions[option.id]}
+            variants={option.variants.map((v) => ({
+              code: v.code,
+              text: v.value,
+            }))}
+            onChange={(e) => handelSelectOption(option.id, e)}
+          />
+        )}
+      </div>
+    ));
   };
 
   return (
@@ -112,18 +140,7 @@ const DetailGoodPage = ({}) => {
                   onChange={setSelectedColorVariant}
                 />
               </div>
-
-              {mockProduct.options.map((option) => (
-                <div className={styles.productOption} key={option.id}>
-                  <InputSelect
-                    name={option.id}
-                    label={option.label}
-                    currentValue={selectedOptions[option.id]}
-                    variants={option.variants}
-                    onChange={(e) => handelSelectOption(option.id, e)}
-                  />
-                </div>
-              ))}
+              {renderOptions()}
             </div>
 
             <div className={styles.productInfoBlock}>
@@ -205,6 +222,18 @@ const DetailGoodPage = ({}) => {
                   {` от ${mockProduct.delivery.express.start_price} рублей с ${mockProduct.delivery.express.nearest_date}`}
                 </div>
               )}
+            </div>
+
+            <div className={styles.productAccordionBlock}>
+              <ProductInfoAccordion title="Описание">
+                <p>3123123123121</p>
+              </ProductInfoAccordion>
+            </div>
+
+            <div className={styles.productAccordionBlock}>
+              <ProductInfoAccordion title="Характеристики и размеры">
+                <ProductCharacteristics />
+              </ProductInfoAccordion>
             </div>
           </div>
         </div>

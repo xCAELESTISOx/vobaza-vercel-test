@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 
-import { Navigation, Controller } from 'swiper';
+import { Navigation, Thumbs } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
@@ -8,10 +8,6 @@ import { Icon } from '@nebo-team/vobaza.ui.icon';
 import styles from './styles.module.scss';
 
 const ImagesBlock = ({ items }) => {
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
-
-  const [mainSwiper, setMainSwiper] = useState(null);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   return (
@@ -19,12 +15,15 @@ const ImagesBlock = ({ items }) => {
       <div className={styles.currentImage}>
         <Swiper
           className={styles.mainSwiper}
-          modules={[Controller]}
-          allowTouchMove={true}
+          modules={[Navigation, Thumbs]}
           speed={600}
           loop
-          controller={{ control: thumbsSwiper }}
-          onSwiper={setMainSwiper}
+          allowTouchMove
+          navigation={{
+            prevEl: '.product-swiper__prev',
+            nextEl: '.product-swiper__next',
+          }}
+          thumbs={{ swiper: thumbsSwiper }}
         >
           {items.map((img, index) => (
             <SwiperSlide key={index}>
@@ -38,18 +37,12 @@ const ImagesBlock = ({ items }) => {
       <div className={styles.thumbsSwiper}>
         <Swiper
           className={styles.swiper}
-          modules={[Navigation, Controller]}
-          navigation={{
-            prevEl: '.thumbs-swiper__prev',
-            nextEl: '.thumbs-swiper__next',
-          }}
+          watchSlidesProgress
           slidesPerView={'auto'}
-          slidesPerGroup={2}
           spaceBetween={8}
           speed={600}
-          slideToClickedSlide={true}
-          loop
-          controller={{ control: mainSwiper }}
+          slideToClickedSlide
+          centerInsufficientSlides
           onSwiper={setThumbsSwiper}
         >
           {items.map((img, index) => (
@@ -59,14 +52,14 @@ const ImagesBlock = ({ items }) => {
           ))}
         </Swiper>
 
-        <div className={`${styles.thumbsNavButton} thumbs-swiper__prev`}>
+        <button className={`${styles.thumbsNavButton} product-swiper__prev`}>
           <Icon name="ArrowLeft" />
-        </div>
-        <div
-          className={`${styles.thumbsNavButton} ${styles.thumbsNavButtonNext} thumbs-swiper__next`}
+        </button>
+        <button
+          className={`${styles.thumbsNavButton} ${styles.thumbsNavButtonNext} product-swiper__next`}
         >
           <Icon name="ArrowRight" />
-        </div>
+        </button>
       </div>
     </div>
   );
