@@ -1,0 +1,53 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.featuresBlock {
+  display: flex;
+  flex-direction: column;
+
+  font-size: 14px;
+
+  &:not(:last-child) {
+    margin-bottom: 24px;
+  }
+}
+
+.featuresBlockLabel {
+  margin-bottom: 16px;
+
+  font-size: 16px;
+  color: #000;
+  font-weight: 500;
+
+  cursor: default;
+}
+
+.featureItem {
+  display: flex;
+
+  &:not(:last-child) {
+    margin-bottom: 16px;
+  }
+}
+
+.featureTitle {
+  min-width: 280px;
+  margin-right: 10px;
+
+  color: #808080;
+}
+
+.featureValue {
+}
+
+.featureValueMultiple {
+}
+
+.featureValueMultipleItem {
+  &:not(:last-child) {
+    margin-bottom: 5px;
+  }
+}

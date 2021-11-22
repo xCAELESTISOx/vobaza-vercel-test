@@ -3,21 +3,35 @@ import { useState, useEffect, RefObject } from 'react';
 interface Options {
   initialVal?: boolean;
   duration?: number;
+  autoDuration?: boolean;
 }
+// Шаг на каждую тысячу пикселей
+const AUTODURATION_STEP = 200;
 
 export const useCollapse = <T extends HTMLElement = HTMLElement>(
   ref: RefObject<T>,
   options: Options = {}
 ) => {
-  const { initialVal, duration } = options;
+  const { initialVal, duration, autoDuration } = options;
 
-  const [state, setState] = useState<boolean>(!!initialVal);
+  const [isOpen, setIsOpen] = useState<boolean>(!!initialVal);
+  const [innerDuration, setInnerDuration] = useState<number>(+duration || 200);
 
   useEffect(() => {
-    ref.current.style.transition = `height ${+duration || 200}ms ease-in-out`;
-    ref.current.style.height = state ? 'auto' : '0px';
+    ref.current.style.transition = `height ${innerDuration}ms ease-in-out`;
+    ref.current.style.height = isOpen ? 'auto' : '0px';
     ref.current.style.overflow = 'hidden';
-  }, []);
+    ref.current.style.willChange = 'height';
+  }, [ref, innerDuration]);
+
+  useEffect(() => {
+    if (autoDuration) {
+      const heightMultiplier = Math.floor(ref.current.scrollHeight / 500);
+      setInnerDuration(200 + heightMultiplier * AUTODURATION_STEP);
+    } else {
+      setInnerDuration(+duration || 200);
+    }
+  }, [ref, options]);
 
   const setAuto = () => (ref.current.style.height = 'auto');
 
@@ -28,8 +42,8 @@ export const useCollapse = <T extends HTMLElement = HTMLElement>(
       ref.current.style.height = ref.current.scrollHeight + 'px';
 
       requestAnimationFrame(() => {
-        if (state) {
-          timer = setTimeout(setAuto, +duration || 200);
+        if (isOpen) {
+          timer = setTimeout(setAuto, innerDuration);
         } else {
           ref.current.style.height = '0px';
         }
@@ -39,15 +53,15 @@ export const useCollapse = <T extends HTMLElement = HTMLElement>(
     return () => {
       clearTimeout(timer);
     };
-  }, [state]);
+  }, [isOpen]);
 
   const toggle = (bool?: boolean) => {
     if (typeof bool === 'boolean') {
-      setState(bool);
+      setIsOpen(bool);
     } else {
-      setState(!state);
+      setIsOpen(!isOpen);
     }
   };
 
-  return [state, toggle];
+  return [isOpen, toggle];
 };

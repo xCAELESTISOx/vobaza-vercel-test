@@ -8,11 +8,22 @@ import { useCollapse } from '../../../src/hooks/useCollapse';
 type Props = {
   title: string;
   className?: any;
+  duration?: number;
+  autoDuration?: boolean;
 };
 
-const ProductInfoAccordion: FC<Props> = ({ children, title, className }) => {
+const ProductInfoAccordion: FC<Props> = ({
+  children,
+  title,
+  className,
+  duration = 200,
+  autoDuration = false,
+}) => {
   const refPanel = useRef(null);
-  const [isOpen, toggleOpen] = useCollapse(refPanel);
+  const [isOpen, toggleOpen] = useCollapse(refPanel, {
+    duration,
+    autoDuration,
+  });
 
   return (
     <div className={`${styles.accordionBlock} ${className}`}>

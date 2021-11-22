@@ -7,7 +7,8 @@ import Breadcrumbs from '../../components/Layout/Breadcrumbs';
 import { ImagesBlockMemo } from '../../components/DetailGoodPage/ImagesBlock';
 import { ProductVariants } from '../../components/DetailGoodPage/ProductVariants';
 import { ProductInfoAccordion } from '../../components/DetailGoodPage/ProductInfoAccordion';
-import { ProductCharacteristics } from '../../components/DetailGoodPage/ProductCharacteristics';
+import { ProductFeatures } from '../../components/DetailGoodPage/ProductFeatures';
+import { ProductDescription } from '../../components/DetailGoodPage/ProductDescription';
 import { SelectTabs } from '../../components/UI/SelectTabs';
 import type { BreadcrumbType } from '../../components/Layout/Breadcrumbs';
 
@@ -225,14 +226,17 @@ const DetailGoodPage = ({}) => {
             </div>
 
             <div className={styles.productAccordionBlock}>
-              <ProductInfoAccordion title="Описание">
-                <p>3123123123121</p>
+              <ProductInfoAccordion title="Описание" autoDuration>
+                <ProductDescription html={mockProduct.description} />
               </ProductInfoAccordion>
             </div>
 
             <div className={styles.productAccordionBlock}>
-              <ProductInfoAccordion title="Характеристики и размеры">
-                <ProductCharacteristics />
+              <ProductInfoAccordion
+                title="Характеристики и размеры"
+                autoDuration
+              >
+                <ProductFeatures items={mockProduct.features} />
               </ProductInfoAccordion>
             </div>
           </div>
