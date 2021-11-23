@@ -7,32 +7,62 @@ import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 import styles from './styles.module.scss';
 
+import { SRLWrapper } from 'simple-react-lightbox';
+
+const options = {
+  settings: {
+    disablePanzoom: true,
+  },
+  thumbnails: {
+    showThumbnails: true,
+    thumbnailsAlignment: 'center',
+    thumbnailsContainerPadding: '8px',
+    thumbnailsGap: '8px 8px',
+    thumbnailsPosition: 'left',
+    thumbnailsSize: ['70px', '70px'],
+  },
+  buttons: {
+    showAutoplayButton: false,
+    showDownloadButton: false,
+    showFullscreenButton: false,
+    showThumbnailsButton: false,
+  },
+};
+
 const ImagesBlock = ({ items }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [mainSwiper, setMainSwiper] = useState(null);
+
+  const onLightboxClosed = (e) => {
+    if (mainSwiper) {
+      mainSwiper.slideTo(+e.currentSlide.id);
+    }
+  };
 
   return (
     <div className={styles.images}>
       <div className={styles.currentImage}>
-        <Swiper
-          className={styles.mainSwiper}
-          modules={[Navigation, Thumbs]}
-          speed={600}
-          loop
-          allowTouchMove
-          navigation={{
-            prevEl: '.product-swiper__prev',
-            nextEl: '.product-swiper__next',
-          }}
-          thumbs={{ swiper: thumbsSwiper }}
-        >
-          {items.map((img, index) => (
-            <SwiperSlide key={index}>
-              <div>
+        <SRLWrapper options={options} callbacks={{ onLightboxClosed }}>
+          <Swiper
+            className={styles.mainSwiper}
+            modules={[Navigation, Thumbs]}
+            speed={600}
+            loop
+            allowTouchMove
+            navigation={{
+              prevEl: '.product-swiper__prev',
+              nextEl: '.product-swiper__next',
+            }}
+            thumbs={{ swiper: thumbsSwiper }}
+            onSwiper={setMainSwiper}
+          >
+            {items.map((img, index) => (
+              <SwiperSlide key={index}>
                 <img src={img} alt="" />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </SRLWrapper>
       </div>
       <div className={styles.thumbsSwiper}>
         <Swiper
