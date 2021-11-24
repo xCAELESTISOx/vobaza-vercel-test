@@ -37,13 +37,13 @@ const OrderDelivery: FC = () => {
         </div>
         <div className={styles.orderDeliveryText}>
           <div className={styles.orderDeliveryTextItem}>
-            <Icon name="Phone" />
+            <Icon name="Car" />
             <span>
               Нажмите &laquo;Оформить Заказ&raquo;, мы&nbsp;свяжемся с&nbsp;Вами
             </span>
           </div>
           <div className={styles.orderDeliveryTextItem}>
-            <Icon name="Phone" />
+            <Icon name="Scales" />
             <span>6 товаров ・533 кг</span>
           </div>
         </div>

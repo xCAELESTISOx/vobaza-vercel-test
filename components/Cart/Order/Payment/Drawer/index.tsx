@@ -36,7 +36,7 @@ const OrderPaymentDrawer: FC<Props> = ({ isOpen = false, onClose }) => {
     >
       <div className={styles.PaymentDrawerCards}>
         <div className={`${styles.PaymentDrawerCard} ${styles.active}`}>
-          <Icon className={styles.PaymentDrawerCardIcon} name="Location" />
+          <Icon className={styles.PaymentDrawerCardIcon} name="Checkmark" />
           <div className={styles.PaymentDrawerCardType}>При получении</div>
         </div>
       </div>

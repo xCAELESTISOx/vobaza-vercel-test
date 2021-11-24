@@ -35,7 +35,7 @@ const OrderDeliveryDrawer: FC<Props> = ({ isOpen = false, onClose }) => {
     >
       <div className={styles.deliveryDrawerCards}>
         <div className={`${styles.deliveryDrawerCard} ${styles.active}`}>
-          <Icon className={styles.deliveryDrawerCardIcon} name="Location" />
+          <Icon className={styles.deliveryDrawerCardIcon} name="Checkmark" />
           <div className={styles.deliveryDrawerCardType}>
             Оформить заказ с менеджером
           </div>

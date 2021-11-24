@@ -35,7 +35,7 @@ const OrderAddress: FC = () => {
           className={styles.orderAddressText}
           onClick={toggleChangeAddressDrawer}
         >
-          <Icon name="Phone" />
+          <Icon name="Geoposition" />
           <span>Ростов-на-Дону</span>
         </div>
         <div className={styles.cartButton}>

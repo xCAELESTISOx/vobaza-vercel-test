@@ -32,7 +32,7 @@ const OrderPayment: FC = () => {
           </div>
         </div>
         <div className={styles.orderPaymentText}>
-          <Icon name="Phone" />
+          <Icon name="Wallet" />
           <span>При получении</span>
         </div>
         <div className={styles.cartButton}>
