@@ -36,14 +36,6 @@ a {
   color: inherit;
 }
 
-a.blueLink {
-  color: var(--blue-color);
-}
-
-a.blueLink:hover {
-  color: var(--blue-color-hover);
-}
-
 button,
 input,
 optgroup,

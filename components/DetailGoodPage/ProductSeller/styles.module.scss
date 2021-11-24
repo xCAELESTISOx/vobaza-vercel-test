@@ -58,3 +58,11 @@
     margin-bottom: 12px;
   }
 }
+
+.sellerLink {
+  color: var(--blue-color);
+
+  &:hover {
+    color: var(--blue-color-hover);
+  }
+}

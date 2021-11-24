@@ -189,7 +189,7 @@ const DetailGoodPage = ({}) => {
                         name="SmallLogo"
                       />{' '}
                       <Link href="#">
-                        <a className="blueLink">
+                        <a className={styles.productLoyaltyLink}>
                           {mockProduct.loyalty_bonus} вобаллов за покупку
                         </a>
                       </Link>
@@ -215,7 +215,7 @@ const DetailGoodPage = ({}) => {
 
                 <div className={styles.productDeliveryItem}>
                   <Link href="#">
-                    <a className="blueLink">Самовывоз</a>
+                    <a className={styles.productDeliveryItemType}>Самовывоз</a>
                   </Link>
                   {` из ${mockProduct.pickup.places_count} пункта ВоБаза с ${mockProduct.pickup.nearest_date}`}
                 </div>
@@ -223,7 +223,7 @@ const DetailGoodPage = ({}) => {
                 {mockProduct.delivery.default && (
                   <div className={styles.productDeliveryItem}>
                     <Link href="#">
-                      <a className="blueLink">Доставка</a>
+                      <a className={styles.productDeliveryItemType}>Доставка</a>
                     </Link>
                     {` от ${mockProduct.delivery.default.start_price} рублей с ${mockProduct.delivery.default.nearest_date}`}
                   </div>
@@ -232,7 +232,9 @@ const DetailGoodPage = ({}) => {
                 {mockProduct.delivery.default && (
                   <div className={styles.productDeliveryItem}>
                     <Link href="#">
-                      <a className="blueLink">Экспресс-доставка</a>
+                      <a className={styles.productDeliveryItemType}>
+                        Экспресс-доставка
+                      </a>
                     </Link>
                     {` от ${mockProduct.delivery.express.start_price} рублей с ${mockProduct.delivery.express.nearest_date}`}
                   </div>

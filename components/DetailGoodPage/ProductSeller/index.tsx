@@ -32,7 +32,7 @@ const ProductSeller: FC<ProductSeller> = ({}) => {
           <span>
             Возрат 14 дней, при соблюдении{' '}
             <Link href="/obmen-i-vozvrat">
-              <a className="blueLink">условий</a>
+              <a className={styles.sellerLink}>условий</a>
             </Link>
           </span>
         </div>
