@@ -5,21 +5,54 @@ import styles from './styles.module.scss';
 
 import { Button } from '@nebo-team/vobaza.ui.button';
 
-const CartSidebar: FC = () => {
+type Props = {
+  isOrder?: boolean;
+};
+const CartSidebar: FC<Props> = ({ isOrder = false }) => {
   return (
     <div className={styles.cartSidebar}>
       <h3 className={styles.cartSidebarTitle}>Ваш заказ:</h3>
       <div className={styles.cartSidebarOrder}>
-        <span className={styles.cartSidebarOrderTitle}>Товары: </span>
-        <span className={styles.cartSidebarOrderDecorator} />
-        <span className={styles.cartSidebarOrderPrice}>0 ₽</span>
+        <div className={styles.cartSidebarOrderItem}>
+          <span className={styles.cartSidebarOrderTitle}>Товары: </span>
+          <span className={styles.cartSidebarOrderDecorator} />
+          <span className={styles.cartSidebarOrderPrice}>0 ₽</span>
+        </div>
+        {isOrder && (
+          <>
+            <div className={styles.cartSidebarOrderItem}>
+              <span className={styles.cartSidebarOrderTitle}>Доставка: </span>
+              <span className={styles.cartSidebarOrderDecorator} />
+              <span className={styles.cartSidebarOrderPrice}>0 ₽</span>
+            </div>
+            <div className={styles.cartSidebarOrderItem}>
+              <span className={styles.cartSidebarOrderTitle}>
+                Подъем на этаж:{' '}
+              </span>
+              <span className={styles.cartSidebarOrderDecorator} />
+              <span className={styles.cartSidebarOrderPrice}>0 ₽</span>
+            </div>
+            <div className={styles.cartSidebarOrderItem}>
+              <span className={styles.cartSidebarOrderTitle}>Сборка: </span>
+              <span className={styles.cartSidebarOrderDecorator} />
+              <span className={styles.cartSidebarOrderPrice}>0 ₽</span>
+            </div>
+          </>
+        )}
       </div>
       <div className={styles.cartSidebarTotal}>
-        <span className={styles.cartSidebarTotalTitle}>Сумма заказа:</span>0 ₽
+        <span className={styles.cartSidebarTotalTitle}>
+          {isOrder ? 'Итого:' : 'Сумма заказа:'}
+        </span>
+        0 ₽
       </div>
       <Link href="/checkout">
         <a className={styles.cartSidebarButton}>
-          <Button text="Перейти к оформлению" size="big" isFullScreen />
+          <Button
+            text={isOrder ? 'Оформить заказ' : 'Перейти к оформлению'}
+            size="big"
+            isFullScreen
+          />
         </a>
       </Link>
       <div className={styles.cartSidebarCondition}>

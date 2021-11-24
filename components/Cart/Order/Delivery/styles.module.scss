@@ -1,0 +1,49 @@
+@import '../../styles.module.scss';
+
+.orderDeliveryText {
+  display: flex;
+  align-items: center;
+
+  @media screen and (max-width: 767px) {
+    display: block;
+  }
+}
+.orderDeliveryTextItem {
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+  max-width: max-content;
+  line-height: 24px;
+  color: #808080;
+
+  svg {
+    min-width: 24px;
+    margin-right: 8px;
+  }
+
+  + .orderDeliveryTextItem {
+    @media screen and (max-width: 767px) {
+      margin-top: 16px;
+    }
+  }
+}
+
+.orderDeliveryItems {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 100px);
+  grid-gap: 16px;
+  margin-top: 24px;
+
+  @media screen and (max-width: 767px) {
+    grid-template-columns: repeat(auto-fill, 93px);
+    grid-gap: 8px;
+  }
+}
+.orderDeliveryItem {
+  img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+    border-radius: 8px;
+  }
+}

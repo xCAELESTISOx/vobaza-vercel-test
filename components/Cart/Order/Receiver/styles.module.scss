@@ -1,0 +1,7 @@
+@import '../../styles.module.scss';
+
+.orderReceiverFormItem {
+  + .orderReceiverFormItem {
+    margin-top: 8px;
+  }
+}

@@ -16,8 +16,10 @@ const CartList: FC = () => {
   return (
     <div className={styles.cartList}>
       {true ? (
-        <div className={styles.cartListContent}>
-          <h2 className={styles.cartListTitle}>ВоБаза</h2>
+        <div className={`${styles.cartContent} ${styles.small}`}>
+          <div className={styles.cartHeader}>
+            <h2 className={styles.cartTitle}>ВоБаза</h2>
+          </div>
           <div className={styles.cartListItemBlock}>
             <CartListItem />
           </div>

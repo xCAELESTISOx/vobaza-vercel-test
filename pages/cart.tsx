@@ -10,7 +10,9 @@ export default function Cart() {
         <div className={styles.cartContainer}>
           <h2 className={styles.cartTitle}>Корзина</h2>
           <div className={styles.cartContent}>
-            <CartList />
+            <div className={styles.cartContentBlock}>
+              <CartList />
+            </div>
             <div>
               <CartSidebar />
             </div>

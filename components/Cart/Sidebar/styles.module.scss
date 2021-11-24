@@ -26,12 +26,14 @@
 }
 
 .cartSidebarOrder {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
   margin-top: 16px;
   padding-bottom: 16px;
   border-bottom: 1px solid #f3f3f3;
+}
+.cartSidebarOrderItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
 }
 .cartSidebarOrderTitle {
   font-size: 12px;

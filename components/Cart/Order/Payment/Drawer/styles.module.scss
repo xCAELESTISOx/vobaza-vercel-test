@@ -1,0 +1,50 @@
+.PaymentDrawerCards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 16px;
+
+  @media screen and (max-width: 576px) {
+    display: block;
+  }
+}
+.PaymentDrawerCard {
+  position: relative;
+  padding: 16px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  transition: border-color 0.2s;
+  cursor: pointer;
+
+  &.active {
+    border-color: var(--primary-color, #af1ebe);
+
+    .PaymentDrawerCardType {
+      color: var(--primary-color, #af1ebe);
+    }
+  }
+}
+.PaymentDrawerCardIcon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 16px;
+  height: 16px;
+  color: #af1ebe;
+}
+.PaymentDrawerCardType {
+  line-height: 20px;
+}
+
+.PaymentDrawerSubTitle {
+  display: none;
+  margin-top: 16px;
+  font-size: 18px;
+  font-weight: 500;
+
+  @media screen and (max-width: 576px) {
+    display: block;
+  }
+}
+.PaymentDrawerRadioBlock {
+  margin-top: 16px;
+}
