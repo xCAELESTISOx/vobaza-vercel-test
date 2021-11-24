@@ -1,10 +1,11 @@
-import { FC, useState } from 'react';
+import { FC, forwardRef, useImperativeHandle, useState } from 'react';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 
 import styles from './styles.module.scss';
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
 import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone';
+import { useRouter } from 'next/router';
 
 interface Receiver {
   name: string;
@@ -34,18 +35,28 @@ const validationSchema = yup.object({
   email: yup
     .string()
     .email('Не валидный email')
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
+    .max(255, 'Количество символов в поле должно быть не больше 255'),
 });
 
-const OrderReceiver: FC = () => {
+type Props = {
+  ref: any;
+};
+
+const OrderReceiver: FC<Props> = forwardRef((props, ref) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+
+  useImperativeHandle(ref, () => ({
+    submitForm() {
+      handleSubmit();
+    },
+  }));
 
   const orderHandler = () => {
     try {
       setIsLoading(true);
       setTimeout(() => {
-        setIsLoading(false);
+        router.push('/checkout/complete?order_id=3993');
       }, 2000);
     } catch (e) {
       console.log(e);
@@ -147,5 +158,5 @@ const OrderReceiver: FC = () => {
       </div>
     </div>
   );
-};
+});
 export default OrderReceiver;

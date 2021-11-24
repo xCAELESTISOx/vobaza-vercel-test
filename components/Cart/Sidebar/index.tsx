@@ -7,8 +7,9 @@ import { Button } from '@nebo-team/vobaza.ui.button';
 
 type Props = {
   isOrder?: boolean;
+  onButtonClick?: () => void;
 };
-const CartSidebar: FC<Props> = ({ isOrder = false }) => {
+const CartSidebar: FC<Props> = ({ isOrder = false, onButtonClick }) => {
   return (
     <div className={styles.cartSidebar}>
       <h3 className={styles.cartSidebarTitle}>Ваш заказ:</h3>
@@ -46,15 +47,22 @@ const CartSidebar: FC<Props> = ({ isOrder = false }) => {
         </span>
         0 ₽
       </div>
-      <Link href="/checkout">
-        <a className={styles.cartSidebarButton}>
+      {isOrder ? (
+        <div className={styles.cartSidebarButton}>
           <Button
-            text={isOrder ? 'Оформить заказ' : 'Перейти к оформлению'}
+            onClick={onButtonClick}
+            text="Оформить заказ"
             size="big"
             isFullScreen
           />
-        </a>
-      </Link>
+        </div>
+      ) : (
+        <Link href="/checkout">
+          <a className={styles.cartSidebarButton}>
+            <Button text="Перейти к оформлению" size="big" isFullScreen />
+          </a>
+        </Link>
+      )}
       <div className={styles.cartSidebarCondition}>
         <p>
           Нажимая на кнопку, вы соглашаетесь с{' '}
