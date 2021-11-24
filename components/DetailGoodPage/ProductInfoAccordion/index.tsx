@@ -26,7 +26,7 @@ const ProductInfoAccordion: FC<Props> = ({
   });
 
   return (
-    <div className={`${styles.accordionBlock} ${className}`}>
+    <div className={styles.accordionBlock}>
       <div
         className={isOpen ? styles.accordionActive : styles.accordion}
         onClick={toggleOpen as any}

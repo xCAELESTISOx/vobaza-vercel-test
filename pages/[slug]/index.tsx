@@ -1,22 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+
+import SimpleReactLightbox from 'simple-react-lightbox';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import { Button } from '@nebo-team/vobaza.ui.button';
 import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select';
 import Breadcrumbs from '../../components/Layout/Breadcrumbs';
+import { SelectTabs } from '../../components/UI/SelectTabs';
 import { ImagesBlockMemo } from '../../components/DetailGoodPage/ImagesBlock';
 import { ProductVariants } from '../../components/DetailGoodPage/ProductVariants';
 import { ProductInfoAccordion } from '../../components/DetailGoodPage/ProductInfoAccordion';
 import { ProductFeatures } from '../../components/DetailGoodPage/ProductFeatures';
 import { ProductDescription } from '../../components/DetailGoodPage/ProductDescription';
-import { SelectTabs } from '../../components/UI/SelectTabs';
+import { ProductSeller } from '../../components/DetailGoodPage/ProductSeller';
+
 import type { BreadcrumbType } from '../../components/Layout/Breadcrumbs';
 
 import styles from './styles.module.scss';
 
 import { product as mockProduct } from './mock';
-
-import SimpleReactLightbox from 'simple-react-lightbox';
 
 interface props {}
 
@@ -127,6 +130,8 @@ const DetailGoodPage = ({}) => {
                 </div>
 
                 <ImagesBlockMemo items={mockProduct.images} />
+
+                <ProductSeller />
               </div>
             </div>
 
@@ -161,7 +166,6 @@ const DetailGoodPage = ({}) => {
                 </div>
 
                 <div className={styles.productStockInfo}>
-                  {/* TODO: 16 на 16 иконки */}
                   <div className={styles.productStock}>
                     {mockProduct.in_stock ? (
                       <>
@@ -184,7 +188,11 @@ const DetailGoodPage = ({}) => {
                         className={styles.productOutStock}
                         name="SmallLogo"
                       />{' '}
-                      {mockProduct.loyalty_bonus} вобаллов за покупку
+                      <Link href="#">
+                        <a className="blueLink">
+                          {mockProduct.loyalty_bonus} вобаллов за покупку
+                        </a>
+                      </Link>
                     </div>
                   )}
                 </div>
@@ -206,26 +214,26 @@ const DetailGoodPage = ({}) => {
                 <h3 className={styles.productDeliveryTitle}>Доставит ВоБаза</h3>
 
                 <div className={styles.productDeliveryItem}>
-                  <span className={styles.productDeliveryItemType}>
-                    Самовывоз
-                  </span>
+                  <Link href="#">
+                    <a className="blueLink">Самовывоз</a>
+                  </Link>
                   {` из ${mockProduct.pickup.places_count} пункта ВоБаза с ${mockProduct.pickup.nearest_date}`}
                 </div>
 
                 {mockProduct.delivery.default && (
                   <div className={styles.productDeliveryItem}>
-                    <span className={styles.productDeliveryItemType}>
-                      Доставка
-                    </span>
+                    <Link href="#">
+                      <a className="blueLink">Доставка</a>
+                    </Link>
                     {` от ${mockProduct.delivery.default.start_price} рублей с ${mockProduct.delivery.default.nearest_date}`}
                   </div>
                 )}
 
                 {mockProduct.delivery.default && (
                   <div className={styles.productDeliveryItem}>
-                    <span className={styles.productDeliveryItemType}>
-                      Экспресс-доставка
-                    </span>
+                    <Link href="#">
+                      <a className="blueLink">Экспресс-доставка</a>
+                    </Link>
                     {` от ${mockProduct.delivery.express.start_price} рублей с ${mockProduct.delivery.express.nearest_date}`}
                   </div>
                 )}

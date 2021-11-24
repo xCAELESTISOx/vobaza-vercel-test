@@ -3,6 +3,7 @@
   --primary-color-hover: #efd2f2;
   --light-primary-color: #efd2f2;
   --blue-color: #3478f6;
+  --blue-color-hover: #1c68f5;
 
   --container-size: 1345px;
 }
@@ -33,6 +34,14 @@ body {
 a {
   text-decoration: none;
   color: inherit;
+}
+
+a.blueLink {
+  color: var(--blue-color);
+}
+
+a.blueLink:hover {
+  color: var(--blue-color-hover);
 }
 
 button,

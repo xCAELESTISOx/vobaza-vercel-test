@@ -1,0 +1,60 @@
+.sellerContainer {
+  display: flex;
+  margin-top: 32px;
+  padding: 25px 31px;
+  background: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 130%;
+}
+
+.sellerInfo {
+  display: flex;
+  flex: 1;
+}
+
+.sellerLogo {
+  display: flex;
+  align-items: center;
+  margin-right: 40px;
+  max-width: 100px;
+}
+
+.sellerTitleWrapper {
+  margin-right: 20px;
+
+  color: #1a1a1a;
+}
+
+.sellerLabel {
+  margin-bottom: 16px;
+
+  font-size: 12px;
+  line-height: 140%;
+  color: #808080;
+}
+
+.sellerTitle {
+}
+
+.sellerConditions {
+  flex: 1;
+}
+
+.sellerConditionsItem {
+  display: flex;
+  align-items: center;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 12px;
+  }
+}

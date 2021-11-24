@@ -273,19 +273,19 @@
   dependencies:
     core-js "^3.0.0"
 
-"@nebo-team/vobaza.ui.icon@0.0.8":
-  version "0.0.8"
-  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.icon/-/@nebo-team-vobaza.ui.icon-0.0.8.tgz#a76ac70a81638f1561612cc0a2b8c57197cb9a91"
-  integrity sha1-p2rHCoFjjxVhYSzAorjFcZfLmpE=
+"@nebo-team/vobaza.ui.icon@0.0.9":
+  version "0.0.9"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.icon/-/@nebo-team-vobaza.ui.icon-0.0.9.tgz#0325998a7605c408d17331dfb835df0d86370994"
+  integrity sha1-AyWZinYFxAjRczHfuDXfDYY3CZQ=
   dependencies:
     core-js "^3.0.0"
 
-"@nebo-team/vobaza.ui.inputs.input-checkbox@0.0.7":
-  version "0.0.7"
-  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-checkbox/-/@nebo-team-vobaza.ui.inputs.input-checkbox-0.0.7.tgz#64d0409b733e4d64345fcfb8f68cfb8540046e1f"
-  integrity sha1-ZNBAm3M+TWQ0X8+49oz7hUAEbh8=
+"@nebo-team/vobaza.ui.inputs.input-checkbox@0.0.8":
+  version "0.0.8"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-checkbox/-/@nebo-team-vobaza.ui.inputs.input-checkbox-0.0.8.tgz#2667ae62668143b9fbd90d16c316a4fde5314202"
+  integrity sha1-JmeuYmaBQ7n72Q0Wwxak/eUxQgI=
   dependencies:
-    "@nebo-team/vobaza.ui.icon" "0.0.8"
+    "@nebo-team/vobaza.ui.icon" "0.0.9"
     core-js "^3.0.0"
     styled-components "5.3.1"
 
@@ -315,13 +315,13 @@
     core-js "^3.0.0"
     styled-components "5.3.1"
 
-"@nebo-team/vobaza.ui.inputs.input-select@^0.0.16":
-  version "0.0.16"
-  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-select/-/@nebo-team-vobaza.ui.inputs.input-select-0.0.16.tgz#cdd25ea3c4c99a83d4f58a3159a04d6c0ba19665"
-  integrity sha1-zdJeo8TJmoPU9YoxWaBNbAuhlmU=
+"@nebo-team/vobaza.ui.inputs.input-select@^0.0.17":
+  version "0.0.17"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-select/-/@nebo-team-vobaza.ui.inputs.input-select-0.0.17.tgz#3d598db40c927c5a60a60ae1ddf7ee0cd78b05b2"
+  integrity sha1-PVmNtAySfFpgpgrh3ffuDNeLBbI=
   dependencies:
-    "@nebo-team/vobaza.ui.icon" "0.0.8"
-    "@nebo-team/vobaza.ui.inputs.input-checkbox" "0.0.7"
+    "@nebo-team/vobaza.ui.icon" "0.0.9"
+    "@nebo-team/vobaza.ui.inputs.input-checkbox" "0.0.8"
     core-js "^3.0.0"
     styled-components "5.3.1"
 
