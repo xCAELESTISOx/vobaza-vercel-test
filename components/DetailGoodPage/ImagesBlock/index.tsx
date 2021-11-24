@@ -12,6 +12,7 @@ import { SRLWrapper } from 'simple-react-lightbox';
 const options = {
   settings: {
     disablePanzoom: true,
+    overlayColor: 'rgba(255, 255, 255, 1)',
   },
   thumbnails: {
     showThumbnails: true,
@@ -26,6 +27,8 @@ const options = {
     showDownloadButton: false,
     showFullscreenButton: false,
     showThumbnailsButton: false,
+    backgroundColor: '#f2f2f2',
+    iconColor: '#af1ebe',
   },
 };
 
