@@ -28,7 +28,9 @@ const CompareListItem: FC = () => {
 
   return (
     <div className={styles.compareListItem}>
-      <button className={styles.compareListItemDelete}>Удалить</button>
+      <button className={styles.compareListItemDelete}>
+        <Icon name="Trash" onClick={() => {}} /> Удалить
+      </button>
       <div className={styles.compareListItemImage}>
         <Link href="/">
           <a>
