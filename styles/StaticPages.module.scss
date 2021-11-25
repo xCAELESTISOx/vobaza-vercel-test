@@ -1,0 +1,48 @@
+.staticPage {
+  display: flex;
+}
+.staticPageContent {
+  width: 100%;
+  max-width: 660px;
+
+  @media screen and (max-width: 767px) {
+    max-width: initial;
+  }
+}
+.staticPageInfo {
+  margin-top: 40px;
+
+  @media screen and (max-width: 767px) {
+    margin-top: 32px;
+  }
+
+  > * + * {
+    margin-top: 16px;
+  }
+}
+
+.staticPageTitle {
+  margin: 0;
+  padding: 0;
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 29px;
+  text-transform: none;
+
+  @media screen and (max-width: 767px) {
+    font-size: 24px;
+  }
+}
+.staticPageSubTitle {
+  font-size: 24px;
+  line-height: 29px;
+  font-weight: 500;
+
+  @media screen and (max-width: 767px) {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+.staticPageText {
+  line-height: 22px;
+}
