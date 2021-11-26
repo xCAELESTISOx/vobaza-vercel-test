@@ -1,0 +1,47 @@
+@import './StaticPages.module.scss';
+
+.contactsContent {
+  display: flex;
+  justify-content: space-between;
+
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+  }
+
+  > div {
+    &:first-child {
+      flex-basis: 370px;
+    }
+    &:last-child {
+      flex-basis: 260px;
+
+      @media screen and (max-width: 767px) {
+        margin-top: 40px;
+      }
+    }
+  }
+}
+
+.contactsSocialItem {
+  + .contactsSocialItem {
+    margin-left: 20px;
+  }
+
+  svg {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+.contactsButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 8px 20px;
+  margin: 20px 0;
+  max-width: 280px;
+  color: var(--primary-color, #af1ebe);
+  border: 1px solid #f2f2f2;
+  border-radius: 8px;
+}
