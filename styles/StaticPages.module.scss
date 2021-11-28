@@ -81,6 +81,26 @@
   }
 }
 
+.staticPageImage {
+  width: 100%;
+  position: relative;
+  margin-top: 20px;
+
+  @media screen and (max-width: 767px) {
+    margin-top: 16px;
+  }
+
+  > div {
+    position: unset !important;
+  }
+
+  img {
+    width: 100%;
+    position: relative !important;
+    height: unset !important;
+  }
+}
+
 .staticPageTable {
   display: table;
   margin-top: 32px;

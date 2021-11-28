@@ -10,7 +10,7 @@ const breadcrumbs: BreadcrumbType[] = [
   },
 ];
 
-export default function Delivery() {
+export default function Assembly() {
   return (
     <div>
       <Breadcrumbs breadcrumbs={breadcrumbs} />

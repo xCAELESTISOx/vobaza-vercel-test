@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import styles from '../styles/About.module.scss';
+import styles from '../styles/StaticPages.module.scss';
 
 import Breadcrumbs, { BreadcrumbType } from '../components/Layout/Breadcrumbs';
 import StaticPagesMenu from '../components/StaticPages/Menu';
@@ -20,7 +20,7 @@ export default function About() {
         <StaticPagesMenu />
         <div className={styles.staticPageContent}>
           <h1 className={styles.staticPageTitle}>О компании</h1>
-          <div className={styles.aboutImage}>
+          <div className={styles.staticPageImage}>
             <Image
               src="/vb-company.png"
               alt=""

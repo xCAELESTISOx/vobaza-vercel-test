@@ -12,7 +12,7 @@ const breadcrumbs: BreadcrumbType[] = [
   },
 ];
 
-export default function Delivery() {
+export default function Documents() {
   return (
     <div>
       <Breadcrumbs breadcrumbs={breadcrumbs} />

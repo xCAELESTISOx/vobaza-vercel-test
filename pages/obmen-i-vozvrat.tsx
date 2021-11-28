@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 import styles from '../styles/Contacts.module.scss';
 
 import Breadcrumbs, { BreadcrumbType } from '../components/Layout/Breadcrumbs';
@@ -12,7 +10,7 @@ const breadcrumbs: BreadcrumbType[] = [
   },
 ];
 
-export default function Delivery() {
+export default function ExchangeAndReturn() {
   return (
     <div>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
