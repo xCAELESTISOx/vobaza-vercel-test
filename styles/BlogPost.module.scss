@@ -1,0 +1,32 @@
+@import './Home.module.scss';
+
+.blogPostTitle {
+  margin-bottom: 0;
+}
+.blogPostDate {
+  margin-top: 4px;
+  color: #808080;
+
+  @media screen and (max-width: 767px) {
+    margin-top: 16px;
+  }
+}
+.blogPostContent {
+  margin-top: 24px;
+  line-height: initial;
+
+  @media screen and (max-width: 576px) {
+    margin-top: 16px;
+  }
+
+  p {
+    padding: 4px 0;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+    font-size: 0;
+  }
+}

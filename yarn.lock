@@ -301,11 +301,12 @@
     core-js "^3.0.0"
     styled-components "5.3.1"
 
-"@nebo-team/vobaza.ui.pagination@^0.0.3":
-  version "0.0.3"
-  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.pagination/-/@nebo-team-vobaza.ui.pagination-0.0.3.tgz#3808aabf9882b51edf9371caf124e6bf6be99baf"
-  integrity sha1-OAiqv5iCtR7fk3HK8STmv2vpm68=
+"@nebo-team/vobaza.ui.pagination@^0.0.5":
+  version "0.0.5"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.pagination/-/@nebo-team-vobaza.ui.pagination-0.0.5.tgz#1a90f9502e6fb4f69ed8f34e77e6f3ff4dfecbca"
+  integrity sha1-GpD5UC5vtPae2PNOd+bz/03+y8o=
   dependencies:
+    "@nebo-team/vobaza.ui.icon" "0.0.10"
     core-js "^3.0.0"
     styled-components "5.3.1"
 

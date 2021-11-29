@@ -53,6 +53,7 @@ const GoodsBlock: FC = () => {
       </div>
       <div className={styles.pagination}>
         <Pagination
+          variation="secondary"
           pageCount={950}
           activePage={+page || 1}
           onChange={onChangePagination}

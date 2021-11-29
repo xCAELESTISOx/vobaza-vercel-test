@@ -1,0 +1,38 @@
+.blogItem {
+  width: 100%;
+
+  &:hover {
+    .blogItemTitle {
+      color: var(--primary-color, #af1ebe);
+    }
+  }
+}
+.blogItemImage {
+  img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    vertical-align: middle;
+    border-radius: 8px;
+  }
+}
+.blogItemTitle {
+  margin-top: 16px;
+  font-size: 20px;
+  line-height: initial;
+  font-weight: 500;
+
+  @media screen and (min-width: 768px) and (max-width: 979px) {
+    margin-top: 4px;
+    font-size: 16px;
+  }
+}
+.blogItemDate {
+  margin-top: 12px;
+  color: #808080;
+
+  @media screen and (min-width: 768px) and (max-width: 979px) {
+    font-size: 12px;
+  }
+}

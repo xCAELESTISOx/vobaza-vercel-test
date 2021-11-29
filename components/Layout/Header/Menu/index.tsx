@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, Fragment, useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import styles from './styles.module.scss';
@@ -67,8 +67,8 @@ const HeaderMenu: FC<Props> = ({ rootMenu, withRoot }) => {
             currentMenuItem.menu.map((menuList, index) => (
               <div key={index} className={styles.subMenuBlock}>
                 {menuList.map((menu) => (
-                  <>
-                    <Link key={menu.title} href={menu.href}>
+                  <Fragment key={menu.title}>
+                    <Link href={menu.href}>
                       <a
                         className={`${styles.subMenuItem} ${
                           menu.children && styles.subMenuItemGray
@@ -83,7 +83,7 @@ const HeaderMenu: FC<Props> = ({ rootMenu, withRoot }) => {
                           <a className={styles.subMenuItem}>{menu.title}</a>
                         </Link>
                       ))}
-                  </>
+                  </Fragment>
                 ))}
               </div>
             ))}

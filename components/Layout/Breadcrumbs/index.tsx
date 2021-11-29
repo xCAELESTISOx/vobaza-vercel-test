@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 import Link from 'next/link';
 
 import styles from './styles.module.scss';
@@ -21,14 +21,14 @@ const Breadcrumbs: FC<Props> = ({ breadcrumbs }) => {
           <a className={styles.breadcrumb}>Главная</a>
         </Link>
         {breadcrumbs.map((breadcrumb: BreadcrumbType) => (
-          <div key={breadcrumb.title} className={styles.breadcrumbBlock}>
-            <div className={styles.breadcrumbsSeparator}>
+          <Fragment key={breadcrumb.title}>
+            <div key={breadcrumb.title} className={styles.breadcrumbsSeparator}>
               <Icon name="SmallArrowRight" />
             </div>
-            <Link href={breadcrumb.href}>
+            <Link key={'123' + breadcrumb.title} href={breadcrumb.href}>
               <a className={styles.breadcrumb}>{breadcrumb.title}</a>
             </Link>
-          </div>
+          </Fragment>
         ))}
       </nav>
     </div>

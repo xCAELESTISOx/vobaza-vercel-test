@@ -1,4 +1,4 @@
-import styles from '../styles/Compare.module.scss';
+import styles from '../styles/Home.module.scss';
 
 import Breadcrumbs, { BreadcrumbType } from '../components/Layout/Breadcrumbs';
 import CompareList from '../components/Compare/List';
