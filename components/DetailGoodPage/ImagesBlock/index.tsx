@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Navigation, Thumbs } from 'swiper';
+import { Navigation, Thumbs, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
@@ -19,7 +19,7 @@ const options = {
     thumbnailsAlignment: 'center',
     thumbnailsContainerPadding: '8px',
     thumbnailsGap: '8px 8px',
-    thumbnailsPosition: 'left',
+    thumbnailsPosition: 'bottom',
     thumbnailsSize: ['70px', '70px'],
   },
   buttons: {
@@ -31,6 +31,11 @@ const options = {
     iconColor: '#af1ebe',
   },
 };
+
+const thumbsBreakpoints = {
+  1300: { slidesPerView: 7 },
+  1550: { slidesPerView: 8 }
+}
 
 const ImagesBlock = ({ items }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -48,7 +53,7 @@ const ImagesBlock = ({ items }) => {
         <SRLWrapper options={options} callbacks={{ onLightboxClosed }}>
           <Swiper
             className={styles.mainSwiper}
-            modules={[Navigation, Thumbs]}
+            modules={[Navigation, Thumbs, Pagination]}
             speed={600}
             loop
             allowTouchMove
@@ -57,6 +62,10 @@ const ImagesBlock = ({ items }) => {
               nextEl: '.product-swiper__next',
             }}
             thumbs={{ swiper: thumbsSwiper }}
+            pagination={{
+              el: '.product-images-pagination',
+              type: 'bullets',
+            }}
             onSwiper={setMainSwiper}
           >
             {items.map((img, index) => (
@@ -67,15 +76,17 @@ const ImagesBlock = ({ items }) => {
           </Swiper>
         </SRLWrapper>
       </div>
+      <div className={`${styles.pagination} product-images-pagination`}></div>
       <div className={styles.thumbsSwiper}>
         <Swiper
           className={styles.swiper}
           watchSlidesProgress
-          slidesPerView={'auto'}
+          slidesPerView={5}
           spaceBetween={8}
           speed={600}
           slideToClickedSlide
           centerInsufficientSlides
+          breakpoints={thumbsBreakpoints}
           onSwiper={setThumbsSwiper}
         >
           {items.map((img, index) => (

@@ -6,7 +6,6 @@
 
 .currentImage {
   position: relative;
-  margin-bottom: 16px;
   padding-top: 70%;
   border: 1px solid #f2f2f2;
   border-radius: 8px;
@@ -23,6 +22,11 @@
     height: 100%;
     object-fit: cover;
   }
+
+  @media screen and (max-width: 980px) {
+    border-color: transparent;
+    border-radius: unset;
+  }
 }
 
 .mainSwiper {
@@ -33,12 +37,32 @@
   bottom: 0;
 }
 
-.thumbsSwiper {
-  position: relative;
-  padding: 0 44px;
+.pagination {
+  display: flex;
+  margin-top: 8px;
+  background-color: #f3f3f3;
+
+  & :global(.swiper-pagination-bullet) {
+    flex: 1;
+    height: 4px;
+  }
+  & :global(.swiper-pagination-bullet-active) {
+    background: var(--primary-color);
+  }
+
+  @media screen and (min-width: 980px) {
+    display: none;
+  }
 }
 
-.swiper {
+.thumbsSwiper {
+  margin-top: 16px;
+  position: relative;
+  padding: 0 44px;
+
+  @media screen and (max-width: 980px) {
+    display: none;
+  }
 }
 
 .thumbsNavButton {
@@ -63,7 +87,6 @@
 
 .thumbsSlide {
   display: flex;
-  width: 80px;
   height: 80px;
   border: 1px solid #f2f2f2;
   border-radius: 8px;
