@@ -617,12 +617,12 @@ export default function Policy() {
             <div className={styles.staticPageTable}>
               <div className={styles.staticPageTableRow}>
                 <div
-                  className={`${styles.staticPageTableCell} ${styles.staticPageTableCellTitle}`}
+                  className={`${styles.staticPageTableCell}`}
                 >
                   Полное наименование
                 </div>
                 <div
-                  className={`${styles.staticPageTableCell} ${styles.staticPageTableCellTitle}`}
+                  className={`${styles.staticPageTableCell}`}
                 >
                   Общество с&nbsp;ограниченной ответственностью
                   &laquo;ВОБАЗА&raquo;

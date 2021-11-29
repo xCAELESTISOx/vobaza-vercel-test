@@ -106,7 +106,7 @@ const footerLinks = [
       },
       {
         title: 'Стать партнером',
-        href: '/',
+        href: '/apply-for-vendor',
       },
     ],
   },

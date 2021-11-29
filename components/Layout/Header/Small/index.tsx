@@ -6,7 +6,7 @@ import styles from './styles.module.scss';
 const routes = [
   {
     title: 'Стать продавцом',
-    href: '/',
+    href: '/apply-for-vendor',
   },
   {
     title: 'Доставка',
