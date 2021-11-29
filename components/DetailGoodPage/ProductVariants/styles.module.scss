@@ -1,15 +1,17 @@
 .variantsContainer {
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr 50px;
+  grid-column-gap: 8px;
   width: 100%;
-}
 
-.variants {
-  max-width: 332px;
-  margin-right: 8px;
+  @media screen and (max-width: 500px) {
+    grid-template-columns: 1fr 0.22fr;
+  }
 }
 
 .variantsDrawer {
+  height: 0;
+
   .variantsGrid {
     padding-top: 20px;
   }
@@ -18,15 +20,19 @@
 .variantsGrid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-auto-rows: 60px;
   grid-column-gap: 8px;
   grid-row-gap: 20px;
+
+  @media screen and (max-width: 500px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .variant {
+  position: relative;
   display: flex;
   align-items: center;
-  padding: 6px;
+  padding-top: 100%;
   border: 1px solid #f2f2f2;
   border-radius: 8px;
   background: #ffffff;
@@ -35,20 +41,30 @@
   user-select: none;
   transition: border-color 0.2s;
 
+  &:hover {
+    border-color: var(--primary-color-hover);
+  }
+
+  &.variantActive {
+    border-color: var(--primary-color);
+  }
+}
+
+.variantImg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 6px;
+
   img {
+    max-width: 100%;
+    max-height: 100%;
     width: 100%;
     height: auto;
     object-fit: cover;
   }
-
-  &:hover {
-    border-color: var(--primary-color-hover);
-  }
-}
-
-.variantActive {
-  composes: variant;
-  border-color: var(--primary-color);
 }
 
 .variantsToggleBtn {
