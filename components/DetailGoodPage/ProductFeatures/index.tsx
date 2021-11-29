@@ -10,23 +10,17 @@ interface FeatureItem {
 }
 
 const FeatureItem: FC<FeatureItem> = ({ feature }) => {
-  const renderArrayValue = () => {
-    return (
-      <div className={styles.featureValueMultiple}>
-        {feature.value.map((item) => (
-          <div key={item} className={styles.featureValueMultipleItem}>
-            {item}
-          </div>
-        ))}
-      </div>
-    );
-  };
-
   return (
     <div className={styles.featureItem}>
       <div className={styles.featureTitle}>{feature.title}:</div>
       {Array.isArray(feature.value) ? (
-        renderArrayValue()
+        <div className={styles.featureValueMultiple}>
+          {feature.value.map((item) => (
+            <div key={item} className={styles.featureValueMultipleItem}>
+              {item}
+            </div>
+          ))}
+        </div>
       ) : (
         <div className={styles.featureValueMultiple}>{feature.value}</div>
       )}
