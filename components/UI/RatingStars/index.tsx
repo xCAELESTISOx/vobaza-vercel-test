@@ -59,6 +59,7 @@ const RatingStarsEditable: FC<RatingStarsEditable> = ({
         {Array.from({ length: 5 }).map((_, index) => (
           <button
             key={index}
+            type="button"
             className={getStarClass(index)}
             onClick={() => handleClickStar(5 - index)}
           >
