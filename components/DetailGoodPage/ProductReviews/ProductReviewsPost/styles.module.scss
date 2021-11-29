@@ -1,0 +1,48 @@
+.reviewContainer {
+  padding: 32px 0;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid #f2f2f2;
+  }
+}
+
+.reviewHeader {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.reviewBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewUsername {
+  margin-right: 12px;
+
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.reviewDate {
+  margin-left: 24px;
+
+  color: #808080;
+  font-weight: 300;
+}
+
+.reviewTextBlock {
+  font-size: 14px;
+  color: #1a1a1a;
+
+  &:not(:last-child) {
+    margin-bottom: 16px;
+  }
+}
+
+.reviewTextBlockTitle {
+  margin-bottom: 2px;
+
+  font-weight: 700;
+}

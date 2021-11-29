@@ -1,0 +1,99 @@
+.reviewsBlock {
+  margin-top: 60px;
+}
+
+.reviewsBlockTitle {
+  margin-bottom: 40px;
+
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 44px;
+  letter-spacing: -1px;
+  color: #1a1a1a;
+}
+
+.reviewsContainer {
+  display: flex;
+  width: 100%;
+}
+
+.reviewsSidebar {
+  display: flex;
+  flex-direction: column;
+  margin-right: 70px;
+  min-width: 300px;
+  width: 330px;
+}
+
+.reviewsSidebarBlock {
+  &:not(:last-child) {
+    margin-bottom: 30px;
+  }
+}
+
+.reviewsSidebarBlockTitle {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.reviewsSidebarScores {
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewsSidebarScoresItem {
+  display: flex;
+  margin-top: 12px;
+}
+
+.reviewsSidebarScoresCount {
+  margin-left: 16px;
+}
+
+.reviewsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewsAverageRating {
+  display: flex;
+  align-items: center;
+}
+
+.reviewsAverageRatingValue {
+  padding-right: 8px;
+
+  font-size: 36px;
+  font-weight: 500;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.reviewsAverageRatingNotion {
+  margin-top: 4px;
+
+  color: #808080;
+  font-weight: 300;
+}
+
+button.reviewsBtn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 8px 20px;
+
+  color: var(--primary-color);
+  background-color: #f2f2f2;
+  border: 1px solid #f2f2f2;
+  border-radius: 8px;
+
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+
+  transition: all 0.2s;
+
+  &:hover {
+    background: #fafafa;
+    border-color: #fafafa;
+  }
+}

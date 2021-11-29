@@ -14,12 +14,14 @@ import { ProductInfoAccordion } from '../../components/DetailGoodPage/ProductInf
 import { ProductFeatures } from '../../components/DetailGoodPage/ProductFeatures';
 import { ProductDescription } from '../../components/DetailGoodPage/ProductDescription';
 import { ProductSeller } from '../../components/DetailGoodPage/ProductSeller';
+import { ProductReviews } from '../../components/DetailGoodPage/ProductReviews';
 
 import type { BreadcrumbType } from '../../components/Layout/Breadcrumbs';
 
 import styles from './styles.module.scss';
 
 import { product as mockProduct } from './mock';
+import { RatingStars } from '../../components/UI/RatingStars';
 
 interface props {}
 
@@ -100,13 +102,12 @@ const DetailGoodPage = ({}) => {
               <div className={styles.leftContent}>
                 <div className={styles.leftMenu}>
                   <div className={styles.leftMenuItem}>
-                    <div className={styles.productRating}>
-                      {[...new Array(mockProduct.rating)].map((star, index) => (
-                        <Icon key={index} name="Star" />
-                      ))}
-                    </div>
+                    <RatingStars
+                      size="Small"
+                      value={mockProduct.reviews.average_score}
+                    />
                     <div className={styles.productReviews}>
-                      {mockProduct.reviews} отзывов
+                      {mockProduct.reviews.count} отзывов
                     </div>
                   </div>
                   <div className={styles.leftMenuItem}>
@@ -257,6 +258,17 @@ const DetailGoodPage = ({}) => {
               </div>
             </div>
           </div>
+
+          <ProductReviews
+            reviewsInfo={mockProduct.reviews}
+            productInfo={{
+              id: mockProduct.id,
+              title: mockProduct.title,
+              articleNumber: mockProduct.article_number,
+              price: mockProduct.price_with_discount,
+              img: mockProduct.images[0] || '',
+            }}
+          />
         </div>
       </div>
     </SimpleReactLightbox>
