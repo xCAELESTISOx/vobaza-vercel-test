@@ -1,0 +1,34 @@
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.badge {
+  padding: 6px 0;
+
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 130%;
+
+  user-select: none;
+
+  &:not(:last-child) {
+    margin-right: 24px;
+  }
+}
+
+.express_delivery {
+  composes: badge;
+  color: #808080;
+}
+
+.hit {
+  composes: badge;
+  color: #5ea01c;
+}
+
+.bestseller {
+  composes: badge;
+  color: var(--primary-color);
+}

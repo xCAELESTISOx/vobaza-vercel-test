@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import SimpleReactLightbox from 'simple-react-lightbox';
@@ -15,15 +15,16 @@ import { ProductFeatures } from '../../components/DetailGoodPage/ProductFeatures
 import { ProductDescription } from '../../components/DetailGoodPage/ProductDescription';
 import { ProductSeller } from '../../components/DetailGoodPage/ProductSeller';
 import { ProductReviews } from '../../components/DetailGoodPage/ProductReviews';
+import { ProductBadges } from '../../components/DetailGoodPage/ProductBadges';
+import { RatingStars } from '../../components/UI/RatingStars';
 
 import type { BreadcrumbType } from '../../components/Layout/Breadcrumbs';
 
 import styles from './styles.module.scss';
 
 import { product as mockProduct } from './mock';
-import { RatingStars } from '../../components/UI/RatingStars';
 
-interface props {}
+interface DetailGoodPage { }
 
 const breadcrumbs: BreadcrumbType[] = [
   {
@@ -36,13 +37,7 @@ const breadcrumbs: BreadcrumbType[] = [
   },
 ];
 
-const badgesDict = {
-  express_delivery: 'Экспресс-доставка',
-  hit: 'Хит',
-  bestseller: 'Бестселлер',
-};
-
-const DetailGoodPage = ({}) => {
+const DetailGoodPage: FC<DetailGoodPage> = ({ }) => {
   const [selectedColorVariant, setSelectedColorVariant] = useState<any>(
     mockProduct.variants[0]
   );
@@ -97,7 +92,18 @@ const DetailGoodPage = ({}) => {
       <div className={styles.homePage}>
         <Breadcrumbs breadcrumbs={breadcrumbs} />
         <div className="container">
-          <div className={styles.goodInfo}>
+          <div className={styles.productInfo}>
+            <div className={styles.productMobileCardHeader}>
+              <ProductBadges badges={mockProduct.info_badges} />
+
+              <h1 className={styles.productTitle}>
+                {mockProduct.title}{' '}
+                <span className={styles.productSubinfo}>
+                  Артикул&nbsp;{mockProduct.article_number}
+                </span>
+              </h1>
+            </div>
+
             <div className={styles.left}>
               <div className={styles.leftContent}>
                 <div className={styles.leftMenu}>
@@ -110,38 +116,38 @@ const DetailGoodPage = ({}) => {
                       {mockProduct.reviews.count} отзывов
                     </div>
                   </div>
-                  <div className={styles.leftMenuItem}>
+                  <div className={styles.leftMenuActions}>
                     <button className={styles.leftMenuActionBtn}>
-                      <Icon name="Favorite" /> В избранное
+                      <Icon name="Favorite" /> <span>В избранное</span>
+                    </button>
+                    <button className={styles.leftMenuActionBtn}>
+                      <Icon name="Compare" /> <span>Сравнить</span>
                     </button>
                   </div>
-                  <div className={styles.leftMenuItem}>
-                    <button className={styles.leftMenuActionBtn}>
-                      <Icon name="Compare" /> Сравнить
-                    </button>
-                  </div>
-                  {mockProduct.info_badges.map((badge) => (
-                    <div
-                      key={badge}
-                      className={`${styles.leftMenuBadge} ${styles[badge]}`}
-                    >
-                      {badgesDict[badge]}
-                    </div>
-                  ))}
+
+                  <ProductBadges
+                    className={styles.mobileHidden}
+                    badges={mockProduct.info_badges}
+                  />
                 </div>
 
                 <ImagesBlockMemo items={mockProduct.images} />
 
-                <ProductSeller />
+                <ProductSeller className={styles.mobileHidden} />
               </div>
             </div>
 
             <div className={styles.right}>
-              <h1 className={styles.productTitle}>{mockProduct.title}</h1>
-              <div className={styles.productSubinfo}>
-                {mockProduct.subinfo && <>{mockProduct.subinfo} • </>}
-                Артикул {mockProduct.article_number}
+              <div
+                className={`${styles.productCardHeader} ${styles.mobileHidden}`}
+              >
+                <h1 className={styles.productTitle}>{mockProduct.title}</h1>
+                <div className={styles.productSubinfo}>
+                  {mockProduct.subinfo && <>{mockProduct.subinfo} • </>}
+                  Артикул {mockProduct.article_number}
+                </div>
               </div>
+
               <div className={styles.productOptionList}>
                 <div className={styles.productOption}>
                   <ProductVariants
@@ -241,6 +247,8 @@ const DetailGoodPage = ({}) => {
                   </div>
                 )}
               </div>
+
+              <ProductSeller className={styles.mobileVisible} />
 
               <div className={styles.productAccordionBlock}>
                 <ProductInfoAccordion title="Описание" autoDuration>

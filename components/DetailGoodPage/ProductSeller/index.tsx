@@ -8,11 +8,13 @@ import styles from './styles.module.scss';
 
 import tmpLogo from './tmp/logo.png';
 
-interface ProductSeller {}
+interface ProductSeller {
+  className?: string;
+}
 
-const ProductSeller: FC<ProductSeller> = ({}) => {
+const ProductSeller: FC<ProductSeller> = ({ className = '' }) => {
   return (
-    <div className={styles.sellerContainer}>
+    <div className={`${styles.sellerContainer} ${className}`}>
       <div className={styles.sellerInfo}>
         <div className={styles.sellerLogo}>
           <Image src={tmpLogo} alt="logo" />

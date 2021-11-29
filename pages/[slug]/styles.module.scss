@@ -1,18 +1,47 @@
-@import '../../styles/Home.module.scss';
+@import "../../styles/Home.module.scss";
 
-.goodInfo {
+.productInfo {
   display: flex;
   justify-content: space-between;
   width: 100%;
+
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+  }
+}
+
+.productMobileCardHeader {
+  display: none;
+  flex-direction: column;
+  margin-bottom: 12px;
+
+  @media screen and (max-width: 767px) {
+    display: flex;
+  }
+}
+
+.productCardHeader {
+  display: flex;
+  flex-direction: column;
 }
 
 .left {
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 50%;
   max-width: 784px;
   margin-right: 64px;
+
+  padding: 0;
+
+  @media screen and (max-width: 1024px) {
+    margin-right: 32px;
+  }
+
+  @media screen and (max-width: 767px) {
+    width: 100%;
+  }
 }
 
 .leftContent {
@@ -23,47 +52,41 @@
 .right {
   position: relative;
   display: flex;
-  width: 100%;
+  width: 50%;
   flex-direction: column;
   max-width: 752px;
+
+  @media screen and (max-width: 767px) {
+    width: 100%;
+  }
 }
 
 .productInfoShort {
   max-width: 388px;
+
+  @media screen and (max-width: 500px) {
+    max-width: 100%;
+  }
 }
 
 .leftMenu {
   display: flex;
   flex-wrap: wrap;
-  margin: -6px -12px 10px;
+  margin: -6px 0 10px;
 }
 
 .leftMenuItem {
   display: flex;
   align-items: center;
-  padding: 6px 12px;
+  padding: 6px 0;
+
+  &:not(:last-child) {
+    margin-right: 24px;
+  }
 }
 
-.leftMenuBadge {
+.leftMenuActions {
   composes: leftMenuItem;
-
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 130%;
-
-  user-select: none;
-
-  &.express_delivery {
-    color: #808080;
-  }
-
-  &.hit {
-    color: #5ea01c;
-  }
-
-  &.bestseller {
-    color: var(--primary-color);
-  }
 }
 
 .leftMenuActionBtn {
@@ -75,12 +98,26 @@
 
   transition: all 0.2s;
 
-  svg {
-    margin-right: 8px;
+  span {
+    margin-left: 8px;
   }
 
   &:hover {
     color: var(--primary-color);
+  }
+
+  &:not(:last-child) {
+    margin-right: 24px;
+  }
+
+  @media screen and (max-width: 767px) {
+    span {
+      display: none;
+    }
+
+    &:not(:last-child) {
+      margin-right: 16px;
+    }
   }
 }
 
@@ -104,6 +141,13 @@
   line-height: 44px;
   font-weight: 500;
   letter-spacing: -1px;
+
+  border-radius: none;
+
+  @media screen and (max-width: 980px) {
+    font-size: 28px;
+    line-height: 34px;
+  }
 }
 
 .productSubinfo {
@@ -136,7 +180,6 @@
   display: flex;
   align-items: flex-end;
   flex-wrap: wrap;
-  // margin: 0 -6px;
 
   letter-spacing: -1px;
   cursor: default;
@@ -151,6 +194,11 @@
   font-weight: 600;
   font-size: 48px;
   line-height: 58px;
+
+  @media screen and (max-width: 767px) {
+    font-size: 32px;
+    line-height: 36px;
+  }
 }
 
 .productPriceOld {
@@ -163,6 +211,13 @@
   letter-spacing: -2px;
   text-decoration-line: line-through;
   color: #b3b3b3;
+
+  @media screen and (max-width: 767px) {
+    margin-right: 0;
+
+    font-size: 18px;
+    line-height: 20px;
+  }
 }
 
 .productDiscount {
@@ -241,12 +296,19 @@
   button:first-child {
     margin-right: 28px;
   }
+
+  @media screen and (max-width: 980px) {
+    button {
+      font-size: 14px;
+    }
+  }
 }
 
 .productCredit {
   composes: productInfoBlock;
 
   display: flex;
+  flex-wrap: wrap;
 
   font-weight: 500;
   font-size: 16px;
@@ -297,5 +359,19 @@
 
   & + .productAccordionBlock {
     margin-top: 24px;
+  }
+}
+
+.mobileHidden {
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
+}
+
+.mobileVisible {
+  display: none;
+
+  @media screen and (max-width: 767px) {
+    display: flex;
   }
 }
