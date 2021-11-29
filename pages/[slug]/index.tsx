@@ -22,7 +22,7 @@ import type { BreadcrumbType } from '../../components/Layout/Breadcrumbs';
 
 import styles from './styles.module.scss';
 
-import { product as mockProduct } from './mock';
+import { product as mockProduct } from '../../src/mock/detailProductPage';
 
 interface DetailGoodPage { }
 
