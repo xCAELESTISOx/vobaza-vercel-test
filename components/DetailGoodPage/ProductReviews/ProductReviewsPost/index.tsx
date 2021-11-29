@@ -19,7 +19,9 @@ const ProductReviewsPost: FC<ProductReviewsPost> = ({ post = {} }) => {
     <div className={styles.reviewContainer}>
       <div className={styles.reviewHeader}>
         <div className={styles.reviewUsername}>{post.user}</div>
-        <RatingStars size="Small" value={post.score} />
+        <div className={styles.reviewRating}>
+          <RatingStars size="Small" value={post.score} />
+        </div>
         <div className={styles.reviewDate}>{formatedDate}</div>
       </div>
       {post.content && (

@@ -18,6 +18,13 @@
   flex-direction: column;
 }
 
+.reviewRating {
+  margin-right: 24px;
+
+  font-size: 18px;
+  font-weight: 500;
+}
+
 .reviewUsername {
   margin-right: 12px;
 
@@ -26,8 +33,6 @@
 }
 
 .reviewDate {
-  margin-left: 24px;
-
   color: #808080;
   font-weight: 300;
 }
