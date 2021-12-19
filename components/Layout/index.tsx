@@ -1,11 +1,13 @@
 import React from 'react';
 
 import styles from './styles.module.scss';
+import { AuthProvider } from '../../src/context/auth';
 
 import { MainHead } from './MainHead';
 import Header from './Header';
 import Footer from './Footer';
 import BottomTabBar from './BottomTabBar';
+import AuthModal from '../Auth';
 
 interface ILayoutChildren {
   children: React.ReactNode;
@@ -13,7 +15,8 @@ interface ILayoutChildren {
 
 export default function Layout({ children }: ILayoutChildren) {
   return (
-    <>
+    <AuthProvider>
+      <AuthModal />
       <MainHead />
       <Header />
       <div className={styles.layout}>
@@ -21,6 +24,6 @@ export default function Layout({ children }: ILayoutChildren) {
       </div>
       <Footer />
       <BottomTabBar />
-    </>
+    </AuthProvider>
   );
 }

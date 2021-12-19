@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import Link from 'next/link';
 
 import styles from './styles.module.scss';
+import { useAuth } from '../../../../src/context/auth';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import Search from '../Search';
@@ -14,7 +15,12 @@ type Props = {
 
 const MainHeader: FC<Props> = ({ mobileCategories }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { state, dispatch } = useAuth();
+  const { user } = state;
 
+  const openAuthModal = () => {
+    dispatch({ type: 'toggleModal' });
+  };
   const toggleMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -53,10 +59,19 @@ const MainHeader: FC<Props> = ({ mobileCategories }) => {
           </Link>
         </div>
         <div className={styles.headerButtons}>
-          <div className={styles.headerButton}>
-            <Icon name="Person"></Icon>
-            <span>Войти</span>
-          </div>
+          {user ? (
+            <Link href="/wishlist">
+              <a className={styles.headerButton}>
+                <Icon name="Person"></Icon>
+                <span>Профиль</span>
+              </a>
+            </Link>
+          ) : (
+            <div className={styles.headerButton} onClick={openAuthModal}>
+              <Icon name="Person"></Icon>
+              <span>Войти</span>
+            </div>
+          )}
           <Link href="/wishlist">
             <a className={styles.headerButton}>
               <Icon name="Favorite"></Icon>

@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 
-import styles from "./withModal.module.scss";
-import { Icon } from "@nebo-team/vobaza.ui.icon";
+import styles from './withModal.module.scss';
+import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 export interface IModalLayout {
   onClose(): void;
@@ -12,9 +12,9 @@ export default function ModalLayout({
   onClose,
 }: IModalLayout & { children: React.ReactNode }) {
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
     return () => {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = 'initial';
     };
   }, []);
 
