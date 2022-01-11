@@ -1,0 +1,60 @@
+.profileContainer {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 0;
+
+  @media screen and (max-width: 1024px) {
+    padding: 32px 0 16px;
+  }
+  @media screen and (max-width: 767px) {
+    padding-top: 0px;
+  }
+}
+
+.profileTitle {
+  margin-bottom: 32px;
+  font-size: 36px;
+  font-weight: 500;
+
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
+}
+
+.profileSidebarBlock {
+  width: 32%;
+  min-width: 32%;
+
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
+}
+.profileContent {
+  display: flex;
+
+  > * + * {
+    margin-left: 20px;
+
+    @media screen and (max-width: 767px) {
+      margin-left: 0px;
+    }
+  }
+}
+.profileContentBlock {
+  flex: 1;
+
+  > * + * {
+    margin-top: 24px;
+  }
+}
+.profileSubtitle {
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -1px;
+
+  @media screen and (max-width: 767px) {
+    font-size: 24px;
+    letter-spacing: 0;
+  }
+}

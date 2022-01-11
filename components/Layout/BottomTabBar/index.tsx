@@ -1,47 +1,63 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import Link from 'next/link';
 
 import styles from './styles.module.scss';
+import { useAuth } from '../../../src/context/auth';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
+import ProfileMenu from '../../Profile/Menu';
 
 const BottomTabBar: FC = () => {
+  const [isProfileMenuOpen, setIsProfileOpen] = useState(false);
+  const { state, dispatch } = useAuth();
+  const { user } = state;
+
   const openMenu = () => {
     //TODO openMenu
   };
-  const openProfile = () => {
-    //TODO check token and openProfile
+  const profileClickHandler = () => {
+    if (user) {
+      toggleProfileMenu();
+    } else {
+      dispatch({ type: 'toggleModal' });
+    }
+  };
+  const toggleProfileMenu = () => {
+    setIsProfileOpen(!isProfileMenuOpen);
   };
 
   return (
-    <div className={styles.tabbar}>
-      <Link href="/">
-        <a className={styles.tab}>
-          <Icon name="SmallLogo" />
-          <div className={styles.tabTitle}>Главная</div>
-        </a>
-      </Link>
-      <div className={styles.tab} onClick={openMenu}>
-        <Icon name="Catalog" />
-        <div className={styles.tabTitle}>Каталог</div>
+    <>
+      <ProfileMenu isOpen={isProfileMenuOpen} close={toggleProfileMenu} />
+      <div className={styles.tabbar}>
+        <Link href="/">
+          <a className={styles.tab}>
+            <Icon name="SmallLogo" />
+            <div className={styles.tabTitle}>Главная</div>
+          </a>
+        </Link>
+        <div className={styles.tab} onClick={openMenu}>
+          <Icon name="Catalog" />
+          <div className={styles.tabTitle}>Каталог</div>
+        </div>
+        <Link href="/cart">
+          <a className={styles.tab}>
+            <Icon name="Cart" />
+            <div className={styles.tabTitle}>Корзина</div>
+          </a>
+        </Link>
+        <Link href="/wishlist">
+          <a className={styles.tab}>
+            <Icon name="Favorite" />
+            <div className={styles.tabTitle}>Избранное</div>
+          </a>
+        </Link>
+        <div className={styles.tab} onClick={profileClickHandler}>
+          <Icon name="Person" />
+          <div className={styles.tabTitle}>Профиль</div>
+        </div>
       </div>
-      <Link href="/cart">
-        <a className={styles.tab}>
-          <Icon name="Cart" />
-          <div className={styles.tabTitle}>Корзина</div>
-        </a>
-      </Link>
-      <Link href="/wishlist">
-        <a className={styles.tab}>
-          <Icon name="Favorite" />
-          <div className={styles.tabTitle}>Избранное</div>
-        </a>
-      </Link>
-      <div className={styles.tab} onClick={openProfile}>
-        <Icon name="Person" />
-        <div className={styles.tabTitle}>Профиль</div>
-      </div>
-    </div>
+    </>
   );
 };
 
