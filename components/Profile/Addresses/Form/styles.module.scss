@@ -1,0 +1,36 @@
+.addressForm {
+  padding: 24px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+
+  @media screen and (max-width: 767px) {
+    padding: 0;
+    border: none;
+  }
+}
+.addressFormTitle {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 24px;
+
+  @media screen and (max-width: 767px) {
+    font-size: 18px;
+  }
+}
+.addressFormItem {
+  display: flex;
+
+  > * {
+    width: 100%;
+  }
+  > * + * {
+    margin-left: 16px;
+  }
+
+  + .addressFormItem {
+    margin-top: 16px;
+  }
+}
+.addressFormButtons {
+  margin-top: 32px;
+}
