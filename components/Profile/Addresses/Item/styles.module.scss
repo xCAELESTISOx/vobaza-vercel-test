@@ -1,0 +1,80 @@
+.profileAddress {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  min-height: 163px;
+  padding: 24px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: var(--primary-color, #af1ebe);
+  }
+
+  &.default {
+    .profileAddressDefault {
+      pointer-events: none;
+    }
+  }
+
+  &.empty {
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition-property: color, border-color;
+
+    @media screen and (max-width: 767px) {
+      min-height: 88px;
+    }
+
+    &:hover {
+      color: var(--primary-color, #af1ebe);
+    }
+  }
+}
+
+.profileAddressName {
+  font-size: 16px;
+  line-height: 1.4;
+}
+.profileAddressButtons {
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto -14px 0;
+}
+.profileAddressButton {
+  display: flex;
+  align-items: center;
+  margin: 16px 14px 0;
+  color: #808080;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--primary-color, #af1ebe);
+  }
+
+  svg {
+    margin-right: 4px;
+  }
+}
+.profileAddressDefault {
+  margin-top: 16px;
+  color: var(--primary-color, #af1ebe);
+  font-size: 16px;
+  cursor: pointer;
+
+  &:hover {
+    color: #9b1ba8;
+  }
+}
+
+.profileAddressAdd {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+
+  svg {
+    margin-right: 16px;
+  }
+}
