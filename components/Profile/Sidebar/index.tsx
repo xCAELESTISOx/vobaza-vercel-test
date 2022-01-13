@@ -49,8 +49,12 @@ const ProfileSidebar: FC = () => {
           </div>
         </a>
       </Link>
-      <Link href="/profile">
-        <a className={styles.profileSidebarItem}>
+      <Link href="/profile/update">
+        <a
+          className={`${styles.profileSidebarItem} ${
+            router.pathname === '/profile/update' ? styles.active : ''
+          }`}
+        >
           <Icon name="Identification" />
           Личные данные
           <div className={styles.profileSidebarIcons}>

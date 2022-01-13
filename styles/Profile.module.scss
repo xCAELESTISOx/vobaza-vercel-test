@@ -48,7 +48,36 @@
     margin-top: 24px;
   }
 }
+
+.profileTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  display: none;
+  padding: 16px 0;
+
+  @media screen and (max-width: 767px) {
+    display: block;
+  }
+}
+.profileBack {
+  display: flex;
+  align-items: center;
+  margin: 0 4px 0 0;
+  font-size: 16px;
+  color: var(--primary-color, #af1ebe);
+
+  &:hover {
+    color: #9b1ba8;
+  }
+
+  svg {
+    margin-right: 10px;
+    color: #3a474e;
+  }
+}
 .profileSubtitle {
+  margin-top: 0;
   font-size: 28px;
   font-weight: 500;
   letter-spacing: -1px;

@@ -1,0 +1,120 @@
+.profileFormBlock {
+  padding: 24px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+
+  @media screen and (max-width: 767px) {
+    padding: 16px;
+  }
+
+  + .profileFormBlock {
+    margin-top: 24px;
+
+    @media screen and (max-width: 767px) {
+      margin-top: 16px;
+    }
+  }
+}
+.profileFormTitle {
+  margin-bottom: 24px;
+  font-size: 20px;
+  font-weight: 500;
+
+  @media screen and (max-width: 767px) {
+    margin-bottom: 16px;
+    font-size: 18px;
+  }
+}
+
+//Image
+.profileFormImageBlock {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+
+  > * + * {
+    margin-left: 16px;
+  }
+}
+.profileFormImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  width: 80px;
+  border: 1px solid #ebebeb;
+  background: #fcfcfc;
+  color: #c8c8c8;
+}
+.profileFormImageTitle {
+  font-size: 16px;
+}
+.profileFormImageButton {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  color: #808080;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: var(--primary-color, #af1ebe);
+  }
+
+  svg {
+    margin-right: 4px;
+  }
+}
+
+.profileFormInputBlock {
+  display: flex;
+
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+  }
+
+  + .profileFormInputBlock {
+    margin-top: 16px;
+  }
+}
+.profileFormInput {
+  flex: 1;
+  + .profileFormInput {
+    margin-left: 16px;
+
+    @media screen and (max-width: 767px) {
+      margin-left: 0;
+      margin-top: 16px;
+    }
+  }
+}
+
+.profileFormButtons {
+  display: flex;
+  margin-top: 24px;
+
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+  }
+
+  > * + * {
+    margin-left: 16px;
+
+    @media screen and (max-width: 767px) {
+      margin-left: 0;
+      margin-top: 16px;
+    }
+  }
+  > * {
+    @media screen and (max-width: 767px) {
+      width: 100%;
+    }
+  }
+}
+.profileFormButtonCancel {
+  color: #b3b3b3 !important;
+
+  &:hover {
+    color: #af1ebe !important;
+  }
+}
