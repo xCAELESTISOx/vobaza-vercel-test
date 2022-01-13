@@ -58,8 +58,12 @@ const ProfileSidebar: FC = () => {
           </div>
         </a>
       </Link>
-      <Link href="/profile">
-        <a className={styles.profileSidebarItem}>
+      <Link href="/profile/orders">
+        <a
+          className={`${styles.profileSidebarItem} ${
+            router.pathname === '/profile/orders' ? styles.active : ''
+          }`}
+        >
           <Icon name="Box" />
           Мои заказы
           <div className={styles.profileSidebarIcons}>
