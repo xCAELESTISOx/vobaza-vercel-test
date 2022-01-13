@@ -36,8 +36,12 @@ const ProfileSidebar: FC = () => {
           </div>
         </a>
       </Link>
-      <Link href="/profile">
-        <a className={styles.profileSidebarItem}>
+      <Link href="/profile/wishlist">
+        <a
+          className={`${styles.profileSidebarItem} ${
+            router.pathname === '/profile/wishlist' ? styles.active : ''
+          }`}
+        >
           <Icon name="Favorite" />
           Избранное
           <div className={styles.profileSidebarIcons}>

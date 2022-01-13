@@ -60,7 +60,7 @@ const MainHeader: FC<Props> = ({ mobileCategories }) => {
         </div>
         <div className={styles.headerButtons}>
           {user ? (
-            <Link href="/wishlist">
+            <Link href="/profile">
               <a className={styles.headerButton}>
                 <Icon name="Person"></Icon>
                 <span>Профиль</span>
@@ -72,7 +72,7 @@ const MainHeader: FC<Props> = ({ mobileCategories }) => {
               <span>Войти</span>
             </div>
           )}
-          <Link href="/wishlist">
+          <Link href="/profile/wishlist">
             <a className={styles.headerButton}>
               <Icon name="Favorite"></Icon>
               <span>Избранное</span>

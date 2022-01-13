@@ -46,7 +46,7 @@ const BottomTabBar: FC = () => {
             <div className={styles.tabTitle}>Корзина</div>
           </a>
         </Link>
-        <Link href="/wishlist">
+        <Link href="/profile/wishlist">
           <a className={styles.tab}>
             <Icon name="Favorite" />
             <div className={styles.tabTitle}>Избранное</div>
