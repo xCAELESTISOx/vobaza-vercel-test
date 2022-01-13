@@ -25,8 +25,7 @@ function authReducer(state, action) {
 
 function AuthProvider({ children }: CountProviderProps) {
   const [state, dispatch] = React.useReducer(authReducer, {
-    // user: null,
-    user: {},
+    user: null,
     isModalOpen: false,
   });
   const value: any = { state, dispatch };
