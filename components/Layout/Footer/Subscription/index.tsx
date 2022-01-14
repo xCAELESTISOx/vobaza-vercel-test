@@ -1,12 +1,45 @@
 import React, { FC, useState } from 'react';
+
+import { api } from '../../../../assets/api';
+
 import Link from 'next/link';
+import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
 
 import styles from './styles.module.scss';
 
-import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
+export function checkEmail(value) {
+  const patternEmail = new RegExp(
+    /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
+  );
+  return patternEmail.test(value);
+}
 
 const Subscription: FC = () => {
   const [email, setEmail] = useState('');
+
+  const subscribeMailing = async () => {
+    const isValid = checkEmail(email);
+
+    if (!isValid) {
+      return;
+    }
+
+    try {
+      await api.subscribeMailing({ email });
+      setEmail('');
+    } catch (error) {}
+  };
+
+  const handleChange = (e: any) => {
+    setEmail(e.target.value);
+  };
+
+  const handleKeyUp = (e: any) => {
+    const isEnter = e.key === 'Enter' || e.code === 'Enter';
+
+    if (isEnter) subscribeMailing();
+  };
+
   return (
     <div className={styles.subscription}>
       <div className={`${styles.subscriptionContainer} container`}>
@@ -26,10 +59,15 @@ const Subscription: FC = () => {
         </div>
         <div className={styles.subscriptionInput}>
           <InputText
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            label="Ваш e-mail"
             name="subscription"
+            label="Ваш e-mail"
+            icon="ArrowRight"
+            isColoredIcon
+            isClickableIconWithValue
+            value={email}
+            onChange={handleChange}
+            onClickIcon={subscribeMailing}
+            onKeyUp={handleKeyUp}
           />
         </div>
       </div>
