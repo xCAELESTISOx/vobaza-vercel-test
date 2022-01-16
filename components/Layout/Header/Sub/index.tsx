@@ -12,11 +12,11 @@ const rootMenu = [
     href: '/katalog/divany',
     tag: 'divany',
     menu: [
-      [
-        {
-          title: 'Диваны',
-          href: '/katalog/divany',
-          children: [
+      {
+        title: 'Диваны',
+        href: '/katalog/divany',
+        children: [
+          [
             {
               title: 'Прямые диваны ',
               href: '/katalog/divany',
@@ -33,6 +33,8 @@ const rootMenu = [
               title: 'Кушетки ',
               href: '/katalog/divany',
             },
+          ],
+          [
             {
               title: ' Модульные диваны ',
               href: '/katalog/divany',
@@ -49,18 +51,24 @@ const rootMenu = [
               title: 'Бескаркасные диваны ',
               href: '/katalog/divany',
             },
+          ],
+          [
             {
               title: 'Подушки для диванов  ',
               href: '/katalog/divany',
             },
+            {
+              title: 'Офисные диваны',
+              href: '/katalog/divany',
+            },
           ],
-        },
-      ],
-      [
-        {
-          title: 'Кресла  ',
-          href: '/katalog/kresla',
-          children: [
+        ],
+      },
+      {
+        title: 'Кресла  ',
+        href: '/katalog/kresla',
+        children: [
+          [
             {
               title: 'Кресла-качалки   ',
               href: '/katalog/kresla',
@@ -77,6 +85,8 @@ const rootMenu = [
               title: 'Садовые кресла   ',
               href: '/katalog/kresla',
             },
+          ],
+          [
             {
               title: 'Подвесные кресла   ',
               href: '/katalog/kresla',
@@ -94,18 +104,18 @@ const rootMenu = [
               href: '/katalog/kresla',
             },
           ],
-        },
-      ],
-      [
-        {
-          title: 'Пуфы',
-          href: '/katalog/pufy',
-        },
-        {
-          title: 'Банкетки ',
-          href: '/katalog/banketki',
-        },
-      ],
+          [
+            {
+              title: 'Пуфы',
+              href: '/katalog/pufy',
+            },
+            {
+              title: 'Банкетки ',
+              href: '/katalog/banketki',
+            },
+          ],
+        ],
+      },
     ],
   },
   {
@@ -133,11 +143,11 @@ const rootMenu = [
     href: '/katalog/divany',
     tag: 'tekstil',
     menu: [
-      [
-        {
-          title: 'Текстиль для дома',
-          href: '/katalog/tekstil',
-          children: [
+      {
+        title: 'Текстиль для дома',
+        href: '/katalog/tekstil',
+        children: [
+          [
             {
               title: 'Подушки',
               href: '/katalog/tekstil',
@@ -151,8 +161,8 @@ const rootMenu = [
               href: '/katalog/tekstil',
             },
           ],
-        },
-      ],
+        ],
+      },
     ],
   },
   {
@@ -216,7 +226,7 @@ const MainHeader: FC<Props> = ({ categories }) => {
           }`}
           onMouseEnter={openMenuAll}
         >
-          <Icon name="MenuBurger" /> Все товары
+          <Icon name="MenuBurger" /> Каталог
         </button>
         {categories.map((category, index) => (
           <Link href="/" key={category.title}>

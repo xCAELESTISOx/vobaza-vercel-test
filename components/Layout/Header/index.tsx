@@ -24,12 +24,12 @@ const categories = [
           title: 'Кушетки ',
           href: '/katalog/divany',
         },
+      ],
+      [
         {
           title: ' Модульные диваны ',
           href: '/katalog/divany',
         },
-      ],
-      [
         {
           title: 'Софы ',
           href: '/katalog/divany',
@@ -42,20 +42,98 @@ const categories = [
           title: 'Бескаркасные диваны ',
           href: '/katalog/divany',
         },
+      ],
+      [
         {
           title: 'Подушки для диванов  ',
           href: '/katalog/divany',
         },
       ],
     ],
+    tags: [
+      {
+        title: 'Современный',
+        href: '/katalog/divany',
+      },
+      {
+        title: 'Лофт',
+        href: '/katalog/divany',
+      },
+      {
+        title: 'Скандинавский',
+        href: '/katalog/divany',
+      },
+      {
+        title: 'Классический',
+        href: '/katalog/divany',
+      },
+      {
+        title: 'Дизайнерский',
+        href: '/katalog/divany',
+      },
+      {
+        title: 'Прованс',
+        href: '/katalog/divany',
+      },
+      {
+        title: 'Минимализм',
+        href: '/katalog/divany',
+      },
+      {
+        title: 'Кантри',
+        href: '/katalog/divany',
+      },
+      {
+        title: 'Хай-тек',
+        href: '/katalog/divany',
+      },
+      {
+        title: 'Кухня',
+        href: '/katalog/divany',
+      },
+      {
+        title: 'Гостиная',
+        href: '/katalog/divany',
+      },
+      {
+        title: 'Детская',
+        href: '/katalog/divany',
+      },
+      {
+        title: 'Спальня',
+        href: '/katalog/divany',
+      },
+      {
+        title: 'Раскладной',
+        href: '/katalog/divany',
+      },
+    ],
     menuTitle: {
       title: 'Диваны',
       href: '/katalog/divany',
     },
-    allLink: {
-      title: 'Все диваны ',
-      href: '/',
-    },
+    links: [
+      {
+        title: 'Все диваны',
+        href: '/',
+      },
+      {
+        title: 'Скидки',
+        href: '/',
+      },
+      {
+        title: 'Распродажа',
+        href: '/',
+      },
+      {
+        title: 'Дешевле',
+        href: '/',
+      },
+      {
+        title: 'Дороже',
+        href: '/',
+      },
+    ],
   },
   {
     title: 'Кресла',
@@ -79,10 +157,28 @@ const categories = [
       title: 'Текстиль для дома',
       href: '/katalog/divany',
     },
-    allLink: {
-      title: 'Весь текстиль для дома ',
-      href: '/',
-    },
+    links: [
+      {
+        title: 'Все диваны',
+        href: '/',
+      },
+      {
+        title: 'Скидки',
+        href: '/',
+      },
+      {
+        title: 'Распродажа',
+        href: '/',
+      },
+      {
+        title: 'Дешевле',
+        href: '/',
+      },
+      {
+        title: 'Дороже',
+        href: '/',
+      },
+    ],
   },
   {
     title: 'Кровати',
@@ -106,10 +202,28 @@ const categories = [
       title: 'Текстиль для дома',
       href: '/katalog/divany',
     },
-    allLink: {
-      title: 'Весь текстиль для дома ',
-      href: '/',
-    },
+    links: [
+      {
+        title: 'Все диваны',
+        href: '/',
+      },
+      {
+        title: 'Скидки',
+        href: '/',
+      },
+      {
+        title: 'Распродажа',
+        href: '/',
+      },
+      {
+        title: 'Дешевле',
+        href: '/',
+      },
+      {
+        title: 'Дороже',
+        href: '/',
+      },
+    ],
   },
   {
     title: 'Матрасы',
@@ -133,10 +247,28 @@ const categories = [
       title: 'Текстиль для дома',
       href: '/katalog/divany',
     },
-    allLink: {
-      title: 'Весь текстиль для дома ',
-      href: '/',
-    },
+    links: [
+      {
+        title: 'Все диваны',
+        href: '/',
+      },
+      {
+        title: 'Скидки',
+        href: '/',
+      },
+      {
+        title: 'Распродажа',
+        href: '/',
+      },
+      {
+        title: 'Дешевле',
+        href: '/',
+      },
+      {
+        title: 'Дороже',
+        href: '/',
+      },
+    ],
   },
   {
     title: 'Шкафы',
@@ -160,10 +292,28 @@ const categories = [
       title: 'Текстиль для дома',
       href: '/katalog/divany',
     },
-    allLink: {
-      title: 'Весь текстиль для дома ',
-      href: '/',
-    },
+    links: [
+      {
+        title: 'Все диваны',
+        href: '/',
+      },
+      {
+        title: 'Скидки',
+        href: '/',
+      },
+      {
+        title: 'Распродажа',
+        href: '/',
+      },
+      {
+        title: 'Дешевле',
+        href: '/',
+      },
+      {
+        title: 'Дороже',
+        href: '/',
+      },
+    ],
   },
   {
     title: 'Тумбы',
@@ -187,10 +337,28 @@ const categories = [
       title: 'Текстиль для дома',
       href: '/katalog/divany',
     },
-    allLink: {
-      title: 'Весь текстиль для дома ',
-      href: '/',
-    },
+    links: [
+      {
+        title: 'Все диваны',
+        href: '/',
+      },
+      {
+        title: 'Скидки',
+        href: '/',
+      },
+      {
+        title: 'Распродажа',
+        href: '/',
+      },
+      {
+        title: 'Дешевле',
+        href: '/',
+      },
+      {
+        title: 'Дороже',
+        href: '/',
+      },
+    ],
   },
   {
     title: 'Столы',
@@ -214,10 +382,28 @@ const categories = [
       title: 'Текстиль для дома',
       href: '/katalog/divany',
     },
-    allLink: {
-      title: 'Весь текстиль для дома ',
-      href: '/',
-    },
+    links: [
+      {
+        title: 'Все диваны',
+        href: '/',
+      },
+      {
+        title: 'Скидки',
+        href: '/',
+      },
+      {
+        title: 'Распродажа',
+        href: '/',
+      },
+      {
+        title: 'Дешевле',
+        href: '/',
+      },
+      {
+        title: 'Дороже',
+        href: '/',
+      },
+    ],
   },
   {
     title: 'Текстиль',
@@ -241,10 +427,28 @@ const categories = [
       title: 'Текстиль для дома',
       href: '/katalog/divany',
     },
-    allLink: {
-      title: 'Весь текстиль для дома ',
-      href: '/',
-    },
+    links: [
+      {
+        title: 'Все диваны',
+        href: '/',
+      },
+      {
+        title: 'Скидки',
+        href: '/',
+      },
+      {
+        title: 'Распродажа',
+        href: '/',
+      },
+      {
+        title: 'Дешевле',
+        href: '/',
+      },
+      {
+        title: 'Дороже',
+        href: '/',
+      },
+    ],
   },
 ];
 const mobileCategories = [

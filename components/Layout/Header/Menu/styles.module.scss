@@ -4,8 +4,8 @@
   top: 40px;
   display: flex;
   flex-direction: column;
-  padding-top: 32px;
-  padding-bottom: 32px;
+  padding-top: 40px;
+  padding-bottom: 40px;
   width: 100vw;
   border: none;
   box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1);
@@ -20,10 +20,10 @@
 .headerMenuContent {
   display: flex;
   width: 100%;
+  padding-bottom: 40px;
 }
 
 .headerMenuTitle {
-  padding: 0 16px 0 64px;
   margin-bottom: 4px;
   margin-top: 12px;
   max-width: max-content;
@@ -34,16 +34,13 @@
   &:hover {
     color: var(--primary-color, #af1ebe);
   }
-
-  @media screen and (max-width: 1140px) {
-    padding-left: 54px;
-  }
 }
 .rootMenu {
   display: flex;
   flex-direction: column;
   width: 34%;
-  margin-right: 16px;
+  margin-right: 40px;
+  padding-bottom: 14px;
   max-width: 274px;
   background-color: #f5f5f5;
   border-radius: 8px;
@@ -53,13 +50,26 @@
     padding-left: 16px;
   }
 }
-.rootMenuLink {
+.rootMenuItemDivided {
   position: relative;
+  padding-top: 12px;
+  margin-top: 12px;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 22px;
+    width: calc(100% - 44px);
+    border-top: 1px solid #c4c4c4;
+  }
+}
+.rootMenuLink {
   display: flex;
   align-items: center;
-  padding: 13px 22px;
-  font-weight: 500;
-  line-height: 1.1;
+  padding: 12px 20px;
+  font-size: 14px;
+  line-height: 20px;
   border-radius: 8px;
   transition: color 0.2s, background-color 0.2s;
 
@@ -70,43 +80,57 @@
   }
 
   svg {
-    margin-right: 12px;
+    margin-right: 10px;
   }
 }
-.rootMenuLinkDivided {
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0px;
-    left: 22px;
-    width: calc(100% - 44px);
-    border-top: 1px solid #c4c4c4;
+
+.subMenuRoot {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 60px;
+  width: 100%;
+}
+.subMenuRootTitle {
+  display: block;
+  margin-bottom: 40px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  transition: color 0.15s;
+
+  &:hover {
+    color: var(--primary-color, #af1ebe);
+  }
+}
+.subMenuRootBlockList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+
+  .subMenuItem {
+    &:first-child {
+      font-weight: 600;
+    }
+    + .subMenuItem {
+      margin-top: 16px;
+    }
   }
 }
 
 .subMenu {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  padding: 12px 16px 32px;
-  overflow-y: auto;
-  padding-left: 64px;
-
-  @media screen and (max-width: 1140px) {
-    padding-left: 54px;
-  }
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 32px;
+  width: 100%;
 }
 .subMenuBlock {
   display: flex;
   flex-direction: column;
-
-  + .subMenuBlock {
-    margin-left: 64px;
-  }
 }
 .subMenuItem {
   max-width: max-content;
-  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
   transition: color 0.15s;
 
   &:hover {
@@ -114,7 +138,7 @@
   }
 
   + .subMenuItem {
-    margin-top: 12px;
+    margin-top: 24px;
   }
 }
 .subMenuItemGray {
@@ -123,20 +147,55 @@
 }
 
 .headerMenuBottom {
-  padding: 12px 16px 12px 64px;
-  border-top: 1px solid #dbdbdb;
-
-  @media screen and (max-width: 1140px) {
-    padding-left: 54px;
+  display: flex;
+  padding-top: 24px;
+  border-top: 1px solid #f0f0f0;
+}
+.headerMenuBottomItem {
+  + .headerMenuBottomItem {
+    margin-left: 32px;
   }
 }
 .headerMenuBottomLink {
   max-width: max-content;
-  color: #000;
-  font-weight: 500;
+  color: var(--primary-color, #af1ebe);
+  font-size: 16px;
+  line-height: 24px;
   transition: color 0.15s;
 
   &:hover {
+    color: #000;
+  }
+}
+.headerMenuTags {
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 24px;
+  padding-bottom: 8px;
+  margin: 0 -4px;
+  border-top: 1px solid #f0f0f0;
+}
+.headerMenuTagItem {
+  margin: 0 4px 16px;
+}
+.headerMenuTagLink {
+  display: block;
+  padding: 4px 12px;
+  background-color: #ebebeb;
+  font-size: 12px;
+  line-height: 14px;
+  border: 1px solid #ebebeb;
+  border-radius: 40px;
+
+  &.active {
+    background-color: #efd2f2;
+    border-color: #efd2f2;
     color: var(--primary-color, #af1ebe);
+  }
+  &.lined {
+    background-color: white;
+    border-color: var(--primary-color, #af1ebe);
+    color: var(--primary-color, #af1ebe);
+    cursor: pointer;
   }
 }

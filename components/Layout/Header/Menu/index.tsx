@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import styles from './styles.module.scss';
@@ -10,10 +10,14 @@ type Props = {
 };
 
 const HeaderMenu: FC<Props> = ({ rootMenu, withRoot }) => {
+  const [isAllTags, setIsAllTags] = useState(false);
   const [currentMenuItem, setCurrentMenuItem] = useState(
     withRoot ? rootMenu[0] : rootMenu
   );
 
+  const showAllMenuTags = () => {
+    setIsAllTags(true);
+  };
   const menuTabHover = (e) => {
     if (e.target.dataset.tag) {
       setCurrentMenuItem(
@@ -26,76 +30,123 @@ const HeaderMenu: FC<Props> = ({ rootMenu, withRoot }) => {
 
   useEffect(() => {
     setCurrentMenuItem(withRoot ? rootMenu[0] : rootMenu);
+    setIsAllTags(false);
   }, [rootMenu]);
 
   return (
     <div className={`${styles.headerMenu} container`}>
-      {rootMenu.menuTitle && (
-        <Link href={rootMenu.menuTitle.href}>
-          <a className={styles.headerMenuTitle}>{rootMenu.menuTitle.title}</a>
-        </Link>
-      )}
       <div className={styles.headerMenuContent}>
         {withRoot && (
           <div className={styles.rootMenu}>
             {rootMenu.map((menu) => (
-              <Link key={menu.title} href={menu.href}>
-                <a
-                  data-tag={menu.tag}
-                  onMouseEnter={menuTabHover}
-                  className={`${styles.rootMenuLink} ${
-                    menu.isDivided ? styles.rootMenuLinkDivided : ''
-                  } 
-                  ${currentMenuItem.tag === menu.tag ? styles.active : ''}`}
-                >
-                  <Icon name="Catalog" />
-                  {menu.title}
-                </a>
-              </Link>
-            ))}
-            <Link href="/katalog">
-              <a
-                className={`${styles.rootMenuLink} ${styles.rootMenuLinkDivided}`}
+              <div
+                key={menu.title}
+                className={`${
+                  menu.isDivided ? styles.rootMenuItemDivided : ''
+                } `}
               >
-                Все товары
-              </a>
-            </Link>
-          </div>
-        )}
-        <div className={styles.subMenu}>
-          {currentMenuItem &&
-            currentMenuItem.menu.map((menuList, index) => (
-              <div key={index} className={styles.subMenuBlock}>
-                {menuList.map((menu) => (
-                  <Fragment key={menu.title}>
-                    <Link href={menu.href}>
-                      <a
-                        className={`${styles.subMenuItem} ${
-                          menu.children && styles.subMenuItemGray
-                        }`}
-                      >
-                        {menu.title}
-                      </a>
-                    </Link>
-                    {menu.children &&
-                      menu.children.map((menu) => (
-                        <Link key={menu.title} href={menu.href}>
-                          <a className={styles.subMenuItem}>{menu.title}</a>
-                        </Link>
-                      ))}
-                  </Fragment>
-                ))}
+                <Link href={menu.href}>
+                  <a
+                    data-tag={menu.tag}
+                    onMouseEnter={menuTabHover}
+                    className={`${styles.rootMenuLink}
+                  ${currentMenuItem.tag === menu.tag ? styles.active : ''}`}
+                  >
+                    <Icon name="Catalog" />
+                    {menu.title}
+                  </a>
+                </Link>
               </div>
             ))}
-        </div>
+            <div className={styles.rootMenuItemDivided}>
+              <Link href="/katalog">
+                <a className={`${styles.rootMenuLink}`}>Все товары</a>
+              </Link>
+            </div>
+          </div>
+        )}
+        {withRoot ? (
+          <div className={styles.subMenuRoot}>
+            {currentMenuItem &&
+              currentMenuItem.menu.map((rootMenuItem, index) => (
+                <div key={index}>
+                  <Link href={rootMenuItem.href || '/'}>
+                    <a className={styles.subMenuRootTitle}>
+                      {rootMenuItem.title}
+                    </a>
+                  </Link>
+                  {rootMenuItem.children && (
+                    <div className={styles.subMenuRootBlockList}>
+                      {rootMenuItem.children.map((menuList, index) => (
+                        <div key={index} className={styles.subMenuBlock}>
+                          {menuList &&
+                            menuList.length > 0 &&
+                            menuList.map((menu) => (
+                              <Link key={menu.title} href={menu.href}>
+                                <a className={styles.subMenuItem}>
+                                  {menu.title}
+                                </a>
+                              </Link>
+                            ))}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+          </div>
+        ) : (
+          <div className={styles.subMenu}>
+            {currentMenuItem &&
+              currentMenuItem.menu.map((menuList, index) => (
+                <div key={index} className={styles.subMenuBlock}>
+                  {menuList &&
+                    menuList.length > 0 &&
+                    menuList.map((menu) => (
+                      <Link key={menu.title} href={menu.href}>
+                        <a className={styles.subMenuItem}>{menu.title}</a>
+                      </Link>
+                    ))}
+                </div>
+              ))}
+          </div>
+        )}
       </div>
-      {rootMenu.allLink && (
+      {rootMenu.tags && (
+        <div className={styles.headerMenuTags}>
+          {(isAllTags ? rootMenu.tags : rootMenu.tags.slice(0, 11)).map(
+            (tag) => (
+              <div key={tag.title} className={styles.headerMenuTagItem}>
+                <Link href={tag.href}>
+                  <a
+                    className={`${styles.headerMenuTagLink} ${
+                      false ? styles.active : ''
+                    }`}
+                  >
+                    {tag.title}
+                  </a>
+                </Link>
+              </div>
+            )
+          )}
+          {rootMenu.tags.length > 11 && !isAllTags && (
+            <div className={styles.headerMenuTagItem} onClick={showAllMenuTags}>
+              <div className={`${styles.headerMenuTagLink} ${styles.lined}`}>
+                Показать еще
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+      {rootMenu.links && (
         <div className={styles.headerMenuBottom}>
-          <Link href={rootMenu.allLink.href}>
-            <a className={styles.headerMenuBottomLink}>
-              {rootMenu.allLink.title}
-            </a>
-          </Link>
+          {rootMenu.links.map((link) => (
+            <div key={link.title} className={styles.headerMenuBottomItem}>
+              <Link href={link.href}>
+                <a className={styles.headerMenuBottomLink}>{link.title}</a>
+              </Link>
+            </div>
+          ))}
         </div>
       )}
     </div>
