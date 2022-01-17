@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import Link from 'next/link';
+import Cookies from 'js-cookie';
 
 import styles from './styles.module.scss';
 import { useAuth } from '../../../../src/context/auth';
@@ -15,8 +16,8 @@ type Props = {
 
 const MainHeader: FC<Props> = ({ mobileCategories }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { state, dispatch } = useAuth();
-  const { user } = state;
+  const { dispatch } = useAuth();
+  const token = Cookies.get('token');
 
   const openAuthModal = () => {
     dispatch({ type: 'toggleModal' });
@@ -59,13 +60,15 @@ const MainHeader: FC<Props> = ({ mobileCategories }) => {
           </Link>
         </div>
         <div className={styles.headerButtons}>
-          {user ? (
-            <Link href="/profile">
-              <a className={styles.headerButton}>
-                <Icon name="Person"></Icon>
-                <span>Профиль</span>
-              </a>
-            </Link>
+          {token ? (
+            <div className={styles.headerButton}>
+              <Link href="/profile">
+                <a className={styles.headerButton}>
+                  <Icon name="Person"></Icon>
+                  <span>Профиль</span>
+                </a>
+              </Link>
+            </div>
           ) : (
             <div className={styles.headerButton} onClick={openAuthModal}>
               <Icon name="Person"></Icon>

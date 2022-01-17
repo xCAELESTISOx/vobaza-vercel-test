@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 
 import { useAuth } from '../../src/context/auth';
@@ -7,6 +8,7 @@ import LoginForm from './LoginForm';
 import RegistrationForm from './RegistrationForm';
 
 const AuthModal: FC = () => {
+  const router = useRouter();
   const [isRegistration, setIsRegistration] = useState(false);
   const { state, dispatch } = useAuth();
   const { isModalOpen } = state;
@@ -19,6 +21,11 @@ const AuthModal: FC = () => {
     setIsRegistration(false);
   };
 
+  const onSuccess = () => {
+    onClose();
+    router.push('/profile');
+  };
+
   return (
     <>
       {isModalOpen && (
@@ -26,7 +33,10 @@ const AuthModal: FC = () => {
           {isRegistration ? (
             <RegistrationForm goLogin={toggleIsRegistration} />
           ) : (
-            <LoginForm goRegister={toggleIsRegistration} />
+            <LoginForm
+              goRegister={toggleIsRegistration}
+              onSuccess={onSuccess}
+            />
           )}
         </ModalLayout>
       )}

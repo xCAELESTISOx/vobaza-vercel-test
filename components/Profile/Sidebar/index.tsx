@@ -1,12 +1,25 @@
 import { FC } from 'react';
 import Link from 'next/link';
-
-import styles from './styles.module.scss';
-import { Icon } from '@nebo-team/vobaza.ui.icon';
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
+
+import { api } from '../../../assets/api';
+import styles from './styles.module.scss';
+
+import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 const ProfileSidebar: FC = () => {
   const router = useRouter();
+
+  const logout = () => {
+    try {
+      api.logout();
+      Cookies.remove('token');
+      router.push('/');
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className={styles.profileSidebar}>
@@ -75,15 +88,16 @@ const ProfileSidebar: FC = () => {
           </div>
         </a>
       </Link>
-      <Link href="/profile">
-        <a className={`${styles.profileSidebarItem} ${styles.gray}`}>
-          <Icon name="Exit" />
-          Выйти
-          <div className={styles.profileSidebarIcons}>
-            <Icon name="SmallArrowUp" style={{ transform: 'rotate(90deg)' }} />
-          </div>
-        </a>
-      </Link>
+      <div
+        className={`${styles.profileSidebarItem} ${styles.gray}`}
+        onClick={logout}
+      >
+        <Icon name="Exit" />
+        Выйти
+        <div className={styles.profileSidebarIcons}>
+          <Icon name="SmallArrowUp" style={{ transform: 'rotate(90deg)' }} />
+        </div>
+      </div>
     </div>
   );
 };

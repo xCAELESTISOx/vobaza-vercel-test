@@ -18,6 +18,7 @@
   border-radius: 12px;
   transition-duration: 0.2s;
   transition-property: background-color, color;
+  cursor: pointer;
 
   @media screen and (max-width: 979px) {
     padding: 8px;

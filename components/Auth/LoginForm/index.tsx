@@ -1,6 +1,8 @@
 import * as yup from 'yup';
 import { useFormik } from 'formik';
+import Cookies from 'js-cookie';
 
+import { api } from '../../../assets/api';
 import styles from '../../../styles/modules/inline-modal.module.scss';
 import { IError } from '../../../src/models/IError';
 
@@ -27,9 +29,10 @@ const validationSchema = yup.object({
 
 type Props = {
   goRegister: () => void;
+  onSuccess: () => void;
 };
 
-const LoginForm = ({ goRegister }: Props) => {
+const LoginForm = ({ goRegister, onSuccess }: Props) => {
   const [isCodeTimeout, setIsCodeTimeout] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -37,7 +40,7 @@ const LoginForm = ({ goRegister }: Props) => {
     try {
       if (isLoading) return;
       setIsLoading(true);
-      // await api.requestCode({ phone: values.phone });
+      await api.requestCode({ phone: values.phone });
       setIsCodeTimeout(60);
       setIsLoading(false);
     } catch (error: any) {
@@ -59,8 +62,9 @@ const LoginForm = ({ goRegister }: Props) => {
     try {
       setErrors({ ...errors, code: undefined });
       setIsLoading(true);
-      // const response = await api.checkLoginCode({ confirm_token: values.code });
-      // Cookies.set('token', response.data.data.token);
+      const response = await api.checkLoginCode({ code: values.code });
+      Cookies.set('token', response.data.data.token);
+      onSuccess();
     } catch (error: any) {
       const errs = error.response.data.errors;
       const backErrors = {} as any;
