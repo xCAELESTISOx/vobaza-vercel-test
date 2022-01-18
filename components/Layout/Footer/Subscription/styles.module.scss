@@ -45,8 +45,11 @@
 .subscriptionInput {
   width: 320px;
   margin: 8px 24px 0;
-  background-color: white;
   border-radius: 8px;
+
+  & input {
+    background-color: #fff;
+  }
 
   @media screen and (max-width: 767px) {
     width: 100%;

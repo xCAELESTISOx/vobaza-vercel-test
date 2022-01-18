@@ -12,9 +12,9 @@ export default function ModalLayout({
   onClose,
 }: IModalLayout & { children: React.ReactNode }) {
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflowY = 'hidden';
     return () => {
-      document.body.style.overflow = 'initial';
+      document.body.style.overflowY = 'auto';
     };
   }, []);
 
