@@ -36,6 +36,7 @@ export default function Blog() {
       },
     });
   };
+
   const onChangePagination = (value: number) => {
     replaceRouterQuery({ page: value });
   };
@@ -49,7 +50,7 @@ export default function Blog() {
         <div className={styles.blogPagination}>
           <Pagination
             variation="secondary"
-            pageCount={6}
+            pageCount={1}
             activePage={+page || 1}
             onChange={onChangePagination}
           />
