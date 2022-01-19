@@ -32,8 +32,12 @@ const Subscription: FC = () => {
 
     try {
       await api.subscribeMailing({ email });
+
       setSuccessSend(true);
       setEmail('');
+
+      const activeElement = document.activeElement as HTMLInputElement;
+      if (activeElement && activeElement.blur) activeElement.blur();
     } catch (error) {}
   };
 
