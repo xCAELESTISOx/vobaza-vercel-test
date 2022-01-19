@@ -44,6 +44,7 @@ const validationSchema = yup.object({
     .required('Обязательное поле'),
   email: yup
     .string()
+    .email('Не валидный email')
     .max(255, 'Количество символов в поле должно быть не больше 255')
     .required('Обязательное поле'),
 });

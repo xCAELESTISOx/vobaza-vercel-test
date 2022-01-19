@@ -72,8 +72,10 @@
     font-weight: 700;
   }
   &.link {
+    max-width: max-content;
     color: var(--primary-color, #af1ebe);
     white-space: nowrap;
+    cursor: pointer;
 
     &.dotted {
       border-bottom: 2px dotted var(--primary-color, #af1ebe);

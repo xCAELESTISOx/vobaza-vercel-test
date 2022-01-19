@@ -49,10 +49,10 @@ const validationSchema = yup.object({
     .string()
     .max(255, 'Количество символов в поле должно быть не больше 255')
     .required('Обязательное поле'),
-
   inn: yup
     .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
+    .min(12, 'Количество символов в поле должно быть не меньше 10')
+    .max(12, 'Количество символов в поле должно быть не больше 12')
     .required('Обязательное поле'),
   fio: yup
     .string()
@@ -64,6 +64,7 @@ const validationSchema = yup.object({
     .required('Обязательное поле'),
   email: yup
     .string()
+    .email('Не валидный email')
     .max(255, 'Количество символов в поле должно быть не больше 255')
     .required('Обязательное поле'),
 });
@@ -153,6 +154,7 @@ export default function Partnership() {
               onBlur={handleBlur}
               error={errors?.inn}
               disabled={isLoading}
+              valueType="integer"
               required
             />
             <InputText

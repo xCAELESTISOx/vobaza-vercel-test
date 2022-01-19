@@ -70,9 +70,9 @@ export default function ExchangeAndReturn() {
                 продавца об&nbsp;этих нарушениях.
               </span>
             </div>
-            <div className={`${styles.staticPageText} ${styles.heavy}`}>
+            <div className={`${styles.staticPageText}`}>
               Покупатель также вправе предъявить требования к&nbsp;продавцу
-              в&nbsp;отношении недостатков товара, если они обнаружены
+              в&nbsp;отношении недостатков товара, если они обнаружены{' '}
               <span className={`${styles.staticPageText} ${styles.heavy}`}>
                 в&nbsp;течение гарантийного срока.
               </span>

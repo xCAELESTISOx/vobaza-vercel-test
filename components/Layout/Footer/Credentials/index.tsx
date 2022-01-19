@@ -13,7 +13,7 @@ const Credentials: FC = () => {
   return (
     <div className={`${styles.credentials} container`}>
       <div className={styles.copyright}>
-        &copy;&nbsp;2021&nbsp;ООО &laquo;Вобаза&raquo;. Все права защищены. Все
+        &copy;&nbsp;2022&nbsp;ООО &laquo;Вобаза&raquo;. Все права защищены. Все
         цены на&nbsp;сайте указаны в&nbsp;российских рублях с&nbsp;учетом НДС
         и&nbsp;без учета стоимости доставки.
       </div>
