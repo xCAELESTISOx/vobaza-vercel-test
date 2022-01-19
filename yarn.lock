@@ -282,10 +282,10 @@
     core-js "^3.0.0"
     styled-components "5.3.1"
 
-"@nebo-team/vobaza.ui.inputs.input-phone@^0.0.8":
-  version "0.0.8"
-  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-phone/-/@nebo-team-vobaza.ui.inputs.input-phone-0.0.8.tgz#8657bcd7865acd0396727d2ee3f480488c4081bd"
-  integrity sha1-hle814ZazQOWcn0u4/SASIxAgb0=
+"@nebo-team/vobaza.ui.inputs.input-phone@^0.0.9":
+  version "0.0.9"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-phone/-/@nebo-team-vobaza.ui.inputs.input-phone-0.0.9.tgz#0ef49951bf552c1d1f60c96ba65373205cadf416"
+  integrity sha1-DvSZUb9VLB0fYMlrplNzIFyt9BY=
   dependencies:
     core-js "^3.0.0"
     react-phone-input-2 "2.14.0"
@@ -299,20 +299,29 @@
     core-js "^3.0.0"
     styled-components "5.3.1"
 
-"@nebo-team/vobaza.ui.inputs.input-select@^0.0.22":
-  version "0.0.22"
-  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-select/-/@nebo-team-vobaza.ui.inputs.input-select-0.0.22.tgz#897f00ece276eed279b81c1be300131bfe0c90ab"
-  integrity sha1-iX8A7OJ27tJ5uBwb4wATG/4MkKs=
+"@nebo-team/vobaza.ui.inputs.input-select@^0.0.24":
+  version "0.0.24"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-select/-/@nebo-team-vobaza.ui.inputs.input-select-0.0.24.tgz#b7bbe0bb6861e1f4348a7735d91fdb0688962b47"
+  integrity sha1-t7vgu2hh4fQ0inc12R/bBoiWK0c=
   dependencies:
     "@nebo-team/vobaza.ui.icon" "0.0.13"
     "@nebo-team/vobaza.ui.inputs.input-checkbox" "0.0.12"
     core-js "^3.0.0"
     styled-components "5.3.1"
 
-"@nebo-team/vobaza.ui.inputs.input-text@0.0.30", "@nebo-team/vobaza.ui.inputs.input-text@^0.0.30":
+"@nebo-team/vobaza.ui.inputs.input-text@0.0.30":
   version "0.0.30"
   resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-text/-/@nebo-team-vobaza.ui.inputs.input-text-0.0.30.tgz#c57acc2012e8e7d00894d386dd82285d119f03d8"
   integrity sha1-xXrMIBLo59AIlNOG3YIoXRGfA9g=
+  dependencies:
+    "@nebo-team/vobaza.ui.icon" "0.0.13"
+    core-js "^3.0.0"
+    styled-components "5.3.1"
+
+"@nebo-team/vobaza.ui.inputs.input-text@^0.0.32":
+  version "0.0.32"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-text/-/@nebo-team-vobaza.ui.inputs.input-text-0.0.32.tgz#b058cb011420c336af2f4f2927f9c9c7327a8d70"
+  integrity sha1-sFjLARQgwzavL08pJ/nJxzJ6jXA=
   dependencies:
     "@nebo-team/vobaza.ui.icon" "0.0.13"
     core-js "^3.0.0"
