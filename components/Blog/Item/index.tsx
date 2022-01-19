@@ -11,12 +11,12 @@ interface Props {
 const BlogItem: FC<Props> = ({ post }) => {
   return (
     <div className={styles.blogItem}>
-      <Link href="/blog/dvuhyarusnaya-krovat-dlya-detey-za-i-protiv">
+      <Link href={`/blog/${post.slug}`}>
         <a className={styles.blogItemImage}>
           <Image src={post.cover} alt="" />
         </a>
       </Link>
-      <Link href="/blog/dvuhyarusnaya-krovat-dlya-detey-za-i-protiv">
+      <Link href={`/blog/${post.slug}`}>
         <a>
           <h2 className={styles.blogItemTitle}>{post.title}</h2>
         </a>
