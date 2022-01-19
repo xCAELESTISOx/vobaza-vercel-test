@@ -6,25 +6,25 @@ import SimpleReactLightbox from 'simple-react-lightbox';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import { Button } from '@nebo-team/vobaza.ui.button';
 import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select';
-import Breadcrumbs from '../../components/Layout/Breadcrumbs';
-import { SelectTabs } from '../../components/UI/SelectTabs';
-import { ImagesBlockMemo } from '../../components/DetailGoodPage/ImagesBlock';
-import { ProductVariants } from '../../components/DetailGoodPage/ProductVariants';
-import { ProductInfoAccordion } from '../../components/DetailGoodPage/ProductInfoAccordion';
-import { ProductFeatures } from '../../components/DetailGoodPage/ProductFeatures';
-import { ProductDescription } from '../../components/DetailGoodPage/ProductDescription';
-import { ProductSeller } from '../../components/DetailGoodPage/ProductSeller';
-import { ProductReviews } from '../../components/DetailGoodPage/ProductReviews';
-import { ProductBadges } from '../../components/DetailGoodPage/ProductBadges';
-import { RatingStars } from '../../components/UI/RatingStars';
+import Breadcrumbs from '../../../components/Layout/Breadcrumbs';
+import { SelectTabs } from '../../../components/UI/SelectTabs';
+import { ImagesBlockMemo } from '../../../components/DetailGoodPage/ImagesBlock';
+import { ProductVariants } from '../../../components/DetailGoodPage/ProductVariants';
+import { ProductInfoAccordion } from '../../../components/DetailGoodPage/ProductInfoAccordion';
+import { ProductFeatures } from '../../../components/DetailGoodPage/ProductFeatures';
+import { ProductDescription } from '../../../components/DetailGoodPage/ProductDescription';
+import { ProductSeller } from '../../../components/DetailGoodPage/ProductSeller';
+import { ProductReviews } from '../../../components/DetailGoodPage/ProductReviews';
+import { ProductBadges } from '../../../components/DetailGoodPage/ProductBadges';
+import { RatingStars } from '../../../components/UI/RatingStars';
 
-import type { BreadcrumbType } from '../../components/Layout/Breadcrumbs';
+import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
 
 import styles from './styles.module.scss';
 
-import { product as mockProduct } from '../../src/mock/detailProductPage';
+import { product as mockProduct } from '../../../src/mock/detailProductPage';
 
-interface DetailGoodPage { }
+interface DetailGoodPage {}
 
 const breadcrumbs: BreadcrumbType[] = [
   {
@@ -37,7 +37,7 @@ const breadcrumbs: BreadcrumbType[] = [
   },
 ];
 
-const DetailGoodPage: FC<DetailGoodPage> = ({ }) => {
+const DetailGoodPage: FC<DetailGoodPage> = ({}) => {
   const [selectedColorVariant, setSelectedColorVariant] = useState<any>(
     mockProduct.variants[0]
   );

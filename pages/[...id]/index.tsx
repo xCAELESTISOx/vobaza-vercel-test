@@ -1,16 +1,16 @@
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
-import styles from '../../../styles/Catalog.module.scss';
+import styles from '../../styles/Catalog.module.scss';
 
-import tmpBannerImg1 from '../../../src/tmp/bannerFilter.jpg';
-import tmpBannerImg2 from '../../../src/tmp/bannerFilterMob.jpg';
+import tmpBannerImg1 from '../../src/tmp/bannerFilter.jpg';
+import tmpBannerImg2 from '../../src/tmp/bannerFilterMob.jpg';
 
 import Breadcrumbs, {
   BreadcrumbType,
-} from '../../../components/Layout/Breadcrumbs';
-import CatalogList from '../../../components/Catalog/List';
-import GoodsBlock from '../../../components/Goods/Block';
+} from '../../components/Layout/Breadcrumbs';
+import CatalogList from '../../components/Catalog/List';
+import GoodsBlock from '../../components/Goods/Block';
 
 const breadcrumbs: BreadcrumbType[] = [
   {
