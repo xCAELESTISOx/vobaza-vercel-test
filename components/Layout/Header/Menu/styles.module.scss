@@ -20,7 +20,10 @@
 .headerMenuContent {
   display: flex;
   width: 100%;
-  padding-bottom: 40px;
+
+  &:not(:last-child) {
+    padding-bottom: 40px;
+  }
 }
 
 .headerMenuTitle {

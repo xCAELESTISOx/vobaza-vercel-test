@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import styles from './styles.module.scss';
@@ -9,7 +10,7 @@ import HeaderMenu from '../Menu';
 const rootMenu = [
   {
     title: 'Диваны и кресла',
-    href: '/katalog/divany',
+    href: '/divany-i-kresla',
     tag: 'divany',
     menu: [
       {
@@ -119,76 +120,61 @@ const rootMenu = [
     ],
   },
   {
-    title: 'Шкафы, комоды и тумбы',
-    href: '/katalog/divany',
+    title: 'Кровати и матрасы',
+    href: '/krovati-i-matrasy',
+  },
+  {
+    title: 'Шкафы и тумбы',
+    href: '/shkafy-i-tumby',
   },
   {
     title: 'Столы и стулья',
-    href: '/katalog/divany',
+    href: '/stoly-i-stulya',
   },
   {
-    title: 'Кровати и матрасы',
-    href: '/katalog/divany',
-  },
-  {
-    title: 'Хранение и порядок',
-    href: '/katalog/divany',
+    title: 'Хранение',
+    href: '/hranenie',
   },
   {
     title: 'Вешалки и зеркала',
-    href: '/katalog/divany',
-  },
-  {
-    title: 'Текстиль',
-    href: '/katalog/divany',
-    tag: 'tekstil',
-    menu: [
-      {
-        title: 'Текстиль для дома',
-        href: '/katalog/tekstil',
-        children: [
-          [
-            {
-              title: 'Подушки',
-              href: '/katalog/tekstil',
-            },
-            {
-              title: 'Одеяла',
-              href: '/katalog/tekstil',
-            },
-            {
-              title: 'Наматрасники',
-              href: '/katalog/tekstil',
-            },
-          ],
-        ],
-      },
-    ],
+    href: '/veshalki-i-zerkala',
   },
   {
     title: 'Гостиная',
-    href: '/katalog/divany',
+    href: '/gostinaya',
     isDivided: true,
   },
   {
+    title: 'Спальня',
+    href: '/spalnya',
+  },
+  {
     title: 'Детская',
-    href: '/katalog/divany',
+    href: '/detskaya',
   },
   {
     title: 'Прихожая',
-    href: '/katalog/divany',
+    href: '/prihojaya',
   },
   {
-    title: 'Кухня и столовая',
-    href: '/katalog/divany',
+    title: 'Кухня',
+    href: '/kuhnya',
   },
   {
     title: 'Ванная',
-    href: '/katalog/divany',
+    href: '/vannaya',
+  },
+  {
+    title: 'Кабинет',
+    href: '/kabinet',
+  },
+  {
+    title: 'Офис',
+    href: '/ofis',
   },
   {
     title: 'Дача и сад',
-    href: '/katalog/divany',
+    href: '/dacha-i-sad',
   },
 ];
 
@@ -197,6 +183,7 @@ type Props = {
 };
 
 const MainHeader: FC<Props> = ({ categories }) => {
+  const router = useRouter();
   const [currentMenu, setCurrentMenu] = useState(null);
   const [withRoot, setWithRoot] = useState(false);
 
@@ -206,7 +193,11 @@ const MainHeader: FC<Props> = ({ categories }) => {
   };
   const openMenu = (e) => {
     setWithRoot(false);
-    setCurrentMenu(categories[e.target.dataset.index]);
+    if (categories[e.target.dataset.index].menu) {
+      setCurrentMenu(categories[e.target.dataset.index]);
+    } else {
+      setCurrentMenu(undefined);
+    }
   };
   const closeMenu = () => {
     setWithRoot(false);
@@ -229,10 +220,11 @@ const MainHeader: FC<Props> = ({ categories }) => {
           <Icon name="MenuBurger" /> Каталог
         </button>
         {categories.map((category, index) => (
-          <Link href="/" key={category.title}>
+          <Link href={category.href} key={category.title}>
             <a
               className={`${styles.headerCategory} ${
-                currentMenu && currentMenu.title === category.title
+                (currentMenu && currentMenu.title === category.title) ||
+                router.asPath.includes(category.href)
                   ? styles.active
                   : ''
               }`}
