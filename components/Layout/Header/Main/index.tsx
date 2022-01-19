@@ -12,9 +12,10 @@ import CitySelect from '../CitySelect';
 
 type Props = {
   mobileCategories: any[];
+  openPhoneCallModal: () => void;
 };
 
-const MainHeader: FC<Props> = ({ mobileCategories }) => {
+const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { dispatch } = useAuth();
   const token = Cookies.get('token');
@@ -55,9 +56,9 @@ const MainHeader: FC<Props> = ({ mobileCategories }) => {
         </div>
         <div className={styles.phoneWraper}>
           <div className={styles.phone}>+7(495) 172-57-64</div>
-          <Link href="/">
-            <a className={styles.phoneLink}>Заказать звонок</a>
-          </Link>
+          <div className={styles.phoneLink} onClick={openPhoneCallModal}>
+            Заказать звонок
+          </div>
         </div>
         <div className={styles.headerButtons}>
           {token ? (

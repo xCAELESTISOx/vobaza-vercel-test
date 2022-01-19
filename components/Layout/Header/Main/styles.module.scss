@@ -104,10 +104,12 @@
   white-space: nowrap;
 }
 .phoneLink {
+  max-width: max-content;
   font-size: 14px;
   line-height: 140%;
   color: var(--primary-color, #af1ebe);
   border-bottom: 1px dashed var(--primary-color, #af1ebe);
+  cursor: pointer;
 }
 
 .headerButtons {

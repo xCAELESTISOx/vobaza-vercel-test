@@ -9,11 +9,15 @@ import Socials from './Socials';
 import MainFooter from './Main';
 import Credentials from './Credentials';
 
-const MainHeader: FC = () => {
+type Props = {
+  openPhoneCallModal: () => void;
+};
+
+const MainHeader: FC<Props> = ({ openPhoneCallModal }) => {
   return (
     <footer className={styles.footer}>
       <UpBlock />
-      <Contacts />
+      <Contacts openPhoneCallModal={openPhoneCallModal} />
       <Subscription />
       <Socials />
       <MainFooter />

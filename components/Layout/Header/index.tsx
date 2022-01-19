@@ -607,11 +607,18 @@ const mobileCategories = [
   },
 ];
 
-const Header: FC = () => {
+type Props = {
+  openPhoneCallModal: () => void;
+};
+
+const Header: FC<Props> = ({ openPhoneCallModal }) => {
   return (
     <header>
       <SmallHeader />
-      <MainHeader mobileCategories={mobileCategories} />
+      <MainHeader
+        openPhoneCallModal={openPhoneCallModal}
+        mobileCategories={mobileCategories}
+      />
       <SubHeader categories={categories} />
     </header>
   );

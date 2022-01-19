@@ -3,12 +3,11 @@ import React, { FC } from 'react';
 import styles from './styles.module.scss';
 import { Button } from '@nebo-team/vobaza.ui.button';
 
-const FooterContacts: FC = () => {
-  const orderCall = () => {
-    // TODO Create modal
-    console.log('createModal');
-  };
+type Props = {
+  openPhoneCallModal: () => void;
+};
 
+const FooterContacts: FC<Props> = ({ openPhoneCallModal }) => {
   return (
     <div className={`${styles.contactsBlock} container`}>
       <div className={styles.contactsItem}>
@@ -26,7 +25,7 @@ const FooterContacts: FC = () => {
           text="Заказать звонок"
           icon="Phone"
           size="big"
-          onClick={orderCall}
+          onClick={openPhoneCallModal}
         />
       </div>
       <div className={styles.contactsItem}>
