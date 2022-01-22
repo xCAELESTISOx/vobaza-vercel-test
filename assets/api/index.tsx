@@ -29,4 +29,8 @@ export const api = {
   subscribeMailing(data: { email: string }) {
     return axios.post('/v1/subscriptions', data);
   },
+  // banners
+  getBannersByType(type: string) {
+    return axios.get('/v1/banners', { params: { type } });
+  },
 };

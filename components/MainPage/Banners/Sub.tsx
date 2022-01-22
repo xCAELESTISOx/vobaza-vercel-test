@@ -1,29 +1,39 @@
 import React, { FC } from 'react';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import type { BannerSlide } from './index';
+
 import styles from './styles.module.scss';
 
 type Props = {
-  slides: any[];
+  slides: Array<BannerSlide>;
 };
 
-const MainBanner: FC<Props> = ({ slides }) => {
+const SubBanner: FC<Props> = ({ slides }) => {
   return (
     <>
       <div className={styles.subBanners}>
-        {slides.map((banner) => (
-          <Link key={banner.href} href={banner.href}>
+        {slides.map((slide) => (
+          <Link key={slide.id} href={slide.url}>
             <a className={styles.subBanner}>
-              <Image src={banner.image} alt="Banner" objectFit="cover" />
+              {slide.desktop_image && (
+                <Image
+                  src={slide.desktop_image}
+                  alt="Banner"
+                  layout="fill"
+                  objectFit="cover"
+                />
+              )}
               <div className={styles.bannerContent}>
                 <div
                   className={styles.bannerTitle}
-                  dangerouslySetInnerHTML={banner.title}
+                  dangerouslySetInnerHTML={{ __html: slide.title }}
                 ></div>
                 <div className={styles.bannerDeacription}>
-                  {banner.description}
+                  {slide.description}
                 </div>
               </div>
             </a>
@@ -37,23 +47,25 @@ const MainBanner: FC<Props> = ({ slides }) => {
           speed={600}
           className={styles.swiper}
         >
-          {slides.map((banner) => (
-            <SwiperSlide key={banner.href}>
-              <Link href={banner.href}>
+          {slides.map((slide) => (
+            <SwiperSlide key={slide.id}>
+              <Link href={slide.url}>
                 <a className={styles.subBanner}>
-                  <Image
-                    src={banner.image}
-                    alt="Banner"
-                    layout="fill"
-                    objectFit="cover"
-                  />
+                  {(slide.mobile_image || slide.desktop_image) && (
+                    <Image
+                      src={slide.mobile_image || slide.desktop_image}
+                      alt="Banner"
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                  )}
                   <div className={styles.bannerContent}>
                     <div
                       className={styles.bannerTitle}
-                      dangerouslySetInnerHTML={banner.title}
+                      dangerouslySetInnerHTML={{ __html: slide.title }}
                     ></div>
                     <div className={styles.bannerDeacription}>
-                      {banner.description}
+                      {slide.description}
                     </div>
                   </div>
                 </a>
@@ -66,4 +78,4 @@ const MainBanner: FC<Props> = ({ slides }) => {
   );
 };
 
-export default MainBanner;
+export default SubBanner;

@@ -1,63 +1,49 @@
 import React, { FC } from 'react';
 
-import styles from './styles.module.scss';
+import { getLastImageVariant } from '../../../assets/utils/images';
 
 import MainBanner from './Main';
 import SubBanner from './Sub';
 
-import tmpImg1 from './tmp/banner1.png';
-import tmpImg2 from './tmp/banner2.png';
-import tmpImg3 from './tmp/banner3.png';
-import tmpMainImg1 from './tmp/main1.jpg';
-import tmpMainImg2 from './tmp/main2.jpg';
-import tmpMainImg3 from './tmp/main3.jpg';
-import tmpMainMobileImg1 from './tmp/mainMobile1.jpg';
-import tmpMainMobileImg2 from './tmp/mainMobile2.jpg';
+import type { Banner } from '../../../src/models/IBanner';
 
-const mainBaners = [
-  {
-    image: tmpMainImg1,
-    mobileImage: tmpMainMobileImg1,
-    href: '/ekspress-dostavka',
-  },
-  {
-    image: tmpMainImg2,
-    mobileImage: tmpMainMobileImg2,
-    href: '/krovati-s-myagkim-izgolovem',
-  },
-  {
-    image: tmpMainImg3,
-    href: '/kollekciya-mebeli-kalgari',
-  },
-];
-const subBaners = [
-  {
-    title: { __html: `Гарантия <br> лучшей цены` },
-    description: 'всегда выгодно',
-    image: tmpImg1,
-    href: '/garantiya-luchshey-ceny',
-  },
-  {
-    title: { __html: `Доставка <br> в день заказа` },
-    description: 'быстро и просто',
-    image: tmpImg2,
-    href: '/dostavka',
-  },
-  {
-    title: { __html: `Поможем <br> с выбором` },
-    description: 'коллцентр всегда на связи',
-    image: tmpImg3,
-    href: '/kontakty',
-  },
-];
+import styles from './styles.module.scss';
 
-const BottomTabBar: FC = () => {
+interface Props {
+  forSlider: Array<Banner>;
+  forMiniature: Array<Banner>;
+}
+
+interface BannerSlide extends Omit<Banner, 'desktop_image' | 'mobile_image'> {
+  desktop_image: string;
+  mobile_image: string;
+}
+
+const normalizeSlide = (item: Banner): BannerSlide => {
+  const desktop_image = getLastImageVariant(item.desktop_image);
+  const mobile_image = getLastImageVariant(item.mobile_image);
+
+  const result = {
+    ...item,
+    desktop_image: desktop_image ? desktop_image.url : null,
+    mobile_image: mobile_image ? mobile_image.url : null,
+  };
+
+  return result;
+};
+
+const BottomTabBar: FC<Props> = (props) => {
+  const { forSlider, forMiniature } = props;
+
+  const sliderSlides = forSlider.map(normalizeSlide);
+  const miniatureSlides = forMiniature.map(normalizeSlide);
+
   return (
     <div className="container">
       <div className={styles.banners}>
-        <MainBanner slides={mainBaners} />
+        <MainBanner slides={sliderSlides} />
         <div className={styles.subBannersBlock}>
-          <SubBanner slides={subBaners} />
+          <SubBanner slides={miniatureSlides} />
         </div>
       </div>
     </div>
@@ -65,3 +51,4 @@ const BottomTabBar: FC = () => {
 };
 
 export default BottomTabBar;
+export type { BannerSlide };

@@ -1,4 +1,4 @@
-import styles from '../styles/Home.module.scss';
+import { api } from '../assets/api';
 
 import Banners from '../components/MainPage/Banners';
 import PopularCategories from '../components/MainPage/CategoriesList';
@@ -7,11 +7,25 @@ import Blog from '../components/MainPage/Blog';
 import GoodsList from '../components/Goods/List';
 import GoodsSwiper from '../components/Goods/Swiper';
 
-export default function Home() {
+import type { GetServerSideProps } from 'next';
+import type { Banner } from '../src/models/IBanner';
+
+import styles from '../styles/Home.module.scss';
+
+interface Props {
+  banners: {
+    slider: Array<Banner>;
+    miniature: Array<Banner>;
+  };
+}
+
+export default function Home(props: Props) {
+  const { banners } = props;
+
   return (
     <div className={styles.homePage}>
       <section className={styles.bannersBlock}>
-        <Banners />
+        <Banners forSlider={banners.slider} forMiniature={banners.miniature} />
       </section>
       <section className={styles.popularCategoriesBlock}>
         <div className="container">
@@ -46,3 +60,26 @@ export default function Home() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<Props> = async () => {
+  let banners = {
+    slider: [],
+    miniature: [],
+  };
+
+  try {
+    const [sliderBannersRes, miniatureBannersRes] = await Promise.all([
+      api.getBannersByType('SLIDER'),
+      api.getBannersByType('MINIATURE'),
+    ]);
+
+    banners.slider = sliderBannersRes.data.data;
+    banners.miniature = miniatureBannersRes.data.data;
+  } catch (error) {}
+
+  return {
+    props: {
+      banners,
+    },
+  };
+};
