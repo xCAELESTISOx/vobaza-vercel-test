@@ -6,7 +6,11 @@ import { Icon } from '@nebo-team/vobaza.ui.icon';
 import OrderAddressDrawer from './Drawer';
 import { Button } from '@nebo-team/vobaza.ui.button';
 
-const OrderAddress: FC = () => {
+type Props = {
+  address: string;
+  setAddress: (address: string) => void;
+};
+const OrderAddress: FC<Props> = ({ address, setAddress }) => {
   const [isDrawer, setIsDrawer] = useState(false);
 
   const toggleChangeAddressDrawer = () => {
@@ -16,6 +20,8 @@ const OrderAddress: FC = () => {
   return (
     <div className={styles.orderAddress}>
       <OrderAddressDrawer
+        address={address}
+        setAddress={setAddress}
         onClose={toggleChangeAddressDrawer}
         isOpen={isDrawer}
       />
@@ -36,7 +42,7 @@ const OrderAddress: FC = () => {
           onClick={toggleChangeAddressDrawer}
         >
           <Icon name="Geoposition" />
-          <span>Ростов-на-Дону</span>
+          <span>{address}</span>
         </div>
         <div className={styles.cartButton}>
           <Button

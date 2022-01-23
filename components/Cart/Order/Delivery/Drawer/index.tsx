@@ -6,20 +6,41 @@ import Drawer from '../../../../../src/hoc/withDrawer';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 type Props = {
+  withVariants: boolean;
+  setDelivery: (delivery: any) => void;
   isOpen: boolean;
   onClose: () => void;
 };
 
-const OrderDeliveryDrawer: FC<Props> = ({ isOpen = false, onClose }) => {
-  const [isLoading, setIsLoading] = useState(false);
+const tmpVariants = [
+  {
+    name: 'Доставка',
+    price: 990,
+    tag: 'delivery',
+  },
+  {
+    name: 'Экспресс-доставка',
+    price: 1980,
+    tag: 'expressDelivery',
+  },
+];
+
+const OrderDeliveryDrawer: FC<Props> = ({
+  withVariants,
+  setDelivery,
+  isOpen = false,
+  onClose,
+}) => {
+  const [currentVariant, setCurrentVariant] = useState<any>(null);
 
   const setDeliveryHandler = () => {
     try {
-      setIsLoading(true);
-      setTimeout(() => {
-        setIsLoading(false);
-        onClose();
-      }, 2000);
+      if (currentVariant) {
+        setDelivery(currentVariant);
+      } else {
+        setDelivery(null);
+      }
+      onClose();
     } catch (e) {
       console.log(e);
     }
@@ -34,7 +55,39 @@ const OrderDeliveryDrawer: FC<Props> = ({ isOpen = false, onClose }) => {
       onButtonClick={setDeliveryHandler}
     >
       <div className={styles.deliveryDrawerCards}>
-        <div className={`${styles.deliveryDrawerCard} ${styles.active}`}>
+        {withVariants &&
+          tmpVariants.map((variant) => (
+            <div
+              key={variant.tag}
+              className={`${styles.deliveryDrawerCard} ${
+                currentVariant && currentVariant.tag === variant.tag
+                  ? styles.active
+                  : ''
+              }`}
+              onClick={() => {
+                setCurrentVariant(variant);
+              }}
+            >
+              <Icon
+                className={styles.deliveryDrawerCardIcon}
+                name="Checkmark"
+              />
+              <div className={styles.deliveryDrawerCardType}>
+                {variant.name}
+              </div>
+              <div className={styles.deliveryDrawerCardPrice}>
+                {variant.price} ₽
+              </div>
+            </div>
+          ))}
+        <div
+          className={`${styles.deliveryDrawerCard} ${
+            !currentVariant ? styles.active : ''
+          }`}
+          onClick={() => {
+            setCurrentVariant(null);
+          }}
+        >
           <Icon className={styles.deliveryDrawerCardIcon} name="Checkmark" />
           <div className={styles.deliveryDrawerCardType}>
             Оформить заказ с менеджером
@@ -42,10 +95,12 @@ const OrderDeliveryDrawer: FC<Props> = ({ isOpen = false, onClose }) => {
           <div className={styles.deliveryDrawerCardPrice}>Бесплатно</div>
         </div>
       </div>
-      <p className={styles.deliveryDrawerText}>
-        Нажмите кнопку &laquo;Оформить заказ&raquo;, с&nbsp;вами свяжется
-        менеджер для уточнения даты и&nbsp;стоимости доставки.
-      </p>
+      {!currentVariant && (
+        <p className={styles.deliveryDrawerText}>
+          Нажмите кнопку &laquo;Оформить заказ&raquo;, с&nbsp;вами свяжется
+          менеджер для уточнения даты и&nbsp;стоимости доставки.
+        </p>
+      )}
     </Drawer>
   );
 };

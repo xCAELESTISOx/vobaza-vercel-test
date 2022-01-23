@@ -15,15 +15,21 @@
   transition: border-color 0.2s;
   cursor: pointer;
 
+  &:hover,
   &.active {
     border-color: var(--primary-color, #af1ebe);
-
+  }
+  &.active {
     .deliveryDrawerCardType {
       color: var(--primary-color, #af1ebe);
+    }
+    .deliveryDrawerCardIcon {
+      display: block;
     }
   }
 }
 .deliveryDrawerCardIcon {
+  display: none;
   position: absolute;
   top: 12px;
   right: 12px;

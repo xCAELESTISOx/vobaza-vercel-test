@@ -6,10 +6,22 @@ import styles from './styles.module.scss';
 import { Button } from '@nebo-team/vobaza.ui.button';
 
 type Props = {
+  delivery?: any;
+  elevatePrice?: number;
+  assemblyPrice?: number;
   isOrder?: boolean;
   onButtonClick?: () => void;
 };
-const CartSidebar: FC<Props> = ({ isOrder = false, onButtonClick }) => {
+
+const tmpPrice = 32000;
+
+const CartSidebar: FC<Props> = ({
+  delivery,
+  elevatePrice = 0,
+  assemblyPrice = 0,
+  isOrder = false,
+  onButtonClick,
+}) => {
   return (
     <div className={styles.cartSidebar}>
       <h3 className={styles.cartSidebarTitle}>Ваш заказ:</h3>
@@ -17,26 +29,32 @@ const CartSidebar: FC<Props> = ({ isOrder = false, onButtonClick }) => {
         <div className={styles.cartSidebarOrderItem}>
           <span className={styles.cartSidebarOrderTitle}>Товары: </span>
           <span className={styles.cartSidebarOrderDecorator} />
-          <span className={styles.cartSidebarOrderPrice}>0 ₽</span>
+          <span className={styles.cartSidebarOrderPrice}>{tmpPrice} ₽</span>
         </div>
         {isOrder && (
           <>
             <div className={styles.cartSidebarOrderItem}>
               <span className={styles.cartSidebarOrderTitle}>Доставка: </span>
               <span className={styles.cartSidebarOrderDecorator} />
-              <span className={styles.cartSidebarOrderPrice}>0 ₽</span>
+              <span className={styles.cartSidebarOrderPrice}>
+                {delivery ? delivery.price : 0} ₽
+              </span>
             </div>
             <div className={styles.cartSidebarOrderItem}>
               <span className={styles.cartSidebarOrderTitle}>
                 Подъем на этаж:{' '}
               </span>
               <span className={styles.cartSidebarOrderDecorator} />
-              <span className={styles.cartSidebarOrderPrice}>0 ₽</span>
+              <span className={styles.cartSidebarOrderPrice}>
+                {elevatePrice} ₽
+              </span>
             </div>
             <div className={styles.cartSidebarOrderItem}>
               <span className={styles.cartSidebarOrderTitle}>Сборка: </span>
               <span className={styles.cartSidebarOrderDecorator} />
-              <span className={styles.cartSidebarOrderPrice}>0 ₽</span>
+              <span className={styles.cartSidebarOrderPrice}>
+                {assemblyPrice} ₽
+              </span>
             </div>
           </>
         )}
@@ -45,7 +63,11 @@ const CartSidebar: FC<Props> = ({ isOrder = false, onButtonClick }) => {
         <span className={styles.cartSidebarTotalTitle}>
           {isOrder ? 'Итого:' : 'Сумма заказа:'}
         </span>
-        0 ₽
+        {tmpPrice +
+          elevatePrice +
+          assemblyPrice +
+          (delivery ? delivery.price : 0)}{' '}
+        ₽
       </div>
       {isOrder ? (
         <div className={styles.cartSidebarButton}>
@@ -75,8 +97,9 @@ const CartSidebar: FC<Props> = ({ isOrder = false, onButtonClick }) => {
           </a>
         </p>
         <p>
-          Нажимая «Перейти к оформлению» вы соглашаетесь с договором оферты и
-          подтверждаете своё согласие на обработку персональных данных{' '}
+          Нажимая {isOrder ? '«Оформить заказ»' : '«Перейти к оформлению»'} вы
+          соглашаетесь с договором оферты и подтверждаете своё согласие на
+          обработку персональных данных{' '}
         </p>
       </div>
     </div>

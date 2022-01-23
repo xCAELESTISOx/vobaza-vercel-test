@@ -42,20 +42,26 @@ const validationSchema = yup.object({
 });
 
 type Props = {
+  address: string;
+  setAddress: (address: string) => void;
   isOpen: boolean;
   onClose: () => void;
 };
 
-const OrderAddressDrawer: FC<Props> = ({ isOpen = false, onClose }) => {
+const OrderAddressDrawer: FC<Props> = ({
+  isOpen = false,
+  onClose,
+  address,
+  setAddress,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const setAddressHandler = () => {
     try {
       setIsLoading(true);
-      setTimeout(() => {
-        setIsLoading(false);
-        onClose();
-      }, 2000);
+      setAddress(values.address);
+      setIsLoading(false);
+      onClose();
     } catch (e) {
       console.log(e);
     }
@@ -69,7 +75,10 @@ const OrderAddressDrawer: FC<Props> = ({ isOpen = false, onClose }) => {
     handleSubmit,
     setErrors,
   } = useFormik<Address>({
-    initialValues,
+    initialValues: {
+      ...initialValues,
+      address,
+    },
     validationSchema,
     validateOnBlur: false,
     validateOnChange: false,
