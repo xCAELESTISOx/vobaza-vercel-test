@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import styles from './styles.module.scss';
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import MenuIcon from '../Icons/MenuIcon';
 
 type Props = {
   rootMenu?: any;
@@ -52,7 +52,7 @@ const HeaderMenu: FC<Props> = ({ rootMenu, withRoot }) => {
                     className={`${styles.rootMenuLink}
                   ${currentMenuItem.tag === menu.tag ? styles.active : ''}`}
                   >
-                    <Icon name="Catalog" />
+                    <MenuIcon name={menu.icon} />
                     {menu.title}
                   </a>
                 </Link>

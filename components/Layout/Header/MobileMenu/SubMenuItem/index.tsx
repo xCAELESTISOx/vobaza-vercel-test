@@ -2,7 +2,9 @@ import React, { FC, useRef, useState } from 'react';
 import Link from 'next/link';
 
 import styles from './styles.module.scss';
+
 import { Icon } from '@nebo-team/vobaza.ui.icon';
+import MenuIcon from '../../Icons/MenuIcon';
 
 type Props = {
   item?: any;
@@ -40,7 +42,7 @@ const HeaderMobileSubMenuItem: FC<Props> = ({ item }) => {
       <div className={styles.subMenuHeader} onClick={clickHandler}>
         <Link href={item.href}>
           <a className={styles.subMenuLink}>
-            <Icon className={styles.subMenuImage} name="Catalog" />
+            <MenuIcon name={item.icon} className={styles.subMenuImage} />
             {item.title}
           </a>
         </Link>

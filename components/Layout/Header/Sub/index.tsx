@@ -12,6 +12,7 @@ const rootMenu = [
     title: 'Диваны и кресла',
     href: '/divany-i-kresla',
     tag: 'divany',
+    icon: 'divany',
     menu: [
       {
         title: 'Диваны',
@@ -122,59 +123,73 @@ const rootMenu = [
   {
     title: 'Кровати и матрасы',
     href: '/krovati-i-matrasy',
+    icon: 'krovati',
   },
   {
     title: 'Шкафы и тумбы',
     href: '/shkafy-i-tumby',
+    icon: 'shkafy',
   },
   {
     title: 'Столы и стулья',
     href: '/stoly-i-stulya',
+    icon: 'stoly',
   },
   {
     title: 'Хранение',
     href: '/hranenie',
+    icon: 'hranenie',
   },
   {
     title: 'Вешалки и зеркала',
     href: '/veshalki-i-zerkala',
+    icon: 'veshalki',
   },
   {
     title: 'Гостиная',
     href: '/gostinaya',
+    icon: 'gostinaya',
     isDivided: true,
   },
   {
     title: 'Спальня',
     href: '/spalnya',
+    icon: 'spalnya',
   },
   {
     title: 'Детская',
     href: '/detskaya',
+    icon: 'detskaya',
   },
   {
     title: 'Прихожая',
     href: '/prihojaya',
+    icon: 'prihojaya',
   },
   {
     title: 'Кухня',
     href: '/kuhnya',
+    icon: 'kuhnya',
   },
   {
     title: 'Ванная',
     href: '/vannaya',
+    icon: 'vannaya',
   },
   {
     title: 'Кабинет',
     href: '/kabinet',
+    icon: 'kabinet',
   },
   {
     title: 'Офис',
     href: '/ofis',
+    icon: 'ofis',
   },
   {
     title: 'Дача и сад',
     href: '/dacha-i-sad',
+    icon: 'dacha',
   },
 ];
 
