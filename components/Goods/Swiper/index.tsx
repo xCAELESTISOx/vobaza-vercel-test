@@ -1,19 +1,27 @@
-import { Icon } from '@nebo-team/vobaza.ui.icon';
 import React, { FC, useEffect, useRef } from 'react';
 import { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import styles from './styles.module.scss';
+import { IGood } from '../../../src/models/IGood';
+
+import { Icon } from '@nebo-team/vobaza.ui.icon';
 import GoodsCard from '../Card';
 
-import styles from './styles.module.scss';
-
-const GoodsSwiper: FC = () => {
+type Props = {
+  goods: IGood[];
+};
+const GoodsSwiper: FC<Props> = ({ goods }) => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
   const setTopOffset = (el) => {
-    prevRef.current.style.top = el.clientHeight / 2 + 'px';
-    nextRef.current.style.top = el.clientHeight / 2 + 'px';
+    if (prevRef && prevRef.current) {
+      prevRef.current.style.top = el.clientHeight / 2 + 'px';
+    }
+    if (nextRef && nextRef.current) {
+      nextRef.current.style.top = el.clientHeight / 2 + 'px';
+    }
   };
 
   useEffect(() => {
@@ -51,9 +59,9 @@ const GoodsSwiper: FC = () => {
             },
           }}
         >
-          {[1, 2, 3, 4, 5, 6].map((good) => (
-            <SwiperSlide key={good}>
-              <GoodsCard isFixedHeight={false} />
+          {goods.map((good) => (
+            <SwiperSlide key={good.id}>
+              <GoodsCard good={good} isFixedHeight={false} />
             </SwiperSlide>
           ))}
           <div

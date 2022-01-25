@@ -58,7 +58,7 @@ export default function Catalog() {
           <div className={styles.bannerBlock}>
             <Image src={tmpBannerImg1} alt="Banner" />
           </div>
-          <GoodsBlock />
+          {/* <GoodsBlock /> */}
           <div className="seoText" dangerouslySetInnerHTML={tmpSeoText}></div>
         </div>
       </section>

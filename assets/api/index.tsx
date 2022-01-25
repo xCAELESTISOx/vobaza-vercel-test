@@ -29,8 +29,25 @@ export const api = {
   subscribeMailing(data: { email: string }) {
     return axios.post('/v1/subscriptions', data);
   },
-  // banners
+  //Banners
   getBannersByType(type: string) {
     return axios.get('/v1/banners', { params: { type } });
+  },
+  //MainPage
+  getHits() {
+    const params = {
+      limit: 6,
+      format: 'FULL_WITH_MAIN_ATTRIBUTES',
+      'filter[label]': 'HIT',
+    };
+    return axios.get('/v1/products/random', { params });
+  },
+  getNewGoods() {
+    const params = {
+      limit: 8,
+      format: 'FULL_WITH_MAIN_ATTRIBUTES',
+      'filter[label]': 'NEW',
+    };
+    return axios.get('/v1/products/random', { params });
   },
 };

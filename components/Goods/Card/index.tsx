@@ -1,30 +1,34 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
 import styles from './styles.module.scss';
+import { IGood } from '../../../src/models/IGood';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
-
-import tmpImg1 from './tmp/good1.jpg';
-import tmpImg2 from './tmp/good2.jpg';
 import { Button } from '@nebo-team/vobaza.ui.button';
 
 type Props = {
-  good?: object;
+  good?: IGood;
   isFixedHeight?: boolean;
 };
 
 const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
-  const [currentImage, setCurrentImage] = useState(tmpImg1);
+  // const [currentImage, setCurrentImage] = useState(0);
   const cardRef = useRef(null);
   const cardContainerRef = useRef(null);
 
-  const resetImage = () => {
-    setCurrentImage(tmpImg1);
-  };
+  // const resetImage = () => {
+  //   setCurrentImage(0);
+  // };
   const addToCart = () => {
     //TODO Add to cart
+  };
+  const checkExpress = () => {
+    if (good.labels.find((good) => good.code === 'EXPRESS-DELIVERY')?.active) {
+      return true;
+    }
+    return false;
   };
   //Обработка случая когда на строке остается один элемент и при ховере он теряет высоту
   const setCardHeight = () => {
@@ -40,39 +44,84 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
     }
   }, []);
 
+  const renderFeatureValue = (feature) => {
+    if (typeof feature.value === 'object') {
+      let str = '';
+      feature.value.forEach((attribute) => {
+        if (str) str += ', ';
+        if (typeof attribute === 'object') {
+          str += attribute.value;
+        } else {
+          str += attribute;
+        }
+      });
+      return str;
+    } else if (typeof feature.value === 'boolean') {
+      if (feature.value) return 'Да';
+      else return 'Нет';
+    }
+    return feature.value;
+  };
+
   return (
-    <div className={styles.cardWrapper} ref={cardRef} onMouseLeave={resetImage}>
+    <div
+      className={styles.cardWrapper}
+      ref={cardRef}
+      // onMouseLeave={resetImage}
+    >
       <div className={styles.cardContainer} ref={cardContainerRef}>
         <div className={styles.card}>
           <div className={styles.cardHeader}>
-            <div className={styles.cardLabel}>Экспресс-доставка</div>
+            <div className={styles.cardLabel}>
+              {checkExpress() ? 'Экспресс-доставка' : ''}
+            </div>
             <div className={styles.cardIcon}>
               <Icon name="Favorite" />
             </div>
           </div>
           <div className={`${styles.cardImage} card__image`}>
-            <Link href="/">
+            <Link href={`/product/${good.slug}_${good.id}_${good.sku}`}>
               <a>
-                <Image src={currentImage} alt="" />
+                {good.images ? (
+                  <Image
+                    src={good.images[0].variants.original.url}
+                    width={278}
+                    height={278}
+                    alt={good.name}
+                  />
+                ) : (
+                  <Icon name="ImagePlaceholder" />
+                )}
               </a>
             </Link>
-            <div className={`${styles.cardSale} ${styles.cardSaleMobile}`}>
-              -13%
-            </div>
+            {good.discount_price && (
+              <div className={`${styles.cardSale} ${styles.cardSaleMobile}`}>
+                {Math.round((good.discount_price / good.price) * 100 - 100)}%
+              </div>
+            )}
           </div>
           <div className={styles.cardVariants}>
-            <Link href="/">
+            <Link href={`/product/${good.slug}_${good.id}_${good.sku}`}>
               <a
                 onMouseEnter={() => {
-                  setCurrentImage(tmpImg1);
+                  // setCurrentImage('');
                 }}
               >
                 <div className={styles.cardVariant}>
-                  <Image src={tmpImg1} alt="123" />
+                  {good.images ? (
+                    <Image
+                      src={good.images[0].variants.original.url}
+                      width={38}
+                      height={38}
+                      alt={good.name}
+                    />
+                  ) : (
+                    <Icon name="ImagePlaceholder" />
+                  )}
                 </div>
               </a>
             </Link>
-            <Link href="/">
+            {/* <Link href="/">
               <a
                 onMouseEnter={() => {
                   setCurrentImage(tmpImg2);
@@ -120,25 +169,33 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
               <a>
                 <div className={styles.cardVariant}>+8</div>
               </a>
-            </Link>
+            </Link> */}
           </div>
           <div className={styles.cardContent}>
-            <Link href="/">
-              <a
-                className={styles.cardTitle}
-                title="Диван Ричмонд Зеленовато-синий"
-              >
-                Диван Ричмонд Зеленовато-синий
+            <Link href={`/product/${good.slug}_${good.id}_${good.sku}`}>
+              <a className={styles.cardTitle} title={good.name}>
+                {good.name}
               </a>
             </Link>
             <div className={styles.cardPriceBlock}>
-              <div className={styles.cardPrice}>51 990 ₽</div>
-              <div className={`${styles.cardPrice} ${styles.cardPriceOld}`}>
-                59 990 ₽
+              <div className={styles.cardPrice}>
+                {Intl.NumberFormat('ru-RU').format(
+                  (good.discount_price ? good.discount_price : good.price) / 100
+                )}{' '}
+                ₽
               </div>
-              <div className={styles.cardSale}>-13%</div>
+              {good.discount_price && (
+                <div className={`${styles.cardPrice} ${styles.cardPriceOld}`}>
+                  {Intl.NumberFormat('ru-RU').format(good.price / 100)}
+                </div>
+              )}
+              {good.discount_price && (
+                <div className={styles.cardSale}>
+                  {Math.round((good.discount_price / good.price) * 100 - 100)}%
+                </div>
+              )}
             </div>
-            <div className={styles.cardReviewsBlock}>
+            {/* <div className={styles.cardReviewsBlock}>
               <div>
                 <Link href="/">
                   <a className={styles.cardStars}>
@@ -163,31 +220,34 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
               <div className={styles.cardReviews}>
                 31 <span>Отзыв</span>
               </div>
-            </div>
+            </div> */}
             <div className={styles.cardInfo}>
               <div className={styles.cardFeatures}>
-                <div className={styles.cardFeature}>
-                  <div className={styles.cardFeatureTitle}>
-                    Размер ШхГхВ (см) :
+                {good.attributes.map((feature) => (
+                  <div
+                    className={styles.cardFeature}
+                    key={feature.attribute.id}
+                  >
+                    <div className={styles.cardFeatureTitle}>
+                      {feature.attribute.name} :
+                    </div>
+                    <div className={styles.cardFeatureValue}>
+                      {renderFeatureValue(feature)}
+                    </div>
                   </div>
-                  <div className={styles.cardFeatureValue}>169х110х93</div>
-                </div>
-                <div className={styles.cardFeature}>
-                  <div className={styles.cardFeatureTitle}>Наполнитель:</div>
-                  <div className={styles.cardFeatureValue}>
-                    Ортопедические латы, Высокоэластичный ППУ, Синтепон
-                  </div>
-                </div>
+                ))}
               </div>
               <div className={styles.cardCart}>
                 <Button icon="Cart" text="В корзину" onClick={addToCart} />
               </div>
-              <div className={styles.cardProvider}>ВоБаза</div>
+              <div className={styles.cardProvider}>{good.merchant.brand}</div>
             </div>
           </div>
-          <div className={styles.labelMobile}>
-            <div className={styles.cardLabel}>Экспресс-доставка</div>
-          </div>
+          {checkExpress() && (
+            <div className={styles.labelMobile}>
+              <div className={styles.cardLabel}>Экспресс-доставка</div>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -27,7 +27,7 @@ export default function Catalog() {
             Каталог мебели {page && ` – страница ${page}`}
           </h1>
           <CatalogList />
-          <GoodsBlock />
+          {/* <GoodsBlock /> */}
         </div>
       </section>
     </div>
