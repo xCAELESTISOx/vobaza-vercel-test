@@ -1,5 +1,6 @@
 .goodsBlock {
   margin-top: 40px;
+  padding-bottom: 72px;
 
   @media screen and (max-width: 1024px) {
     margin-top: 28px;
@@ -28,5 +29,5 @@
 .pagination {
   display: flex;
   justify-content: center;
-  margin: 72px 0;
+  margin-top: 72px;
 }

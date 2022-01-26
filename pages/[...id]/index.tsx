@@ -11,17 +11,10 @@ import Breadcrumbs, {
 } from '../../components/Layout/Breadcrumbs';
 import CatalogList from '../../components/Catalog/List';
 import GoodsBlock from '../../components/Goods/Block';
-
-const breadcrumbs: BreadcrumbType[] = [
-  {
-    title: 'Каталог мебели',
-    href: '/katalog',
-  },
-  {
-    title: 'Диваны',
-    href: '/katalog/divany',
-  },
-];
+import { GetServerSideProps } from 'next';
+import { IGood } from '../../src/models/IGood';
+import { api } from '../../assets/api';
+import { ICategory } from '../../src/models/ICategory';
 
 const tmpSeoText = {
   __html: `<div class="ty-wysiwyg-content vb-category-description"><p class="text-justify">В интернет-магазине «ВоБаза» представлен большой каталог диванов с фото и ценами. Удобный фильтр по категориям создает возможность расширенного выбора товаров по всевозможным характеристикам мягкой мебели. Здесь вы сможете подобрать подходящую модель для спальни, гостиной, кабинета или офиса по стоимости от 15990 руб. и купить понравившийся диван с доставкой в день заказа, продукция всегда в наличии.&nbsp;
@@ -39,7 +32,19 @@ const tmpSeoText = {
 <p class="text-justify">Мы предлагаем исключительно качественную мягкую мебель, получившую много положительных отзывов и высокие оценки покупателей. Стоимость продукции всегда обоснована и не включает в себя лишние наценки, поскольку мы работаем напрямую с производителями. Каждый клиент «ВоБаза» может приобрести любую мягкую мебель с гарантией от 1 года.</p></div>`,
 };
 
-export default function Catalog() {
+interface Props {
+  goods: IGood[];
+  category: ICategory;
+  meta: {
+    list: {
+      count: number;
+      pages_count: number;
+    };
+  };
+  breadcrumbs: BreadcrumbType[];
+}
+
+export default function Catalog({ goods, meta, category, breadcrumbs }) {
   const router = useRouter();
   const { page } = router.query as { [key: string]: string };
 
@@ -52,16 +57,76 @@ export default function Catalog() {
             <Image src={tmpBannerImg2} alt="Banner" />
           </div>
           <h1 className={styles.sectionTitle}>
-            Диваны {page && ` – страница ${page}`}
+            {category.name} {page && page !== '1' && ` – страница ${page}`}
           </h1>
           <CatalogList list={[...Array(9)]} />
           <div className={styles.bannerBlock}>
             <Image src={tmpBannerImg1} alt="Banner" />
           </div>
-          {/* <GoodsBlock /> */}
+          <GoodsBlock goods={goods} meta={meta} />
           <div className="seoText" dangerouslySetInnerHTML={tmpSeoText}></div>
         </div>
       </section>
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  resolvedUrl,
+  query,
+}) => {
+  let goods = null;
+  let meta = null;
+  let category = null;
+  let breadcrumbs = [
+    {
+      title: 'Каталог мебели',
+      href: '/katalog',
+    },
+  ];
+
+  const page = Number(query.page);
+  // TODO 40
+  const limit = 5;
+  const splitUrl = resolvedUrl.split('_');
+  const id = Number(splitUrl[splitUrl.length - 1]) || 1;
+
+  try {
+    const params = {
+      limit,
+      offset: page ? (page - 1) * limit : 0,
+      format: 'FULL_WITH_MAIN_ATTRIBUTES',
+      'filter[category_id]': id,
+    };
+    const [goodsRes, categoryRes] = await Promise.all([
+      api.getGoods(params),
+      api.getCategory(id),
+    ]);
+
+    goods = goodsRes.data.data;
+    meta = goodsRes.data.meta;
+    category = categoryRes.data.data;
+
+    if (category.ancestors && category.ancestors.length > 0) {
+      category.ancestors.forEach((ancestor) => {
+        breadcrumbs.push({
+          title: ancestor.name,
+          href: `/${ancestor.slug}_${ancestor.id}`,
+        });
+      });
+    }
+    breadcrumbs.push({
+      title: category.name,
+      href: `/${category.slug}_${category.id}`,
+    });
+  } catch (error) {}
+
+  return {
+    props: {
+      goods,
+      meta,
+      category,
+      breadcrumbs,
+    },
+  };
+};

@@ -50,4 +50,14 @@ export const api = {
     };
     return axios.get('/v1/products/random', { params });
   },
+  //Goods
+  getGoods(params) {
+    return axios.get(`/v1/products`, { params });
+  },
+  getCategory(id) {
+    const params = {
+      include: 'ancestors',
+    };
+    return axios.get(`/v1/categories/${id}`, { params });
+  },
 };

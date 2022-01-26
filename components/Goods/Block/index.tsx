@@ -2,40 +2,39 @@ import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import styles from './styles.module.scss';
+import { IGood } from '../../../src/models/IGood';
 
 import { Pagination } from '@nebo-team/vobaza.ui.pagination';
 import GoodsList from '../List/index';
 import Toggle from '../../UI/Toggle';
 import GoodsFilters from '../Filters';
 
-const GoodsBlock: FC = () => {
+type Props = {
+  goods: IGood[];
+  meta: {
+    list: {
+      count: number;
+      pages_count: number;
+    };
+  };
+};
+
+const GoodsBlock: FC<Props> = ({ goods, meta }) => {
   const router = useRouter();
-  const { page } = router.query as { [key: string]: string };
+  const { page } = router.query;
   const [isOnlyExpress, setIsOnlyExpress] = useState(true);
 
   const toggleIsOnlyExpress = () => {
     setIsOnlyExpress(!isOnlyExpress);
   };
 
-  const replaceRouterQuery = (
-    updateQuery: { [key: string]: string | number },
-    exclude: Array<string> = []
-  ) => {
-    const prevQuery = { ...router.query };
-
-    if (exclude) {
-      exclude.forEach((el) => delete prevQuery[el]);
-    }
-
+  const onChangePagination = (value: number) => {
     router.replace({
       query: {
-        ...prevQuery,
-        ...updateQuery,
+        ...router.query,
+        page: value,
       },
     });
-  };
-  const onChangePagination = (value: number) => {
-    replaceRouterQuery({ page: value });
   };
 
   return (
@@ -49,16 +48,18 @@ const GoodsBlock: FC = () => {
         <GoodsFilters />
       </div>
       <div className={styles.goodsList}>
-        <GoodsList goods={[...Array(40)]} />
+        <GoodsList goods={goods} />
       </div>
-      <div className={styles.pagination}>
-        <Pagination
-          variation="secondary"
-          pageCount={950}
-          activePage={+page || 1}
-          onChange={onChangePagination}
-        />
-      </div>
+      {meta?.list?.pages_count > 1 && (
+        <div className={styles.pagination}>
+          <Pagination
+            variation="secondary"
+            pageCount={meta.list.pages_count}
+            activePage={+page || 1}
+            onChange={onChangePagination}
+          />
+        </div>
+      )}
     </div>
   );
 };
