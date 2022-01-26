@@ -3,12 +3,13 @@ import Image from 'next/image';
 
 import styles from './styles.module.scss';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
-import OrderDeliveryDrawer from './Drawer';
+import { num2str } from '../../../../assets/utils';
 
 import tmpImg1 from './tmp/good1.jpg';
 import Toggle from '../../../UI/Toggle';
 import ItemCounter from '../../../UI/ItemCounter';
+import OrderDeliveryDrawer from './Drawer';
+import { Icon } from '@nebo-team/vobaza.ui.icon';
 import { Button } from '@nebo-team/vobaza.ui.button';
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
 import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select';
@@ -153,8 +154,11 @@ const OrderDelivery: FC<Props> = ({
           </div>
           <div className={styles.orderDeliveryTextItem}>
             <Icon name="Scales" />
-            {/* TODO num2String */}
-            <span>{tmpItems.length} товаров ・533 кг</span>
+            <span>
+              {tmpItems.length}{' '}
+              {num2str(tmpItems.length, ['товар', 'товара', 'товаров'])} ・533
+              кг
+            </span>
           </div>
         </div>
         {delivery && (

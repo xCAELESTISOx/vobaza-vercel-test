@@ -47,9 +47,15 @@ const GoodsBlock: FC<Props> = ({ goods, meta }) => {
       <div className={styles.filtersBlock}>
         <GoodsFilters />
       </div>
-      <div className={styles.goodsList}>
-        <GoodsList goods={goods} />
-      </div>
+      {goods.length > 0 ? (
+        <div className={styles.goodsList}>
+          <GoodsList goods={goods} />
+        </div>
+      ) : (
+        <div className={styles.goodsListEmpty}>
+          По вашему запросу ничего не найдено
+        </div>
+      )}
       {meta?.list?.pages_count > 1 && (
         <div className={styles.pagination}>
           <Pagination

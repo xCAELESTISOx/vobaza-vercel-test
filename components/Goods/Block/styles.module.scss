@@ -26,6 +26,15 @@
     margin-top: 32px;
   }
 }
+.goodsListEmpty {
+  margin-top: 16px;
+  padding: 60px 20px;
+  color: #bdc3c7;
+  text-align: center;
+  font-size: 115%;
+  background: #f2f2f2;
+  border-radius: 8px;
+}
 .pagination {
   display: flex;
   justify-content: center;
