@@ -1,10 +1,13 @@
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 
 import styles from '../../styles/Profile.module.scss';
+import { api } from '../../assets/api';
+import checkAuth from '../../assets/api/auth';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import ProfileSidebar from '../../components/Profile/Sidebar';
-import ProfileData from '../../components/Profile/Data';
+import ProfileData, { IProfile } from '../../components/Profile/Data';
 import ProfileOrderLast from '../../components/Profile/Order/Last';
 
 const tmpItem = {
@@ -20,11 +23,17 @@ const tmpItem = {
     },
   ],
 };
-export default function Profile() {
+
+interface Props {
+  user: IProfile;
+}
+
+export default function Profile({ user }) {
   const router = useRouter();
   const goBack = () => {
     router.back();
   };
+
   return (
     <div>
       <div className="container">
@@ -40,8 +49,10 @@ export default function Profile() {
                   <Icon name="ArrowLeft" /> Назад
                 </div>
               </div>
-              <h2 className={styles.profileSubtitle}>Здравствуйте, Имя! </h2>
-              <ProfileData />
+              <h2 className={styles.profileSubtitle}>
+                Здравствуйте, {user.name}!
+              </h2>
+              <ProfileData user={user} />
               <ProfileOrderLast item={tmpItem} />
             </div>
           </div>
@@ -50,3 +61,29 @@ export default function Profile() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  req,
+}) => {
+  let user = null;
+
+  try {
+    await checkAuth(req);
+    const [propfileRes] = await Promise.all([api.getProfile()]);
+
+    user = propfileRes.data.data;
+  } catch (error: any) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      user,
+    },
+  };
+};

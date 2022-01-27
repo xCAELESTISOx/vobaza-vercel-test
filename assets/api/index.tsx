@@ -25,6 +25,10 @@ export const api = {
     setToken();
     return axios.delete('/customer/v1/token');
   },
+  getProfile() {
+    setToken();
+    return axios.get('/customer/v1/profile');
+  },
 
   subscribeMailing(data: { email: string }) {
     return axios.post('/v1/subscriptions', data);
