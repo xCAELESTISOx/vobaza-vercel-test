@@ -51,8 +51,11 @@ const validationSchema = yup.object({
     .required('Обязательное поле'),
   inn: yup
     .string()
-    .min(12, 'Количество символов в поле должно быть не меньше 10')
-    .max(12, 'Количество символов в поле должно быть не больше 12')
+    .test(
+      'len',
+      'Поле ИНН должно содержать 10 или 12 цифр',
+      (val: any) => val.length === 10 || val.length === 12
+    )
     .required('Обязательное поле'),
   fio: yup
     .string()
