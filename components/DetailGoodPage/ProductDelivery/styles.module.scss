@@ -1,0 +1,26 @@
+.productDeliveryTitle {
+  margin-bottom: 12px;
+
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.productDeliveryItem {
+  font-size: 14px;
+  line-height: 140%;
+
+  cursor: default;
+
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
+}
+
+.productDeliveryItemType {
+  color: var(--blue-color);
+
+  &:hover {
+    color: var(--blue-color-hover);
+  }
+}

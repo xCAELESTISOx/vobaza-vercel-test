@@ -1,0 +1,27 @@
+.productStock {
+  display: flex;
+  align-items: center;
+  margin-right: 16px;
+
+  color: #1a1a1a;
+
+  svg {
+    width: 16px;
+    margin-right: 8px;
+    height: 16px;
+  }
+}
+
+.productInStock {
+  composes: productStock;
+  svg {
+    color: #006400;
+  }
+}
+
+.productOutStock {
+  composes: productStock;
+  svg {
+    color: #b81803;
+  }
+}

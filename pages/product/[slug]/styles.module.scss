@@ -1,4 +1,4 @@
-@import '../../../styles/Home.module.scss';
+@import "../../../styles/Home.module.scss";
 
 .productInfo {
   display: flex;
@@ -175,69 +175,6 @@
   }
 }
 
-.productPriceInfo {
-  composes: productInfoShort;
-  display: flex;
-  align-items: flex-end;
-  flex-wrap: wrap;
-
-  letter-spacing: -1px;
-  cursor: default;
-}
-
-.productPriceEl {
-  padding: 0 6px;
-}
-
-.productPriceActual {
-  composes: productPriceEl;
-  font-weight: 600;
-  font-size: 48px;
-  line-height: 58px;
-
-  @media screen and (max-width: 767px) {
-    font-size: 32px;
-    line-height: 36px;
-  }
-}
-
-.productPriceOld {
-  composes: productPriceEl;
-  padding-bottom: 6px;
-  margin-right: auto;
-
-  font-size: 24px;
-  line-height: 29px;
-  letter-spacing: -2px;
-  text-decoration-line: line-through;
-  color: #b3b3b3;
-
-  @media screen and (max-width: 767px) {
-    margin-right: 0;
-
-    font-size: 18px;
-    line-height: 20px;
-  }
-}
-
-.productDiscount {
-  composes: productPriceEl;
-  padding-bottom: 16px;
-
-  span {
-    display: flex;
-    align-items: center;
-    min-height: 24px;
-    padding: 0 6px;
-    background: #4db45e;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 130%;
-    color: #ffffff;
-  }
-}
-
 .productStockInfo {
   composes: productInfoShort;
   display: flex;
@@ -249,42 +186,6 @@
   line-height: 150%;
 
   cursor: default;
-}
-
-.productStock {
-  display: flex;
-  align-items: center;
-  margin-right: 16px;
-
-  color: #1a1a1a;
-
-  svg {
-    width: 16px;
-    margin-right: 8px;
-    height: 16px;
-
-    &.productInStock {
-      color: #006400;
-    }
-
-    &.productOutStock {
-      color: #b81803;
-    }
-  }
-}
-
-.productLoyalty {
-  display: flex;
-  align-items: center;
-
-  color: var(--blue-color);
-
-  svg {
-    width: 16px;
-    height: 16px;
-    margin-right: 8px;
-    color: var(--primary-color);
-  }
 }
 
 .productOrderBtns {
@@ -301,56 +202,6 @@
     button {
       font-size: 14px;
     }
-  }
-}
-
-.productCredit {
-  composes: productInfoBlock;
-
-  display: flex;
-  flex-wrap: wrap;
-
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 150%;
-}
-
-.productCreditPayment {
-  margin-right: 16px;
-
-  span {
-    font-weight: 700;
-  }
-}
-
-.productDelivery {
-  composes: productInfoBlock;
-}
-
-.productDeliveryTitle {
-  margin-bottom: 12px;
-
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 24px;
-}
-
-.productDeliveryItem {
-  font-size: 14px;
-  line-height: 140%;
-
-  cursor: default;
-
-  &:not(:last-child) {
-    margin-bottom: 8px;
-  }
-}
-
-.productDeliveryItemType {
-  color: var(--blue-color);
-
-  &:hover {
-    color: var(--blue-color-hover);
   }
 }
 

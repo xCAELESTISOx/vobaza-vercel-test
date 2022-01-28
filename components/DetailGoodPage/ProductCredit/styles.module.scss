@@ -1,0 +1,16 @@
+.productCredit {
+  display: flex;
+  flex-wrap: wrap;
+
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+}
+
+.creditPayment {
+  margin-right: 16px;
+
+  span {
+    font-weight: 700;
+  }
+}

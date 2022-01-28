@@ -8,6 +8,7 @@ import { Icon } from '@nebo-team/vobaza.ui.icon';
 import styles from './styles.module.scss';
 
 import { SRLWrapper } from 'simple-react-lightbox';
+import { getImageVariantByFieldname } from '../../../assets/utils/images';
 
 const options = {
   settings: {
@@ -34,12 +35,27 @@ const options = {
 
 const thumbsBreakpoints = {
   1300: { slidesPerView: 7 },
-  1550: { slidesPerView: 8 }
-}
+  1550: { slidesPerView: 8 },
+};
 
-const ImagesBlock = ({ items }) => {
+const getImagesUrlsFromVariant = (images, fieldname: string) => {
+  const urls = [];
+
+  images.forEach((image) => {
+    const imageVariant = getImageVariantByFieldname(image, fieldname);
+
+    if (imageVariant) urls.push({ url: imageVariant.url, id: image.id });
+  });
+
+  return urls;
+};
+
+const ProductImages = ({ images }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [mainSwiper, setMainSwiper] = useState(null);
+
+  const mainImages = getImagesUrlsFromVariant(images, 'original');
+  const thumbsImages = getImagesUrlsFromVariant(images, 'small');
 
   const onLightboxClosed = (e) => {
     if (mainSwiper) {
@@ -68,11 +84,12 @@ const ImagesBlock = ({ items }) => {
             }}
             onSwiper={setMainSwiper}
           >
-            {items.map((img, index) => (
-              <SwiperSlide key={index}>
-                <img src={img} alt="" />
-              </SwiperSlide>
-            ))}
+            {mainImages &&
+              mainImages.map((img, index) => (
+                <SwiperSlide key={`main-slide-${img.id}`}>
+                  <img src={img.url} alt="" />
+                </SwiperSlide>
+              ))}
           </Swiper>
         </SRLWrapper>
       </div>
@@ -89,11 +106,15 @@ const ImagesBlock = ({ items }) => {
           breakpoints={thumbsBreakpoints}
           onSwiper={setThumbsSwiper}
         >
-          {items.map((img, index) => (
-            <SwiperSlide key={index} className={styles.thumbsSlide}>
-              <img className={styles.thumbsSlideImage} src={img} alt="" />
-            </SwiperSlide>
-          ))}
+          {thumbsImages &&
+            thumbsImages.map((img) => (
+              <SwiperSlide
+                key={`thumb-slide-${img.id}`}
+                className={styles.thumbsSlide}
+              >
+                <img className={styles.thumbsSlideImage} src={img.url} alt="" />
+              </SwiperSlide>
+            ))}
         </Swiper>
 
         <button className={`${styles.thumbsNavButton} product-swiper__prev`}>
@@ -109,6 +130,6 @@ const ImagesBlock = ({ items }) => {
   );
 };
 
-const ImagesBlockMemo = React.memo(ImagesBlock);
+const ProductImagesMemo = React.memo(ProductImages);
 
-export { ImagesBlockMemo };
+export { ProductImages, ProductImagesMemo };

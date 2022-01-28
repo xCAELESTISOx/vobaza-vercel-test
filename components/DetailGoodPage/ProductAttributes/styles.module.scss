@@ -1,0 +1,58 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.attributesBlock {
+  display: flex;
+  flex-direction: column;
+
+  font-size: 14px;
+
+  &:not(:last-child) {
+    margin-bottom: 24px;
+  }
+}
+
+.attributesBlockTitle {
+  margin-bottom: 16px;
+
+  font-size: 16px;
+  color: #000;
+  font-weight: 500;
+
+  cursor: default;
+}
+
+.attributeItem {
+  display: flex;
+
+  &:not(:last-child) {
+    margin-bottom: 16px;
+  }
+}
+
+.attributeTitle {
+  max-width: 280px;
+  width: 100%;
+  margin-right: 10px;
+
+  color: #808080;
+
+  @media screen and (max-width: 1024px) {
+    max-width: 50%;
+  }
+}
+
+.attributeValue {
+}
+
+.attributeValueMultiple {
+}
+
+.attributeValueMultipleItem {
+  &:not(:last-child) {
+    margin-bottom: 5px;
+  }
+}

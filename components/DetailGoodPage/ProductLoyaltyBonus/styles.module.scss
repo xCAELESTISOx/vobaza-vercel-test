@@ -1,0 +1,13 @@
+.productLoyalty {
+  display: flex;
+  align-items: center;
+
+  color: var(--blue-color);
+
+  svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    color: var(--primary-color);
+  }
+}

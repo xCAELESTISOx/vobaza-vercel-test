@@ -4,26 +4,32 @@ import Link from 'next/link';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 
+import type { IMerchant } from '../../../src/models/IMerchant';
+
 import styles from './styles.module.scss';
 
 import tmpLogo from './tmp/logo.png';
 
 interface ProductSeller {
   className?: string;
+  merchant?: IMerchant;
 }
 
-const ProductSeller: FC<ProductSeller> = ({ className = '' }) => {
+const ProductSeller: FC<ProductSeller> = (props) => {
+  const { className = '', merchant } = props;
   return (
     <div className={`${styles.sellerContainer} ${className}`}>
-      <div className={styles.sellerInfo}>
-        <div className={styles.sellerLogo}>
+      {merchant && (
+        <div className={styles.sellerInfo}>
+          {/* <div className={styles.sellerLogo}>
           <Image src={tmpLogo} alt="logo" />
+        </div> */}
+          <div className={styles.sellerTitleWrapper}>
+            <div className={styles.sellerLabel}>Продавец:</div>
+            <div className={styles.sellerTitle}>{merchant.legal_name}</div>
+          </div>
         </div>
-        <div className={styles.sellerTitleWrapper}>
-          <div className={styles.sellerLabel}>Продавец:</div>
-          <div className={styles.sellerTitle}>МебельГрад и Ко</div>
-        </div>
-      </div>
+      )}
       <div className={styles.sellerConditions}>
         <div className={styles.sellerConditionsItem}>
           <Icon name="Protection" />

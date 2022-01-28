@@ -58,6 +58,12 @@ export const api = {
   getGoods(params) {
     return axios.get(`/v1/products`, { params });
   },
+  getGood(id: number | string) {
+    return axios.get(`/v1/products/${id}`);
+  },
+  getGoodAttributes(id: number | string) {
+    return axios.get(`/v1/products/${id}/attributes`);
+  },
   getCategory(id) {
     const params = {
       include: 'ancestors',

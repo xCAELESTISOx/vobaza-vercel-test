@@ -1,4 +1,4 @@
-.badges {
+.productBadges {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -18,17 +18,15 @@
   }
 }
 
-.express_delivery {
-  composes: badge;
+.EXPRESS-DELIVERY {
   color: #808080;
 }
 
-.hit {
-  composes: badge;
+.HIT {
   color: #5ea01c;
 }
 
-.bestseller {
-  composes: badge;
+.BESTSELLER,
+.NEW {
   color: var(--primary-color);
 }

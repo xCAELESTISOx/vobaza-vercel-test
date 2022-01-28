@@ -1,6 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 
+import { api } from '../../../assets/api';
+
 import SimpleReactLightbox from 'simple-react-lightbox';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
@@ -8,36 +10,80 @@ import { Button } from '@nebo-team/vobaza.ui.button';
 import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select';
 import Breadcrumbs from '../../../components/Layout/Breadcrumbs';
 import { SelectTabs } from '../../../components/UI/SelectTabs';
-import { ImagesBlockMemo } from '../../../components/DetailGoodPage/ImagesBlock';
+import { ProductImagesMemo } from '../../../components/DetailGoodPage/ProductImages';
 import { ProductVariants } from '../../../components/DetailGoodPage/ProductVariants';
 import { ProductInfoAccordion } from '../../../components/DetailGoodPage/ProductInfoAccordion';
-import { ProductFeatures } from '../../../components/DetailGoodPage/ProductFeatures';
+import { ProductAttributes } from '../../../components/DetailGoodPage/ProductAttributes';
 import { ProductDescription } from '../../../components/DetailGoodPage/ProductDescription';
 import { ProductSeller } from '../../../components/DetailGoodPage/ProductSeller';
 import { ProductReviews } from '../../../components/DetailGoodPage/ProductReviews';
 import { ProductBadges } from '../../../components/DetailGoodPage/ProductBadges';
 import { RatingStars } from '../../../components/UI/RatingStars';
+import { ProductPrice } from '../../../components/DetailGoodPage/ProductPrice';
+import { ProductStock } from '../../../components/DetailGoodPage/ProductStock';
+import { ProductLoyaltyBonus } from '../../../components/DetailGoodPage/ProductLoyaltyBonus';
+import { ProductCredit } from '../../../components/DetailGoodPage/ProductCredit';
+import { ProductDelivery } from '../../../components/DetailGoodPage/ProductDelivery';
 
 import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
+import type { GetServerSideProps } from 'next';
 
 import styles from './styles.module.scss';
 
-import { product as mockProduct } from '../../../src/mock/detailProductPage';
+import { mockProduct } from '../../../src/mock/detailProductPage';
 
-interface DetailGoodPage {}
+interface DetailGoodPage {
+  product: any;
+}
 
-const breadcrumbs: BreadcrumbType[] = [
+const getBreadcrumbs = (): BreadcrumbType[] => [
   {
     title: 'Каталог мебели',
     href: '/katalog',
   },
-  {
-    title: 'Диваны',
-    href: '/katalog/divany',
-  },
 ];
 
-const DetailGoodPage: FC<DetailGoodPage> = ({}) => {
+const getPrice = (price: number) => {
+  return price / 100;
+};
+
+const normalizeProductInfo = (product) => {
+  const normalizeProductRules = {
+    price: getPrice,
+    discount_price: getPrice,
+    labels: (labels) => labels.filter((l) => l.active).map((l) => l.code),
+  };
+
+  const computedFields = {
+    discount: (product) =>
+      Math.round((product.discount_price / product.price) * 100 - 100),
+    creditMinimalPayment: (product) => {
+      const currentPrice = product.discount_price || product.price;
+      return Math.round(currentPrice / 12);
+    },
+    loyaltyBonus: (product) => {
+      const currentPrice = product.discount_price || product.price;
+      return Math.ceil(currentPrice * 0.1);
+    },
+    inStonk: (product) => {
+      return product.quantity > 0;
+    },
+  };
+
+  for (const fieldname in normalizeProductRules) {
+    const normalizer = normalizeProductRules[fieldname];
+
+    if (!!product[fieldname] || product[fieldname] === 0)
+      product[fieldname] = normalizer(product[fieldname]);
+  }
+
+  for (const fieldname in computedFields) {
+    const newFieldnameValue = computedFields[fieldname](product);
+    product[fieldname] = newFieldnameValue;
+  }
+};
+
+const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
   const [selectedColorVariant, setSelectedColorVariant] = useState<any>(
     mockProduct.variants[0]
   );
@@ -87,6 +133,12 @@ const DetailGoodPage: FC<DetailGoodPage> = ({}) => {
     ));
   };
 
+  const breadcrumbs = getBreadcrumbs();
+  breadcrumbs.push({
+    title: product.main_category.name,
+    href: `/${product.main_category.slug}`,
+  });
+
   return (
     <SimpleReactLightbox>
       <div className={styles.homePage}>
@@ -94,12 +146,12 @@ const DetailGoodPage: FC<DetailGoodPage> = ({}) => {
         <div className="container">
           <div className={styles.productInfo}>
             <div className={styles.productMobileCardHeader}>
-              <ProductBadges badges={mockProduct.info_badges} />
+              <ProductBadges badges={product.labels} />
 
               <h1 className={styles.productTitle}>
-                {mockProduct.title}{' '}
+                {product.name}{' '}
                 <span className={styles.productSubinfo}>
-                  Артикул&nbsp;{mockProduct.article_number}
+                  Артикул&nbsp;{product.sku}
                 </span>
               </h1>
             </div>
@@ -127,13 +179,16 @@ const DetailGoodPage: FC<DetailGoodPage> = ({}) => {
 
                   <ProductBadges
                     className={styles.mobileHidden}
-                    badges={mockProduct.info_badges}
+                    badges={product.labels}
                   />
                 </div>
 
-                <ImagesBlockMemo items={mockProduct.images} />
+                <ProductImagesMemo images={product.images} />
 
-                <ProductSeller className={styles.mobileHidden} />
+                <ProductSeller
+                  className={styles.mobileHidden}
+                  merchant={product.merchant}
+                />
               </div>
             </div>
 
@@ -141,14 +196,14 @@ const DetailGoodPage: FC<DetailGoodPage> = ({}) => {
               <div
                 className={`${styles.productCardHeader} ${styles.mobileHidden}`}
               >
-                <h1 className={styles.productTitle}>{mockProduct.title}</h1>
+                <h1 className={styles.productTitle}>{product.name}</h1>
                 <div className={styles.productSubinfo}>
-                  {mockProduct.subinfo && <>{mockProduct.subinfo} • </>}
-                  Артикул {mockProduct.article_number}
+                  {product.subinfo && <>{product.subinfo} • </>}
+                  Артикул&nbsp;{product.sku}
                 </div>
               </div>
 
-              <div className={styles.productOptionList}>
+              {/* <div className={styles.productOptionList}>
                 <div className={styles.productOption}>
                   <ProductVariants
                     items={mockProduct.variants}
@@ -157,51 +212,19 @@ const DetailGoodPage: FC<DetailGoodPage> = ({}) => {
                   />
                 </div>
                 {renderOptions()}
-              </div>
+              </div> */}
 
               <div className={styles.productInfoBlock}>
-                <div className={styles.productPriceInfo}>
-                  <div className={styles.productPriceActual}>
-                    {mockProduct.price_with_discount} ₽
-                  </div>
-                  <div className={styles.productPriceOld}>
-                    {mockProduct.price} ₽
-                  </div>
-                  <div className={styles.productDiscount}>
-                    <span>-{mockProduct.discount}%</span>
-                  </div>
-                </div>
+                <ProductPrice
+                  className={styles.productInfoShort}
+                  price={product.price}
+                  discountPrice={product.discount_price}
+                  discount={product.discount}
+                />
 
                 <div className={styles.productStockInfo}>
-                  <div className={styles.productStock}>
-                    {mockProduct.in_stock ? (
-                      <>
-                        <Icon
-                          className={styles.productInStock}
-                          name="Checkmark"
-                        />{' '}
-                        В наличии
-                      </>
-                    ) : (
-                      <>
-                        <Icon className={styles.productOutStock} name="Cross" />{' '}
-                        Закончился
-                      </>
-                    )}
-                  </div>
-                  {!!mockProduct.loyalty_bonus && (
-                    <div className={styles.productLoyalty}>
-                      <Icon
-                        className={styles.productOutStock}
-                        name="SmallLogo"
-                      />{' '}
-                      <Link href="#">
-                        <a className={styles.productLoyaltyLink}>
-                          {mockProduct.loyalty_bonus} вобаллов за покупку
-                        </a>
-                      </Link>
-                    </div>
-                  )}
+                  <ProductStock inStock={product.inStonk} />
+                  <ProductLoyaltyBonus value={product.loyaltyBonus} />
                 </div>
               </div>
 
@@ -210,58 +233,33 @@ const DetailGoodPage: FC<DetailGoodPage> = ({}) => {
                 <Button text="Заказать в 1 клик" variation="dashed" />
               </div>
 
-              <div className={styles.productCredit}>
-                <span className={styles.productCreditPayment}>
-                  Кредит от <span>{mockProduct.credit.payment}</span> ₽/мес
-                </span>
-                <Button text="Оформить в кредит онлайн" variation="dashed" />
-              </div>
+              <ProductCredit
+                className={styles.productInfoBlock}
+                creditPayment={product.creditMinimalPayment}
+              />
 
-              <div className={styles.productDelivery}>
-                <h3 className={styles.productDeliveryTitle}>Доставит ВоБаза</h3>
-
-                <div className={styles.productDeliveryItem}>
-                  <Link href="#">
-                    <a className={styles.productDeliveryItemType}>Самовывоз</a>
-                  </Link>
-                  {` из ${mockProduct.pickup.places_count} пункта ВоБаза с ${mockProduct.pickup.nearest_date}`}
-                </div>
-
-                {mockProduct.delivery.default && (
-                  <div className={styles.productDeliveryItem}>
-                    <Link href="#">
-                      <a className={styles.productDeliveryItemType}>Доставка</a>
-                    </Link>
-                    {` от ${mockProduct.delivery.default.start_price} рублей с ${mockProduct.delivery.default.nearest_date}`}
-                  </div>
-                )}
-
-                {mockProduct.delivery.default && (
-                  <div className={styles.productDeliveryItem}>
-                    <Link href="#">
-                      <a className={styles.productDeliveryItemType}>
-                        Экспресс-доставка
-                      </a>
-                    </Link>
-                    {` от ${mockProduct.delivery.express.start_price} рублей с ${mockProduct.delivery.express.nearest_date}`}
-                  </div>
-                )}
-              </div>
+              <ProductDelivery
+                className={styles.productInfoBlock}
+                pickup={mockProduct.pickup}
+                delivery={mockProduct.delivery}
+              />
 
               <ProductSeller className={styles.mobileVisible} />
 
-              <div className={styles.productAccordionBlock}>
-                <ProductInfoAccordion title="Описание" autoDuration>
-                  <ProductDescription html={mockProduct.description} />
-                </ProductInfoAccordion>
-              </div>
+              {product.description_full && (
+                <div className={styles.productAccordionBlock}>
+                  <ProductInfoAccordion title="Описание" autoDuration>
+                    <ProductDescription html={product.description_full} />
+                  </ProductInfoAccordion>
+                </div>
+              )}
 
               <div className={styles.productAccordionBlock}>
                 <ProductInfoAccordion
                   title="Характеристики и размеры"
                   autoDuration
                 >
-                  <ProductFeatures items={mockProduct.features} />
+                  <ProductAttributes attributes={product.attributes} />
                 </ProductInfoAccordion>
               </div>
             </div>
@@ -270,17 +268,53 @@ const DetailGoodPage: FC<DetailGoodPage> = ({}) => {
           <ProductReviews
             reviewsInfo={mockProduct.reviews}
             productInfo={{
-              id: mockProduct.id,
-              title: mockProduct.title,
-              articleNumber: mockProduct.article_number,
-              price: mockProduct.price_with_discount,
-              img: mockProduct.images[0] || '',
+              id: product.id,
+              title: product.name,
+              articleNumber: product.sku,
+              price: product.discount_price || product.price,
+              img: product.images[0].variants['small'].url,
             }}
           />
         </div>
       </div>
     </SimpleReactLightbox>
   );
+};
+
+const getProductIdFromSlug = (slug: string) => {
+  const parsedId = Number(slug.split('_').slice(-2, -1)[0]);
+
+  return !isNaN(parsedId) ? parsedId : null;
+};
+
+export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({
+  query,
+}) => {
+  const productId = getProductIdFromSlug(query.slug as string);
+
+  try {
+    const [productRes, attributesRes] = await Promise.all([
+      api.getGood(productId),
+      api.getGoodAttributes(productId),
+    ]);
+    const product = productRes.data.data;
+    normalizeProductInfo(productRes.data.data);
+
+    product.attributes = attributesRes.data.data;
+
+    return {
+      props: {
+        product: productRes.data.data,
+      },
+    };
+  } catch (err) {}
+
+  return {
+    redirect: {
+      destination: '/',
+      permanent: false,
+    },
+  };
 };
 
 export default DetailGoodPage;
