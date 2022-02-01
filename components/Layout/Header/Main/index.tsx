@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 
 import styles from './styles.module.scss';
 import { useAuth } from '../../../../src/context/auth';
+import { useGoods } from '../../../../src/context/goods';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import Search from '../Search';
@@ -18,6 +19,7 @@ type Props = {
 const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { dispatch } = useAuth();
+  const { state } = useGoods();
   const token = Cookies.get('token');
 
   const openAuthModal = () => {
@@ -80,6 +82,11 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
             <a className={styles.headerButton}>
               <Icon name="Favorite"></Icon>
               <span>Избранное</span>
+              {state.favoriteIds && state.favoriteIds.length > 0 && (
+                <span className={styles.headerButtonBadge}>
+                  {state.favoriteIds.length}
+                </span>
+              )}
             </a>
           </Link>
           <Link href="/compare">

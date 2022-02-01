@@ -75,8 +75,12 @@
     z-index: 1;
   }
 
-  &:hover {
+  &:hover,
+  &.active {
     color: var(--primary-color, #af1ebe);
+  }
+  &.active svg {
+    fill: var(--primary-color, #af1ebe);
   }
 }
 

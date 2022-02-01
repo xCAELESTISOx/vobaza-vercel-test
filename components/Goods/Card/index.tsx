@@ -4,6 +4,7 @@ import Image from 'next/image';
 
 import styles from './styles.module.scss';
 import { IGood } from '../../../src/models/IGood';
+import { useFavorite } from '../../../src/hooks/useFavorite';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import { Button } from '@nebo-team/vobaza.ui.button';
@@ -17,6 +18,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
   // const [currentImage, setCurrentImage] = useState(0);
   const cardRef = useRef(null);
   const cardContainerRef = useRef(null);
+  const { currentFavorite, toggleFavorite } = useFavorite(good);
 
   // const resetImage = () => {
   //   setCurrentImage(0);
@@ -24,6 +26,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
   const addToCart = () => {
     //TODO Add to cart
   };
+
   const checkExpress = () => {
     if (good.labels.find((good) => good.code === 'EXPRESS-DELIVERY')?.active) {
       return true;
@@ -75,7 +78,12 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
             <div className={styles.cardLabel}>
               {checkExpress() ? 'Экспресс-доставка' : ''}
             </div>
-            <div className={styles.cardIcon}>
+            <div
+              className={`${styles.cardIcon} ${
+                currentFavorite ? styles.active : ''
+              }`}
+              onClick={toggleFavorite}
+            >
               <Icon name="Favorite" />
             </div>
           </div>
@@ -180,13 +188,13 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
             <div className={styles.cardPriceBlock}>
               <div className={styles.cardPrice}>
                 {Intl.NumberFormat('ru-RU').format(
-                  (good.discount_price ? good.discount_price : good.price) / 100
+                  good.discount_price ? good.discount_price : good.price
                 )}{' '}
                 ₽
               </div>
               {good.discount_price && (
                 <div className={`${styles.cardPrice} ${styles.cardPriceOld}`}>
-                  {Intl.NumberFormat('ru-RU').format(good.price / 100)}
+                  {Intl.NumberFormat('ru-RU').format(good.price)}
                 </div>
               )}
               {good.discount_price && (

@@ -1,24 +1,28 @@
+import { useState } from 'react';
+import { GetServerSideProps } from 'next';
+
 import styles from '../../styles/Profile.module.scss';
+import { api } from '../../assets/api';
+import checkAuth from '../../assets/api/auth';
+import normalizeGoods from '../../assets/utils/normalizeGoods';
 
 import ProfileSidebar from '../../components/Profile/Sidebar';
 import ProfileEmptyField from '../../components/Profile/EmptyField';
-import ProfileFavoriteItem from '../../components/Profile/Favorite/Item';
+import ProfileFavoriteItem, {
+  FavoriteGood,
+} from '../../components/Profile/Favorite/Item';
 
-const tmpItems = [
-  {
-    title: 'Диван-кровать Мадрид 3-2 Зеленый',
-    info: '207х104х83',
-    price: '49 084',
-    oldPrice: '59 990',
-  },
-  {
-    title: 'Диван-кровать Tramp Синий',
-    info: '250х120х65',
-    price: '50 290',
-  },
-];
+interface Props {
+  initialGoods: FavoriteGood[];
+}
 
-export default function ProfileWishlist() {
+export default function Home({ initialGoods }: Props) {
+  const [goods, setGoods] = useState(initialGoods);
+
+  const onDelete = (id: number) => {
+    setGoods((prevArray: any) => prevArray.filter((item) => item.id !== id));
+  };
+
   return (
     <div>
       <div className="container">
@@ -31,10 +35,14 @@ export default function ProfileWishlist() {
             <div className={styles.profileContentBlock}>
               <h2 className={styles.profileSubtitle}>Избранное</h2>
 
-              {tmpItems && tmpItems.length > 0 ? (
+              {goods && goods.length > 0 ? (
                 <div>
-                  {tmpItems.map((item) => (
-                    <ProfileFavoriteItem key={item.title} item={item} />
+                  {goods.map((good) => (
+                    <ProfileFavoriteItem
+                      key={good.name}
+                      good={good}
+                      onDelete={onDelete}
+                    />
                   ))}
                 </div>
               ) : (
@@ -47,3 +55,24 @@ export default function ProfileWishlist() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  req,
+}) => {
+  let initialGoods = null;
+
+  try {
+    await checkAuth(req);
+    const favoritesRes = await api.getFavorites();
+
+    initialGoods = normalizeGoods(favoritesRes.data.data);
+  } catch (error) {
+    console.log(error);
+  }
+
+  return {
+    props: {
+      initialGoods,
+    },
+  };
+};

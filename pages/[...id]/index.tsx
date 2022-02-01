@@ -1,7 +1,12 @@
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
+import { api } from '../../assets/api';
 import styles from '../../styles/Catalog.module.scss';
+import { ICategory } from '../../src/models/ICategory';
+import { IGood } from '../../src/models/IGood';
+import normalizeGoods from '../../assets/utils/normalizeGoods';
 
 import tmpBannerImg1 from '../../src/tmp/bannerFilter.jpg';
 import tmpBannerImg2 from '../../src/tmp/bannerFilterMob.jpg';
@@ -11,10 +16,7 @@ import Breadcrumbs, {
 } from '../../components/Layout/Breadcrumbs';
 import CatalogList from '../../components/Catalog/List';
 import GoodsBlock from '../../components/Goods/Block';
-import { GetServerSideProps } from 'next';
-import { IGood } from '../../src/models/IGood';
-import { api } from '../../assets/api';
-import { ICategory } from '../../src/models/ICategory';
+import FavoriteModal from '../../components/Goods/Modals/Favorite';
 
 const tmpSeoText = {
   __html: `<div class="ty-wysiwyg-content vb-category-description"><p class="text-justify">В интернет-магазине «ВоБаза» представлен большой каталог диванов с фото и ценами. Удобный фильтр по категориям создает возможность расширенного выбора товаров по всевозможным характеристикам мягкой мебели. Здесь вы сможете подобрать подходящую модель для спальни, гостиной, кабинета или офиса по стоимости от 15990 руб. и купить понравившийся диван с доставкой в день заказа, продукция всегда в наличии.&nbsp;
@@ -50,6 +52,7 @@ export default function Catalog({ goods, meta, category, breadcrumbs }) {
 
   return (
     <div className={styles.homePage}>
+      <FavoriteModal />
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <section>
         <div className="container">
@@ -103,7 +106,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       api.getCategory(id),
     ]);
 
-    goods = goodsRes.data.data;
+    goods = normalizeGoods(goodsRes.data.data);
     meta = goodsRes.data.meta;
     category = categoryRes.data.data;
 

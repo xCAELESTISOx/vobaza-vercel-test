@@ -1,4 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
+
+import { api } from '../../../assets/api';
+import { useGoods } from '../../../src/context/goods';
+
 import SmallHeader from './Small';
 import MainHeader from './Main';
 import SubHeader from './Sub';
@@ -806,6 +810,23 @@ type Props = {
 };
 
 const Header: FC<Props> = ({ openPhoneCallModal }) => {
+  const { dispatch } = useGoods();
+
+  const getGlobalInfo = async () => {
+    try {
+      const res = await api.getGlobalInfo();
+      dispatch({
+        type: 'setFavorites',
+        payload: res.data.data.favorite_products_ids,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getGlobalInfo();
+  }, []);
+
   return (
     <header>
       <SmallHeader />

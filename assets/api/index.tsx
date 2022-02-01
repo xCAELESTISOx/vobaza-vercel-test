@@ -29,6 +29,10 @@ export const api = {
     setToken();
     return axios.get('/customer/v1/profile');
   },
+  getGlobalInfo() {
+    setToken();
+    return axios.get('/v1/me');
+  },
 
   subscribeMailing(data: { email: string }) {
     return axios.post('/v1/subscriptions', data);
@@ -69,5 +73,18 @@ export const api = {
       include: 'ancestors',
     };
     return axios.get(`/v1/categories/${id}`, { params });
+  },
+  //Favorites
+  getFavorites() {
+    setToken();
+    return axios.get(`/v1/favorites`);
+  },
+  setGoodFavorite(id: number | string) {
+    setToken();
+    return axios.post(`/v1/favorites/${id}`);
+  },
+  deleteGoodFavorite(id: number | string) {
+    setToken();
+    return axios.delete(`/v1/favorites/${id}`);
   },
 };

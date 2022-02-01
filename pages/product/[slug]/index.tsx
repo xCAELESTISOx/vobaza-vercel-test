@@ -24,6 +24,7 @@ import { ProductStock } from '../../../components/DetailGoodPage/ProductStock';
 import { ProductLoyaltyBonus } from '../../../components/DetailGoodPage/ProductLoyaltyBonus';
 import { ProductCredit } from '../../../components/DetailGoodPage/ProductCredit';
 import { ProductDelivery } from '../../../components/DetailGoodPage/ProductDelivery';
+import FavoriteModal from '../../../components/Goods/Modals/Favorite';
 
 import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
 import type { GetServerSideProps } from 'next';
@@ -31,6 +32,7 @@ import type { GetServerSideProps } from 'next';
 import styles from './styles.module.scss';
 
 import { mockProduct } from '../../../src/mock/detailProductPage';
+import { useFavorite } from '../../../src/hooks/useFavorite';
 
 interface DetailGoodPage {
   product: any;
@@ -84,6 +86,7 @@ const normalizeProductInfo = (product) => {
 };
 
 const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
+  const { currentFavorite, toggleFavorite } = useFavorite(product);
   const [selectedColorVariant, setSelectedColorVariant] = useState<any>(
     mockProduct.variants[0]
   );
@@ -142,6 +145,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
   return (
     <SimpleReactLightbox>
       <div className={styles.homePage}>
+        <FavoriteModal />
         <Breadcrumbs breadcrumbs={breadcrumbs} />
         <div className="container">
           <div className={styles.productInfo}>
@@ -169,8 +173,16 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
                     </div>
                   </div>
                   <div className={styles.leftMenuActions}>
-                    <button className={styles.leftMenuActionBtn}>
-                      <Icon name="Favorite" /> <span>В избранное</span>
+                    <button
+                      className={`${styles.leftMenuActionBtn} ${
+                        currentFavorite ? styles.active : ''
+                      }`}
+                      onClick={toggleFavorite}
+                    >
+                      <Icon name="Favorite" />{' '}
+                      <span>
+                        {currentFavorite ? 'Из избранного' : 'В избранное'}
+                      </span>
                     </button>
                     <button className={styles.leftMenuActionBtn}>
                       <Icon name="Compare" /> <span>Сравнить</span>

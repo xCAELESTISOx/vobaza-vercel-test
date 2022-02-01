@@ -1,6 +1,8 @@
 import type { GetServerSideProps } from 'next';
 
 import { api } from '../assets/api';
+import styles from '../styles/Home.module.scss';
+import normalizeGoods from '../assets/utils/normalizeGoods';
 import type { Banner } from '../src/models/IBanner';
 import { IGood } from '../src/models/IGood';
 
@@ -10,8 +12,7 @@ import Collections from '../components/MainPage/Collections';
 import Blog from '../components/MainPage/Blog';
 import GoodsList from '../components/Goods/List';
 import GoodsSwiper from '../components/Goods/Swiper';
-
-import styles from '../styles/Home.module.scss';
+import FavoriteModal from '../components/Goods/Modals/Favorite';
 
 interface Props {
   banners: {
@@ -27,6 +28,8 @@ export default function Home(props: Props) {
 
   return (
     <div className={styles.homePage}>
+      <FavoriteModal />
+
       <section className={styles.bannersBlock}>
         <Banners forSlider={banners.slider} forMiniature={banners.miniature} />
       </section>
@@ -87,8 +90,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
 
     banners.slider = sliderBannersRes.data.data;
     banners.miniature = miniatureBannersRes.data.data;
-    hits = hitsRes.data.data;
-    newGoods = newGoodsRes.data.data;
+    hits = normalizeGoods(hitsRes.data.data);
+    newGoods = normalizeGoods(newGoodsRes.data.data);
   } catch (error) {}
 
   return {

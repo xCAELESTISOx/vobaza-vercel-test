@@ -1,4 +1,4 @@
-@import "../../../styles/Home.module.scss";
+@import '../../../styles/Home.module.scss';
 
 .productInfo {
   display: flex;
@@ -98,11 +98,18 @@
 
   transition: all 0.2s;
 
+  &.active {
+    svg {
+      fill: var(--primary-color);
+    }
+  }
+
   span {
     margin-left: 8px;
   }
 
-  &:hover {
+  &:hover,
+  &.active {
     color: var(--primary-color);
   }
 

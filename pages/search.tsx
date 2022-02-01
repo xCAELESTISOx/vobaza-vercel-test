@@ -4,6 +4,7 @@ import { api } from '../assets/api';
 import styles from '../styles/Catalog.module.scss';
 import { IGood } from '../src/models/IGood';
 import { num2str } from '../assets/utils';
+import normalizeGoods from '../assets/utils/normalizeGoods';
 
 import Breadcrumbs from '../components/Layout/Breadcrumbs';
 import GoodsBlock from '../components/Goods/Block';
@@ -62,7 +63,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     };
     const [goodsRes] = await Promise.all([api.getGoods(params)]);
 
-    goods = goodsRes.data.data;
+    goods = normalizeGoods(goodsRes.data.data);
     meta = goodsRes.data.meta;
   } catch (error) {}
 

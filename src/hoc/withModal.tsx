@@ -4,10 +4,12 @@ import styles from './withModal.module.scss';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 export interface IModalLayout {
+  isWide?: boolean;
   onClose(): void;
 }
 
 export default function ModalLayout({
+  isWide,
   children,
   onClose,
 }: IModalLayout & { children: React.ReactNode }) {
@@ -24,7 +26,10 @@ export default function ModalLayout({
 
   return (
     <div className={styles.modalLayout} onClick={onClose}>
-      <div className={styles.modal} onClick={modalClick}>
+      <div
+        className={`${styles.modal} ${isWide ? styles.wide : ''}`}
+        onClick={modalClick}
+      >
         <div className={styles.modalClose} onClick={onClose}>
           <Icon name="Cross" />
         </div>

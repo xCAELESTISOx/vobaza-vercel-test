@@ -3,7 +3,7 @@ import * as React from 'react';
 type Action = { type: 'login' } | { type: 'toggleModal' };
 type Dispatch = (action: Action) => void;
 type State = { user?: object; isModalOpen: boolean };
-type CountProviderProps = { children: React.ReactNode };
+type AuthProviderProps = { children: React.ReactNode };
 
 const AuthStateContext = React.createContext<
   { state: State; dispatch: Dispatch } | undefined
@@ -23,7 +23,7 @@ function authReducer(state, action) {
   }
 }
 
-function AuthProvider({ children }: CountProviderProps) {
+function AuthProvider({ children }: AuthProviderProps) {
   const [state, dispatch] = React.useReducer(authReducer, {
     user: null,
     isModalOpen: false,
