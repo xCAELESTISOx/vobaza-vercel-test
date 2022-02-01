@@ -7,7 +7,7 @@ type Action =
   | { type: 'removeFavorite'; payload?: number }
   | { type: 'closeFavoriteModal' };
 type Dispatch = (action: Action) => void;
-type State = { favoritedGood?: IGood | null; favoriteIds?: number[] };
+type State = { favoritedGood?: IGood | null; favoriteIds: number[] };
 type GoodsProviderProps = { children: React.ReactNode };
 
 const GoodsStateContext = React.createContext<
@@ -49,7 +49,7 @@ function goodsReducer(state, action) {
 function GoodsProvider({ children }: GoodsProviderProps) {
   const [state, dispatch] = React.useReducer(goodsReducer, {
     favoritedGood: null,
-    favoriteIds: null,
+    favoriteIds: [],
   });
   const value: any = { state, dispatch };
 

@@ -7,7 +7,19 @@ export const axios = initAxios.create({
 
 const setToken = () => {
   const token = cookies.get('token');
+  if (token) {
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+  }
+};
 
+const setTokenWithGuest = async (withRequest?: boolean) => {
+  let token = cookies.get('token') || cookies.get('guestToken');
+
+  if (!token && withRequest) {
+    const guestTokenRes = await api.getGuestToken();
+    token = guestTokenRes.data.data.token;
+    cookies.set('guestToken', token);
+  }
   if (token) {
     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   }
@@ -15,10 +27,14 @@ const setToken = () => {
 
 export const api = {
   //Auth
+  getGuestToken() {
+    return axios.post('/v1/token');
+  },
   requestCode(data: object) {
     return axios.post('/customer/v1/token/byPhone/sendCode', data);
   },
   checkLoginCode(data: object) {
+    setTokenWithGuest();
     return axios.post('/customer/v1/token/byPhone', data);
   },
   logout() {
@@ -30,7 +46,8 @@ export const api = {
     return axios.get('/customer/v1/profile');
   },
   getGlobalInfo() {
-    setToken();
+    if (!(cookies.get('token') || cookies.get('guestToken'))) return;
+    setTokenWithGuest();
     return axios.get('/v1/me');
   },
 
@@ -75,16 +92,16 @@ export const api = {
     return axios.get(`/v1/categories/${id}`, { params });
   },
   //Favorites
-  getFavorites() {
-    setToken();
+  async getFavorites() {
+    await setTokenWithGuest();
     return axios.get(`/v1/favorites`);
   },
-  setGoodFavorite(id: number | string) {
-    setToken();
+  async setGoodFavorite(id: number | string) {
+    await setTokenWithGuest(true);
     return axios.post(`/v1/favorites/${id}`);
   },
-  deleteGoodFavorite(id: number | string) {
-    setToken();
+  async deleteGoodFavorite(id: number | string) {
+    await setTokenWithGuest(true);
     return axios.delete(`/v1/favorites/${id}`);
   },
 };

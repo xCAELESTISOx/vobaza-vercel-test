@@ -67,6 +67,7 @@ const FavoriteModal: FC = () => {
                 <div className={styles.favoriteModalButtons}>
                   <Link href="/profile/wishlist" passHref>
                     <Button
+                      onClick={onClose}
                       size="big"
                       text="Просмотреть список отложенных товаров"
                     />

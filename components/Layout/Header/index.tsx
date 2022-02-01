@@ -2,6 +2,7 @@ import React, { FC, useEffect } from 'react';
 
 import { api } from '../../../assets/api';
 import { useGoods } from '../../../src/context/goods';
+import { useAuth } from '../../../src/context/auth';
 
 import SmallHeader from './Small';
 import MainHeader from './Main';
@@ -811,21 +812,25 @@ type Props = {
 
 const Header: FC<Props> = ({ openPhoneCallModal }) => {
   const { dispatch } = useGoods();
+  const { state } = useAuth();
+  const { isLoggedIn } = state;
 
   const getGlobalInfo = async () => {
     try {
-      const res = await api.getGlobalInfo();
-      dispatch({
-        type: 'setFavorites',
-        payload: res.data.data.favorite_products_ids,
-      });
+      const globalInfoRes = await api.getGlobalInfo();
+      if (globalInfoRes) {
+        dispatch({
+          type: 'setFavorites',
+          payload: globalInfoRes.data.data.favorite_products_ids,
+        });
+      }
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     getGlobalInfo();
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <header>

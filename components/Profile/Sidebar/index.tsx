@@ -5,16 +5,26 @@ import Cookies from 'js-cookie';
 
 import { api } from '../../../assets/api';
 import styles from './styles.module.scss';
+import { useGoods } from '../../../src/context/goods';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 const ProfileSidebar: FC = () => {
+  const { state, dispatch } = useGoods();
+  const { favoriteIds } = state;
   const router = useRouter();
 
   const logout = () => {
     try {
-      api.logout();
-      Cookies.remove('token');
+      if (Cookies.get('token')) {
+        api.logout();
+        Cookies.remove('token');
+      }
+      Cookies.remove('guestToken');
+      dispatch({
+        type: 'setFavorites',
+        payload: [],
+      });
       router.push('/');
     } catch (error) {
       console.log(error);
@@ -57,6 +67,11 @@ const ProfileSidebar: FC = () => {
         >
           <Icon name="Favorite" />
           Избранное
+          {favoriteIds.length > 0 && (
+            <div className={styles.profileSidebarBadge}>
+              {favoriteIds.length}
+            </div>
+          )}
           <div className={styles.profileSidebarIcons}>
             <Icon name="SmallArrowUp" style={{ transform: 'rotate(90deg)' }} />
           </div>

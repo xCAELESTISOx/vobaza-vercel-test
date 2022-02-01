@@ -17,13 +17,17 @@ const AuthModal: FC = () => {
     setIsRegistration(!isRegistration);
   };
   const onClose = () => {
-    dispatch({ type: 'toggleModal' });
+    dispatch({ type: 'login' });
     setIsRegistration(false);
   };
 
   const onSuccess = () => {
     onClose();
-    router.push('/profile');
+    if (router.pathname.includes('profile')) {
+      router.replace(router.asPath);
+    } else {
+      router.push('/profile');
+    }
   };
 
   return (

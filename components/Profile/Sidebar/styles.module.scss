@@ -66,12 +66,40 @@
     }
   }
 }
-
-.profileSidebarIcons {
+.profileSidebarBadge {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-left: auto;
+  padding: 0 8px;
+  min-width: 24px;
+  height: 24px;
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+  background: #af1ebe;
+  border-radius: 12px;
+
+  @media screen and (max-width: 979px) {
+    padding: 0 6px;
+    height: 20px;
+    min-width: 20px;
+    font-size: 14px;
+  }
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
+}
+
+.profileSidebarIcons {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+
+  @media screen and (max-width: 767px) {
+    display: flex;
+  }
 
   svg {
     display: none;

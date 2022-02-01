@@ -4,6 +4,7 @@ import Image from 'next/image';
 
 import styles from './styles.module.scss';
 import { api } from '../../../assets/api';
+import { useGoods } from '../../../src/context/goods';
 import { Image as IImage } from '../../../src/models/IImage';
 
 import { Button } from '@nebo-team/vobaza.ui.button';
@@ -23,12 +24,14 @@ type Props = {
 };
 const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const { dispatch } = useGoods();
 
   const removeFromFavorite = async () => {
     if (isLoading) return;
     try {
       setIsLoading(true);
       await api.deleteGoodFavorite(good.id);
+      dispatch({ type: 'removeFavorite', payload: good.id });
       onDelete(good.id);
     } catch (error) {
       setIsLoading(false);

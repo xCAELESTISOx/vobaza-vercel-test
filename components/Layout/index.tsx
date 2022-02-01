@@ -24,17 +24,17 @@ export default function Layout({ children }: ILayoutChildren) {
 
   return (
     <AuthProvider>
-      <AuthModal />
       <MainHead />
       <PhoneCallModal isActive={isPhoneCallOpen} onClose={toggleIsPhoneCall} />
       <GoodsProvider>
+        <AuthModal />
         <Header openPhoneCallModal={toggleIsPhoneCall} />
         <div className={styles.layout}>
           <div className={styles.content}>{children}</div>
         </div>
+        <BottomTabBar />
       </GoodsProvider>
       <Footer openPhoneCallModal={toggleIsPhoneCall} />
-      <BottomTabBar />
     </AuthProvider>
   );
 }

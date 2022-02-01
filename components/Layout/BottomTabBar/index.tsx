@@ -1,22 +1,25 @@
 import React, { FC, useState } from 'react';
+import Cookies from 'js-cookie';
 import Link from 'next/link';
 
 import styles from './styles.module.scss';
 import { useAuth } from '../../../src/context/auth';
+import { useGoods } from '../../../src/context/goods';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import ProfileMenu from '../../Profile/Menu';
 
 const BottomTabBar: FC = () => {
   const [isProfileMenuOpen, setIsProfileOpen] = useState(false);
-  const { state, dispatch } = useAuth();
-  const { user } = state;
+  const goodsState = useGoods();
+  const { dispatch } = useAuth();
+  const { favoriteIds } = goodsState.state;
 
   const openMenu = () => {
     //TODO openMenu
   };
   const profileClickHandler = () => {
-    if (user) {
+    if (Cookies.get('token')) {
       toggleProfileMenu();
     } else {
       dispatch({ type: 'toggleModal' });
@@ -48,7 +51,12 @@ const BottomTabBar: FC = () => {
         </Link>
         <Link href="/profile/wishlist">
           <a className={styles.tab}>
-            <Icon name="Favorite" />
+            <div className={styles.tabIcon}>
+              <Icon name="Favorite" />
+              {favoriteIds.length > 0 && (
+                <div className={styles.tabBadge}>{favoriteIds.length}</div>
+              )}
+            </div>
             <div className={styles.tabTitle}>Избранное</div>
           </a>
         </Link>
