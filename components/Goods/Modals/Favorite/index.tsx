@@ -45,9 +45,10 @@ const FavoriteModal: FC = () => {
               </div>
               <div className={styles.favoriteModalItemBlock}>
                 <div className={styles.favoriteModalItemInfo}>
-                  <div>
-                    {/* TODO */}
-                    <Link href="/">
+                  <div onClick={onClose}>
+                    <Link
+                      href={`/product/${favoritedGood.slug}_${favoritedGood.id}_${favoritedGood.sku}`}
+                    >
                       <a className={styles.favoriteModalItemTitle}>
                         {favoritedGood.name}
                       </a>

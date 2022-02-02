@@ -12,6 +12,8 @@ import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 export type FavoriteGood = {
   id: number;
+  slug: string;
+  sku: number;
   name: string;
   price: number;
   discount_price: number;
@@ -40,8 +42,7 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
   };
   return (
     <div className={styles.profileFavoriteItem}>
-      {/* TODO api */}
-      <Link href="/">
+      <Link href={`/product/${good.slug}_${good.id}_${good.sku}`}>
         <a className={styles.profileFavoriteItemImage}>
           {good.main_image ? (
             <Image
@@ -57,8 +58,7 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
       </Link>
       <div className={styles.profileFavoriteItemInfoBlock}>
         <div>
-          {/* TODO api */}
-          <Link href="/">
+          <Link href={`/product/${good.slug}_${good.id}_${good.sku}`}>
             <a className={styles.profileFavoriteItemTitle}>{good.name}</a>
           </Link>
           {/* <div className={styles.profileFavoriteItemInfo}>{item.info}</div> */}
