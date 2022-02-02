@@ -6,10 +6,12 @@ import Cookies from 'js-cookie';
 import { api } from '../../../assets/api';
 import styles from './styles.module.scss';
 import { useGoods } from '../../../src/context/goods';
+import { useAuth } from '../../../src/context/auth';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 const ProfileSidebar: FC = () => {
+  const authStore = useAuth();
   const { state, dispatch } = useGoods();
   const { favoriteIds } = state;
   const router = useRouter();
@@ -20,6 +22,7 @@ const ProfileSidebar: FC = () => {
         api.logout();
         Cookies.remove('token');
       }
+      authStore.dispatch({ type: 'logout' });
       Cookies.remove('guestToken');
       dispatch({
         type: 'setFavorites',

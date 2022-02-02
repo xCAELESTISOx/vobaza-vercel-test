@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-type Action = { type: 'login' } | { type: 'toggleModal' };
+type Action = { type: 'login' } | { type: 'logout' } | { type: 'toggleModal' };
 type Dispatch = (action: Action) => void;
 type State = { isLoggedIn: boolean; isModalOpen: boolean };
 type AuthProviderProps = { children: React.ReactNode };
@@ -13,6 +13,9 @@ function authReducer(state, action) {
   switch (action.type) {
     case 'login': {
       return { isLoggedIn: true };
+    }
+    case 'logout': {
+      return { isLoggedIn: false };
     }
     case 'toggleModal': {
       return { ...state, isModalOpen: !state.isModalOpen };

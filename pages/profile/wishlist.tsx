@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 
 import styles from '../../styles/Profile.module.scss';
@@ -22,6 +22,10 @@ export default function Home({ initialGoods }: Props) {
   const onDelete = (id: number) => {
     setGoods((prevArray: any) => prevArray.filter((item) => item.id !== id));
   };
+
+  useEffect(() => {
+    setGoods(initialGoods);
+  }, [initialGoods]);
 
   return (
     <div>
