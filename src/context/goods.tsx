@@ -4,10 +4,9 @@ import { IGood } from '../models/IGood';
 type Action =
   | { type: 'setFavorites'; payload?: number[] }
   | { type: 'addFavorite'; payload?: IGood }
-  | { type: 'removeFavorite'; payload?: number }
-  | { type: 'closeFavoriteModal' };
+  | { type: 'removeFavorite'; payload?: number };
 type Dispatch = (action: Action) => void;
-type State = { favoritedGood?: IGood | null; favoriteIds: number[] };
+type State = { favoriteIds: number[] };
 type GoodsProviderProps = { children: React.ReactNode };
 
 const GoodsStateContext = React.createContext<
@@ -19,16 +18,9 @@ function goodsReducer(state, action) {
     case 'setFavorites': {
       return { ...state, favoriteIds: action.payload };
     }
-    case 'closeFavoriteModal': {
-      return {
-        ...state,
-        favoritedGood: null,
-      };
-    }
     case 'addFavorite': {
       return {
         ...state,
-        favoritedGood: action.payload,
         favoriteIds: [...state.favoriteIds, action.payload.id],
       };
     }
@@ -48,7 +40,6 @@ function goodsReducer(state, action) {
 
 function GoodsProvider({ children }: GoodsProviderProps) {
   const [state, dispatch] = React.useReducer(goodsReducer, {
-    favoritedGood: null,
     favoriteIds: [],
   });
   const value: any = { state, dispatch };

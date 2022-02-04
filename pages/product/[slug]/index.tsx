@@ -24,7 +24,6 @@ import { ProductStock } from '../../../components/DetailGoodPage/ProductStock';
 import { ProductLoyaltyBonus } from '../../../components/DetailGoodPage/ProductLoyaltyBonus';
 import { ProductCredit } from '../../../components/DetailGoodPage/ProductCredit';
 import { ProductDelivery } from '../../../components/DetailGoodPage/ProductDelivery';
-import FavoriteModal from '../../../components/Goods/Modals/Favorite';
 
 import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
 import type { GetServerSideProps } from 'next';
@@ -145,7 +144,6 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
   return (
     <SimpleReactLightbox>
       <div className={styles.homePage}>
-        <FavoriteModal />
         <Breadcrumbs breadcrumbs={breadcrumbs} />
         <div className="container">
           <div className={styles.productInfo}>

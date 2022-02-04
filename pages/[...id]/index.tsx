@@ -16,7 +16,6 @@ import Breadcrumbs, {
 } from '../../components/Layout/Breadcrumbs';
 import CatalogList from '../../components/Catalog/List';
 import GoodsBlock from '../../components/Goods/Block';
-import FavoriteModal from '../../components/Goods/Modals/Favorite';
 
 const tmpSeoText = {
   __html: `<div class="ty-wysiwyg-content vb-category-description"><p class="text-justify">В интернет-магазине «ВоБаза» представлен большой каталог диванов с фото и ценами. Удобный фильтр по категориям создает возможность расширенного выбора товаров по всевозможным характеристикам мягкой мебели. Здесь вы сможете подобрать подходящую модель для спальни, гостиной, кабинета или офиса по стоимости от 15990 руб. и купить понравившийся диван с доставкой в день заказа, продукция всегда в наличии.&nbsp;
@@ -52,7 +51,6 @@ export default function Catalog({ goods, meta, category, breadcrumbs }) {
 
   return (
     <div className={styles.homePage}>
-      <FavoriteModal />
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <section>
         <div className="container">

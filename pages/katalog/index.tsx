@@ -6,7 +6,6 @@ import Breadcrumbs, {
 } from '../../components/Layout/Breadcrumbs';
 import CatalogList from '../../components/Catalog/List';
 import GoodsBlock from '../../components/Goods/Block';
-import FavoriteModal from '../../components/Goods/Modals/Favorite';
 
 const breadcrumbs: BreadcrumbType[] = [
   {
@@ -21,7 +20,6 @@ export default function Catalog() {
 
   return (
     <div className={styles.homePage}>
-      <FavoriteModal />
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <section className={styles.bannersBlock}>
         <div className="container">
