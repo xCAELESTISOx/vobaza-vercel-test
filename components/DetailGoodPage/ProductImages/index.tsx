@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLightbox } from 'simple-react-lightbox';
 
 import { Navigation, Thumbs, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -7,31 +8,8 @@ import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 import styles from './styles.module.scss';
 
-import { SRLWrapper } from 'simple-react-lightbox';
 import { getImageVariantByFieldname } from '../../../assets/utils/images';
-
-const options = {
-  settings: {
-    disablePanzoom: true,
-    overlayColor: 'rgba(255, 255, 255, 1)',
-  },
-  thumbnails: {
-    showThumbnails: true,
-    thumbnailsAlignment: 'center',
-    thumbnailsContainerPadding: '8px',
-    thumbnailsGap: '8px 8px',
-    thumbnailsPosition: 'bottom',
-    thumbnailsSize: ['70px', '70px'],
-  },
-  buttons: {
-    showAutoplayButton: false,
-    showDownloadButton: false,
-    showFullscreenButton: false,
-    showThumbnailsButton: false,
-    backgroundColor: '#f2f2f2',
-    iconColor: '#af1ebe',
-  },
-};
+import { LightboxViewer } from './LightboxViewer';
 
 const thumbsBreakpoints = {
   1300: { slidesPerView: 7 },
@@ -54,19 +32,29 @@ const ProductImages = ({ images }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [mainSwiper, setMainSwiper] = useState(null);
 
+  const { openLightbox } = useLightbox();
+
   const mainImages = getImagesUrlsFromVariant(images, 'original');
   const thumbsImages = getImagesUrlsFromVariant(images, 'small');
 
-  const onLightboxClosed = (e) => {
+  const handleLightboxClosed = (e) => {
     if (mainSwiper) {
-      mainSwiper.slideTo(+e.currentSlide.id);
+      mainSwiper.slideTo(+e.currentSlide.id + 1);
     }
   };
 
+  const handleClickSlide = (index) => {
+    return () => {
+      openLightbox(index);
+    };
+  };
+
   return (
-    <div className={styles.images}>
-      <div className={styles.currentImage}>
-        <SRLWrapper options={options} callbacks={{ onLightboxClosed }}>
+    <>
+      <LightboxViewer images={mainImages} onClose={handleLightboxClosed} />
+
+      <div className={styles.images}>
+        <div className={styles.currentImage}>
           <Swiper
             className={styles.mainSwiper}
             modules={[Navigation, Thumbs, Pagination]}
@@ -86,47 +74,54 @@ const ProductImages = ({ images }) => {
           >
             {mainImages &&
               mainImages.map((img, index) => (
-                <SwiperSlide key={`main-slide-${img.id}`}>
+                <SwiperSlide
+                  key={`main-slide-${img.id}`}
+                  onClick={handleClickSlide(index)}
+                >
                   <img src={img.url} alt="" />
                 </SwiperSlide>
               ))}
           </Swiper>
-        </SRLWrapper>
-      </div>
-      <div className={`${styles.pagination} product-images-pagination`}></div>
-      <div className={styles.thumbsSwiper}>
-        <Swiper
-          className={styles.swiper}
-          watchSlidesProgress
-          slidesPerView={5}
-          spaceBetween={8}
-          speed={600}
-          slideToClickedSlide
-          centerInsufficientSlides
-          breakpoints={thumbsBreakpoints}
-          onSwiper={setThumbsSwiper}
-        >
-          {thumbsImages &&
-            thumbsImages.map((img) => (
-              <SwiperSlide
-                key={`thumb-slide-${img.id}`}
-                className={styles.thumbsSlide}
-              >
-                <img className={styles.thumbsSlideImage} src={img.url} alt="" />
-              </SwiperSlide>
-            ))}
-        </Swiper>
+        </div>
+        <div className={`${styles.pagination} product-images-pagination`}></div>
+        <div className={styles.thumbsSwiper}>
+          <Swiper
+            className={styles.swiper}
+            watchSlidesProgress
+            slidesPerView={5}
+            spaceBetween={8}
+            speed={600}
+            slideToClickedSlide
+            centerInsufficientSlides
+            breakpoints={thumbsBreakpoints}
+            onSwiper={setThumbsSwiper}
+          >
+            {thumbsImages &&
+              thumbsImages.map((img) => (
+                <SwiperSlide
+                  key={`thumb-slide-${img.id}`}
+                  className={styles.thumbsSlide}
+                >
+                  <img
+                    className={styles.thumbsSlideImage}
+                    src={img.url}
+                    alt=""
+                  />
+                </SwiperSlide>
+              ))}
+          </Swiper>
 
-        <button className={`${styles.thumbsNavButton} product-swiper__prev`}>
-          <Icon name="ArrowLeft" />
-        </button>
-        <button
-          className={`${styles.thumbsNavButton} ${styles.thumbsNavButtonNext} product-swiper__next`}
-        >
-          <Icon name="ArrowRight" />
-        </button>
+          <button className={`${styles.thumbsNavButton} product-swiper__prev`}>
+            <Icon name="ArrowLeft" />
+          </button>
+          <button
+            className={`${styles.thumbsNavButton} ${styles.thumbsNavButtonNext} product-swiper__next`}
+          >
+            <Icon name="ArrowRight" />
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
