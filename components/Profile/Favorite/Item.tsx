@@ -2,6 +2,8 @@ import { FC, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+import { toNumberWithSpaces } from '../../../assets/utils/formatters';
+
 import styles from './styles.module.scss';
 import { api } from '../../../assets/api';
 import { useGoods } from '../../../src/context/goods';
@@ -74,11 +76,11 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
           <div className={styles.profileFavoriteItemPrices}>
             {good.discount_price && (
               <div className={styles.profileFavoriteItemPriceOld}>
-                {Intl.NumberFormat('ru-RU').format(good.price)} ₽
+                {toNumberWithSpaces(good.price)} ₽
               </div>
             )}
             <div className={styles.profileFavoriteItemPrice}>
-              {Intl.NumberFormat('ru-RU').format(
+              {toNumberWithSpaces(
                 good.discount_price ? good.discount_price : good.price
               )}{' '}
               ₽

@@ -2,6 +2,8 @@ import React, { FC, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+import { toNumberWithSpaces } from '../../../assets/utils/formatters';
+
 import styles from './styles.module.scss';
 import { IGood } from '../../../src/models/IGood';
 import { useFavorite } from '../../../src/hooks/useFavorite';
@@ -187,14 +189,14 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
             </Link>
             <div className={styles.cardPriceBlock}>
               <div className={styles.cardPrice}>
-                {Intl.NumberFormat('ru-RU').format(
+                {toNumberWithSpaces(
                   good.discount_price ? good.discount_price : good.price
                 )}{' '}
                 ₽
               </div>
               {good.discount_price && (
                 <div className={`${styles.cardPrice} ${styles.cardPriceOld}`}>
-                  {Intl.NumberFormat('ru-RU').format(good.price)}
+                  {toNumberWithSpaces(good.price)}
                 </div>
               )}
               {good.discount_price && (
