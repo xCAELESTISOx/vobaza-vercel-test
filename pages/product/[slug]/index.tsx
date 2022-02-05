@@ -32,6 +32,7 @@ import styles from './styles.module.scss';
 
 import { mockProduct } from '../../../src/mock/detailProductPage';
 import { useFavorite } from '../../../src/hooks/useFavorite';
+import { getImageVariantByFieldname } from '../../../assets/utils/images';
 
 interface DetailGoodPage {
   product: any;
@@ -282,7 +283,9 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
               title: product.name,
               articleNumber: product.sku,
               price: product.discount_price || product.price,
-              img: product.images[0].variants['small'].url,
+              image: product.images
+                ? getImageVariantByFieldname(product.images[0], 'small')
+                : null,
             }}
           />
         </div>

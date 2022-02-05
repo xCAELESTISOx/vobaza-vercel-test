@@ -3,6 +3,7 @@ import React, { FC, useState } from 'react';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 
+import { Icon } from '@nebo-team/vobaza.ui.icon';
 import { Button } from '@nebo-team/vobaza.ui.button';
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
 import Modal from '../../../../src/hoc/withModal';
@@ -10,6 +11,8 @@ import { RatingStars } from '../../../UI/RatingStars';
 import { UploadPhotos } from './UploadPhotos';
 
 import styles from './styles.module.scss';
+
+import { toNumberWithSpaces } from '../../../../assets/utils/formatters';
 
 interface CreateReviewModal {
   active: boolean;
@@ -84,8 +87,6 @@ const CreateReviewModal: FC<CreateReviewModal> = ({
   });
 
   const handleChange = async (e: any) => {
-    console.log(values);
-
     await setFieldValue(e.target.name, e.target.value);
   };
   const handleChangeCustomField = async (name: string, value: any) => {
@@ -94,6 +95,8 @@ const CreateReviewModal: FC<CreateReviewModal> = ({
   const handleBlur = async (e: any) => {
     validateField(e.target.name);
   };
+
+  const productImageURL = productInfo.image ? productInfo.image.url : null;
 
   return (
     <>
@@ -105,7 +108,11 @@ const CreateReviewModal: FC<CreateReviewModal> = ({
             <div className={styles.reviewModalProduct}>
               <div className={styles.reviewModalProductImage}>
                 <div>
-                  <img src={productInfo.img || ''} alt="" />
+                  {productImageURL ? (
+                    <img src={productImageURL || ''} alt="" />
+                  ) : (
+                    <Icon name="ImagePlaceholder" />
+                  )}
                 </div>
               </div>
               <div className={styles.reviewModalProductInfo}>
@@ -116,7 +123,7 @@ const CreateReviewModal: FC<CreateReviewModal> = ({
                   {productInfo.title}
                 </div>
                 <div className={styles.reviewModalProductPrice}>
-                  {productInfo.price}&nbsp;₽
+                  {toNumberWithSpaces(productInfo.price)}&nbsp;₽
                 </div>
               </div>
             </div>

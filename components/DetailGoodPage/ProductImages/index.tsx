@@ -19,13 +19,22 @@ const thumbsBreakpoints = {
 const getImagesUrlsFromVariant = (images, fieldname: string) => {
   const urls = [];
 
-  images.forEach((image) => {
-    const imageVariant = getImageVariantByFieldname(image, fieldname);
+  if (Array.isArray(images))
+    images.forEach((image) => {
+      const imageVariant = getImageVariantByFieldname(image, fieldname);
 
-    if (imageVariant) urls.push({ url: imageVariant.url, id: image.id });
-  });
+      if (imageVariant) urls.push({ url: imageVariant.url, id: image.id });
+    });
 
   return urls;
+};
+
+const renderEmptyPlaceholder = () => {
+  return (
+    <SwiperSlide>
+      <Icon className={styles.slideImage} name="ImagePlaceholder" />
+    </SwiperSlide>
+  );
 };
 
 const ProductImages = ({ images }) => {
@@ -49,12 +58,31 @@ const ProductImages = ({ images }) => {
     };
   };
 
+  const renderMainImages = () => {
+    return mainImages.map((img, index) => (
+      <SwiperSlide
+        key={`main-slide-${img.id}`}
+        onClick={handleClickSlide(index)}
+      >
+        <img className={styles.slideImage} src={img.url} alt="" />
+      </SwiperSlide>
+    ));
+  };
+
+  const renderThumbImages = () => {
+    return thumbsImages.map((img) => (
+      <SwiperSlide key={`thumb-slide-${img.id}`} className={styles.thumbsSlide}>
+        <img className={styles.thumbsSlideImage} src={img.url} alt="" />
+      </SwiperSlide>
+    ));
+  };
+
   return (
     <>
       <LightboxViewer images={mainImages} onClose={handleLightboxClosed} />
 
       <div className={styles.images}>
-        <div className={styles.currentImage}>
+        <div className={styles.mainSwiperWrapper}>
           <Swiper
             className={styles.mainSwiper}
             modules={[Navigation, Thumbs, Pagination]}
@@ -72,15 +100,8 @@ const ProductImages = ({ images }) => {
             }}
             onSwiper={setMainSwiper}
           >
-            {mainImages &&
-              mainImages.map((img, index) => (
-                <SwiperSlide
-                  key={`main-slide-${img.id}`}
-                  onClick={handleClickSlide(index)}
-                >
-                  <img src={img.url} alt="" />
-                </SwiperSlide>
-              ))}
+            {!!mainImages.length && renderMainImages()}
+            {!mainImages.length && renderEmptyPlaceholder()}
           </Swiper>
         </div>
         <div className={`${styles.pagination} product-images-pagination`}></div>
@@ -96,19 +117,8 @@ const ProductImages = ({ images }) => {
             breakpoints={thumbsBreakpoints}
             onSwiper={setThumbsSwiper}
           >
-            {thumbsImages &&
-              thumbsImages.map((img) => (
-                <SwiperSlide
-                  key={`thumb-slide-${img.id}`}
-                  className={styles.thumbsSlide}
-                >
-                  <img
-                    className={styles.thumbsSlideImage}
-                    src={img.url}
-                    alt=""
-                  />
-                </SwiperSlide>
-              ))}
+            {!!thumbsImages.length && renderThumbImages()}
+            {!thumbsImages.length && renderEmptyPlaceholder()}
           </Swiper>
 
           <button className={`${styles.thumbsNavButton} product-swiper__prev`}>
