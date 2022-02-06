@@ -13,6 +13,25 @@ type Props = {
   slides: Array<BannerSlide>;
 };
 
+type MainBannerContent = {
+  title?: string;
+  description?: string;
+};
+
+const MainBannerContent: FC<MainBannerContent> = (props) => {
+  if (!props.title && !props.description) return null;
+
+  return (
+    <div className={styles.mainBannerContent}>
+      <div
+        className={styles.mainBannerTitle}
+        dangerouslySetInnerHTML={{ __html: props.title }}
+      ></div>
+      <div className={styles.mainBannerDecription}>{props.description}</div>
+    </div>
+  );
+};
+
 const MainBanner: FC<Props> = ({ slides }) => {
   return (
     <div className={styles.mainBanner}>
@@ -56,6 +75,10 @@ const MainBanner: FC<Props> = ({ slides }) => {
                 )}
               </a>
             </Link>
+            <MainBannerContent
+              title={slide.title}
+              description={slide.description}
+            />
           </SwiperSlide>
         ))}
       </Swiper>

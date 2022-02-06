@@ -107,22 +107,67 @@
   }
 }
 
-.bannerContent {
+.subBannerContent {
   position: absolute;
   top: 20px;
   left: 20px;
   word-wrap: break-word;
 }
-.bannerTitle {
+
+.subBannerTitle {
   margin: 0;
+
   color: #fff;
   font-size: 20px;
   line-height: initial;
-  font-weight: bold;
+  font-weight: 600;
   text-transform: uppercase;
 }
-.bannerDeacription {
+
+.subBannerDecription {
   margin-top: 6px;
   color: #fff;
   font-size: 12px;
+  line-height: 18px;
+}
+
+.mainBannerContent {
+  position: absolute;
+  bottom: 40px;
+  left: 60px;
+  word-wrap: break-word;
+
+  @media screen and (max-width: 767px) {
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+  }
+}
+
+.mainBannerTitle {
+  margin: 0;
+
+  font-weight: 600;
+  font-size: 34px;
+  line-height: 44px;
+  color: #fff;
+  text-transform: uppercase;
+
+  @media screen and (max-width: 767px) {
+    font-size: 24px;
+    line-height: 28px;
+  }
+}
+
+.mainBannerDecription {
+  margin-top: 6px;
+
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: #fff;
+
+  @media screen and (max-width: 767px) {
+    font-size: 14px;
+  }
 }

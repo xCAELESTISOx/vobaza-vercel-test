@@ -12,6 +12,25 @@ type Props = {
   slides: Array<BannerSlide>;
 };
 
+type SubBannerContent = {
+  title?: string;
+  description?: string;
+};
+
+const SubBannerContent: FC<SubBannerContent> = (props) => {
+  if (!props.title && !props.description) return null;
+
+  return (
+    <div className={styles.subBannerContent}>
+      <div
+        className={styles.subBannerTitle}
+        dangerouslySetInnerHTML={{ __html: props.title }}
+      ></div>
+      <div className={styles.subBannerDecription}>{props.description}</div>
+    </div>
+  );
+};
+
 const SubBanner: FC<Props> = ({ slides }) => {
   return (
     <>
@@ -27,15 +46,10 @@ const SubBanner: FC<Props> = ({ slides }) => {
                   objectFit="cover"
                 />
               )}
-              <div className={styles.bannerContent}>
-                <div
-                  className={styles.bannerTitle}
-                  dangerouslySetInnerHTML={{ __html: slide.title }}
-                ></div>
-                <div className={styles.bannerDeacription}>
-                  {slide.description}
-                </div>
-              </div>
+              <SubBannerContent
+                title={slide.title}
+                description={slide.description}
+              />
             </a>
           </Link>
         ))}
@@ -59,15 +73,10 @@ const SubBanner: FC<Props> = ({ slides }) => {
                       objectFit="cover"
                     />
                   )}
-                  <div className={styles.bannerContent}>
-                    <div
-                      className={styles.bannerTitle}
-                      dangerouslySetInnerHTML={{ __html: slide.title }}
-                    ></div>
-                    <div className={styles.bannerDeacription}>
-                      {slide.description}
-                    </div>
-                  </div>
+                  <SubBannerContent
+                    title={slide.title}
+                    description={slide.description}
+                  />
                 </a>
               </Link>
             </SwiperSlide>
