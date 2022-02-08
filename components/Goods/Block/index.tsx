@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 
 import styles from './styles.module.scss';
 import { IGood } from '../../../src/models/IGood';
+import { IFilter } from '../../../src/models/IFilter';
 
 import { Pagination } from '@nebo-team/vobaza.ui.pagination';
 import GoodsList from '../List/index';
@@ -10,6 +11,7 @@ import Toggle from '../../UI/Toggle';
 import GoodsFilters from '../Filters';
 
 type Props = {
+  filters?: IFilter[];
   goods: IGood[];
   meta: {
     list: {
@@ -19,7 +21,7 @@ type Props = {
   };
 };
 
-const GoodsBlock: FC<Props> = ({ goods, meta }) => {
+const GoodsBlock: FC<Props> = ({ filters, goods, meta }) => {
   const router = useRouter();
   const { page } = router.query;
   const [isOnlyExpress, setIsOnlyExpress] = useState(true);
@@ -39,14 +41,18 @@ const GoodsBlock: FC<Props> = ({ goods, meta }) => {
 
   return (
     <div className={styles.goodsBlock}>
-      <div className={styles.goodsExpress}>
-        <Toggle isActive={isOnlyExpress} onClick={toggleIsOnlyExpress}>
-          Экспресс-доставка
-        </Toggle>
-      </div>
-      <div className={styles.filtersBlock}>
-        <GoodsFilters />
-      </div>
+      {filters && (
+        <>
+          <div className={styles.goodsExpress}>
+            <Toggle isActive={isOnlyExpress} onClick={toggleIsOnlyExpress}>
+              Экспресс-доставка
+            </Toggle>
+          </div>
+          <div className={styles.filtersBlock}>
+            <GoodsFilters filters={filters} />
+          </div>
+        </>
+      )}
       {goods.length > 0 ? (
         <div className={styles.goodsList}>
           <GoodsList goods={goods} />

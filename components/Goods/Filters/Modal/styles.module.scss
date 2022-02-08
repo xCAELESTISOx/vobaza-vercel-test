@@ -68,9 +68,6 @@
       color: var(--primary-color);
     }
   }
-  > div:not(:first-child) > div + div {
-    margin-top: 16px;
-  }
 }
 
 .filtersButtons {

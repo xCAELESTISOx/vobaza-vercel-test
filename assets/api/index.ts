@@ -91,6 +91,9 @@ export const api = {
     };
     return axios.get(`/v1/categories/${id}`, { params });
   },
+  getCategoryFilters(id) {
+    return axios.get(`/v1/categories/${id}/filters`);
+  },
   //Favorites
   async getFavorites() {
     await setTokenWithGuest();

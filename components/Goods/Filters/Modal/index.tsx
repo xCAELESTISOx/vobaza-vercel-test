@@ -1,22 +1,52 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
 import styles from './styles.module.scss';
+import { IFilter, IFilterFront } from '../../../../src/models/IFilter';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
-import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox';
 import { Button } from '@nebo-team/vobaza.ui.button';
-import { RangeBlock } from '@nebo-team/vobaza.ui.range';
 import Accordeon from '../../../UI/Accordeon';
+import GoodsFilterItem from '../Item';
 
 type Props = {
   isOpen: boolean;
-  close: any;
+  filters: IFilter[];
+  currentFilters: IFilterFront[];
+  close: () => void;
+  addFilter: (filter: IFilterFront) => void;
+  removeAllFilters: () => void;
 };
 
-const FiltersModal: FC<Props> = ({ isOpen, close }) => {
+const FiltersModal: FC<Props> = ({
+  isOpen,
+  filters,
+  currentFilters,
+  removeAllFilters,
+  addFilter,
+  close,
+}) => {
   const menuClickHandler = (e) => {
     e.stopPropagation();
   };
+
+  const removeAll = () => {
+    removeAllFilters();
+    close();
+  };
+
+  const applyAll = () => {
+    const filterItems = document.querySelectorAll('.filtersJsButton');
+    filterItems.forEach((item: any) => item.click());
+    close();
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflowY = 'hidden';
+    } else {
+      document.body.style.overflowY = 'auto';
+    }
+  }, [isOpen]);
 
   return (
     <div
@@ -31,35 +61,28 @@ const FiltersModal: FC<Props> = ({ isOpen, close }) => {
           <div className={styles.filtersTitle}>Сортировка и фильтры </div>
         </div>
         <div className={styles.filtersBlock}>
-          <Accordeon title="Цена" className={styles.filtersAccordeon}>
-            <RangeBlock max={264300} values={[0, 264300]} />
-          </Accordeon>
-          <Accordeon title="Комната" className={styles.filtersAccordeon}>
-            <InputCheckbox
-              variation="secondary"
-              label="Для прихожей"
-              onChange={() => {}}
-            />
-            <InputCheckbox
-              variation="secondary"
-              label="Для спальни"
-              onChange={() => {}}
-            />
-            <InputCheckbox
-              variation="secondary"
-              label="Для гостиной"
-              onChange={() => {}}
-            />
-            <InputCheckbox
-              variation="secondary"
-              label="Для офиса"
-              onChange={() => {}}
-            />
-          </Accordeon>
+          {filters.map((filter) => (
+            <Accordeon
+              key={filter.id}
+              title={filter.name}
+              className={styles.filtersAccordeon}
+            >
+              <GoodsFilterItem
+                filter={filter}
+                currentFilters={currentFilters}
+                addFilter={addFilter}
+                full
+              />
+            </Accordeon>
+          ))}
         </div>
         <div className={styles.filtersButtons}>
-          <Button text="Показать все" isFullScreen onClick={close}></Button>
-          <Button text="Очистить фильтры" isFullScreen onClick={close}></Button>
+          <Button text="Показать все" isFullScreen onClick={applyAll}></Button>
+          <Button
+            text="Очистить фильтры"
+            isFullScreen
+            onClick={removeAll}
+          ></Button>
         </div>
       </div>
     </div>

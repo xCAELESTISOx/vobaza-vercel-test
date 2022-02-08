@@ -254,15 +254,15 @@
     core-js "^3.0.0"
     styled-components "5.3.1"
 
-"@nebo-team/vobaza.ui.filter-select@^0.0.22":
-  version "0.0.22"
-  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.filter-select/-/@nebo-team-vobaza.ui.filter-select-0.0.22.tgz#5f0a9a18d54473c826bd5b398df85cd3b12712f2"
-  integrity sha1-XwqaGNVEc8gmvVs5jfhc07EnEvI=
+"@nebo-team/vobaza.ui.filter-select@^0.0.25":
+  version "0.0.25"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.filter-select/-/@nebo-team-vobaza.ui.filter-select-0.0.25.tgz#84c473d110f519d763c19515ec5040f9a5d194eb"
+  integrity sha1-hMRz0RD1GddjwZUV7FBA+aXRlOs=
   dependencies:
     "@nebo-team/vobaza.ui.button" "0.0.16"
     "@nebo-team/vobaza.ui.icon" "0.0.13"
     "@nebo-team/vobaza.ui.inputs.input-checkbox" "0.0.12"
-    "@nebo-team/vobaza.ui.range" "0.0.13"
+    "@nebo-team/vobaza.ui.range" "0.0.15"
     core-js "^3.0.0"
     styled-components "5.3.1"
 
@@ -318,7 +318,7 @@
     core-js "^3.0.0"
     styled-components "5.3.1"
 
-"@nebo-team/vobaza.ui.inputs.input-text@^0.0.32":
+"@nebo-team/vobaza.ui.inputs.input-text@0.0.32", "@nebo-team/vobaza.ui.inputs.input-text@^0.0.32":
   version "0.0.32"
   resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-text/-/@nebo-team-vobaza.ui.inputs.input-text-0.0.32.tgz#b058cb011420c336af2f4f2927f9c9c7327a8d70"
   integrity sha1-sFjLARQgwzavL08pJ/nJxzJ6jXA=
@@ -336,7 +336,17 @@
     core-js "^3.0.0"
     styled-components "5.3.1"
 
-"@nebo-team/vobaza.ui.range@0.0.13", "@nebo-team/vobaza.ui.range@^0.0.13":
+"@nebo-team/vobaza.ui.range@0.0.15":
+  version "0.0.15"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.range/-/@nebo-team-vobaza.ui.range-0.0.15.tgz#fd59c4c28300dbeefe0e881326ae4f4559534b58"
+  integrity sha1-/VnEwoMA2+7+DogTJq5PRVlTS1g=
+  dependencies:
+    "@nebo-team/vobaza.ui.inputs.input-text" "0.0.32"
+    core-js "^3.0.0"
+    react-range "1.8.11"
+    styled-components "5.3.1"
+
+"@nebo-team/vobaza.ui.range@^0.0.13":
   version "0.0.13"
   resolved "https://node.bit.dev/@nebo-team/vobaza.ui.range/-/@nebo-team-vobaza.ui.range-0.0.13.tgz#c103e3a37b0076e9571ad0f5799d482ce26da865"
   integrity sha1-wQPjo3sAdulXGtD1eZ1ILOJtqGU=
@@ -708,10 +718,20 @@ axobject-query@^2.2.0:
   resolved "https://registry.yarnpkg.com/axobject-query/-/axobject-query-2.2.0.tgz#943d47e10c0b704aa42275e20edf3722648989be"
   integrity sha512-Td525n+iPOOyUQIeBfcASuG6uJsDOITl7Mds5gFyerkWiX7qhUTdYUBlSgNMyVqtSJqwpt1kXGLdUt6SykLMRA==
 
-"babel-plugin-styled-components@>= 1.12.0", babel-plugin-styled-components@^2.0.1:
+"babel-plugin-styled-components@>= 1.12.0":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/babel-plugin-styled-components/-/babel-plugin-styled-components-2.0.1.tgz#4d1ea2169363887ffce5352f32080cba14d243cc"
   integrity sha512-U3wmORxerYBiqcRCo6thItIosEIga3F+ph0jJPkiOZJjyhpZyUZFQV9XvrZ2CbBIihJ3rDBC/itQ+Wx3VHMauw==
+  dependencies:
+    "@babel/helper-annotate-as-pure" "^7.16.0"
+    "@babel/helper-module-imports" "^7.16.0"
+    babel-plugin-syntax-jsx "^6.18.0"
+    lodash "^4.17.11"
+
+babel-plugin-styled-components@latest:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/babel-plugin-styled-components/-/babel-plugin-styled-components-2.0.2.tgz#0fac11402dc9db73698b55847ab1dc73f5197c54"
+  integrity sha512-7eG5NE8rChnNTDxa6LQfynwgHTVOYYaHJbUYSlOhk8QBXIQiMBKq4gyfHBBKPrxUcVBXVJL61ihduCpCQbuNbw==
   dependencies:
     "@babel/helper-annotate-as-pure" "^7.16.0"
     "@babel/helper-module-imports" "^7.16.0"

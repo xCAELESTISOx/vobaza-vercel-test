@@ -14,7 +14,11 @@
   }
 }
 .filtersButton {
-  padding: 5px 16px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  min-height: 28px;
   text-align: center;
   color: var(--primary-color, #af1ebe);
   font-size: 12px;
@@ -24,16 +28,39 @@
   white-space: nowrap;
   transition: background-color 0.4s, border-color 0.4s;
   cursor: pointer;
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
 
   &:hover {
     border-color: #fafafa;
     background-color: #fafafa;
   }
 
-  @media screen and (max-width: 767px) {
-    display: none;
+  svg {
+    width: 14px;
+    height: 14px;
+    margin-left: 8px;
+  }
+
+  &.active {
+    border: 1px solid var(--primary-color, #af1ebe);
+
+    &:hover {
+      border-color: var(--primary-color, #af1ebe);
+      background-color: rgba(175, 30, 190, 0.075);
+    }
+  }
+  &.remove {
+    border: none;
+    background-color: #f2f2f2;
+
+    &:hover {
+      background-color: #d9d9d9;
+    }
   }
 }
+
 .filtersMobileButton {
   display: none;
   position: relative;

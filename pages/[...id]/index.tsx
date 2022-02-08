@@ -6,6 +6,7 @@ import { api } from '../../assets/api';
 import styles from '../../styles/Catalog.module.scss';
 import { ICategory } from '../../src/models/ICategory';
 import { IGood } from '../../src/models/IGood';
+import { IFilter } from '../../src/models/IFilter';
 import normalizeGoods from '../../assets/utils/normalizeGoods';
 
 import tmpBannerImg1 from '../../src/tmp/bannerFilter.jpg';
@@ -34,8 +35,9 @@ const tmpSeoText = {
 };
 
 interface Props {
-  goods: IGood[];
   category: ICategory;
+  filters: IFilter[];
+  goods: IGood[];
   meta: {
     list: {
       count: number;
@@ -45,9 +47,18 @@ interface Props {
   breadcrumbs: BreadcrumbType[];
 }
 
-export default function Catalog({ goods, meta, category, breadcrumbs }) {
+// TODO 40
+const limit = 5;
+
+export default function Catalog({
+  category,
+  filters,
+  goods,
+  meta,
+  breadcrumbs,
+}) {
   const router = useRouter();
-  const { page } = router.query as { [key: string]: string };
+  const { page } = router.query as any;
 
   return (
     <div className={styles.homePage}>
@@ -64,7 +75,7 @@ export default function Catalog({ goods, meta, category, breadcrumbs }) {
           <div className={styles.bannerBlock}>
             <Image src={tmpBannerImg1} alt="Banner" />
           </div>
-          <GoodsBlock goods={goods} meta={meta} />
+          <GoodsBlock filters={filters} goods={goods} meta={meta} />
           <div className="seoText" dangerouslySetInnerHTML={tmpSeoText}></div>
         </div>
       </section>
@@ -79,6 +90,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   let goods = null;
   let meta = null;
   let category = null;
+  let filters = null;
   let breadcrumbs = [
     {
       title: 'Каталог мебели',
@@ -86,27 +98,40 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     },
   ];
 
-  const page = Number(query.page);
-  // TODO 40
-  const limit = 5;
-  const splitUrl = resolvedUrl.split('_');
-  const id = Number(splitUrl[splitUrl.length - 1]) || 1;
+  const { page, id, ...activeFilters } = query;
+
+  const splitUrl = resolvedUrl.split('?')[0].split('_');
+  const categoryId = Number(splitUrl[splitUrl.length - 1]) || 1;
 
   try {
     const params = {
       limit,
-      offset: page ? (page - 1) * limit : 0,
+      offset: page ? (Number(page) - 1) * limit : 0,
       format: 'FULL_WITH_MAIN_ATTRIBUTES',
-      'filter[category_id]': id,
+      'filter[category_id]': categoryId,
     };
-    const [goodsRes, categoryRes] = await Promise.all([
+
+    Object.entries(activeFilters).forEach((filter, index) => {
+      params[`filter[filters][${index}][id]`] = filter[0];
+      const filterValue = filter[1].toString().split('%-%');
+      if (filterValue.length === 1) {
+        params[`filter[filters][${index}][values][0]`] = filterValue[0];
+      } else if (filterValue.length === 2) {
+        params[`filter[filters][${index}][min]`] = filterValue[0] + '00';
+        params[`filter[filters][${index}][max]`] = filterValue[1] + '00';
+      }
+    });
+
+    const [goodsRes, categoryRes, filtersRes] = await Promise.all([
       api.getGoods(params),
-      api.getCategory(id),
+      api.getCategory(categoryId),
+      api.getCategoryFilters(categoryId),
     ]);
 
     goods = normalizeGoods(goodsRes.data.data);
     meta = goodsRes.data.meta;
     category = categoryRes.data.data;
+    filters = filtersRes.data.data;
 
     if (category.ancestors && category.ancestors.length > 0) {
       category.ancestors.forEach((ancestor) => {
@@ -124,9 +149,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 
   return {
     props: {
+      category,
+      filters,
       goods,
       meta,
-      category,
       breadcrumbs,
     },
   };

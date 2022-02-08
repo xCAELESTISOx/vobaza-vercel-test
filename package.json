@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@nebo-team/vobaza.ui.button": "^0.0.16",
-    "@nebo-team/vobaza.ui.filter-select": "^0.0.22",
+    "@nebo-team/vobaza.ui.filter-select": "^0.0.25",
     "@nebo-team/vobaza.ui.icon": "^0.0.13",
     "@nebo-team/vobaza.ui.inputs.input-phone": "^0.0.9",
     "@nebo-team/vobaza.ui.inputs.input-radio": "^0.0.1",
@@ -35,7 +35,7 @@
     "@types/js-cookie": "^3.0.0",
     "@types/platform": "^1.3.4",
     "@types/react": "17.0.36",
-    "babel-plugin-styled-components": "^2.0.1",
+    "babel-plugin-styled-components": "latest",
     "eslint": "8",
     "eslint-config-next": "12.0.4",
     "typescript": "4.5.2"
