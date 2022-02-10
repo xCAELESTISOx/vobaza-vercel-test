@@ -240,7 +240,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
               </div>
 
               <div className={styles.productOrderBtns}>
-                <Button text="В корзинку" icon="Cart" size="big" />
+                <Button text="В корзину" icon="Cart" size="big" />
                 <Button text="Заказать в 1 клик" variation="dashed" />
               </div>
 
