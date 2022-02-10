@@ -122,6 +122,7 @@
   line-height: initial;
   font-weight: 600;
   text-transform: uppercase;
+  text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
 }
 
 .subBannerDecription {
@@ -129,6 +130,7 @@
   color: #fff;
   font-size: 12px;
   line-height: 18px;
+  text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
 }
 
 .mainBannerContent {
@@ -152,6 +154,7 @@
   line-height: 44px;
   color: #fff;
   text-transform: uppercase;
+  text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
 
   @media screen and (max-width: 767px) {
     font-size: 24px;
@@ -166,6 +169,7 @@
   font-size: 16px;
   line-height: 24px;
   color: #fff;
+  text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
 
   @media screen and (max-width: 767px) {
     font-size: 14px;
