@@ -23,7 +23,10 @@ const AuthModal: FC = () => {
 
   const onSuccess = () => {
     onClose();
-    if (router.pathname.includes('profile')) {
+    if (
+      router.pathname.includes('profile') ||
+      router.pathname.includes('cart')
+    ) {
       router.replace(router.asPath);
     } else {
       router.push('/profile');

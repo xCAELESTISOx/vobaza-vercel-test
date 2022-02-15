@@ -20,6 +20,7 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { dispatch } = useAuth();
   const { state } = useGoods();
+  const {favoriteIds, cartSize} = state
   const token = Cookies.get('token');
 
   const openAuthModal = () => {
@@ -82,9 +83,9 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
             <a className={styles.headerButton}>
               <Icon name="Favorite"></Icon>
               <span>Избранное</span>
-              {state.favoriteIds && state.favoriteIds.length > 0 && (
+              {favoriteIds && favoriteIds.length > 0 && (
                 <span className={styles.headerButtonBadge}>
-                  {state.favoriteIds.length}
+                  {favoriteIds.length}
                 </span>
               )}
             </a>
@@ -99,6 +100,11 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
             <a className={styles.headerButton}>
               <Icon name="Cart"></Icon>
               <span>Корзина</span>
+              {cartSize > 0 && (
+                <span className={styles.headerButtonBadge}>
+                  {cartSize}
+                </span>
+              )}
             </a>
           </Link>
         </div>

@@ -823,6 +823,10 @@ const Header: FC<Props> = ({ openPhoneCallModal }) => {
           type: 'setFavorites',
           payload: globalInfoRes.data.data.favorite_products_ids,
         });
+        dispatch({
+          type: 'setCartSize',
+          payload: globalInfoRes.data.data.basket_size,
+        });
       }
     } catch (error) {
       console.log(error);

@@ -13,7 +13,7 @@ const BottomTabBar: FC = () => {
   const [isProfileMenuOpen, setIsProfileOpen] = useState(false);
   const goodsState = useGoods();
   const { dispatch } = useAuth();
-  const { favoriteIds } = goodsState.state;
+  const { favoriteIds, cartSize } = goodsState.state;
 
   const openMenu = () => {
     //TODO openMenu
@@ -45,7 +45,12 @@ const BottomTabBar: FC = () => {
         </div>
         <Link href="/cart">
           <a className={styles.tab}>
-            <Icon name="Cart" />
+            <div className={styles.tabIcon}>
+              <Icon name="Cart" />
+              {cartSize && cartSize > 0 && (
+                <div className={styles.tabBadge}>{cartSize}</div>
+              )}
+            </div>
             <div className={styles.tabTitle}>Корзина</div>
           </a>
         </Link>

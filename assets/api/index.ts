@@ -107,4 +107,21 @@ export const api = {
     await setTokenWithGuest(true);
     return axios.delete(`/v1/favorites/${id}`);
   },
+  // Cart
+  async getCart() {
+    await setTokenWithGuest();
+    return axios.get(`/v1/basket`);
+  },
+  async addGoodToCart(id: number | string, data: { quantity: number, include?: string }) {
+    await setTokenWithGuest(true);
+    return axios.post(`/v1/basket/${id}/add`, data);
+  },
+  async removeGoodFromCart(id: number | string, data: { quantity: number, include?: string }) {
+    await setTokenWithGuest(true);
+    return axios.post(`/v1/basket/${id}/sub`, data);
+  },
+  async deleteGoodFromCart(id: number | string) {
+    await setTokenWithGuest(true);
+    return axios.delete(`/v1/basket/${id}`);
+  },
 };

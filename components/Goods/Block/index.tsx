@@ -9,6 +9,7 @@ import { Pagination } from '@nebo-team/vobaza.ui.pagination';
 import GoodsList from '../List/index';
 import Toggle from '../../UI/Toggle';
 import GoodsFilters from '../Filters';
+import CartModal from '../Modals/Cart';
 
 type Props = {
   filters?: IFilter[];
@@ -41,6 +42,7 @@ const GoodsBlock: FC<Props> = ({ filters, goods, meta }) => {
 
   return (
     <div className={styles.goodsBlock}>
+      <CartModal />
       {filters && (
         <>
           <div className={styles.goodsExpress}>

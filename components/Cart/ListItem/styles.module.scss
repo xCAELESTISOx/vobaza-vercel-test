@@ -16,6 +16,12 @@
     border-radius: 8px;
   }
 
+  svg {
+    width: 100%;
+    height: auto;
+    color: #b3b3b3;
+  }
+
   @media screen and (max-width: 767px) {
     width: 80px;
     height: 80px;
@@ -51,6 +57,7 @@
   @media screen and (max-width: 767px) {
     font-size: 12px;
     line-height: 18px;
+    min-height: 80px;
   }
 }
 .cartListItemFeatures {
@@ -82,26 +89,6 @@
   }
   @media screen and (max-width: 567px) {
     margin-left: -104px;
-  }
-}
-.cartListItemButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
-  min-width: 128px;
-  font-size: 16px;
-  border: 1px solid #d9d9d9;
-  border-radius: 8px;
-
-  @media screen and (max-width: 767px) {
-    padding: 4px 8px;
-    min-width: 96px;
-  }
-
-  svg {
-    color: var(--primary-color, #af1ebe);
-    cursor: pointer;
   }
 }
 .cartListItemPriceForOne {

@@ -1,58 +1,128 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
 import styles from './styles.module.scss';
-import tmpImg1 from './tmp/good1.jpg';
+import { toNumberWithSpaces } from '../../../assets/utils/formatters';
+import { Image as IImage } from '../../../src/models/IImage';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
+import ItemCounter from '../../UI/ItemCounter';
 
-const CartListItem: FC = () => {
-  const deleteItem = () => {
-    console.log('delete');
+export type ICartGood = {
+  product: {
+    id: number;
+    slug: string;
+    sku: number;
+    name: string;
+    price: number;
+    discount_price?: number;
+    main_image: IImage;
   };
-  const removeItem = () => {
-    console.log('removeItem');
+  quantity: number;
+  price: number;
+  discount_price?: number;
+};
+
+type Props = {
+  good: ICartGood;
+  deleteItem: (id: number, quantity: number) => void;
+  changeItem: (id: number, quantity: number) => Promise<any>;
+};
+
+const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
+  const [count, setCount] = useState(good.quantity);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const deleteItemHandler = () => {
+    deleteItem(good.product.id, good.quantity);
   };
-  const addItem = () => {
-    console.log('addItem');
+
+  const changeItemCount = async () => {
+    setIsLoading(true);
+    try {
+      const quantity = await changeItem(good.product.id, count - good.quantity);
+      setCount(good.quantity + quantity);
+      setIsLoading(false);
+    } catch (error) {
+      setCount(good.quantity);
+      setIsLoading(false);
+    }
   };
+
+  useEffect(() => {
+    if (!isLoading) {
+      const debounce = setTimeout(() => {
+        changeItemCount();
+      }, 750);
+      return () => clearTimeout(debounce);
+    } else {
+      setIsLoading(false);
+    }
+  }, [count]);
 
   return (
     <div className={styles.cartListItem}>
       <div className={styles.cartListItemImageBlock}>
-        <Link href="/">
+        <Link
+          href={`/product/${good.product.slug}_${good.product.id}_${good.product.sku}`}
+        >
           <a>
-            <Image width="100" height="100" src={tmpImg1} alt="Good" />
+            {good.product.main_image ? (
+              <Image
+                src={good.product.main_image.variants.original.url}
+                width={100}
+                height={100}
+                alt={good.product.name}
+              />
+            ) : (
+              <Icon name="ImagePlaceholder" />
+            )}
           </a>
         </Link>
       </div>
       <div className={styles.cartListItemContent}>
-        <Link href="/">
-          <a className={styles.cartListItemTitle}>Диван Ричмонд Шоколадный</a>
+        <Link
+          href={`/product/${good.product.slug}_${good.product.id}_${good.product.sku}`}
+        >
+          <a className={styles.cartListItemTitle}>{good.product.name}</a>
         </Link>
-        <div className={styles.cartListItemFeatures}>
+        {/* <div className={styles.cartListItemFeatures}>
           <div className={styles.cartListItemFeature}>169х110х93</div>
           <div className={styles.cartListItemFeature}>Велюр</div>
           <div className={styles.cartListItemFeature}>Аккордеон</div>
           <div className={styles.cartListItemFeature}>Ортопедические латы</div>
           <div className={styles.cartListItemFeature}>160х200</div>
-        </div>
+        </div> */}
         <div className={styles.cartListItemButtons}>
-          <div className={styles.cartListItemButton}>
-            <Icon name="Minus" onClick={removeItem} />
-            1
-            <Icon name="SmallPlus" onClick={addItem} />
+          <ItemCounter
+            minCount={1}
+            itemCount={count}
+            setItemCount={setCount}
+            isLoading={isLoading}
+            isWhite
+          />
+          <div className={styles.cartListItemPriceForOne}>
+            {toNumberWithSpaces(
+              good.product.discount_price || good.product.price
+            )}{' '}
+            ₽ / шт
           </div>
-          <div className={styles.cartListItemPriceForOne}>51990 ₽ / шт</div>
         </div>
       </div>
       <div className={styles.cartListItemPriceBlock}>
         <div className={styles.cartListItemPrice}>
-          <div className={styles.cartListItemPriceOld}>59 990 ₽</div>
-          <div>51 990 ₽</div>
+          {good.product.discount_price && (
+            <div className={styles.cartListItemPriceOld}>
+              {toNumberWithSpaces(good.price)} ₽
+            </div>
+          )}
+          <div>{toNumberWithSpaces(good.discount_price || good.price)} ₽</div>
         </div>
-        <button className={styles.cartListItemDelete} onClick={deleteItem}>
+        <button
+          className={styles.cartListItemDelete}
+          onClick={deleteItemHandler}
+        >
           <Icon name="Trash" />
         </button>
       </div>

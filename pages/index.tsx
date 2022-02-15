@@ -12,6 +12,7 @@ import Collections from '../components/MainPage/Collections';
 import Blog from '../components/MainPage/Blog';
 import GoodsList from '../components/Goods/List';
 import GoodsSwiper from '../components/Goods/Swiper';
+import CartModal from '../components/Goods/Modals/Cart';
 
 interface Props {
   banners: {
@@ -27,6 +28,7 @@ export default function Home(props: Props) {
 
   return (
     <div className={styles.homePage}>
+      <CartModal />
       <section className={styles.bannersBlock}>
         <Banners forSlider={banners.slider} forMiniature={banners.miniature} />
       </section>

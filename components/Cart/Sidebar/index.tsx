@@ -4,8 +4,10 @@ import Link from 'next/link';
 import styles from './styles.module.scss';
 
 import { Button } from '@nebo-team/vobaza.ui.button';
+import { toNumberWithSpaces } from '../../../assets/utils/formatters';
 
 type Props = {
+  price?: number;
   delivery?: any;
   elevatePrice?: number;
   assemblyPrice?: number;
@@ -13,9 +15,8 @@ type Props = {
   onButtonClick?: () => void;
 };
 
-const tmpPrice = 32000;
-
 const CartSidebar: FC<Props> = ({
+  price,
   delivery,
   elevatePrice = 0,
   assemblyPrice = 0,
@@ -29,7 +30,9 @@ const CartSidebar: FC<Props> = ({
         <div className={styles.cartSidebarOrderItem}>
           <span className={styles.cartSidebarOrderTitle}>Товары: </span>
           <span className={styles.cartSidebarOrderDecorator} />
-          <span className={styles.cartSidebarOrderPrice}>{tmpPrice} ₽</span>
+          <span className={styles.cartSidebarOrderPrice}>
+            {toNumberWithSpaces(price)} ₽
+          </span>
         </div>
         {isOrder && (
           <>
@@ -37,7 +40,7 @@ const CartSidebar: FC<Props> = ({
               <span className={styles.cartSidebarOrderTitle}>Доставка: </span>
               <span className={styles.cartSidebarOrderDecorator} />
               <span className={styles.cartSidebarOrderPrice}>
-                {delivery ? delivery.price : 0} ₽
+                {delivery ? toNumberWithSpaces(delivery.price) : 0} ₽
               </span>
             </div>
             <div className={styles.cartSidebarOrderItem}>
@@ -46,14 +49,14 @@ const CartSidebar: FC<Props> = ({
               </span>
               <span className={styles.cartSidebarOrderDecorator} />
               <span className={styles.cartSidebarOrderPrice}>
-                {elevatePrice} ₽
+                {toNumberWithSpaces(elevatePrice)} ₽
               </span>
             </div>
             <div className={styles.cartSidebarOrderItem}>
               <span className={styles.cartSidebarOrderTitle}>Сборка: </span>
               <span className={styles.cartSidebarOrderDecorator} />
               <span className={styles.cartSidebarOrderPrice}>
-                {assemblyPrice} ₽
+                {toNumberWithSpaces(assemblyPrice)} ₽
               </span>
             </div>
           </>
@@ -63,10 +66,9 @@ const CartSidebar: FC<Props> = ({
         <span className={styles.cartSidebarTotalTitle}>
           {isOrder ? 'Итого:' : 'Сумма заказа:'}
         </span>
-        {tmpPrice +
-          elevatePrice +
-          assemblyPrice +
-          (delivery ? delivery.price : 0)}{' '}
+        {toNumberWithSpaces(
+          price + elevatePrice + assemblyPrice + (delivery ? delivery.price : 0)
+        )}{' '}
         ₽
       </div>
       {isOrder ? (

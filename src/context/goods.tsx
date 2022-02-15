@@ -2,11 +2,21 @@ import * as React from 'react';
 import { IGood } from '../models/IGood';
 
 type Action =
-  | { type: 'setFavorites'; payload?: number[] }
-  | { type: 'addFavorite'; payload?: IGood }
-  | { type: 'removeFavorite'; payload?: number };
+  | { type: 'setFavorites'; payload: number[] }
+  | { type: 'addFavorite'; payload: IGood }
+  | { type: 'removeFavorite'; payload?: number }
+  | { type: 'setCartSize'; payload: number }
+  | { type: 'setCartError'; payload: boolean }
+  | { type: 'changeCartSize'; payload: number }
+  | { type: 'addCartGood'; payload: { good: IGood; quantity: number } }
+  | { type: 'closeCartModal' };
 type Dispatch = (action: Action) => void;
-type State = { favoriteIds: number[] };
+type State = {
+  favoriteIds: number[];
+  cartSize: number;
+  cartError: false;
+  cartGood?: IGood | null;
+};
 type GoodsProviderProps = { children: React.ReactNode };
 
 const GoodsStateContext = React.createContext<
@@ -32,6 +42,28 @@ function goodsReducer(state, action) {
         ),
       };
     }
+    case 'setCartSize': {
+      return { ...state, cartSize: action.payload };
+    }
+    case 'changeCartSize': {
+      return { ...state, cartSize: state.cartSize + action.payload };
+    }
+    case 'setCartError': {
+      return { ...state, cartError: action.payload };
+    }
+    case 'addCartGood': {
+      return {
+        ...state,
+        cartSize: state.cartSize + action.payload.quantity,
+        cartGood: action.payload.good,
+      };
+    }
+    case 'closeCartModal': {
+      return {
+        ...state,
+        cartGood: null,
+      };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -41,6 +73,8 @@ function goodsReducer(state, action) {
 function GoodsProvider({ children }: GoodsProviderProps) {
   const [state, dispatch] = React.useReducer(goodsReducer, {
     favoriteIds: [],
+    cartSize: 0,
+    cartError: false,
   });
   const value: any = { state, dispatch };
 

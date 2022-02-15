@@ -1,3 +1,4 @@
+import type { GetServerSideProps } from 'next';
 import React, { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 
@@ -24,11 +25,12 @@ import { ProductStock } from '../../../components/DetailGoodPage/ProductStock';
 import { ProductLoyaltyBonus } from '../../../components/DetailGoodPage/ProductLoyaltyBonus';
 import { ProductCredit } from '../../../components/DetailGoodPage/ProductCredit';
 import { ProductDelivery } from '../../../components/DetailGoodPage/ProductDelivery';
+import CartModal from '../../../components/Goods/Modals/Cart';
 
 import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
-import type { GetServerSideProps } from 'next';
 
 import styles from './styles.module.scss';
+import { useCart } from '../../../src/hooks/useCart';
 
 import { mockProduct } from '../../../src/mock/detailProductPage';
 import { useFavorite } from '../../../src/hooks/useFavorite';
@@ -90,6 +92,11 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
   const [selectedColorVariant, setSelectedColorVariant] = useState<any>(
     mockProduct.variants[0]
   );
+  const { addToCart } = useCart(product);
+
+  const addToCartHandler = () => {
+    addToCart();
+  };
 
   const [selectedOptions, setSelectedOptions] = useState<any>({});
 
@@ -145,6 +152,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
   return (
     <SimpleReactLightbox>
       <div className={styles.homePage}>
+        <CartModal />
         <Breadcrumbs breadcrumbs={breadcrumbs} />
         <div className="container">
           <div className={styles.productInfo}>
@@ -239,23 +247,32 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
                 </div>
               </div>
 
-              <div className={styles.productOrderBtns}>
-                <Button text="В корзину" icon="Cart" size="big" />
-                <Button text="Заказать в 1 клик" variation="dashed" />
-              </div>
+              {product.inStonk && (
+                <>
+                  <div className={styles.productOrderBtns}>
+                    <Button
+                      text="В корзину"
+                      icon="Cart"
+                      size="big"
+                      onClick={addToCartHandler}
+                    />
+                    <Button text="Заказать в 1 клик" variation="dashed" />
+                  </div>
 
-              <ProductCredit
-                className={styles.productInfoBlock}
-                creditPayment={product.creditMinimalPayment}
-              />
+                  <ProductCredit
+                    className={styles.productInfoBlock}
+                    creditPayment={product.creditMinimalPayment}
+                  />
 
-              <ProductDelivery
-                className={styles.productInfoBlock}
-                pickup={mockProduct.pickup}
-                delivery={mockProduct.delivery}
-              />
+                  <ProductDelivery
+                    className={styles.productInfoBlock}
+                    pickup={mockProduct.pickup}
+                    delivery={mockProduct.delivery}
+                  />
 
-              <ProductSeller className={styles.mobileVisible} />
+                  <ProductSeller className={styles.mobileVisible} />
+                </>
+              )}
 
               {product.description_full && (
                 <div className={styles.productAccordionBlock}>

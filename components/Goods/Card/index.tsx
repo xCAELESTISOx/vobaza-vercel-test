@@ -10,6 +10,7 @@ import { useFavorite } from '../../../src/hooks/useFavorite';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import { Button } from '@nebo-team/vobaza.ui.button';
+import { useCart } from '../../../src/hooks/useCart';
 
 type Props = {
   good?: IGood;
@@ -21,12 +22,13 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
   const cardRef = useRef(null);
   const cardContainerRef = useRef(null);
   const { currentFavorite, toggleFavorite } = useFavorite(good);
+  const { addToCart } = useCart(good);
 
   // const resetImage = () => {
   //   setCurrentImage(0);
   // };
-  const addToCart = () => {
-    //TODO Add to cart
+  const addToCartHandler = () => {
+    addToCart();
   };
 
   const checkExpress = () => {
@@ -248,7 +250,17 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
                 ))}
               </div>
               <div className={styles.cardCart}>
-                <Button icon="Cart" text="В корзину" onClick={addToCart} />
+                {good.quantity > 0 ? (
+                  <Button
+                    icon="Cart"
+                    text="В корзину"
+                    onClick={addToCartHandler}
+                  />
+                ) : (
+                  <div className={styles.cardStock}>
+                    <Icon name={'Cross'} /> Нет в наличии
+                  </div>
+                )}
               </div>
               <div className={styles.cardProvider}>{good.merchant.brand}</div>
             </div>
