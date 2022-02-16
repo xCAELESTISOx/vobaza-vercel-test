@@ -33,7 +33,7 @@ const LightboxViewer = (props) => {
     <div style={{ display: 'none' }}>
       <SRLWrapper options={options} callbacks={callbacks}>
         {images.map((image) => (
-          <img src={image.url} />
+          <img key={image.id} src={image.url} />
         ))}
       </SRLWrapper>
     </div>

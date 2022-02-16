@@ -96,9 +96,10 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
               <a>
                 {good.images ? (
                   <Image
-                    src={good.images[0].variants.original.url}
-                    width={278}
-                    height={278}
+                    src={good.images[0].variants.medium.url}
+                    width={good.images[0].variants.medium.meta.width}
+                    height={good.images[0].variants.medium.meta.height}
+                    objectFit="contain"
                     alt={good.name}
                   />
                 ) : (
@@ -122,9 +123,10 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
                 <div className={styles.cardVariant}>
                   {good.images ? (
                     <Image
-                      src={good.images[0].variants.original.url}
-                      width={38}
-                      height={38}
+                      src={good.images[0].variants.extra_small.url}
+                      width={good.images[0].variants.extra_small.meta.width}
+                      height={good.images[0].variants.extra_small.meta.height}
+                      objectFit="contain"
                       alt={good.name}
                     />
                   ) : (

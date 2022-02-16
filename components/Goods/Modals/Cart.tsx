@@ -39,9 +39,10 @@ const CartModal: FC = () => {
               <div className={styles.favoriteModalItemImage}>
                 {cartGood.images ? (
                   <Image
-                    src={cartGood.images[0].variants.original.url}
-                    layout="fill"
-                    objectFit="cover"
+                    src={cartGood.images[0].variants.medium.url}
+                    width={cartGood.images[0].variants.medium.meta.width}
+                    height={cartGood.images[0].variants.medium.meta.height}
+                    objectFit="contain"
                     alt={cartGood.name}
                   />
                 ) : (

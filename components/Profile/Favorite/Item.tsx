@@ -48,9 +48,10 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
         <a className={styles.profileFavoriteItemImage}>
           {good.main_image ? (
             <Image
-              src={good.main_image.variants.original.url}
-              layout="fill"
-              objectFit="cover"
+              src={good.main_image.variants.small.url}
+              width={good.main_image.variants.small.meta.width}
+              height={good.main_image.variants.small.meta.height}
+              objectFit="contain"
               alt={good.name}
             />
           ) : (

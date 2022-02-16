@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { useLightbox } from 'simple-react-lightbox';
 
 import { Navigation, Thumbs, Pagination } from 'swiper';
@@ -23,7 +24,12 @@ const getImagesUrlsFromVariant = (images, fieldname: string) => {
     images.forEach((image) => {
       const imageVariant = getImageVariantByFieldname(image, fieldname);
 
-      if (imageVariant) urls.push({ url: imageVariant.url, id: image.id });
+      if (imageVariant)
+        urls.push({
+          url: imageVariant.url,
+          id: image.id,
+          meta: imageVariant.meta,
+        });
     });
 
   return urls;
@@ -43,7 +49,8 @@ const ProductImages = ({ images }) => {
 
   const { openLightbox } = useLightbox();
 
-  const mainImages = getImagesUrlsFromVariant(images, 'original');
+  const fullImages = getImagesUrlsFromVariant(images, 'original');
+  const mainImages = getImagesUrlsFromVariant(images, 'large');
   const thumbsImages = getImagesUrlsFromVariant(images, 'small');
 
   const handleLightboxClosed = (e) => {
@@ -64,7 +71,15 @@ const ProductImages = ({ images }) => {
         key={`main-slide-${img.id}`}
         onClick={handleClickSlide(index)}
       >
-        <img className={styles.slideImage} src={img.url} alt="" />
+        <div className={styles.slideImage}>
+          <Image
+            src={img.url}
+            width={780}
+            height={550}
+            objectFit="contain"
+            alt=""
+          />
+        </div>
       </SwiperSlide>
     ));
   };
@@ -72,14 +87,22 @@ const ProductImages = ({ images }) => {
   const renderThumbImages = () => {
     return thumbsImages.map((img) => (
       <SwiperSlide key={`thumb-slide-${img.id}`} className={styles.thumbsSlide}>
-        <img className={styles.thumbsSlideImage} src={img.url} alt="" />
+        <div className={styles.thumbsSlideImage}>
+          <Image
+            src={img.url}
+            width={img.meta.width}
+            height={img.meta.height}
+            objectFit="contain"
+            alt=""
+          />
+        </div>
       </SwiperSlide>
     ));
   };
 
   return (
     <>
-      <LightboxViewer images={mainImages} onClose={handleLightboxClosed} />
+      <LightboxViewer images={fullImages} onClose={handleLightboxClosed} />
 
       <div className={styles.images}>
         <div className={styles.mainSwiperWrapper}>

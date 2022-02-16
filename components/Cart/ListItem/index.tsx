@@ -70,9 +70,10 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
           <a>
             {good.product.main_image ? (
               <Image
-                src={good.product.main_image.variants.original.url}
-                width={100}
-                height={100}
+                src={good.product.main_image.variants.small.url}
+                width={good.product.main_image.variants.small.meta.width}
+                height={good.product.main_image.variants.small.meta.height}
+                objectFit="contain"
                 alt={good.product.name}
               />
             ) : (
