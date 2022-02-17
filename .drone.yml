@@ -7,7 +7,7 @@ trigger:
     exclude: [promote, rollback]
 
 steps:
-  - name: build/app
+  - name: build/branch
     image: oss.help/drone/docker
     settings: &build_settings
       registry: nebo-registry.ossbuild.ru
@@ -18,6 +18,24 @@ steps:
       password:
         from_secret: registry_rw_secret
       linter_exclude_regex: '(README.md)'
+      keep_tags: [develop, vobaza_demo]
+      build_args: |
+        MAIN_HOST
+        SUBS_DELIMITER
+    environment:
+      MAIN_HOST: {from_secret: MAIN_HOST_BY_BRANCH}
+      SUBS_DELIMITER: {from_secret: SUBS_DELIMITER_BY_BRANCH}
+    when:
+      event: [push, pull_request]
+
+  - name: build/tag
+    image: oss.help/drone/docker
+    settings: *build_settings
+    environment:
+      MAIN_HOST: {from_secret: MAIN_HOST_BY_TAG}
+      SUBS_DELIMITER: {from_secret: SUBS_DELIMITER_BY_TAG}
+    when:
+      event: [tag]
 
 ---
 kind: pipeline
@@ -38,21 +56,22 @@ services:
   - name: frontend
     image: nebo-registry.ossbuild.ru/nebo/vobaza-frontend:build
     pull: always
-    environment: &frontend_envs
-      NEXT_PUBLIC_BASE_URL: 'http://test-api-host'
 
 steps:
   - name: test/lint
     image: nebo-registry.ossbuild.ru/nebo/vobaza-frontend:build
+    pull: always
     commands:
       - cd /app
       - yarn lint
 
   - name: test/request
     image: nebo-registry.ossbuild.ru/nebo/vobaza-frontend:build
+    pull: always
     environment:
       APP_TIMEOUT: 15
     commands:
+      - env | grep NEXT_PUBLIC_BASE_URL
       - until nc -z frontend 3000; do APP_TIMEOUT=$((APP_TIMEOUT-1)); sleep 1; test $APP_TIMEOUT -eq 0 && exit 1; done 2>/dev/null
       - curl -is frontend:3000 | tee -a /tmp/result.txt
       - grep '200 OK' /tmp/result.txt
@@ -65,12 +84,12 @@ depends_on: [test]
 trigger:
   event: [push, tag]
   ref:
-    - "refs/tags/v[0-9]*.[0-9]*.[0-9]*"
+    - "refs/tags/**"
     - "refs/heads/master"
     - "refs/heads/develop"
 
 steps:
-  - name: build/app
+  - name: build/branch
     image: oss.help/drone/docker
     settings: &build_settings
       registry: nebo-registry.ossbuild.ru
@@ -80,6 +99,24 @@ steps:
       password:
         from_secret: registry_rw_secret
       linter_exclude_regex: '(README.md)'
+      keep_tags: [develop, vobaza_demo]
+      build_args: |
+        MAIN_HOST
+        SUBS_DELIMITER
+    environment:
+      MAIN_HOST: {from_secret: MAIN_HOST_BY_BRANCH}
+      SUBS_DELIMITER: {from_secret: SUBS_DELIMITER_BY_BRANCH}
+    when:
+      event: [push]
+
+  - name: build/tag
+    image: oss.help/drone/docker
+    settings: *build_settings
+    environment:
+      MAIN_HOST: {from_secret: MAIN_HOST_BY_TAG}
+      SUBS_DELIMITER: {from_secret: SUBS_DELIMITER_BY_TAG}
+    when:
+      event: [tag]
 
 ---
 kind: pipeline
@@ -92,7 +129,7 @@ depends_on: [publish]
 trigger:
   event: [push, tag]
   ref:
-    - "refs/tags/v[0-9]*.[0-9]*.[0-9]*"
+    - "refs/tags/**"
     - "refs/heads/master"
   status: [success, failure]
 
@@ -139,3 +176,20 @@ steps:
     commands:
       - "docker pull -q nebo-registry.ossbuild.ru/nebo/vobaza-frontend:develop"
       - "docker service update -q --with-registry-auth --image nebo-registry.ossbuild.ru/nebo/vobaza-frontend:develop devel_frontend"
+
+---
+kind: secret
+name: MAIN_HOST_BY_BRANCH
+get: {path: "vobaza/data/${DRONE_BRANCH}", name: MAIN_HOST}
+---
+kind: secret
+name: SUBS_DELIMITER_BY_BRANCH
+get: {path: "vobaza/data/${DRONE_BRANCH}", name: SUBS_DELIMITER}
+---
+kind: secret
+name: MAIN_HOST_BY_TAG
+get: {path: "vobaza/data/${DRONE_TAG}", name: MAIN_HOST}
+---
+kind: secret
+name: SUBS_DELIMITER_BY_TAG
+get: {path: "vobaza/data/${DRONE_TAG}", name: SUBS_DELIMITER}
