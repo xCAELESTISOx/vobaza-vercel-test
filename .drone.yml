@@ -174,8 +174,8 @@ steps:
       - cp -r /root/.docker "$HOME"/
   - name: deploy
     commands:
-      - "docker pull -q nebo-registry.ossbuild.ru/nebo/vobaza-frontend:develop"
-      - "docker service update -q --with-registry-auth --image nebo-registry.ossbuild.ru/nebo/vobaza-frontend:develop devel_frontend"
+      - "docker pull -q nebo-registry.ossbuild.ru/nebo/vobaza-frontend:${DRONE_BRANCH}"
+      - "docker service update -q --with-registry-auth --image nebo-registry.ossbuild.ru/nebo/vobaza-frontend:${DRONE_BRANCH} ${DRONE_BRANCH}_frontend"
 
 ---
 kind: secret
