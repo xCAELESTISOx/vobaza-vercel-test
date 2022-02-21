@@ -11,14 +11,20 @@ type Props = {
   list: ICategory[];
 };
 
+const getHref = (category: ICategory) => {
+  let href = '/';
+  if (category.ancestors) {
+    href += `${category.ancestors[0]?.slug}_${category.ancestors[0]?.id}/`;
+  }
+  href += `${category.slug}_${category.id}`;
+  return href;
+};
+
 const CatalogList: FC<Props> = ({ list }) => {
   return (
     <nav className={styles.catalog}>
       {list.map((category) => (
-        <Link
-          key={category.id}
-          href={`/${category.ancestors[0]?.slug}_${category.ancestors[0]?.id}/${category.slug}_${category.id}`}
-        >
+        <Link key={category.id} href={getHref(category)}>
           <a className={styles.category}>
             <div className={styles.categoryImage}>
               {category.image ? (

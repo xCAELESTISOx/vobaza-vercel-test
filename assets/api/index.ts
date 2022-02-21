@@ -85,6 +85,10 @@ export const api = {
   getGoodAttributes(id: number | string) {
     return axios.get(`/v1/products/${id}/attributes`);
   },
+  //Category
+  getRootCategories() {
+    return axios.get(`/v1/categories`);
+  },
   getCategory(id) {
     const params = {
       include: 'ancestors,children',
