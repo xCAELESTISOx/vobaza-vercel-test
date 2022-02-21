@@ -71,7 +71,9 @@ export default function Catalog({
           <h1 className={styles.sectionTitle}>
             {category.name} {page && page !== '1' && ` – страница ${page}`}
           </h1>
-          <CatalogList list={[...Array(9)]} />
+          {category.children && category.children.length > 0 && (
+            <CatalogList list={category.children} />
+          )}
           <div className={styles.bannerBlock}>
             <Image src={tmpBannerImg1} alt="Banner" />
           </div>
@@ -115,10 +117,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       params[`filter[filters][${index}][id]`] = filter[0];
       const filterValue = filter[1].toString().split('%-%');
       if (filterValue.length === 1) {
-        const values = filterValue[0].split(',')
+        const values = filterValue[0].split(',');
         values.forEach((value, valueIndex) => {
           params[`filter[filters][${index}][values][${valueIndex}]`] = value;
-        })
+        });
       } else if (filterValue.length === 2) {
         params[`filter[filters][${index}][min]`] = filterValue[0] + '00';
         params[`filter[filters][${index}][max]`] = filterValue[1] + '00';

@@ -8,6 +8,7 @@ export enum CategoryStatus {
 
 export interface ICategory {
   id: number | string;
+  slug: string;
   name: string;
   title: string;
   status: keyof typeof CategoryStatus;

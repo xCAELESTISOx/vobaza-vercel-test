@@ -3,25 +3,37 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import styles from './styles.module.scss';
+import { ICategory } from '../../../src/models/ICategory';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 
-import tmpImg1 from './tmp/categ1.png';
-
 type Props = {
-  list?: any[];
+  list: ICategory[];
 };
 
-const CatalogList: FC<Props> = ({ list = [...Array(20)] }) => {
+const CatalogList: FC<Props> = ({ list }) => {
   return (
     <nav className={styles.catalog}>
-      {list.map((category, index) => (
-        <Link key={'category' + index} href="/katalog/divany">
+      {list.map((category) => (
+        <Link
+          key={category.id}
+          href={`/${category.ancestors[0]?.slug}_${category.ancestors[0]?.id}/${category.slug}_${category.id}`}
+        >
           <a className={styles.category}>
             <div className={styles.categoryImage}>
-              <Image src={tmpImg1} alt="" />
+              {category.image ? (
+                <Image
+                  src={category.image.variants.original.url}
+                  width={category.image.variants.original.meta.width}
+                  height={category.image.variants.original.meta.height}
+                  objectFit="contain"
+                  alt={category.name}
+                />
+              ) : (
+                <Icon name="ImagePlaceholder" />
+              )}
             </div>
-            <div className={styles.categoryTitle}>Диваны</div>
+            <div className={styles.categoryTitle}>{category.name}</div>
             <Icon className={styles.categoryIcon} name="SmallArrowUp" />
           </a>
         </Link>

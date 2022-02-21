@@ -87,7 +87,8 @@ export const api = {
   },
   getCategory(id) {
     const params = {
-      include: 'ancestors',
+      include: 'ancestors,children',
+      maxDepth: 1,
     };
     return axios.get(`/v1/categories/${id}`, { params });
   },

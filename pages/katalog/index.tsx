@@ -26,7 +26,7 @@ export default function Catalog() {
           <h1 className={styles.sectionTitle}>
             Каталог мебели {page && ` – страница ${page}`}
           </h1>
-          <CatalogList />
+          {/* <CatalogList list={[...Array(20)]} /> */}
           {/* <GoodsBlock /> */}
         </div>
       </section>
