@@ -4,8 +4,9 @@ import Image from 'next/image';
 import styles from './styles.module.scss';
 
 import { num2str } from '../../../../assets/utils';
+import { ICartGood } from '../../ListItem';
+import { IOrderAddress, IOrderDelivery } from '../../../../src/models/IOrder';
 
-import tmpImg1 from './tmp/good1.jpg';
 import Toggle from '../../../UI/Toggle';
 import ItemCounter from '../../../UI/ItemCounter';
 import OrderDeliveryDrawer from './Drawer';
@@ -17,36 +18,37 @@ import { InputRadio } from '@nebo-team/vobaza.ui.inputs.input-radio';
 import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox';
 
 type Props = {
-  address: string;
-  delivery: any;
-  setDelivery: (delivery: any) => void;
+  goods: ICartGood[];
+  address: IOrderAddress;
+  delivery: IOrderDelivery;
+  setDelivery: (delivery: IOrderDelivery) => void;
   elevatePrice: any;
   setElevatePrice: (elevatePrice: any) => void;
   assemblyPrice: any;
   setAssemblyPrice: (assemblyPrice: any) => void;
 };
 
-const tmpItems = [{}, {}, {}, {}, {}, {}];
 const tmpTimeVariants = [
   {
-    code: '0',
-    value: '09:00 - 20:00',
+    code: 'TI_09_12',
+    value: '09:00 - 12:00',
   },
   {
-    code: '1',
-    value: '12:00 - 17:00',
+    code: 'TI_12_15',
+    value: '12:00 - 15:00',
   },
   {
-    code: '2',
-    value: '15:00 - 20:00',
+    code: 'TI_15_18',
+    value: '15:00 - 18:00',
   },
   {
-    code: '3',
-    value: '18:00 - 23:00',
+    code: 'TI_18_21',
+    value: '18:00 - 21:00',
   },
 ];
 
 const OrderDelivery: FC<Props> = ({
+  goods,
   address,
   delivery,
   setDelivery,
@@ -58,8 +60,6 @@ const OrderDelivery: FC<Props> = ({
   const [isDrawer, setIsDrawer] = useState(false);
 
   // Подъем и сборка
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState<any>(tmpTimeVariants[0]);
   const [isElevate, setIsElevate] = useState(false);
   const [isElevateWithElevator, setIsElevateWithElevator] = useState('true');
   const [elevateType, setElevateType] = useState('all');
@@ -70,6 +70,12 @@ const OrderDelivery: FC<Props> = ({
   const [assemblyType, setAssemblyType] = useState('all');
   const [assemblyItems, setAssemblyItems] = useState([]);
 
+  const setDate = (date: string) => {
+    setDelivery({ ...delivery, date });
+  };
+  const setTime = (time) => {
+    setDelivery({ ...delivery, time });
+  };
   const toggleChangeDeliveryDrawer = () => {
     setIsDrawer(!isDrawer);
   };
@@ -103,7 +109,7 @@ const OrderDelivery: FC<Props> = ({
     } else if (elevateType === 'particle') {
       setElevatePrice(elevateItems.length * 200 * floorCount);
     } else {
-      setElevatePrice(tmpItems.length * 200 * floorCount);
+      setElevatePrice(goods.length * 200 * floorCount);
     }
   }, [
     delivery,
@@ -119,14 +125,14 @@ const OrderDelivery: FC<Props> = ({
     } else if (assemblyType === 'particle') {
       setAssemblyPrice(assemblyItems.length * 3250);
     } else {
-      setAssemblyPrice(tmpItems.length * 3250);
+      setAssemblyPrice(goods.length * 3250);
     }
   }, [delivery, isAssembly, assemblyType, assemblyItems]);
 
   return (
     <div className={styles.orderDelivery}>
       <OrderDeliveryDrawer
-        withVariants={address.includes('Москва')}
+        withVariants={address.address.includes('Москва')}
         setDelivery={setDelivery}
         onClose={toggleChangeDeliveryDrawer}
         isOpen={isDrawer}
@@ -155,9 +161,8 @@ const OrderDelivery: FC<Props> = ({
           <div className={styles.orderDeliveryTextItem}>
             <Icon name="Scales" />
             <span>
-              {tmpItems.length}{' '}
-              {num2str(tmpItems.length, ['товар', 'товара', 'товаров'])} ・533
-              кг
+              {goods.length}{' '}
+              {num2str(goods.length, ['товар', 'товара', 'товаров'])} ・533 кг
             </span>
           </div>
         </div>
@@ -168,7 +173,7 @@ const OrderDelivery: FC<Props> = ({
                 <InputText
                   label="Дата доставки"
                   name="date"
-                  value={date}
+                  value={delivery.date}
                   onChange={(e) => setDate(e.target.value)}
                 />
               </div>
@@ -176,9 +181,9 @@ const OrderDelivery: FC<Props> = ({
                 <InputSelect
                   name="time"
                   label="Время доставки"
-                  currentValue={tmpTimeVariants[time.code]}
+                  currentValue={delivery.time}
                   variants={tmpTimeVariants}
-                  onChange={(e) => setTime(e)}
+                  onChange={setTime}
                 />
               </div>
             </div>
@@ -257,9 +262,9 @@ const OrderDelivery: FC<Props> = ({
                         </div>
                         {elevateType === 'particle' && (
                           <div>
-                            {tmpItems.map((item, index) => (
+                            {goods.map((item, index) => (
                               <div
-                                key={index}
+                                key={item.product.id}
                                 className={styles.orderDeliveryTableItem}
                               >
                                 <InputCheckbox
@@ -338,9 +343,9 @@ const OrderDelivery: FC<Props> = ({
                       </div>
                       {assemblyType === 'particle' && (
                         <div>
-                          {tmpItems.map((item, index) => (
+                          {goods.map((item, index) => (
                             <div
-                              key={index}
+                              key={item.product.id}
                               className={styles.orderDeliveryTableItem}
                             >
                               <InputCheckbox
@@ -383,9 +388,19 @@ const OrderDelivery: FC<Props> = ({
           </>
         )}
         <div className={styles.orderDeliveryItems}>
-          {tmpItems.map((item, index) => (
-            <div key={index} className={styles.orderDeliveryItem}>
-              <Image src={tmpImg1} alt="" />
+          {goods.map((good) => (
+            <div key={good.product.id} className={styles.orderDeliveryItem}>
+              {good.product.main_image ? (
+                <Image
+                  src={good.product.main_image.variants.small.url}
+                  width={good.product.main_image.variants.small.meta.width}
+                  height={good.product.main_image.variants.small.meta.height}
+                  objectFit="contain"
+                  alt={good.product.name}
+                />
+              ) : (
+                <Icon name="ImagePlaceholder" />
+              )}
             </div>
           ))}
         </div>

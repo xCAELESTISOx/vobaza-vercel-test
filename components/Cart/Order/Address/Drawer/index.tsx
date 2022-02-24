@@ -4,23 +4,9 @@ import { useFormik } from 'formik';
 
 import styles from './styles.module.scss';
 import Drawer from '../../../../../src/hoc/withDrawer';
+import { IOrderAddress } from '../../../../../src/models/IOrder';
+
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
-
-interface Address {
-  address: string;
-  flat: string;
-  entrance: string;
-  floor: string;
-  intercom: string;
-}
-
-const initialValues = {
-  address: '',
-  flat: '',
-  entrance: '',
-  floor: '',
-  intercom: '',
-} as Address;
 
 const validationSchema = yup.object({
   address: yup
@@ -42,8 +28,8 @@ const validationSchema = yup.object({
 });
 
 type Props = {
-  address: string;
-  setAddress: (address: string) => void;
+  address: IOrderAddress;
+  setAddress: (address: IOrderAddress) => void;
   isOpen: boolean;
   onClose: () => void;
 };
@@ -59,10 +45,11 @@ const OrderAddressDrawer: FC<Props> = ({
   const setAddressHandler = () => {
     try {
       setIsLoading(true);
-      setAddress(values.address);
+      setAddress(values);
       setIsLoading(false);
       onClose();
     } catch (e) {
+      setIsLoading(false);
       console.log(e);
     }
   };
@@ -74,11 +61,8 @@ const OrderAddressDrawer: FC<Props> = ({
     errors,
     handleSubmit,
     setErrors,
-  } = useFormik<Address>({
-    initialValues: {
-      ...initialValues,
-      address,
-    },
+  } = useFormik<IOrderAddress>({
+    initialValues: address,
     validationSchema,
     validateOnBlur: false,
     validateOnChange: false,
@@ -139,10 +123,11 @@ const OrderAddressDrawer: FC<Props> = ({
           <InputText
             label="Этаж"
             name="floor"
-            value={values.floor}
+            value={values.floor.toString()}
             onChange={handleChange}
             onBlur={handleBlur}
             error={errors?.floor}
+            valueType="integer"
             disabled={isLoading}
           />
         </div>

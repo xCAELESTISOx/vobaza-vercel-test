@@ -183,6 +183,12 @@
     grid-template-columns: repeat(auto-fill, 93px);
     grid-gap: 8px;
   }
+
+  svg {
+    width: 100%;
+    height: auto;
+    color: #b3b3b3;
+  }
 }
 .orderDeliveryItem {
   img {

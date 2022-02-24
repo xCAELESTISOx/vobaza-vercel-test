@@ -1,6 +1,8 @@
 import initAxios from 'axios';
 import cookies from 'js-cookie';
 
+import { IOrder } from '../../src/models/IOrder';
+
 export const axios = initAxios.create({
   baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/`,
 });
@@ -129,4 +131,9 @@ export const api = {
     await setTokenWithGuest(true);
     return axios.delete(`/v1/basket/${id}`);
   },
+  //Order
+  async createOrder(data: IOrder) {
+    await setTokenWithGuest();
+    return axios.post(`/v1/checkout`, data);
+  }
 };

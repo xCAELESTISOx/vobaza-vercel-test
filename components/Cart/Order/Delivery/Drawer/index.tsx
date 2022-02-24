@@ -4,10 +4,14 @@ import styles from './styles.module.scss';
 import Drawer from '../../../../../src/hoc/withDrawer';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
+import {
+  IOrderDelivery,
+  IOrderDeliveryType,
+} from '../../../../../src/models/IOrder';
 
 type Props = {
   withVariants: boolean;
-  setDelivery: (delivery: any) => void;
+  setDelivery: (delivery: IOrderDelivery) => void;
   isOpen: boolean;
   onClose: () => void;
 };
@@ -16,12 +20,16 @@ const tmpVariants = [
   {
     name: 'Доставка',
     price: 990,
-    tag: 'delivery',
+    tag: IOrderDeliveryType.normal,
+    date: '',
+    time: null,
   },
   {
     name: 'Экспресс-доставка',
     price: 1980,
-    tag: 'expressDelivery',
+    tag: IOrderDeliveryType.express,
+    date: '',
+    time: null,
   },
 ];
 
@@ -31,7 +39,7 @@ const OrderDeliveryDrawer: FC<Props> = ({
   isOpen = false,
   onClose,
 }) => {
-  const [currentVariant, setCurrentVariant] = useState<any>(null);
+  const [currentVariant, setCurrentVariant] = useState<IOrderDelivery>(null);
 
   const setDeliveryHandler = () => {
     try {

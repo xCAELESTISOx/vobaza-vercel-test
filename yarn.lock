@@ -299,10 +299,10 @@
     core-js "^3.0.0"
     styled-components "5.3.1"
 
-"@nebo-team/vobaza.ui.inputs.input-select@^0.0.24":
-  version "0.0.24"
-  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-select/-/@nebo-team-vobaza.ui.inputs.input-select-0.0.24.tgz#b7bbe0bb6861e1f4348a7735d91fdb0688962b47"
-  integrity sha1-t7vgu2hh4fQ0inc12R/bBoiWK0c=
+"@nebo-team/vobaza.ui.inputs.input-select@^0.0.25":
+  version "0.0.25"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-select/-/@nebo-team-vobaza.ui.inputs.input-select-0.0.25.tgz#2a053fe107dfbe75ed5f16a3c5f723eab200d063"
+  integrity sha1-KgU/4QffvnXtXxajxfcj6rIA0GM=
   dependencies:
     "@nebo-team/vobaza.ui.icon" "0.0.13"
     "@nebo-team/vobaza.ui.inputs.input-checkbox" "0.0.12"

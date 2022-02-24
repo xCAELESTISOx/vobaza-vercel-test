@@ -17,15 +17,15 @@ const AuthModal: FC = () => {
     setIsRegistration(!isRegistration);
   };
   const onClose = () => {
-    dispatch({ type: 'login' });
     setIsRegistration(false);
   };
 
-  const onSuccess = () => {
-    onClose();
+  const onSuccess = async () => {
+    await dispatch({ type: 'login' });
     if (
       router.pathname.includes('profile') ||
-      router.pathname.includes('cart')
+      router.pathname.includes('cart') ||
+      router.pathname.includes('checkout')
     ) {
       router.replace(router.asPath);
     } else {

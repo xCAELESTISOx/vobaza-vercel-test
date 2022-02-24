@@ -1,14 +1,15 @@
 import { FC, useState } from 'react';
 
 import styles from './styles.module.scss';
+import { IOrderAddress } from '../../../../src/models/IOrder';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
-import OrderAddressDrawer from './Drawer';
 import { Button } from '@nebo-team/vobaza.ui.button';
+import OrderAddressDrawer from './Drawer';
 
 type Props = {
-  address: string;
-  setAddress: (address: string) => void;
+  address: IOrderAddress;
+  setAddress: (address: IOrderAddress) => void;
 };
 const OrderAddress: FC<Props> = ({ address, setAddress }) => {
   const [isDrawer, setIsDrawer] = useState(false);
@@ -42,7 +43,7 @@ const OrderAddress: FC<Props> = ({ address, setAddress }) => {
           onClick={toggleChangeAddressDrawer}
         >
           <Icon name="Geoposition" />
-          <span>{address}</span>
+          <span>{address.address}</span>
         </div>
         <div className={styles.cartButton}>
           <Button
