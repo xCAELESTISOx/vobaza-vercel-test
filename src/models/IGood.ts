@@ -58,6 +58,7 @@ export interface IGood {
   sku: string;
   model?: string;
   images?: Image[];
+  main_image?: Image;
 
   price: number;
   discount_price?: number;

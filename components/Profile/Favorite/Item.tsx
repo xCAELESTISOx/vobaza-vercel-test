@@ -7,6 +7,7 @@ import { toNumberWithSpaces } from '../../../assets/utils/formatters';
 import styles from './styles.module.scss';
 import { api } from '../../../assets/api';
 import { useGoods } from '../../../src/context/goods';
+import { useCart } from '../../../src/hooks/useCart';
 import { Image as IImage } from '../../../src/models/IImage';
 
 import { Button } from '@nebo-team/vobaza.ui.button';
@@ -29,6 +30,7 @@ type Props = {
 const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { dispatch } = useGoods();
+  const { addToCart } = useCart(good);
 
   const removeFromFavorite = async () => {
     if (isLoading) return;
@@ -42,6 +44,10 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
       console.log(error);
     }
   };
+  const addToCartHandler = () => {
+    addToCart();
+  };
+
   return (
     <div className={styles.profileFavoriteItem}>
       <Link href={`/product/${good.slug}_${good.id}_${good.sku}`}>
@@ -94,7 +100,7 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
           />
         </div>
         <div className={styles.profileFavoriteItemCart}>
-          <Button text="В корзину" />
+          <Button text="В корзину" onClick={addToCartHandler} />
         </div>
       </div>
     </div>

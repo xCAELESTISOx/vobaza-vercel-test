@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { IGood } from '../models/IGood';
+import { FavoriteGood } from '../../components/Profile/Favorite/Item';
 
 type Action =
   | { type: 'setFavorites'; payload: number[] }
@@ -8,7 +9,10 @@ type Action =
   | { type: 'setCartSize'; payload: number }
   | { type: 'setCartError'; payload: boolean }
   | { type: 'changeCartSize'; payload: number }
-  | { type: 'addCartGood'; payload: { good: IGood; quantity: number } }
+  | {
+      type: 'addCartGood';
+      payload: { good: IGood | FavoriteGood; quantity: number };
+    }
   | { type: 'closeCartModal' };
 type Dispatch = (action: Action) => void;
 type State = {

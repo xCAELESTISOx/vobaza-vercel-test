@@ -37,14 +37,24 @@ const CartModal: FC = () => {
             </Title>
             <div className={styles.favoriteModalItem}>
               <div className={styles.favoriteModalItemImage}>
-                {cartGood.images ? (
-                  <Image
-                    src={cartGood.images[0].variants.medium.url}
-                    width={cartGood.images[0].variants.medium.meta.width}
-                    height={cartGood.images[0].variants.medium.meta.height}
-                    objectFit="contain"
-                    alt={cartGood.name}
-                  />
+                {cartGood.images || cartGood.main_image ? (
+                  cartGood.images ? (
+                    <Image
+                      src={cartGood.images[0].variants.medium.url}
+                      width={cartGood.images[0].variants.medium.meta.width}
+                      height={cartGood.images[0].variants.medium.meta.height}
+                      objectFit="contain"
+                      alt={cartGood.name}
+                    />
+                  ) : (
+                    <Image
+                      src={cartGood.main_image.variants.medium.url}
+                      width={cartGood.main_image.variants.medium.meta.width}
+                      height={cartGood.main_image.variants.medium.meta.height}
+                      objectFit="contain"
+                      alt={cartGood.name}
+                    />
+                  )
                 ) : (
                   <Icon name="ImagePlaceholder" />
                 )}

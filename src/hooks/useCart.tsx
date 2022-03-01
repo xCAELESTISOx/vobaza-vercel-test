@@ -1,10 +1,12 @@
 import { useState } from 'react';
+
 import { api } from '../../assets/api';
 import { useGoods } from '../context/goods';
 
 import { IGood } from '../models/IGood';
+import { FavoriteGood } from '../../components/Profile/Favorite/Item';
 
-export const useCart = (good: IGood) => {
+export const useCart = (good: IGood | FavoriteGood) => {
   const [isLoading, setIsLoading] = useState(false);
   const { dispatch } = useGoods();
 

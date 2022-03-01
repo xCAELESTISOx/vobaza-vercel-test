@@ -11,6 +11,7 @@ import ProfileEmptyField from '../../components/Profile/EmptyField';
 import ProfileFavoriteItem, {
   FavoriteGood,
 } from '../../components/Profile/Favorite/Item';
+import CartModal from '../../components/Goods/Modals/Cart';
 
 interface Props {
   initialGoods: FavoriteGood[];
@@ -29,6 +30,7 @@ export default function Home({ initialGoods }: Props) {
 
   return (
     <div>
+      <CartModal />
       <div className="container">
         <div className={styles.profileContainer}>
           <h2 className={styles.profileTitle}>Профиль</h2>
