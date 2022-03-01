@@ -54,7 +54,7 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
     if (!isLoading) {
       const debounce = setTimeout(() => {
         changeItemCount();
-      }, 750);
+      }, 400);
       return () => clearTimeout(debounce);
     } else {
       setIsLoading(false);
@@ -121,7 +121,9 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
           <div>{toNumberWithSpaces(good.discount_price || good.price)} ₽</div>
         </div>
         <button
-          className={styles.cartListItemDelete}
+          className={`${styles.cartListItemDelete} ${
+            isLoading ? styles.pending : ''
+          }`}
           onClick={deleteItemHandler}
         >
           <Icon name="Trash" />

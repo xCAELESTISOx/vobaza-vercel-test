@@ -29,11 +29,18 @@ const CartList: FC<Props> = ({ initialGoods, setOrderPrice }) => {
 
   const deleteItem = async (id: number, quantity: number) => {
     try {
-      await api.deleteGoodFromCart(id);
+      const res = await api.removeGoodFromCart(id, {
+        quantity: quantity,
+        include: 'prices',
+      });
       setGoods((prevArray) =>
         prevArray.filter((good) => good.product.id !== id)
       );
-      dispatch({ type: 'changeCartSize', payload: quantity * -1 });
+      dispatch({
+        type: 'changeCartSize',
+        payload: res.data.data.changed_quantity,
+      });
+      setOrderPrice(res.data.data.order_price / 100);
     } catch (error) {
       console.log(error);
     }
