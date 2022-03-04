@@ -17,6 +17,7 @@ const AuthModal: FC = () => {
     setIsRegistration(!isRegistration);
   };
   const onClose = () => {
+    dispatch({ type: 'toggleModal' });
     setIsRegistration(false);
   };
 
