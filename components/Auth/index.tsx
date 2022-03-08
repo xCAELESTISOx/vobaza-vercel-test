@@ -39,7 +39,10 @@ const AuthModal: FC = () => {
       {isModalOpen && (
         <ModalLayout onClose={onClose}>
           {isRegistration ? (
-            <RegistrationForm goLogin={toggleIsRegistration} />
+            <RegistrationForm
+              goLogin={toggleIsRegistration}
+              onSuccess={onSuccess}
+            />
           ) : (
             <LoginForm
               goRegister={toggleIsRegistration}

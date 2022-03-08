@@ -1,8 +1,11 @@
+import { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import Cookies from 'js-cookie';
 
 import styles from '../../../styles/modules/inline-modal.module.scss';
 
+import { api } from '../../../assets/api';
 import { IError } from '../../../src/models/IError';
 
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
@@ -10,7 +13,6 @@ import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox';
 import { Button } from '@nebo-team/vobaza.ui.button';
 import { Title } from '@nebo-team/vobaza.ui.title';
 import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone';
-import { useEffect, useState } from 'react';
 
 interface Auth {
   name: string;
@@ -49,9 +51,10 @@ const validationSchema = yup.object({
 
 type Props = {
   goLogin: () => void;
+  onSuccess: () => void;
 };
 
-const RegistrationForm = ({ goLogin }: Props) => {
+const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
   const [isCodeTimeout, setIsCodeTimeout] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -60,7 +63,12 @@ const RegistrationForm = ({ goLogin }: Props) => {
     try {
       if (isLoading) return;
       setIsLoading(true);
-      // await api.requestCode({ phone: values.phone });
+      await api.getRegisterCode({
+        name: values.name,
+        surname: values.surname,
+        phone: values.phone,
+        email: values.email,
+      });
       setIsCodeTimeout(60);
       setIsLoading(false);
     } catch (error: any) {
@@ -68,21 +76,31 @@ const RegistrationForm = ({ goLogin }: Props) => {
       const backErrors = {} as any;
 
       errs.forEach((err: IError) => {
-        err.source && err.source !== ''
-          ? (backErrors[err.source] = err.title)
-          : (backErrors.password = err.title
-              ? err.title
-              : 'Непредвиденная ошибка, попробуйте ещё раз');
+        if (err.source && err.source !== '') {
+          backErrors[err.source] = err.title;
+        } else if (err.code === 'phone_not_unique') {
+          backErrors.phone = err.title;
+        } else if (err.code === 'email_not_unique') {
+          backErrors.email = err.title;
+        } else if (err.title) {
+          backErrors.phone = err.title;
+        } else {
+          backErrors.phone = 'Непредвиденная ошибка, попробуйте ещё раз';
+        }
       });
       setErrors(backErrors);
+      setIsLoading(false);
     }
   };
   const checkCode = async () => {
     try {
       setErrors({ ...errors, code: undefined });
       setIsLoading(true);
-      // const response = await api.checkLoginCode({ confirm_token: values.code });
-      // Cookies.set('token', response.data.data.token);
+      const response = await api.checkRegisterCode({
+        confirm_token: values.code,
+      });
+      Cookies.set('token', response.data.data.token);
+      onSuccess();
     } catch (error: any) {
       const errs = error.response.data.errors;
       const backErrors = {} as any;
@@ -161,6 +179,7 @@ const RegistrationForm = ({ goLogin }: Props) => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={errors?.name}
+              disabled={isLoading}
               required
             />
           </div>
@@ -172,6 +191,7 @@ const RegistrationForm = ({ goLogin }: Props) => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={errors?.surname}
+              disabled={isLoading}
             />
           </div>
           <div className={styles.inlineModalItem}>
@@ -183,6 +203,7 @@ const RegistrationForm = ({ goLogin }: Props) => {
               onChange={handleChange}
               onBlur={handleBlur}
               error={errors?.email}
+              disabled={isLoading}
             />
           </div>
           <div className={styles.inlineModalItem}>
@@ -211,6 +232,7 @@ const RegistrationForm = ({ goLogin }: Props) => {
               initialValue={values.isAgree}
               onChange={handleCheckChange}
               isError={Boolean(errors.isAgree)}
+              disabled={isLoading}
             />
           </div>
 
@@ -225,7 +247,7 @@ const RegistrationForm = ({ goLogin }: Props) => {
             <div className={styles.inlineModalItem}>
               <Button
                 variation={isCodeTimeout ? 'secondary' : 'primary'}
-                disabled={!!isCodeTimeout || !values.isAgree}
+                disabled={!!isCodeTimeout || !values.isAgree || isLoading}
                 style={
                   isCodeTimeout
                     ? { color: '#212121', fontWeight: 'normal' }
