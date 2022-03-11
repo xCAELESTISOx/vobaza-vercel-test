@@ -51,9 +51,14 @@ export const api = {
     setToken();
     return axios.delete('/customer/v1/token');
   },
+  // Profile
   getProfile() {
     setToken();
     return axios.get('/customer/v1/profile');
+  },
+  updateProfile(data: { name: string, surname: string, email: string, }) {
+    setToken();
+    return axios.post('/customer/v1/profile', data);
   },
   getGlobalInfo() {
     if (!(cookies.get('token') || cookies.get('guestToken'))) return;

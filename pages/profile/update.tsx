@@ -1,12 +1,20 @@
+import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 
+import checkAuth from '../../assets/api/auth';
+import { api } from '../../assets/api';
+import { IProfile } from '../../components/Profile/Data';
 import styles from '../../styles/Profile.module.scss';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import ProfileSidebar from '../../components/Profile/Sidebar';
 import ProfileUpdateForm from '../../components/Profile/UpdateForm';
 
-export default function ProfileWishlist() {
+interface Props {
+  user: IProfile;
+}
+
+export default function ProfileWishlist({ user }) {
   return (
     <div>
       <div className="container">
@@ -25,7 +33,7 @@ export default function ProfileWishlist() {
                 </Link>
               </div>
               <h2 className={styles.profileSubtitle}>Личные данные </h2>
-              <ProfileUpdateForm />
+              <ProfileUpdateForm initialUser={user} />
             </div>
           </div>
         </div>
@@ -33,3 +41,29 @@ export default function ProfileWishlist() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  req,
+}) => {
+  let user = null;
+
+  try {
+    await checkAuth(req);
+    const [propfileRes] = await Promise.all([api.getProfile()]);
+
+    user = propfileRes.data.data;
+  } catch (error: any) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      user,
+    },
+  };
+};
