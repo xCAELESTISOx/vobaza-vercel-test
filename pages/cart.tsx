@@ -66,6 +66,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     initialPrice = cartRes.data.data.order_price / 100;
   } catch (error) {
     console.log(error);
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
   }
 
   return {

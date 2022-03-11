@@ -81,7 +81,15 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     categories = categories.filter(
       (category) => category.status === CategoryStatus.ACTIVE
     );
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: {

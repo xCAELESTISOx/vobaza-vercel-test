@@ -150,7 +150,15 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       title: category.name,
       href: `/${category.slug}_${category.id}`,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: {

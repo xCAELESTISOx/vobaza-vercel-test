@@ -65,7 +65,15 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 
     goods = normalizeGoods(goodsRes.data.data);
     meta = goodsRes.data.meta;
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: {
