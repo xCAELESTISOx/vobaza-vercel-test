@@ -111,9 +111,6 @@
   gap: 40px;
 
   .subMenuItem {
-    &:first-child {
-      font-weight: 600;
-    }
     + .subMenuItem {
       margin-top: 16px;
     }

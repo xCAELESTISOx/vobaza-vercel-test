@@ -7,9 +7,10 @@ import MenuIcon from '../Icons/MenuIcon';
 type Props = {
   rootMenu?: any;
   withRoot?: boolean;
+  closeMenu?: () => void;
 };
 
-const HeaderMenu: FC<Props> = ({ rootMenu, withRoot }) => {
+const HeaderMenu: FC<Props> = ({ rootMenu, withRoot, closeMenu }) => {
   const [isAllTags, setIsAllTags] = useState(false);
   const [currentMenuItem, setCurrentMenuItem] = useState(
     withRoot ? rootMenu[0] : rootMenu
@@ -49,6 +50,7 @@ const HeaderMenu: FC<Props> = ({ rootMenu, withRoot }) => {
                   <a
                     data-tag={menu.tag}
                     onMouseEnter={menuTabHover}
+                    onClick={closeMenu}
                     className={`${styles.rootMenuLink}
                   ${currentMenuItem.tag === menu.tag ? styles.active : ''}`}
                   >
@@ -71,7 +73,7 @@ const HeaderMenu: FC<Props> = ({ rootMenu, withRoot }) => {
               currentMenuItem.menu.map((rootMenuItem, index) => (
                 <div key={index}>
                   <Link href={rootMenuItem.href || '/'}>
-                    <a className={styles.subMenuRootTitle}>
+                    <a className={styles.subMenuRootTitle} onClick={closeMenu}>
                       {rootMenuItem.title}
                     </a>
                   </Link>
@@ -83,7 +85,10 @@ const HeaderMenu: FC<Props> = ({ rootMenu, withRoot }) => {
                             menuList.length > 0 &&
                             menuList.map((menu) => (
                               <Link key={menu.title} href={menu.href}>
-                                <a className={styles.subMenuItem}>
+                                <a
+                                  className={styles.subMenuItem}
+                                  onClick={closeMenu}
+                                >
                                   {menu.title}
                                 </a>
                               </Link>
@@ -104,7 +109,9 @@ const HeaderMenu: FC<Props> = ({ rootMenu, withRoot }) => {
                     menuList.length > 0 &&
                     menuList.map((menu) => (
                       <Link key={menu.title} href={menu.href}>
-                        <a className={styles.subMenuItem}>{menu.title}</a>
+                        <a className={styles.subMenuItem} onClick={closeMenu}>
+                          {menu.title}
+                        </a>
                       </Link>
                     ))}
                 </div>

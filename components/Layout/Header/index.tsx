@@ -11,70 +11,52 @@ import SubHeader from './Sub';
 const categories = [
   {
     title: 'Диваны',
-    href: '/divany',
+    href: '/divany_1',
     menu: [
       [
         {
-          title: 'Угловые диваны',
-          href: '/divany/uglovye-divany',
-        },
-        {
           title: 'Прямые диваны',
-          href: '/divany/pryamye-divany',
+          href: '/divany_1/pryamye_divany_2',
         },
         {
-          title: 'Малогабаритные диваны',
-          href: '/divany/malogabaritnye-divany',
+          title: 'Угловые диваны',
+          href: '/divany_1/uglovye_divany_3',
         },
         {
           title: 'Диваны-кровати',
-          href: '/divany/divany-krovati',
-        },
-      ],
-      [
-        {
-          title: 'Кушетки',
-          href: '/divany/kushetki',
-        },
-        {
-          title: 'Софы',
-          href: '/divany/sofy',
-        },
-        {
-          title: 'Раскладные диваны',
-          href: '/divany/raskladnye-divany',
+          href: '/divany_1/divany_krovati_4',
         },
         {
           title: 'Модульные диваны',
-          href: '/divany/modulnye-divany',
+          href: '/divany_1/modulnye_divany_5',
         },
       ],
       [
         {
-          title: 'Бескаркасные диваны',
-          href: '/divany/beskarkasnye-divany',
-        },
-        {
-          title: 'Детские диваны',
-          href: '/divany/detskie-divany',
+          title: 'Софы',
+          href: '/divany_1/sofy_6',
         },
         {
           title: 'Кухонные диваны',
-          href: '/divany/kuhonnye-divany',
+          href: '/divany_1/kuxonnye_divany_7',
         },
         {
-          title: 'Офисные диваны',
-          href: '/divany/ofisnye-divany',
+          title: 'Кушетки',
+          href: '/divany_1/kusetki_8',
+        },
+        {
+          title: 'Садовые диваны',
+          href: '/divany_1/sadovye_divany_9',
         },
       ],
       [
         {
-          title: 'Садовые диваны',
-          href: '/divany/sadovye-divany',
+          title: 'Детские диваны',
+          href: '/divany_1/detskie_divany_10',
         },
         {
-          title: 'Подушки для диванов',
-          href: '/divany/podushki-dlya-divanov',
+          title: 'Наборы мягкой мебели',
+          href: '/divany_1/nabory_myagkoi_mebeli_11',
         },
       ],
     ],
@@ -161,495 +143,344 @@ const categories = [
   },
   {
     title: 'Кресла',
-    href: '/kresla',
+    href: '/kresla_18',
     menu: [
       [
         {
-          title: 'Мягкие кресла',
-          href: '/kresla/myagkie-kresla',
-        },
-        {
-          title: 'Кресла реклайнеры',
-          href: '/kresla/kresla-reklaynery',
-        },
-        {
           title: 'Кресла-качалки',
-          href: '/kresla/kresla-kachalki',
+          href: '/kresla_18/kresla_kacalki_19',
+        },
+        {
+          title: 'Кресла-кровати',
+          href: '/kresla_18/kresla_krovati_20',
+        },
+        {
+          title: 'Кресла-реклайнеры',
+          href: '/kresla_18/kresla_reklainery_21',
+        },
+        {
+          title: 'Офисные кресла',
+          href: '/kresla_18/ofisnye_kresla_22',
+        },
+      ],
+      [
+        {
+          title: 'Кресла руководителя',
+          href: '/kresla_18/kresla_rukovoditelya_23',
+        },
+        {
+          title: 'Игровые кресла',
+          href: '/kresla_18/igrovye_kresla_24',
         },
         {
           title: 'Кресла-мешки',
-          href: '/kresla/kresla-meshki',
+          href: '/kresla_18/kresla_meski_25',
+        },
+        {
+          title: 'Детские кресла',
+          href: '/kresla_18/detskie_kresla_26',
         },
       ],
       [
         {
           title: 'Компьютерные кресла',
-          href: '/kresla/kompyuternye-kresla',
-        },
-        {
-          title: 'Офисные кресла',
-          href: '/kresla/ofisnye-kresla',
-        },
-        {
-          title: 'Кресла-кровати',
-          href: '/kresla/kresla-krovati',
-        },
-        {
-          title: 'Детские кресла',
-          href: '/kresla/detskie-kresla',
-        },
-      ],
-      [
-        {
-          title: 'Подвесные кресла',
-          href: '/kresla/podvesnye-kresla',
+          href: '/kresla_18/kompyuternye_kresla_27',
         },
         {
           title: 'Садовые кресла',
-          href: '/kresla/sadovye-kresla',
+          href: '/kresla_18/sadovye_kresla_28',
+        },
+        {
+          title: 'Подвесные кресла',
+          href: '/kresla_18/podvesnye_kresla_29',
+        },
+        {
+          title: 'Мягкие кресла',
+          href: '/kresla_18/myagkie_kresla_30',
         },
       ],
     ],
   },
   {
     title: 'Кровати',
-    href: '/krovati',
+    href: '/krovati_31',
     menu: [
       [
         {
-          title: 'Двуспальные кровати',
-          href: '/krovati/dvuspalnye-krovati',
-        },
-        {
           title: 'Односпальные кровати',
-          href: '/krovati/odnospalnye-krovati',
+          href: '/krovati_31/odnospalnye_krovati_32',
         },
         {
           title: 'Полутороспальные кровати',
-          href: '/krovati/polutorospalnye-krovati',
+          href: '/krovati_31/polutorospalnye_krovati_33',
         },
         {
-          title: 'Детские кровати',
-          href: '/krovati/detskie-krovati',
+          title: 'Двуспальные кровати',
+          href: '/krovati_31/dvuspalnye_krovati_34',
+        },
+        {
+          title: 'Двухъярусные кровати',
+          href: '/krovati_31/dvuxyarusnye_krovati_35',
         },
       ],
       [
         {
-          title: 'Двухъярусные кровати',
-          href: '/krovati/dvuhyarusnye-krovati',
-        },
-        {
           title: 'Трехъярусные кровати',
-          href: '/krovati/trehyarusnye-krovati',
+          href: '/krovati_31/trexyarusnye_krovati_36',
         },
         {
           title: 'Кровати-чердаки',
-          href: '/krovati/krovati-cherdaki',
+          href: '/krovati_31/krovati_cerdaki_37',
         },
         {
-          title: 'Кровати-раскладушки',
-          href: '/krovati/krovati-raskladushki',
+          title: 'Детские кровати',
+          href: '/krovati_31/detskie_krovati_38',
+        },
+        {
+          title: 'Кровати-трансформеры',
+          href: '/krovati_31/krovati_transformery_39',
         },
       ],
       [
         {
-          title: 'Кровати из массива',
-          href: '/krovati/krovati-iz-massiva',
+          title: 'Основания для кровати',
+          href: '/krovati_31/osnovaniya_dlya_krovati_40',
+        },
+        {
+          title: 'Кроватки для новорожденных',
+          href: '/krovati_31/krovatki_dlya_novorozdennyx_41',
         },
         {
           title: 'Интерьерные кровати',
-          href: '/krovati/interernye-krovati',
-        },
-        {
-          title: 'Кровати с подъемным механизмом',
-          href: '/krovati/krovati-s-podemnym-mehanizmom',
-        },
-        {
-          title: 'Кровати трансформеры',
-          href: '/krovati/krovati-transformery',
-        },
-      ],
-      [
-        {
-          title: 'Кровати 80x200',
-          href: '/krovati/krovati-80x200',
-        },
-        {
-          title: 'Кровати 90x200',
-          href: '/krovati/krovati-90x200',
-        },
-        {
-          title: 'Кровати 120x200',
-          href: '/krovati/krovati-120x200',
-        },
-        {
-          title: 'Кровати 140x200',
-          href: '/krovati/krovati-140x200',
-        },
-      ],
-      [
-        {
-          title: 'Кровати 160x200',
-          href: '/krovati/krovati-160x200',
-        },
-        {
-          title: 'Кровати 180x200',
-          href: '/krovati/krovati-180x200',
-        },
-        {
-          title: 'Кровати 200x200',
-          href: '/krovati/krovati-200x200',
+          href: '/krovati_31/interernye_krovati_42',
         },
       ],
     ],
   },
   {
     title: 'Матрасы',
-    href: '/matrasy',
+    href: '/matrasy_43',
     menu: [
       [
         {
           title: 'Двуспальные матрасы',
-          href: '/matrasy/dvuspalnye-matrasy',
+          href: '/matrasy_43/detskie_matrasy_44',
+        },
+        {
+          title: 'Матрасы топперы',
+          href: '/matrasy_43/matrasy_toppery_45',
+        },
+        {
+          title: 'Матрасы коконы',
+          href: '/matrasy_43/matrasy_kokony_46',
         },
         {
           title: 'Односпальные матрасы',
-          href: '/matrasy/odnospalnye-matrasy',
+          href: '/matrasy_43/odnospalnye_matrasy_47',
         },
+      ],
+      [
         {
           title: 'Полутороспальные матрасы',
-          href: '/matrasy/polutorospalnye-matrasy',
+          href: '/matrasy_43/polutorospalnye_matrasy_48',
         },
         {
-          title: 'Матрасы жесткие',
-          href: '/matrasy/matrasy-jestkie',
-        },
-      ],
-      [
-        {
-          title: 'Матрасы средней жесткости',
-          href: '/matrasy/matrasy-sredney-jestkosti',
-        },
-        {
-          title: 'Матрасы мягкие',
-          href: '/matrasy/matrasy-myagkie',
-        },
-        {
-          title: 'Пружинны матрасы',
-          href: '/matrasy/prujinny-matrasy',
-        },
-        {
-          title: 'Беспружинные матрасы',
-          href: '/matrasy/besprujinnye-matrasy',
-        },
-      ],
-      [
-        {
-          title: 'Тонкие матрасы',
-          href: '/matrasy/tonkie-matrasy',
-        },
-        {
-          title: 'Матрасы-топперы',
-          href: '/matrasy/matrasy-toppery',
-        },
-        {
-          title: 'Детские матрасы',
-          href: '/matrasy/detskie-matrasy',
-        },
-        {
-          title: 'Садовые матрасы',
-          href: '/matrasy/sadovye-matrasy',
-        },
-      ],
-      [
-        {
-          title: 'Матрасы 80x200',
-          href: '/matrasy/matrasy-80x200',
-        },
-        {
-          title: 'Матрасы 90x200',
-          href: '/matrasy/matrasy-90x200',
-        },
-        {
-          title: 'Матрасы 120x200',
-          href: '/matrasy/matrasy-120x200',
-        },
-        {
-          title: 'Матрасы 140x200',
-          href: '/matrasy/matrasy-140x200',
-        },
-      ],
-      [
-        {
-          title: 'Матрасы 160x200',
-          href: '/matrasy/matrasy-160x200',
-        },
-        {
-          title: 'Матрасы 180x200',
-          href: '/matrasy/matrasy-180x200',
-        },
-        {
-          title: 'Матрасы 200x200',
-          href: '/matrasy/matrasy-200x200',
+          title: 'Двуспальные матрасы',
+          href: '/matrasy_43/dvuspalnye_matrasy_49',
         },
       ],
     ],
   },
   {
     title: 'Шкафы',
-    href: '/shkafy',
+    href: '/shkafy_74',
     menu: [
       [
         {
           title: 'Шкафы-купе',
-          href: '/shkafy/shkafy-kupe',
+          href: '/shkafy_74/skafy_kupe_75',
         },
         {
-          title: 'Радиусные шкафы',
-          href: '/shkafy/radiusnye-shkafy',
-        },
-        {
-          title: 'Навесные шкафы',
-          href: '/shkafy/navesnye-shkafy',
-        },
-        {
-          title: 'Книжные шкафы',
-          href: '/shkafy/knijnye-shkafy',
-        },
-      ],
-      [
-        {
-          title: 'Угловые шкафы',
-          href: '/shkafy/uglovye-shkafy',
+          title: 'Распашные шкафы',
+          href: '/shkafy_74/raspasnye_skafy_76',
         },
         {
           title: 'Шкафы-пеналы',
-          href: '/shkafy/shkafy-penaly',
-        },
-        {
-          title: 'Модульные шкафы',
-          href: '/shkafy/modulnye-shkafy',
+          href: '/shkafy_74/skafy_penaly_77',
         },
         {
           title: 'Комбинированные шкафы',
-          href: '/shkafy/kombinirovannye-shkafy',
+          href: '/shkafy_74/kombinirovannye_skafy_78',
         },
       ],
       [
         {
-          title: 'Распашные шкафы',
-          href: '/shkafy/raspashnye-shkafy',
-        },
-        {
-          title: 'Платяные шкафы',
-          href: '/shkafy/platyanye-shkafy',
-        },
-        {
-          title: 'Гардеробные шкафы',
-          href: '/shkafy/garderobnye-shkafy',
-        },
-        {
-          title: 'Детские шкафы',
-          href: '/shkafy/detskie-shkafy',
-        },
-      ],
-      [
-        {
-          title: 'Антресоли',
-          href: '/shkafy/antresoli',
-        },
-        {
-          title: 'Серванты',
-          href: '/shkafy/servanty',
+          title: 'Модульные шкафы',
+          href: '/shkafy_74/modulnye_skafy_79',
         },
         {
           title: 'Шкафы-витрины',
-          href: '/shkafy/shkafy-vitriny',
+          href: '/shkafy_74/skafy_vitriny_80',
         },
         {
-          title: 'Шкафы для ванной',
-          href: '/shkafy/shkafy-dlya-vannoy',
-        },
-      ],
-      [
-        {
-          title: 'Шкафчики для ванной',
-          href: '/shkafy/shkafchiki-dlya-vannoy',
-        },
-        {
-          title: 'Пеналы для ванной',
-          href: '/shkafy/penaly-dlya-vannoy',
+          title: 'Книжные шкафы',
+          href: '/shkafy_74/kniznye_skafy_81',
         },
       ],
     ],
   },
   {
     title: 'Тумбы',
-    href: '/tumby',
+    href: '/tumby_64',
     menu: [
       [
         {
+          title: 'Прикроватные тумбы',
+          href: '/tumby_64/prikrovatnye_tumby_65',
+        },
+        {
+          title: 'Тумбы под раковину',
+          href: '/tumby_64/tumby_pod_rakovinu_66',
+        },
+        {
           title: 'Тумбы под телевизор',
-          href: '/tumby/tumby-pod-televizor',
+          href: '/tumby_64/tumby_pod_televizor_67',
+        },
+        {
+          title: 'Тумбы под стиральную машину',
+          href: '/tumby_64/tumby_pod_stiralnuyu_masinu_68',
+        },
+      ],
+      [
+        {
+          title: 'Бельевые тумбы',
+          href: '/tumby_64/belevye_tumby_69',
+        },
+        {
+          title: 'Тумбы для обуви',
+          href: '/tumby_64/tumby_dlya_obuvi_70',
+        },
+        {
+          title: 'Тумбы для ванной',
+          href: '/tumby_64/tumby_dlya_vannoi_71',
         },
         {
           title: 'Тумбы для рабочего стола',
-          href: '/tumby/tumby-dlya-rabochego-stola',
-        },
-        {
-          title: 'Прикроватные тумбы',
-          href: '/tumby/prikrovatnye-tumby',
-        },
-        {
-          title: 'Бельевые тумбы',
-          href: '/tumby/belevye-tumby',
+          href: '/tumby_64/tumby_dlya_rabocego_stola_72',
         },
       ],
       [
         {
           title: 'Тумбы с раковиной',
-          href: '/tumby/tumby-s-rakovinoy',
-        },
-        {
-          title: 'Тумбы для обуви',
-          href: '/tumby/tumby-dlya-obuvi',
-        },
-        {
-          title: 'Офисные тумбы',
-          href: '/tumby/ofisnye-tumby',
+          href: '/tumby_64/tumby_s_rakovinoi_73',
         },
       ],
     ],
   },
   {
     title: 'Столы',
-    href: '/stoly',
+    href: '/stoly_341',
+  },
+  {
+    title: 'Стулья',
+    href: '/stulya_51',
     menu: [
       [
         {
-          title: 'Компьютерные столы',
-          href: '/stoly/kompyuternye-stoly',
+          title: 'Стулья-трансформеры',
+          href: '/stulya_51/stulya_transformery_52',
         },
         {
-          title: 'Игровые столы',
-          href: '/stoly/igrovye-stoly',
+          title: 'Кухонные стулья',
+          href: '/stulya_51/kuxonnye_stulya_53',
         },
         {
-          title: 'Столы-трансформеры',
-          href: '/stoly/stoly-transformery',
+          title: 'Офисные стулья',
+          href: '/stulya_51/ofisnye_stulya_54',
         },
         {
-          title: 'Столы-книжки',
-          href: '/stoly/stoly-knijki',
-        },
-      ],
-      [
-        {
-          title: 'Письменные столы',
-          href: '/stoly/pismennye-stoly',
-        },
-        {
-          title: 'Столы для переговоров',
-          href: '/stoly/stoly-dlya-peregovorov',
-        },
-        {
-          title: 'Детские столы',
-          href: '/stoly/detskie-stoly',
-        },
-        {
-          title: 'Парты',
-          href: '/stoly/party',
+          title: 'Барные стулья',
+          href: '/stulya_51/barnye_stulya_55',
         },
       ],
       [
         {
-          title: 'Кухонные столы',
-          href: '/stoly/kuhonnye-stoly',
+          title: 'Стулья-стремянки',
+          href: '/stulya_51/stulya_stremyanki_56',
         },
         {
-          title: 'Обеденные столы',
-          href: '/stoly/obedennye-stoly',
+          title: 'Наборы стульев',
+          href: '/stulya_51/nabory_stulev_57',
         },
         {
-          title: 'Кофейные столики',
-          href: '/stoly/kofeynye-stoliki',
+          title: 'Садовые стулья',
+          href: '/stulya_51/sadovye_stulya_58',
         },
         {
-          title: 'Чайные столики',
-          href: '/stoly/chaynye-stoliki',
-        },
-      ],
-      [
-        {
-          title: 'Журнальные столы',
-          href: '/stoly/jurnalnye-stoly',
-        },
-        {
-          title: 'Приставные столы',
-          href: '/stoly/pristavnye-stoly',
-        },
-        {
-          title: 'Консольные столы',
-          href: '/stoly/konsolnye-stoly',
-        },
-        {
-          title: 'Сервировочные столы',
-          href: '/stoly/servirovochnye-stoly',
-        },
-      ],
-      [
-        {
-          title: 'Туалетные столики',
-          href: '/stoly/tualetnye-stoliki',
-        },
-        {
-          title: 'Барные столы',
-          href: '/stoly/barnye-stoly',
-        },
-        {
-          title: 'Садовые столы',
-          href: '/stoly/sadovye-stoly',
+          title: 'Детские стулья',
+          href: '/stulya_51/detskie_stulya_59',
         },
       ],
     ],
   },
   {
-    title: 'Скамейки',
-    href: '/skameyki',
-  },
-  {
-    title: 'Табуреты',
-    href: '/taburety',
-    menu: [
-      [
-        {
-          title: 'Барные табуреты',
-          href: '/taburety/barnye-taburety',
-        },
-      ],
-    ],
-  },
-  {
-    title: 'Текстиль',
-    href: '/tekstil',
+    title: 'Текстиль для дома',
+    href: '/tekstil_dlya_doma_110',
     menu: [
       [
         {
           title: 'Подушки',
-          href: '/tekstil/podushki',
+          href: '/tekstil_dlya_doma_110/poduski_111',
         },
         {
           title: 'Одеяла',
-          href: '/tekstil/odeyala',
+          href: '/tekstil_dlya_doma_110/odeyala_117',
         },
         {
-          title: 'Наматрасники',
-          href: '/tekstil/namatrasniki',
+          title: 'Постельные принадлежности',
+          href: '/tekstil_dlya_doma_110/postelnye_prinadleznosti_118',
+        },
+        {
+          title: 'Пледы',
+          href: '/tekstil_dlya_doma_110/pledy_124',
+        },
+      ],
+      [
+        {
+          title: 'Покрывала',
+          href: '/tekstil_dlya_doma_110/pokryvala_125',
+        },
+        {
+          title: 'Полотенца',
+          href: '/tekstil_dlya_doma_110/polotenca_127',
+        },
+        {
+          title: 'Кухонные варежки',
+          href: '/tekstil_dlya_doma_110/kuxonnye_varezki_131',
+        },
+        {
+          title: 'Прихватки',
+          href: '/tekstil_dlya_doma_110/prixvatki_132',
+        },
+      ],
+      [
+        {
+          title: 'Фартуки',
+          href: '/tekstil_dlya_doma_110/fartuki_133',
+        },
+        {
+          title: 'Скатерти',
+          href: '/tekstil_dlya_doma_110/skatert_134',
+        },
+        {
+          title: 'Наматрасники и чехлы для матрасов',
+          href: '/tekstil_dlya_doma_110/namatrasniki_i_cexly_dlya_matrasov_135',
         },
       ],
     ],
   },
 ];
+
 const mobileCategories = [
   {
     title: 'Все товары',
