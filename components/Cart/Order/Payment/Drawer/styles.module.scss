@@ -46,5 +46,12 @@
   }
 }
 .PaymentDrawerRadioBlock {
+  display: flex;
   margin-top: 16px;
+  max-width: max-content;
+  cursor: pointer;
+
+  svg {
+    margin-left: 12px;
+  }
 }

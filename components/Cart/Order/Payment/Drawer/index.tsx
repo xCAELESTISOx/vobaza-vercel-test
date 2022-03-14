@@ -52,6 +52,7 @@ const OrderPaymentDrawer: FC<Props> = ({ isOpen = false, onClose }) => {
           name="payment"
           onChange={() => {}}
         />
+        <Icon name="Wallet" />
       </div>
     </Drawer>
   );

@@ -129,6 +129,11 @@ const OrderDelivery: FC<Props> = ({
     }
   }, [delivery, isAssembly, assemblyType, assemblyItems]);
 
+  const goodsCount = goods.reduce(
+    (previousValue, currentValue) => previousValue + currentValue.quantity,
+    0
+  );
+
   return (
     <div className={styles.orderDelivery}>
       <OrderDeliveryDrawer
@@ -161,8 +166,8 @@ const OrderDelivery: FC<Props> = ({
           <div className={styles.orderDeliveryTextItem}>
             <Icon name="Scales" />
             <span>
-              {goods.length}{' '}
-              {num2str(goods.length, ['товар', 'товара', 'товаров'])} ・533 кг
+              {goodsCount} {num2str(goodsCount, ['товар', 'товара', 'товаров'])}{' '}
+              ・533 кг
             </span>
           </div>
         </div>
