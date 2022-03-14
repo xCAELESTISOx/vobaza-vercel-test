@@ -29,9 +29,18 @@ const CatalogList: FC<Props> = ({ list }) => {
             <div className={styles.categoryImage}>
               {category.image ? (
                 <Image
-                  src={category.image.variants.original.url}
-                  width={category.image.variants.original.meta.width}
-                  height={category.image.variants.original.meta.height}
+                  src={
+                    category.image.variants.small?.url ||
+                    category.image.variants.original.url
+                  }
+                  width={
+                    category.image.variants.small?.meta.width ||
+                    category.image.variants.original.meta.width
+                  }
+                  height={
+                    category.image.variants.small?.meta.height ||
+                    category.image.variants.original.meta.width
+                  }
                   objectFit="contain"
                   alt={category.name}
                 />
