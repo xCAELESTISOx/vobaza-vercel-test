@@ -112,10 +112,11 @@ const OrderAddressDrawer: FC<Props> = ({
           <InputText
             label="Подъезд"
             name="entrance"
-            value={values.entrance}
+            value={values.entrance.toString()}
             onChange={handleChange}
             onBlur={handleBlur}
             error={errors?.entrance}
+            valueType="integer"
             disabled={isLoading}
           />
         </div>
