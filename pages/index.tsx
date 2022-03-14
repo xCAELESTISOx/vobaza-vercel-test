@@ -5,6 +5,7 @@ import styles from '../styles/Home.module.scss';
 import normalizeGoods from '../assets/utils/normalizeGoods';
 import type { Banner } from '../src/models/IBanner';
 import { IGood } from '../src/models/IGood';
+import { ICategory } from '../src/models/ICategory';
 
 import Banners from '../components/MainPage/Banners';
 import PopularCategories from '../components/MainPage/CategoriesList';
@@ -21,10 +22,11 @@ interface Props {
   };
   hits: IGood[];
   newGoods: IGood[];
+  popularCategories: ICategory[];
 }
 
 export default function Home(props: Props) {
-  const { banners, hits, newGoods } = props;
+  const { banners, hits, newGoods, popularCategories } = props;
 
   return (
     <div className={styles.homePage}>
@@ -32,12 +34,14 @@ export default function Home(props: Props) {
       <section className={styles.bannersBlock}>
         <Banners forSlider={banners.slider} forMiniature={banners.miniature} />
       </section>
-      <section className={styles.popularCategoriesBlock}>
-        <div className="container">
-          <h2 className={styles.sectionTitle}>Популярные категории </h2>
-        </div>
-        <PopularCategories />
-      </section>
+      {popularCategories && popularCategories.length > 0 && (
+        <section className={styles.popularCategoriesBlock}>
+          <div className="container">
+            <h2 className={styles.sectionTitle}>Популярные категории </h2>
+          </div>
+          <PopularCategories categories={popularCategories} />
+        </section>
+      )}
       {hits && hits.length > 0 && (
         <section className={styles.hitsBlock}>
           <div className="container">
@@ -77,20 +81,28 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
   };
   let hits = null;
   let newGoods = null;
+  let popularCategories = null;
 
   try {
-    const [sliderBannersRes, miniatureBannersRes, hitsRes, newGoodsRes] =
-      await Promise.all([
-        api.getBannersByType('SLIDER'),
-        api.getBannersByType('MINIATURE'),
-        api.getHits(),
-        api.getNewGoods(),
-      ]);
+    const [
+      sliderBannersRes,
+      miniatureBannersRes,
+      hitsRes,
+      newGoodsRes,
+      popularCategoriesRes,
+    ] = await Promise.all([
+      api.getBannersByType('SLIDER'),
+      api.getBannersByType('MINIATURE'),
+      api.getHits(),
+      api.getNewGoods(),
+      api.getPopularCategories(),
+    ]);
 
     banners.slider = sliderBannersRes.data.data;
     banners.miniature = miniatureBannersRes.data.data;
     hits = normalizeGoods(hitsRes.data.data);
     newGoods = normalizeGoods(newGoodsRes.data.data);
+    popularCategories = popularCategoriesRes.data.data;
   } catch (error) {}
 
   return {
@@ -98,6 +110,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
       banners,
       hits,
       newGoods,
+      popularCategories,
     },
   };
 };

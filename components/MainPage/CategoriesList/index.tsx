@@ -2,78 +2,56 @@ import React, { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+import { ICategory } from '../../../src/models/ICategory';
+
 import styles from './styles.module.scss';
 
-import tmpImg1 from './tmp/categ1.png';
-import tmpImg2 from './tmp/categ2.png';
-import tmpImg3 from './tmp/categ3.png';
-import tmpImg4 from './tmp/categ4.png';
-import tmpImg5 from './tmp/categ5.png';
+import { Icon } from '@nebo-team/vobaza.ui.icon';
 
-const categories = [
-  {
-    title: 'Диваны',
-    href: '/katalog/divany',
-    image: tmpImg1,
-  },
-  {
-    title: 'Кресла',
-    href: '/katalog/kresla',
-    image: tmpImg2,
-  },
-  {
-    title: 'Кровати',
-    href: '/katalog/krovati',
-    image: tmpImg3,
-  },
-  {
-    title: 'Шкафы',
-    href: '/katalog/shkafy',
-    image: tmpImg4,
-  },
-  {
-    title: 'Диваны',
-    href: '/katalog/divany',
-    image: tmpImg1,
-  },
-  {
-    title: 'Кресла',
-    href: '/katalog/kresla',
-    image: tmpImg2,
-  },
-  {
-    title: 'Кровати',
-    href: '/katalog/krovati',
-    image: tmpImg3,
-  },
-  {
-    title: 'Шкафы',
-    href: '/katalog/shkafy',
-    image: tmpImg4,
-  },
-  // {
-  //   title: 'Стенки в гостиную',
-  //   href: '/stenki',
-  //   image: tmpImg5,
-  // },
-];
+const getHref = (category: ICategory) => {
+  let href = '/';
+  if (category.ancestors && category.ancestors.length > 0) {
+    href += `${category.ancestors[0]?.slug}_${category.ancestors[0]?.id}/`;
+  }
+  href += `${category.slug}_${category.id}`;
+  return href;
+};
 
-const CategoriesList: FC = () => {
+type Props = {
+  categories: ICategory[];
+};
+
+const CategoriesList: FC<Props> = ({ categories }) => {
   return (
     <div className="container">
       <div className={styles.categoriesList}>
-        {categories.map((category, index) => (
-          <Link key={category.title + index} href={category.href}>
+        {categories.map((category) => (
+          <Link key={category.id} href={getHref(category)}>
             <a className={styles.category}>
               <div className={styles.categoryContent}>
                 <div className={styles.categoryImage}>
-                  <Image
-                    className={styles.categoryImage}
-                    src={category.image}
-                    alt={category.title}
-                  />
+                  {category.image ? (
+                    <Image
+                      src={
+                        category.image.variants.small?.url ||
+                        category.image.variants.original.url
+                      }
+                      width={
+                        category.image.variants.small?.meta.width ||
+                        category.image.variants.original.meta.width
+                      }
+                      height={
+                        category.image.variants.small?.meta.height ||
+                        category.image.variants.original.meta.width
+                      }
+                      objectFit="contain"
+                      alt={category.name}
+                    />
+                  ) : (
+                    <Icon name="ImagePlaceholder" />
+                  )}
                 </div>
-                <div className={styles.categoryTitle}>{category.title}</div>
+                <div className={styles.categoryTitle}>{category.name}</div>
               </div>
             </a>
           </Link>

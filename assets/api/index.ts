@@ -90,6 +90,9 @@ export const api = {
     };
     return axios.get('/v1/products/random', { params });
   },
+  getPopularCategories() {
+    return axios.get('/v1/popularCategories');
+  },
   //Goods
   getGoods(params) {
     return axios.get(`/v1/products`, { params });

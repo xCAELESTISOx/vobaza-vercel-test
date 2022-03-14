@@ -13,7 +13,7 @@ type Props = {
 
 const getHref = (category: ICategory) => {
   let href = '/';
-  if (category.ancestors) {
+  if (category.ancestors && category.ancestors.length > 0) {
     href += `${category.ancestors[0]?.slug}_${category.ancestors[0]?.id}/`;
   }
   href += `${category.slug}_${category.id}`;
