@@ -53,12 +53,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       return {
         quantity: good.quantity,
         price: good.price / 100,
-        discount_price: good.discount_price / 100,
+        list_price: good.list_price / 100,
         product: {
           ...good.product,
           price: good.product.price / 100,
-          discount_price: good.product.discount_price
-            ? good.product.discount_price / 100
+          list_price: good.product.list_price
+            ? good.product.list_price / 100
             : null,
         },
       };

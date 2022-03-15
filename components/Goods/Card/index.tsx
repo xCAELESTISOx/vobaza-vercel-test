@@ -107,9 +107,9 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
                 )}
               </a>
             </Link>
-            {good.discount_price && (
+            {good.list_price && (
               <div className={`${styles.cardSale} ${styles.cardSaleMobile}`}>
-                {Math.round((good.discount_price / good.price) * 100 - 100)}%
+                {Math.round((good.price / good.list_price) * 100 - 100)}%
               </div>
             )}
           </div>
@@ -193,20 +193,17 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
             </Link>
             <div className={styles.cardPriceBlock}>
               <div className={styles.cardPrice}>
-                {toNumberWithSpaces(
-                  good.discount_price ? good.discount_price : good.price
-                )}{' '}
-                ₽
+                {toNumberWithSpaces(good.price)} ₽
               </div>
-              {good.discount_price && (
-                <div className={`${styles.cardPrice} ${styles.cardPriceOld}`}>
-                  {toNumberWithSpaces(good.price)}
-                </div>
-              )}
-              {good.discount_price && (
-                <div className={styles.cardSale}>
-                  {Math.round((good.discount_price / good.price) * 100 - 100)}%
-                </div>
+              {good.list_price && (
+                <>
+                  <div className={`${styles.cardPrice} ${styles.cardPriceOld}`}>
+                    {toNumberWithSpaces(good.list_price)}
+                  </div>
+                  <div className={styles.cardSale}>
+                    {Math.round((good.price / good.list_price) * 100 - 100)}%
+                  </div>
+                </>
               )}
             </div>
             {/* <div className={styles.cardReviewsBlock}>

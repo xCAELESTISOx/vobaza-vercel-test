@@ -5,7 +5,7 @@ export default function normalizeGoods(goods: IGood[]) {
     return {
       ...good,
       price: good.price / 100,
-      discount_price: good.discount_price ? good.discount_price / 100 : null,
+      list_price: good.list_price ? good.list_price / 100 : null,
     };
   });
 }

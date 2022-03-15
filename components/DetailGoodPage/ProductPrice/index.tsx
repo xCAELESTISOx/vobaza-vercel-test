@@ -7,24 +7,22 @@ import styles from './styles.module.scss';
 interface ProductPrice {
   className?: string;
   price: number;
-  discountPrice?: number;
+  beforeDiscountPrice?: number;
   discount?: number;
 }
 
 const ProductPrice: FC<ProductPrice> = (props) => {
-  const { className = '', price, discountPrice, discount } = props;
-
-  const currentPrice = discountPrice || price;
+  const { className = '', price, beforeDiscountPrice, discount } = props;
 
   const containerClasses = [className, styles.productPrice].join(' ');
 
   return (
     <div className={containerClasses}>
-      <div className={styles.priceActual}>
-        {toNumberWithSpaces(currentPrice)} ₽
-      </div>
-      {discountPrice && (
-        <div className={styles.priceOld}>{toNumberWithSpaces(price)} ₽</div>
+      <div className={styles.priceActual}>{toNumberWithSpaces(price)} ₽</div>
+      {beforeDiscountPrice && (
+        <div className={styles.priceOld}>
+          {toNumberWithSpaces(beforeDiscountPrice)} ₽
+        </div>
       )}
       {discount && (
         <div className={styles.priceDiscount}>

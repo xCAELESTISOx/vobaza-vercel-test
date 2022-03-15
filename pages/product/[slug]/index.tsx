@@ -54,20 +54,18 @@ const getPrice = (price: number) => {
 const normalizeProductInfo = (product) => {
   const normalizeProductRules = {
     price: getPrice,
-    discount_price: getPrice,
+    list_price: getPrice,
     labels: (labels) => labels.filter((l) => l.active).map((l) => l.code),
   };
 
   const computedFields = {
     discount: (product) =>
-      Math.round((product.discount_price / product.price) * 100 - 100),
+      Math.round((product.price / product.list_price) * 100 - 100),
     creditMinimalPayment: (product) => {
-      const currentPrice = product.discount_price || product.price;
-      return Math.round(currentPrice / 12);
+      return Math.round(product.price / 12);
     },
     loyaltyBonus: (product) => {
-      const currentPrice = product.discount_price || product.price;
-      return Math.ceil(currentPrice * 0.1);
+      return Math.ceil(product.price * 0.1);
     },
     inStonk: (product) => {
       return product.quantity > 0;
@@ -237,7 +235,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
                 <ProductPrice
                   className={styles.productInfoShort}
                   price={product.price}
-                  discountPrice={product.discount_price}
+                  beforeDiscountPrice={product.list_price}
                   discount={product.discount}
                 />
 
@@ -299,7 +297,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
               id: product.id,
               title: product.name,
               articleNumber: product.sku,
-              price: product.discount_price || product.price,
+              price: product.price,
               image: product.images
                 ? getImageVariantByFieldname(product.images[0], 'small')
                 : null,

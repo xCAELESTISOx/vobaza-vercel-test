@@ -67,7 +67,7 @@ const CartList: FC<Props> = ({ initialGoods, setOrderPrice }) => {
             return {
               ...item,
               price: res.data.data.price / 100,
-              discount_price: res.data.data.discount_price / 100 || null,
+              list_price: res.data.data.list_price / 100 || null,
               quantity: item.quantity + res.data.data.changed_quantity,
             };
           }

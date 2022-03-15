@@ -61,7 +61,7 @@ export interface IGood {
   main_image?: Image;
 
   price: number;
-  discount_price?: number;
+  list_price?: number;
   quantity: number;
   minimal_order?: number;
 

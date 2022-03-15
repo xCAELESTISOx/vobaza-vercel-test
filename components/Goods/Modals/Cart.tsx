@@ -75,12 +75,7 @@ const CartModal: FC = () => {
                   </div>
                   <div className={styles.favoriteModalItemPrice}>
                     <div className={styles.favoriteModalItemPriceBlock}>
-                      {Intl.NumberFormat('ru-RU').format(
-                        cartGood.discount_price
-                          ? cartGood.discount_price
-                          : cartGood.price
-                      )}{' '}
-                      ₽
+                      {Intl.NumberFormat('ru-RU').format(cartGood.price)} ₽
                     </div>
                   </div>
                 </div>

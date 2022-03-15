@@ -19,8 +19,8 @@ export type FavoriteGood = {
   sku: number;
   name: string;
   price: number;
-  discount_price: number;
-  main_image: IImage;
+  list_price?: number;
+  main_image?: IImage;
 };
 
 type Props = {
@@ -81,16 +81,13 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
       <div className={styles.profileFavoriteItemRight}>
         <div className={styles.profileFavoriteItemPricesBlock}>
           <div className={styles.profileFavoriteItemPrices}>
-            {good.discount_price && (
+            {good.list_price && (
               <div className={styles.profileFavoriteItemPriceOld}>
-                {toNumberWithSpaces(good.price)} ₽
+                {toNumberWithSpaces(good.list_price)} ₽
               </div>
             )}
             <div className={styles.profileFavoriteItemPrice}>
-              {toNumberWithSpaces(
-                good.discount_price ? good.discount_price : good.price
-              )}{' '}
-              ₽
+              {toNumberWithSpaces(good.price)} ₽
             </div>
           </div>
           <Icon

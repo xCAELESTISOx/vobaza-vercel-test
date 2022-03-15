@@ -16,12 +16,12 @@ export type ICartGood = {
     sku: number;
     name: string;
     price: number;
-    discount_price?: number;
+    list_price?: number;
     main_image: IImage;
   };
   quantity: number;
   price: number;
-  discount_price?: number;
+  list_price?: number;
 };
 
 type Props = {
@@ -104,21 +104,18 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
             isWhite
           />
           <div className={styles.cartListItemPriceForOne}>
-            {toNumberWithSpaces(
-              good.product.discount_price || good.product.price
-            )}{' '}
-            ₽ / шт
+            {toNumberWithSpaces(good.product.price)} ₽ / шт
           </div>
         </div>
       </div>
       <div className={styles.cartListItemPriceBlock}>
         <div className={styles.cartListItemPrice}>
-          {good.product.discount_price && (
+          {good.product.list_price && (
             <div className={styles.cartListItemPriceOld}>
-              {toNumberWithSpaces(good.price)} ₽
+              {toNumberWithSpaces(good.list_price)} ₽
             </div>
           )}
-          <div>{toNumberWithSpaces(good.discount_price || good.price)} ₽</div>
+          <div>{toNumberWithSpaces(good.price)} ₽</div>
         </div>
         <button
           className={`${styles.cartListItemDelete} ${
