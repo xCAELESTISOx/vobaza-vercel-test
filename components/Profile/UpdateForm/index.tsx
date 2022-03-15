@@ -32,6 +32,7 @@ type Props = {
 };
 
 const ProfileUpdateForm: FC<Props> = ({ initialUser }) => {
+  const [isChanged, setIsChanged] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const setAddressHandler = async () => {
@@ -44,6 +45,7 @@ const ProfileUpdateForm: FC<Props> = ({ initialUser }) => {
         email: values.email,
       };
       await api.updateProfile(data);
+      setIsChanged(false);
       setIsLoading(false);
     } catch (error) {
       const errs = error.response.data.errors;
@@ -82,11 +84,17 @@ const ProfileUpdateForm: FC<Props> = ({ initialUser }) => {
     onSubmit: setAddressHandler,
   });
 
+  const resetFormHandler = async (e: any) => {
+    resetForm();
+    setIsChanged(false);
+  };
   const handleChange = async (e: any) => {
     await setFieldValue(e.target.name, e.target.value);
+    setIsChanged(true);
   };
   const handlePhoneChange = async (value: string) => {
     await setFieldValue('phone', value);
+    setIsChanged(true);
   };
   const handleBlur = async (e: any) => {
     validateField(e.target.name);
@@ -146,13 +154,18 @@ const ProfileUpdateForm: FC<Props> = ({ initialUser }) => {
         </div>
       </div>
       <div className={styles.profileFormButtons}>
-        <Button text="Сохранить" size="big" type="submit" />
+        <Button
+          text="Сохранить"
+          size="big"
+          type="submit"
+          disabled={isLoading || !isChanged}
+        />
         <Button
           className={styles.profileFormButtonCancel}
           text="Отменить"
           size="big"
           color="#f2f2f2"
-          onClick={resetForm as any}
+          onClick={resetFormHandler as any}
         />
       </div>
     </form>
