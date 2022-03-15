@@ -14,7 +14,8 @@ import { IError } from '../../../src/models/IError';
 const validationSchema = yup.object({
   name: yup
     .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255'),
+    .max(255, 'Количество символов в поле должно быть не больше 255')
+    .required('Обязательное поле'),
   surname: yup
     .string()
     .max(255, 'Количество символов в поле должно быть не больше 255'),
@@ -114,6 +115,7 @@ const ProfileUpdateForm: FC<Props> = ({ initialUser }) => {
               onBlur={handleBlur}
               error={errors?.name}
               disabled={isLoading}
+              required
             />
           </div>
           <div className={styles.profileFormInput}>
