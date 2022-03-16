@@ -40,7 +40,11 @@ const MainBanner: FC<Props> = ({ slides }) => {
         slidesPerView={1}
         spaceBetween={8}
         speed={1000}
-        autoplay={{ delay: 3000, pauseOnMouseEnter: true }}
+        autoplay={{
+          delay: 3000,
+          pauseOnMouseEnter: true,
+          disableOnInteraction: false,
+        }}
         breakpoints={{
           980: {
             spaceBetween: 0,
