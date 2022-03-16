@@ -23,8 +23,8 @@ const GoodsFilterItemNumeric: FC<Props> = ({
 }) => {
   const [isTouched, setIsTouched] = useState(false);
   const [values, setValues] = useState<any>([
-    Math.floor(filter.meta.min / 100) || 0,
-    Math.ceil(filter.meta.max / 100) || 100,
+    filter.meta.min || 0,
+    filter.meta.max || 100,
   ]);
 
   const onClick = (e?) => {
@@ -49,10 +49,7 @@ const GoodsFilterItemNumeric: FC<Props> = ({
     if (currentFilters[filter.id]) {
       setValues(currentFilters[filter.id].values);
     } else {
-      setValues([
-        Math.floor(filter.meta.min / 100) || 0,
-        Math.ceil(filter.meta.max / 100) || 100,
-      ]);
+      setValues([filter.meta.min || 0, filter.meta.max || 100]);
     }
     setIsTouched(false);
   }, [currentFilters, filter]);
@@ -67,8 +64,8 @@ const GoodsFilterItemNumeric: FC<Props> = ({
             className="filtersJsButton"
           />
           <RangeBlock
-            min={Math.floor(filter.meta.min / 100)}
-            max={Math.ceil(filter.meta.max / 100)}
+            min={filter.meta.min}
+            max={filter.meta.max}
             values={values}
             onChange={setValuesHandler}
           />
@@ -77,8 +74,8 @@ const GoodsFilterItemNumeric: FC<Props> = ({
         <FilterSelect
           variation="secondary"
           variants={[
-            { code: 'min', value: Math.floor(filter.meta.min / 100) },
-            { code: 'max', value: Math.ceil(filter.meta.max / 100) },
+            { code: 'min', value: filter.meta.min },
+            { code: 'max', value: filter.meta.max },
           ]}
           type="range"
           values={values}
