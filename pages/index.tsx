@@ -91,8 +91,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
       newGoodsRes,
       popularCategoriesRes,
     ] = await Promise.all([
-      api.getBannersByType('SLIDER'),
-      api.getBannersByType('MINIATURE'),
+      api.getBanners({ type: 'SLIDER' }),
+      api.getBanners({ type: 'MINIATURE', limit: 3 }),
       api.getHits(),
       api.getNewGoods(),
       api.getPopularCategories(),

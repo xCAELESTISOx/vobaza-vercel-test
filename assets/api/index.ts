@@ -70,8 +70,8 @@ export const api = {
     return axios.post('/v1/subscriptions', data);
   },
   //Banners
-  getBannersByType(type: string) {
-    return axios.get('/v1/banners', { params: { type } });
+  getBanners(params: { type: 'SLIDER' | 'MINIATURE', limit?: number }) {
+    return axios.get('/v1/banners', { params });
   },
   //MainPage
   getHits() {
