@@ -12,9 +12,10 @@ import { useState } from 'react';
 type Props = {
   initialGoods: ICartGood[];
   initialPrice: number;
+  withCountChange: boolean;
 };
 
-export default function Cart({ initialGoods, initialPrice }) {
+export default function Cart({ initialGoods, initialPrice, withCountChange }) {
   const [orderPrice, setOrderPrice] = useState(initialPrice);
 
   return (
@@ -27,6 +28,7 @@ export default function Cart({ initialGoods, initialPrice }) {
               <CartList
                 initialGoods={initialGoods}
                 setOrderPrice={setOrderPrice}
+                withCountChange={withCountChange}
               />
             </div>
             <div>
@@ -44,6 +46,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 }) => {
   let initialGoods = [];
   let initialPrice = 0;
+  let withCountChange = false;
 
   try {
     await checkAuth(req, true);
@@ -64,6 +67,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       };
     });
     initialPrice = cartRes.data.data.order_price / 100;
+
+    if (cartRes.data.data.basket_changed) {
+      withCountChange = true;
+    }
   } catch (error) {
     console.log(error);
     return {
@@ -78,6 +85,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     props: {
       initialGoods,
       initialPrice,
+      withCountChange,
     },
   };
 };

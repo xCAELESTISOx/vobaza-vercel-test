@@ -137,6 +137,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     }
     goods = cartRes.data.data.products;
     price = cartRes.data.data.order_price / 100;
+
+    if (goods.length <= 0) {
+      throw new Error();
+    }
   } catch (error) {
     return {
       redirect: {

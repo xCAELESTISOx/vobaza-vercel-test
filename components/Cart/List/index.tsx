@@ -11,12 +11,17 @@ import CartItemChangeModal from '../Modal/CartItemChangeModal';
 
 type Props = {
   initialGoods: ICartGood[];
+  withCountChange?: boolean;
   setOrderPrice: (price: number) => void;
 };
 
-const CartList: FC<Props> = ({ initialGoods, setOrderPrice }) => {
+const CartList: FC<Props> = ({
+  initialGoods,
+  withCountChange = false,
+  setOrderPrice,
+}) => {
   const [goods, setGoods] = useState(initialGoods);
-  const [isCountChangeModal, setIsCountChangeModal] = useState(false);
+  const [isCountChangeModal, setIsCountChangeModal] = useState(withCountChange);
   const router = useRouter();
   const { dispatch } = useGoods();
 
