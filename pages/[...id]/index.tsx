@@ -122,8 +122,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
           params[`filter[filters][${index}][values][${valueIndex}]`] = value;
         });
       } else if (filterValue.length === 2) {
-        params[`filter[filters][${index}][min]`] = filterValue[0] + '00';
-        params[`filter[filters][${index}][max]`] = filterValue[1] + '00';
+        params[`filter[filters][${index}][min]`] = filterValue[0];
+        params[`filter[filters][${index}][max]`] = filterValue[1];
       }
     });
 
