@@ -3,9 +3,11 @@ import type { GetServerSideProps } from 'next';
 import { api } from '../assets/api';
 import styles from '../styles/Home.module.scss';
 import normalizeGoods from '../assets/utils/normalizeGoods';
+import normalizeCollections from '../assets/utils/normalizeCollections';
 import type { Banner } from '../src/models/IBanner';
 import { IGood } from '../src/models/IGood';
 import { ICategory } from '../src/models/ICategory';
+import { ICollection } from '../src/models/ICollection';
 
 import Banners from '../components/MainPage/Banners';
 import PopularCategories from '../components/MainPage/CategoriesList';
@@ -23,10 +25,11 @@ interface Props {
   hits: IGood[];
   newGoods: IGood[];
   popularCategories: ICategory[];
+  collections: ICollection[];
 }
 
 export default function Home(props: Props) {
-  const { banners, hits, newGoods, popularCategories } = props;
+  const { banners, hits, newGoods, popularCategories, collections } = props;
 
   return (
     <div className={styles.homePage}>
@@ -50,12 +53,14 @@ export default function Home(props: Props) {
           <GoodsSwiper goods={hits} />
         </section>
       )}
-      <section className={styles.popularCategoriesBlock}>
-        <div className="container">
-          <h2 className={styles.sectionTitle}>Коллекции этого сезона </h2>
-        </div>
-        <Collections />
-      </section>
+      {collections && collections.length > 0 && (
+        <section className={styles.popularCategoriesBlock}>
+          <div className="container">
+            <h2 className={styles.sectionTitle}>Коллекции этого сезона </h2>
+          </div>
+          <Collections collections={collections} />
+        </section>
+      )}
       {newGoods && newGoods.length > 0 && (
         <section>
           <div className={`${styles.newGoodsBlock} container`}>
@@ -82,6 +87,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
   let hits = null;
   let newGoods = null;
   let popularCategories = null;
+  let collections = null;
 
   try {
     const [
@@ -90,12 +96,14 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
       hitsRes,
       newGoodsRes,
       popularCategoriesRes,
+      collectionsRes,
     ] = await Promise.all([
       api.getBanners({ type: 'SLIDER' }),
       api.getBanners({ type: 'MINIATURE', limit: 3 }),
       api.getHits(),
       api.getNewGoods(),
       api.getPopularCategories(),
+      api.getCollections(),
     ]);
 
     banners.slider = sliderBannersRes.data.data;
@@ -103,6 +111,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
     hits = normalizeGoods(hitsRes.data.data);
     newGoods = normalizeGoods(newGoodsRes.data.data);
     popularCategories = popularCategoriesRes.data.data;
+    collections = normalizeCollections(collectionsRes.data.data);
   } catch (error) {}
 
   return {
@@ -111,6 +120,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
       hits,
       newGoods,
       popularCategories,
+      collections,
     },
   };
 };

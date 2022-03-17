@@ -2,69 +2,58 @@ import React, { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+import { ICollection } from '../../../src/models/ICollection';
+
 import styles from './styles.module.scss';
 
-import tmpImg1 from './tmp/collection1.jpg';
-import tmpImg2 from './tmp/collection2.jpg';
-import tmpImg3 from './tmp/collection3.jpg';
-import tmpImg4 from './tmp/collection4.jpg';
+type Props = {
+  collections: ICollection[];
+};
 
-const categories = [
-  {
-    title: 'Детские кровати-домики',
-    href: '/krovati-domiki',
-    image: tmpImg1,
-  },
-  {
-    title: 'Прихожая «ФАН»',
-    href: '/kollekcii/prihozhaya-fan',
-    image: tmpImg2,
-  },
-  {
-    title: 'Диваны «Бейкер 2»',
-    description: 'Сочетание внешней строгости и комфортного отдыха',
-    href: '/divany/model-beyker',
-    image: tmpImg3,
-  },
-  {
-    title: 'Модульная гостиная «Кельн»',
-    description:
-      'Оригинальная концепция · Практичность и эластичность · Продуманное хранение ',
-    href: '/kollekcii/kollekciya-mebel-keln',
-    image: tmpImg4,
-  },
-];
-
-const Collections: FC = () => {
+const Collections: FC<Props> = ({ collections }) => {
   return (
     <div className="container">
       <div className={styles.collections}>
-        {categories.map((collection) => (
-          <Link key={collection.title} href={collection.href}>
-            <a className={styles.collection}>
-              <div className={styles.collectionContent}>
-                <div className={styles.collectionImageBlock}>
-                  <Image
-                    src={collection.image}
-                    alt={collection.title}
-                    layout="fill"
-                    objectFit="cover"
-                  />
-                </div>
-                <div className={styles.collectionTextBlock}>
-                  <div className={styles.collectionTitle}>
-                    {collection.title}
+        {collections.map((collection: ICollection) =>
+          collection ? (
+            <Link key={collection.id} href={collection.url}>
+              <a className={styles.collection}>
+                <div className={styles.collectionContent}>
+                  <div className={styles.collectionImageBlock}>
+                    <Image
+                      src={collection.desktop_image.variants[0].url}
+                      layout="fill"
+                      objectFit="cover"
+                      alt={collection.title}
+                    />
                   </div>
-                  {collection.description && (
-                    <div className={styles.collectionDescription}>
-                      {collection.description}
+                  <div
+                    className={`${styles.collectionImageBlock} ${styles.mobile}`}
+                  >
+                    <Image
+                      src={collection.mobile_image.variants[0].url}
+                      layout="fill"
+                      objectFit="cover"
+                      alt={collection.title}
+                    />
+                  </div>
+                  <div className={styles.collectionTextBlock}>
+                    <div className={styles.collectionTitle}>
+                      {collection.title}
                     </div>
-                  )}
+                    {collection.description && (
+                      <div className={styles.collectionDescription}>
+                        {collection.description}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </a>
-          </Link>
-        ))}
+              </a>
+            </Link>
+          ) : (
+            <div className={styles.collection}></div>
+          )
+        )}
       </div>
     </div>
   );

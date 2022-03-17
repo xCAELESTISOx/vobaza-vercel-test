@@ -101,13 +101,24 @@
   }
 
   @media screen and (max-width: 767px) {
-    height: 148px;
+    display: none;
   }
-  @media screen and (max-width: 576px) {
-    min-height: 41.1vw;
-    max-height: 41.1vw;
+
+  &.mobile {
+    display: none;
+    height: 148px;
+
+    @media screen and (max-width: 767px) {
+      display: flex;
+    }
+
+    @media screen and (max-width: 576px) {
+      min-height: 41.1vw;
+      max-height: 41.1vw;
+    }
   }
 }
+
 .collectionTextBlock {
   position: absolute;
   left: 0;

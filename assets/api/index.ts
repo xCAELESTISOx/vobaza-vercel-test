@@ -93,6 +93,9 @@ export const api = {
   getPopularCategories() {
     return axios.get('/v1/popularCategories');
   },
+  getCollections() {
+    return axios.get('/v1/collections');
+  },
   //Goods
   getGoods(params) {
     return axios.get(`/v1/products`, { params });
