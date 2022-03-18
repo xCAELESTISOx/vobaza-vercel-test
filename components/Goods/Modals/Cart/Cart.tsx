@@ -4,13 +4,13 @@ import Image from 'next/image';
 
 import styles from './styles.module.scss';
 
-import { useGoods } from '../../../src/context/goods';
-import ModalLayout from '../../../src/hoc/withModal';
+import { useGoods } from '../../../../src/context/goods';
+import ModalLayout from '../../../../src/hoc/withModal';
 
 import { Button } from '@nebo-team/vobaza.ui.button';
 import { Title } from '@nebo-team/vobaza.ui.title';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
-import CartItemChangeModal from '../../Cart/Modal/CartItemChangeModal';
+import CartItemChangeModal from '../../../Cart/Modal/CartItemChangeModal';
 
 const CartModal: FC = () => {
   const { state, dispatch } = useGoods();

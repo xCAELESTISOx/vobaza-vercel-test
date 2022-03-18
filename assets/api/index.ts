@@ -56,7 +56,7 @@ export const api = {
     setToken();
     return axios.get('/customer/v1/profile');
   },
-  updateProfile(data: { name: string, surname: string, email: string, }) {
+  updateProfile(data: { name: string; surname: string; email: string }) {
     setToken();
     return axios.post('/customer/v1/profile', data);
   },
@@ -70,7 +70,7 @@ export const api = {
     return axios.post('/v1/subscriptions', data);
   },
   //Banners
-  getBanners(params: { type: 'SLIDER' | 'MINIATURE', limit?: number }) {
+  getBanners(params: { type: 'SLIDER' | 'MINIATURE'; limit?: number }) {
     return axios.get('/v1/banners', { params });
   },
   //MainPage
@@ -158,8 +158,8 @@ export const api = {
     return axios.post(`/v1/checkout`, data);
   },
   // One Click Order
-  async makeOneClickOrder(data : { phone : string, name?: string }) {
+  async makeOneClickOrder(data: { phone: string; name?: string }) {
     setTokenWithGuest();
-    await axios.post('/v1/callback', data)
-  }
+    await axios.post('/v1/callback', data);
+  },
 };

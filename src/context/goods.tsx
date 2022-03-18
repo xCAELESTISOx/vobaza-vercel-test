@@ -13,13 +13,16 @@ type Action =
       type: 'addCartGood';
       payload: { good: IGood | FavoriteGood; quantity: number };
     }
-  | { type: 'closeCartModal' };
+  | { type: 'closeCartModal' }
+  | { type : 'setOneClickGood'; payload: IGood }
+  | { type : 'closeOneClickModal' }
 type Dispatch = (action: Action) => void;
 type State = {
   favoriteIds: number[];
   cartSize: number;
   cartError: false;
   cartGood?: IGood | null;
+  oneClickGood?: IGood | null;
 };
 type GoodsProviderProps = { children: React.ReactNode };
 
@@ -67,6 +70,18 @@ function goodsReducer(state, action) {
         ...state,
         cartGood: null,
       };
+    }
+    case 'setOneClickGood': {
+      return {
+        ...state,
+        oneClickGood : action.payload
+      }
+    }
+    case 'closeOneClickModal': {
+      return {
+        ...state,
+        oneClickGood : null
+      }
     }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);

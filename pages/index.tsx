@@ -15,7 +15,7 @@ import Collections from '../components/MainPage/Collections';
 import Blog from '../components/MainPage/Blog';
 import GoodsList from '../components/Goods/List';
 import GoodsSwiper from '../components/Goods/Swiper';
-import CartModal from '../components/Goods/Modals/Cart';
+import CartModal from '../components/Goods/Modals/Cart/Cart';
 
 interface Props {
   banners: {

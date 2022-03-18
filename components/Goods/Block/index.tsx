@@ -9,7 +9,7 @@ import { Pagination } from '@nebo-team/vobaza.ui.pagination';
 import GoodsList from '../List/index';
 import Toggle from '../../UI/Toggle';
 import GoodsFilters from '../Filters';
-import CartModal from '../Modals/Cart';
+import CartModal from '../Modals/Cart/Cart';
 
 type Props = {
   filters?: IFilter[];

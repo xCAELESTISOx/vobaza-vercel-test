@@ -25,7 +25,7 @@ import { ProductStock } from '../../../components/DetailGoodPage/ProductStock';
 import { ProductLoyaltyBonus } from '../../../components/DetailGoodPage/ProductLoyaltyBonus';
 import { ProductCredit } from '../../../components/DetailGoodPage/ProductCredit';
 import { ProductDelivery } from '../../../components/DetailGoodPage/ProductDelivery';
-import CartModal from '../../../components/Goods/Modals/Cart';
+import CartModal from '../../../components/Goods/Modals/Cart/Cart';
 
 import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
 
@@ -35,6 +35,8 @@ import { useCart } from '../../../src/hooks/useCart';
 import { mockProduct } from '../../../src/mock/detailProductPage';
 import { useFavorite } from '../../../src/hooks/useFavorite';
 import { getImageVariantByFieldname } from '../../../assets/utils/images';
+import OneClick from 'components/Goods/Modals/OneClick/OneClick';
+import { useGoods } from 'src/context/goods';
 
 interface DetailGoodPage {
   product: any;
@@ -91,6 +93,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
     mockProduct.variants[0]
   );
   const { addToCart } = useCart(product);
+  const { dispatch } = useGoods();
 
   const addToCartHandler = () => {
     addToCart();
@@ -113,6 +116,10 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
     options[name] = e;
 
     setSelectedOptions(options);
+  };
+
+  const openOneClickModal = () => {
+    dispatch({ type: 'setOneClickGood', payload: product });
   };
 
   const renderOptions = () => {
@@ -151,6 +158,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
     <SimpleReactLightbox>
       <div className={styles.homePage}>
         <CartModal />
+        <OneClick />
         <Breadcrumbs breadcrumbs={breadcrumbs} />
         <div className="container">
           <div className={styles.productInfo}>
@@ -254,7 +262,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
                       size="big"
                       onClick={addToCartHandler}
                     />
-                    <Button text="Заказать в 1 клик" variation="dashed" />
+                    <Button text="Заказать в 1 клик" variation="dashed" onClick={openOneClickModal} />
                   </div>
 
                   <ProductCredit

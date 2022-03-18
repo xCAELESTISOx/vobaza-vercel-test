@@ -11,7 +11,7 @@ import ProfileEmptyField from '../../components/Profile/EmptyField';
 import ProfileFavoriteItem, {
   FavoriteGood,
 } from '../../components/Profile/Favorite/Item';
-import CartModal from '../../components/Goods/Modals/Cart';
+import CartModal from '../../components/Goods/Modals/Cart/Cart';
 
 interface Props {
   initialGoods: FavoriteGood[];
