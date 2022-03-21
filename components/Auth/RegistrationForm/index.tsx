@@ -13,6 +13,7 @@ import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox';
 import { Button } from '@nebo-team/vobaza.ui.button';
 import { Title } from '@nebo-team/vobaza.ui.title';
 import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone';
+import Link from 'next/link';
 
 interface Auth {
   name: string;
@@ -226,9 +227,16 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
               label={
                 <>
                   Подтверждаю согласие на&nbsp;
-                  <a href="#" className={styles.inlineModalLink}>
-                    обработку персональных данных
-                  </a>
+                  <Link href="/politika-obrabotki-dannyh">
+                    <a
+                      target="_blank"
+                      rel="noreferrer"
+                      className={styles.inlineModalLink}
+                      onClick={e => e.stopPropagation()}
+                    >
+                      обработку персональных данных
+                    </a>
+                  </Link>
                 </>
               }
               initialValue={values.isAgree}
