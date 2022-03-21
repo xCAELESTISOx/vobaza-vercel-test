@@ -55,6 +55,7 @@ type Props = {
 };
 
 const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
+  const [codeWasSent, setCodeWasSent] = useState(false)
   const [isCodeTimeout, setIsCodeTimeout] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -70,6 +71,7 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
         email: values.email,
       });
       setIsCodeTimeout(60);
+      setCodeWasSent(true)
       setIsLoading(false);
     } catch (error: any) {
       const errs = error.response.data.errors;
@@ -272,7 +274,7 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
               onChange={handleCodeChange}
               onBlur={handleBlur}
               error={errors?.code}
-              disabled={isLoading}
+              disabled={isLoading || !codeWasSent}
             />
           </div>
         </form>

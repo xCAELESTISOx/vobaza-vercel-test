@@ -33,6 +33,7 @@ type Props = {
 };
 
 const LoginForm = ({ goRegister, onSuccess }: Props) => {
+  const [codeWasSent, setCodeWasSent] = useState(false)
   const [isCodeTimeout, setIsCodeTimeout] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -42,6 +43,7 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
       setIsLoading(true);
       await api.requestCode({ phone: values.phone });
       setIsCodeTimeout(60);
+      setCodeWasSent(true)
       setIsLoading(false);
     } catch (error: any) {
       const errs = error.response.data.errors;
@@ -174,7 +176,7 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
                 onChange={handleCodeChange}
                 onBlur={handleBlur}
                 error={errors?.code}
-                disabled={isLoading}
+                disabled={isLoading || !codeWasSent}
               />
             </div>
           </form>
