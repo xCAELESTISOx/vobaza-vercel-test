@@ -157,4 +157,9 @@ export const api = {
     await setTokenWithGuest();
     return axios.post(`/v1/checkout`, data);
   },
+  // One Click Order
+  async makeOneClickOrder(data : { phone : string, name?: string }) {
+    setTokenWithGuest();
+    await axios.post('/v1/callback', data)
+  }
 };

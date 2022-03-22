@@ -9,10 +9,11 @@ import { Title } from '@nebo-team/vobaza.ui.title';
 import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone';
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
 import { Button } from '@nebo-team/vobaza.ui.button';
+import { api } from '../../../assets/api';
 
 interface PhoneCall {
-  name: string;
   phone: string;
+  name?: string;
 }
 
 const initialValues = {
@@ -34,8 +35,16 @@ type Props = {
 const PhoneCallModal: FC<Props> = ({ isActive, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const makePhoneCallRequest = () => {
-    // TODO api
+  const makePhoneCallRequest = async () => {
+    setIsLoading(true)
+    try {
+      await api.makeOneClickOrder(values)
+      onClose()
+      resetForm()
+    } catch(e) {
+      console.log(e)
+    }
+    setIsLoading(false)
   };
 
   const {
@@ -45,7 +54,7 @@ const PhoneCallModal: FC<Props> = ({ isActive, onClose }) => {
     handleBlur,
     errors,
     handleSubmit,
-    setErrors,
+    resetForm
   } = useFormik<PhoneCall>({
     initialValues,
     validationSchema,
@@ -96,6 +105,7 @@ const PhoneCallModal: FC<Props> = ({ isActive, onClose }) => {
                   size="big"
                   isFullScreen={true}
                   className={styles.inlineModalButton}
+                  disabled={isLoading}
                 />
               </form>
             </div>
