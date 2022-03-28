@@ -48,7 +48,7 @@ interface Props {
 }
 
 // TODO 40
-const limit = 5;
+const limit = 40;
 
 export default function Catalog({
   category,
