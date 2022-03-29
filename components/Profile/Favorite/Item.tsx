@@ -12,6 +12,7 @@ import { Image as IImage } from '../../../src/models/IImage';
 
 import { Button } from '@nebo-team/vobaza.ui.button';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
+import PlaceholderImage from 'assets/images/placeholder_small.png'
 
 export type FavoriteGood = {
   id: number;
@@ -61,7 +62,7 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
               alt={good.name}
             />
           ) : (
-            <Icon name="ImagePlaceholder" />
+            <Image src={PlaceholderImage} objectFit="contain" unoptimized />
           )}
         </a>
       </Link>

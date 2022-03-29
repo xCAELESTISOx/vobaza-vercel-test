@@ -16,6 +16,8 @@ import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
 import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select';
 import { InputRadio } from '@nebo-team/vobaza.ui.inputs.input-radio';
 import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox';
+import PlaceholderImage from 'assets/images/placeholder_small.png'
+
 
 type Props = {
   goods: ICartGood[];
@@ -404,7 +406,8 @@ const OrderDelivery: FC<Props> = ({
                   alt={good.product.name}
                 />
               ) : (
-                <Icon name="ImagePlaceholder" />
+                <Image src={PlaceholderImage} objectFit="contain" unoptimized alt={good.product.name} />
+
               )}
             </div>
           ))}

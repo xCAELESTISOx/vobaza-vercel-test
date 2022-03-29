@@ -11,6 +11,7 @@ import styles from './styles.module.scss';
 
 import { getImageVariantByFieldname } from '../../../assets/utils/images';
 import { LightboxViewer } from './LightboxViewer';
+import PlaceholderImage from 'assets/images/placeholder_small.png'
 
 const thumbsBreakpoints = {
   1300: { slidesPerView: 7 },
@@ -38,7 +39,7 @@ const getImagesUrlsFromVariant = (images, fieldname: string) => {
 const renderEmptyPlaceholder = () => {
   return (
     <SwiperSlide>
-      <Icon className={styles.slideImage} name="ImagePlaceholder" />
+      <Image className={styles.slideImage} src={PlaceholderImage} objectFit="contain" unoptimized />
     </SwiperSlide>
   );
 };

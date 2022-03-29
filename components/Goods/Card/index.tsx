@@ -131,7 +131,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
                       alt={good.name}
                     />
                   ) : (
-                    <Icon name="ImagePlaceholder" />
+                    <Image src={PlaceholderImage} objectFit="contain" unoptimized />
                   )}
                 </div>
               </a>

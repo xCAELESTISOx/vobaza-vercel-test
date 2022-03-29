@@ -8,6 +8,7 @@ import { Image as IImage } from '../../../src/models/IImage';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import ItemCounter from '../../UI/ItemCounter';
+import PlaceholderImage from 'assets/images/placeholder_small.png'
 
 export type ICartGood = {
   product: {
@@ -77,7 +78,7 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
                 alt={good.product.name}
               />
             ) : (
-              <Icon name="ImagePlaceholder" />
+              <Image src={PlaceholderImage} objectFit="contain" alt={good.product.name} unoptimized />
             )}
           </a>
         </Link>

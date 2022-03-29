@@ -10,7 +10,9 @@ import ModalLayout from '../../../../src/hoc/withModal';
 import { Button } from '@nebo-team/vobaza.ui.button';
 import { Title } from '@nebo-team/vobaza.ui.title';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
+
 import CartItemChangeModal from '../../../Cart/Modal/CartItemChangeModal';
+import PlaceholderImage from 'assets/images/placeholder.png';
 
 const CartModal: FC = () => {
   const { state, dispatch } = useGoods();
@@ -56,7 +58,12 @@ const CartModal: FC = () => {
                     />
                   )
                 ) : (
-                  <Icon name="ImagePlaceholder" />
+                  <Image
+                    src={PlaceholderImage}
+                    objectFit="contain"
+                    alt=""
+                    unoptimized
+                  />
                 )}
               </div>
               <div className={styles.favoriteModalItemBlock}>

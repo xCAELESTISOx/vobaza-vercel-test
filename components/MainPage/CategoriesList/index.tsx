@@ -6,7 +6,7 @@ import { ICategory } from '../../../src/models/ICategory';
 
 import styles from './styles.module.scss';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import PlaceholderImage from 'assets/images/placeholder_small.png'
 
 const getHref = (category: ICategory) => {
   let href = '/';
@@ -48,7 +48,7 @@ const CategoriesList: FC<Props> = ({ categories }) => {
                       alt={category.name}
                     />
                   ) : (
-                    <Icon name="ImagePlaceholder" />
+                    <Image src={PlaceholderImage} objectFit="contain" unoptimized />
                   )}
                 </div>
                 <div className={styles.categoryTitle}>{category.name}</div>
