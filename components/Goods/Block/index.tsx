@@ -51,7 +51,12 @@ const GoodsBlock: FC<Props> = ({ filters, goods, meta }) => {
             </Toggle>
           </div>
           <div className={styles.filtersBlock}>
-            <GoodsFilters filters={filters} />
+            <GoodsFilters
+              filters={filters.filter(
+                // Передает только фильтры, в которых min меньше max
+                ({ meta }: IFilter) => meta.min < meta.max
+              )}
+            />
           </div>
         </>
       )}
