@@ -6,6 +6,7 @@ import styles from './styles.module.scss';
 import { ICategory } from '../../../src/models/ICategory';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
+import PlaceholderImage from 'assets/images/placeholder_small.png'
 
 type Props = {
   list: ICategory[];
@@ -45,7 +46,7 @@ const CatalogList: FC<Props> = ({ list }) => {
                   alt={category.name}
                 />
               ) : (
-                <Icon name="ImagePlaceholder" />
+                <Image src={PlaceholderImage} objectFit="contain" alt={category.name} unoptimized />
               )}
             </div>
             <div className={styles.categoryTitle}>{category.name}</div>

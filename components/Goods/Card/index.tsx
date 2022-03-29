@@ -11,6 +11,7 @@ import { useFavorite } from '../../../src/hooks/useFavorite';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import { Button } from '@nebo-team/vobaza.ui.button';
 import { useCart } from '../../../src/hooks/useCart';
+import PlaceholderImage from 'assets/images/placeholder.png'
 
 type Props = {
   good?: IGood;
@@ -103,7 +104,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
                     alt={good.name}
                   />
                 ) : (
-                  <Icon name="ImagePlaceholder" />
+                  <Image src={PlaceholderImage} objectFit="contain" alt={good.name} unoptimized />
                 )}
               </a>
             </Link>
