@@ -65,6 +65,7 @@ export const api = {
     setTokenWithGuest();
     return axios.get('/v1/me');
   },
+
   subscribeMailing(data: { email: string }) {
     return axios.post('/v1/subscriptions', data);
   },
@@ -165,9 +166,6 @@ export const api = {
     productId: number,
     data: { name: string; phone: string; email?: string }
   ) {
-    return axios.post(
-      `https://api.vobaza.dev.immelman.ru/v1/products/${productId}/oneClickOrder`,
-      data
-    );
+    return axios.post(`/v1/products/${productId}/oneClickOrder`, data);
   },
 };
