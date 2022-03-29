@@ -47,7 +47,6 @@ interface Props {
   breadcrumbs: BreadcrumbType[];
 }
 
-// TODO 40
 const limit = 40;
 
 export default function Catalog({
@@ -136,7 +135,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     goods = normalizeGoods(goodsRes.data.data);
     meta = goodsRes.data.meta;
     category = categoryRes.data.data;
-    filters = filtersRes.data.data;
+    filters = filtersRes.data.data.filter(
+      ({ meta }: IFilter) => meta.min < meta.max
+    );
 
     if (category.ancestors && category.ancestors.length > 0) {
       category.ancestors.forEach((ancestor) => {
