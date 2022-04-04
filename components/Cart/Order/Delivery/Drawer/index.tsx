@@ -64,7 +64,7 @@ const OrderDeliveryDrawer: FC<Props> = ({
     >
       <div className={styles.deliveryDrawerCards}>
         {withVariants &&
-          tmpVariants.map((variant) => (
+          tmpVariants.map((variant: any) => (
             <div
               key={variant.tag}
               className={`${styles.deliveryDrawerCard} ${

@@ -157,6 +157,18 @@ export const api = {
     await setTokenWithGuest();
     return axios.post(`/v1/checkout`, data);
   },
+  async getOrders() {
+    await setToken();
+    return axios.get(`/customer/v1/orders`);
+  },
+  async getLastOrder() {
+    await setToken();
+    return axios.get(`/customer/v1/orders`, { params: { limit: 1 } });
+  },
+  async getOrder(id) {
+    await setToken();
+    return axios.get(`/customer/v1/orders/${id}`);
+  },
   // Callback order
   async makeOneClickOrder(data: { phone: string; name?: string }) {
     setTokenWithGuest();

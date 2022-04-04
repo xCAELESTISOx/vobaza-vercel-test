@@ -1,3 +1,5 @@
+import type { Image } from '../../src/models/IImage';
+
 export interface IOrderDelivery {
   name: string,
   price: number,
@@ -13,6 +15,12 @@ export enum IOrderDeliveryType {
   normal = "NORMAL",
   express = "EXPRESS"
 }
+
+export const orderDeliveryTypeDictionary = {
+  [IOrderDeliveryType.none]: 'Оформить заказ с менеджером',
+  [IOrderDeliveryType.normal]: 'Доставка',
+  [IOrderDeliveryType.express]: 'Экспресс-доставка ',
+};
 export interface IOrderAddress {
   address: string,
   flat?: string,
@@ -22,17 +30,55 @@ export interface IOrderAddress {
   elevator?: boolean,
 }
 
+export interface IOrderCustomer {
+  name: string,
+  surname?: string,
+  phone: string,
+  email?: string,
+}
+
+export interface IOrderDelivery {
+  type: IOrderDeliveryType,
+  date?: string,
+  time_interval?: string,
+  address: IOrderAddress,
+  status?: 'NONE'
+}
+
+
+
 export interface IOrder {
-  customer: {
+  customer: IOrderCustomer;
+  delivery: IOrderDelivery;
+}
+export interface IOrderItem {
+  id: number | string,
+  number: string,
+  order_date: string,
+  price: number,
+  status: 'NEW',
+  products_images: Image[],
+  delivery: IOrderDelivery,
+}
+export interface IOrderItemFull {
+  id: number | string,
+  number: string,
+  order_date: string,
+  price: number,
+  status: 'NEW',
+  customer: IOrderCustomer,
+  payment: {
+    status: 'NOT_PAID',
+    type: 'ON_DELIVERY',
+  }
+  delivery: IOrderDelivery,
+  products: {
     name: string,
-    surname?: string,
-    phone: string,
-    email?: string,
-  };
-  delivery: {
-    type: IOrderDeliveryType,
-    date?: string,
-    time_interval?: string,
-    address: IOrderAddress,
-  };
+    sku: string,
+    quantity: number,
+    item_price: number,
+    item_list_price: number,
+    price: number,
+    image: Image,
+  }[]
 }

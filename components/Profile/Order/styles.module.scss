@@ -199,8 +199,14 @@
 .orderItemImage {
   width: 93px;
   height: 93px;
-  background-color: #b3b3b3;
   border-radius: 8px;
+
+  img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+    border-radius: 8px;
+  }
 
   @media screen and (max-width: 767px) {
     width: 33%;
@@ -269,6 +275,7 @@
 
 //Delivery
 .orderDelivery {
+  display: flex;
   margin-top: 24px;
   margin-left: -25px;
   border-top: 1px solid #e5e5e5;
@@ -276,8 +283,16 @@
   width: calc(100% + 50px);
   padding: 24px 24px 0;
 
+  > div {
+    flex: 1;
+
+    > * + * {
+      margin-top: 8px;
+    }
+  }
+
   > * + * {
-    margin-top: 8px;
+    margin-left: 8px;
   }
 }
 .orderDeliveryTitle {

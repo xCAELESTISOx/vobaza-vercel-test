@@ -1,44 +1,19 @@
+import { GetServerSideProps } from 'next';
+
 import styles from '../../../styles/Profile.module.scss';
+import { api } from '../../../assets/api';
+import checkAuth from '../../../assets/api/auth';
+import { IOrderItem } from '../../../src/models/IOrder';
 
 import ProfileSidebar from '../../../components/Profile/Sidebar';
 import ProfileEmptyField from '../../../components/Profile/EmptyField';
 import ProfileOrderItem from '../../../components/Profile/Order/Item';
 
-const tmpItems = [
-  {
-    id: '000005518',
-    date: 'от 13 января 2022 ',
-    price: ' 99 680',
-    status: 'не оплачен',
-    delivery: [
-      {
-        title: 'Доставка ВоБаза ',
-        status: 'открыт',
-        items: [{}, {}],
-      },
-      {
-        title: 'Доставка ВоБаза ',
-        status: 'открыт',
-        items: [{}],
-      },
-    ],
-  },
-  {
-    id: '000003993',
-    date: 'от 23 ноября 2021',
-    price: '51 990',
-    status: 'не оплачен',
-    delivery: [
-      {
-        title: 'Доставка ВоБаза ',
-        status: 'аннулирован',
-        items: [{}],
-      },
-    ],
-  },
-];
+type Props = {
+  orders: IOrderItem[];
+};
 
-export default function ProfileOrders() {
+export default function ProfileOrders({ orders }) {
   return (
     <div>
       <div className="container">
@@ -51,10 +26,10 @@ export default function ProfileOrders() {
             <div className={styles.profileContentBlock}>
               <h2 className={styles.profileSubtitle}>Мои заказы</h2>
 
-              {tmpItems && tmpItems.length > 0 ? (
+              {orders && orders.length > 0 ? (
                 <div>
-                  {tmpItems.map((item) => (
-                    <ProfileOrderItem key={item.id} item={item} />
+                  {orders.map((order) => (
+                    <ProfileOrderItem key={order.id} order={order} />
                   ))}
                 </div>
               ) : (
@@ -67,3 +42,35 @@ export default function ProfileOrders() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  req,
+}) => {
+  let orders = [];
+
+  try {
+    await checkAuth(req);
+    const ordersRes = await api.getOrders();
+
+    orders = ordersRes.data.data.map((order: IOrderItem) => {
+      return {
+        ...order,
+        price: order.price / 100,
+      };
+    });
+  } catch (error) {
+    console.log(error);
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      orders,
+    },
+  };
+};

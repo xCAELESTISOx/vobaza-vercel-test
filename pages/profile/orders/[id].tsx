@@ -1,28 +1,18 @@
+import { GetServerSideProps } from 'next';
+
 import styles from '../../../styles/Profile.module.scss';
+import { api } from '../../../assets/api';
+import checkAuth from '../../../assets/api/auth';
+import { IOrderItemFull } from '../../../src/models/IOrder';
 
 import ProfileSidebar from '../../../components/Profile/Sidebar';
 import ProfileOrder from '../../../components/Profile/Order';
 
-const tmpItem = {
-  id: '000005518',
-  date: 'от 13 января 2022 ',
-  price: ' 99 680',
-  status: 'не оплачен',
-  delivery: [
-    {
-      title: 'Доставка ВоБаза ',
-      status: 'открыт',
-      items: [{}, {}],
-    },
-    {
-      title: 'Доставка ВоБаза ',
-      status: 'открыт',
-      items: [{}],
-    },
-  ],
+type Props = {
+  order: IOrderItemFull;
 };
 
-export default function ProfileOrderInfo() {
+export default function ProfileOrderInfo({ order }) {
   return (
     <div>
       <div className="container">
@@ -33,7 +23,7 @@ export default function ProfileOrderInfo() {
               <ProfileSidebar />
             </div>
             <div className={styles.profileContentBlock}>
-              <ProfileOrder item={tmpItem} />
+              <ProfileOrder order={order} />
             </div>
           </div>
         </div>
@@ -41,3 +31,30 @@ export default function ProfileOrderInfo() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  req,
+  query,
+}) => {
+  let order = null;
+
+  try {
+    await checkAuth(req);
+    const orderRes = await api.getOrder(query.id);
+
+    order = { ...orderRes.data.data, price: orderRes.data.data.price / 100 };
+  } catch (error: any) {
+    return {
+      redirect: {
+        destination: '/profile/orders',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      order,
+    },
+  };
+};

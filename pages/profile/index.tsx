@@ -4,31 +4,19 @@ import { useRouter } from 'next/router';
 import styles from '../../styles/Profile.module.scss';
 import { api } from '../../assets/api';
 import checkAuth from '../../assets/api/auth';
+import { IOrderItem } from '../../src/models/IOrder';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import ProfileSidebar from '../../components/Profile/Sidebar';
 import ProfileData, { IProfile } from '../../components/Profile/Data';
-import ProfileOrderLast from '../../components/Profile/Order/Last';
-
-const tmpItem = {
-  id: '000005518',
-  date: 'от 13 января 2022 ',
-  price: ' 99 680',
-  status: 'не оплачен',
-  delivery: [
-    {
-      title: 'Доставка ВоБаза ',
-      status: 'открыт',
-      items: [{}],
-    },
-  ],
-};
+import ProfileOrderItem from '../../components/Profile/Order/Item';
 
 interface Props {
   user: IProfile;
+  lastOrder?: IOrderItem;
 }
 
-export default function Profile({ user }) {
+export default function Profile({ user, lastOrder }) {
   const router = useRouter();
   const goBack = () => {
     router.back();
@@ -53,7 +41,9 @@ export default function Profile({ user }) {
                 Здравствуйте, {user.name}!
               </h2>
               <ProfileData user={user} />
-              <ProfileOrderLast item={tmpItem} />
+              {lastOrder && (
+                <ProfileOrderItem order={lastOrder} isLast={true} />
+              )}
             </div>
           </div>
         </div>
@@ -66,12 +56,20 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   req,
 }) => {
   let user = null;
+  let lastOrder = null;
 
   try {
     await checkAuth(req);
-    const [propfileRes] = await Promise.all([api.getProfile()]);
+    const [propfileRes, lastOrderRes] = await Promise.all([
+      api.getProfile(),
+      api.getLastOrder(),
+    ]);
 
     user = propfileRes.data.data;
+    lastOrder = {
+      ...lastOrderRes.data.data[0],
+      price: lastOrderRes.data.data[0].price / 100,
+    };
   } catch (error: any) {
     return {
       redirect: {
@@ -84,6 +82,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   return {
     props: {
       user,
+      lastOrder,
     },
   };
 };
