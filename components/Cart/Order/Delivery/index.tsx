@@ -6,6 +6,8 @@ import styles from './styles.module.scss';
 import { num2str } from '../../../../assets/utils';
 import { ICartGood } from '../../ListItem';
 import { IOrderAddress, IOrderDelivery } from '../../../../src/models/IOrder';
+import PlaceholderImage from 'assets/images/placeholder_small.png';
+import { getImageVariantProps } from 'assets/utils/images';
 
 import Toggle from '../../../UI/Toggle';
 import ItemCounter from '../../../UI/ItemCounter';
@@ -16,8 +18,6 @@ import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
 import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select';
 import { InputRadio } from '@nebo-team/vobaza.ui.inputs.input-radio';
 import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox';
-import PlaceholderImage from 'assets/images/placeholder_small.png'
-
 
 type Props = {
   goods: ICartGood[];
@@ -399,15 +399,20 @@ const OrderDelivery: FC<Props> = ({
             <div key={good.product.id} className={styles.orderDeliveryItem}>
               {good.product.main_image ? (
                 <Image
-                  src={good.product.main_image.variants.small.url}
-                  width={good.product.main_image.variants.small.meta.width}
-                  height={good.product.main_image.variants.small.meta.height}
+                  {...getImageVariantProps(
+                    good.product.main_image.variants,
+                    'small'
+                  )}
                   objectFit="contain"
                   alt={good.product.name}
                 />
               ) : (
-                <Image src={PlaceholderImage} objectFit="contain" unoptimized alt={good.product.name} />
-
+                <Image
+                  src={PlaceholderImage}
+                  objectFit="contain"
+                  alt={good.product.name}
+                  unoptimized
+                />
               )}
             </div>
           ))}

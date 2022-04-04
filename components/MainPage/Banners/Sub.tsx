@@ -44,6 +44,7 @@ const SubBanner: FC<Props> = ({ slides }) => {
                   alt="Banner"
                   layout="fill"
                   objectFit="cover"
+                  unoptimized
                 />
               )}
               <SubBannerContent
@@ -71,6 +72,7 @@ const SubBanner: FC<Props> = ({ slides }) => {
                       alt="Banner"
                       layout="fill"
                       objectFit="cover"
+                      unoptimized
                     />
                   )}
                   <SubBannerContent

@@ -1,11 +1,14 @@
 import React, { FC, useEffect } from 'react';
 import { useFormik } from 'formik';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import * as yup from 'yup';
 
+import { api } from 'assets/api';
+import { getImageVariantProps } from 'assets/utils/images';
+import PlaceholderImage from 'assets/images/placeholder.png';
 import { useGoods } from 'src/context/goods';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
 import { Title } from '@nebo-team/vobaza.ui.title';
 import { Button } from '@nebo-team/vobaza.ui.button';
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
@@ -13,8 +16,6 @@ import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone';
 import ModalLayout from 'src/hoc/withModal';
 
 import styles from './styles.module.scss';
-import { api } from 'assets/api';
-import { useRouter } from 'next/router';
 
 interface IOneClickOrder {
   name: string;
@@ -35,7 +36,7 @@ const validationSchema = yup.object({
 });
 
 const OneClick: FC = () => {
-  const router = useRouter()
+  const router = useRouter();
   const { state, dispatch } = useGoods();
   const { oneClickGood: product } = state;
 
@@ -52,14 +53,20 @@ const OneClick: FC = () => {
     dispatch({ type: 'closeOneClickModal' });
   };
 
-  const { values, errors, validateField, setFieldValue, handleSubmit, resetForm } =
-    useFormik<IOneClickOrder>({
-      initialValues,
-      validationSchema,
-      validateOnBlur: false,
-      validateOnChange: false,
-      onSubmit: createOrder,
-    });
+  const {
+    values,
+    errors,
+    validateField,
+    setFieldValue,
+    handleSubmit,
+    resetForm,
+  } = useFormik<IOneClickOrder>({
+    initialValues,
+    validationSchema,
+    validateOnBlur: false,
+    validateOnChange: false,
+    onSubmit: createOrder,
+  });
 
   const onClose = () => {
     dispatch({ type: 'closeOneClickModal' });
@@ -81,18 +88,20 @@ const OneClick: FC = () => {
     resetForm();
   }, [product]);
 
-  // Чтобы окно не оставалось открытым при открытии другой ссылки, 
+  // Чтобы окно не оставалось открытым при открытии другой ссылки,
   // когда открыто окно "Заказать в один клик"
   useEffect(() => {
     dispatch({ type: 'closeOneClickModal' });
-  }, [router.asPath])
-  
+  }, [router.asPath]);
 
   if (product)
     return (
       <ModalLayout onClose={onClose} isWide>
         <div className={styles.contentWrapper}>
-          <Title element="h1" className={`${styles.inlineModalTitle} ${styles.wide}`}>
+          <Title
+            element="h1"
+            className={`${styles.inlineModalTitle} ${styles.wide}`}
+          >
             Заказать в 1 клик
           </Title>
           <div className={styles.modalItem}>
@@ -102,23 +111,30 @@ const OneClick: FC = () => {
                   {product.images || product.main_image ? (
                     product.images ? (
                       <Image
-                        src={product.images[0].variants.medium.url}
-                        width={product.images[0].variants.medium.meta.width}
-                        height={product.images[0].variants.medium.meta.height}
+                        {...getImageVariantProps(
+                          product.images[0].variants,
+                          'medium'
+                        )}
                         objectFit="contain"
                         alt={product.name}
                       />
                     ) : (
                       <Image
-                        src={product.main_image.variants.medium.url}
-                        width={product.main_image.variants.medium.meta.width}
-                        height={product.main_image.variants.medium.meta.height}
+                        {...getImageVariantProps(
+                          product.main_image.variants,
+                          'medium'
+                        )}
                         objectFit="contain"
                         alt={product.name}
                       />
                     )
                   ) : (
-                    <Icon name="ImagePlaceholder" />
+                    <Image
+                      src={PlaceholderImage}
+                      objectFit="contain"
+                      alt=""
+                      unoptimized
+                    />
                   )}
                 </div>
               </div>
@@ -131,7 +147,8 @@ const OneClick: FC = () => {
                   {Intl.NumberFormat('ru-RU').format(product.price)}&nbsp;₽
                   {product.list_price && (
                     <div className={styles.productDiscountPrice}>
-                      {Intl.NumberFormat('ru-RU').format(product.list_price)}&nbsp;₽
+                      {Intl.NumberFormat('ru-RU').format(product.list_price)}
+                      &nbsp;₽
                     </div>
                   )}
                 </div>
@@ -176,12 +193,17 @@ const OneClick: FC = () => {
               <div className={styles.formItemWrapper}>
                 <div className={styles.contentFooter}>
                   <div className={styles.buttonWrapper}>
-                    <Button size="big" text="Заказать" type="submit" isFullScreen />
+                    <Button
+                      size="big"
+                      text="Заказать"
+                      type="submit"
+                      isFullScreen
+                    />
                   </div>
                   <div className={styles.textWrapper}>
-                      Нажимая «Заказать», вы соглашаетесь с договором оферты и подтверждаете своё
-                      согласие на обработку персональных данных
-                    </div>
+                    Нажимая «Заказать», вы соглашаетесь с договором оферты и
+                    подтверждаете своё согласие на обработку персональных данных
+                  </div>
                 </div>
               </div>
             </form>

@@ -4,6 +4,9 @@ import Image from 'next/image';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 
+import { toNumberWithSpaces } from '../../../../assets/utils/formatters';
+import PlaceholderImage from 'assets/images/placeholder.png';
+
 import { Button } from '@nebo-team/vobaza.ui.button';
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
 import Modal from '../../../../src/hoc/withModal';
@@ -11,10 +14,6 @@ import { RatingStars } from '../../../UI/RatingStars';
 import { UploadPhotos } from './UploadPhotos';
 
 import styles from './styles.module.scss';
-
-import { toNumberWithSpaces } from '../../../../assets/utils/formatters';
-import PlaceholderImage from 'assets/images/placeholder.png'
-
 
 interface CreateReviewModal {
   active: boolean;
@@ -113,8 +112,12 @@ const CreateReviewModal: FC<CreateReviewModal> = ({
                   {productImageURL ? (
                     <img src={productImageURL || ''} alt="" />
                   ) : (
-                    <Image src={PlaceholderImage} objectFit="contain" unoptimized alt="" />
-
+                    <Image
+                      src={PlaceholderImage}
+                      objectFit="contain"
+                      unoptimized
+                      alt=""
+                    />
                   )}
                 </div>
               </div>

@@ -3,10 +3,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { ICategory } from '../../../src/models/ICategory';
+import PlaceholderImage from 'assets/images/placeholder_small.png';
+import { getImageVariantProps } from 'assets/utils/images';
 
 import styles from './styles.module.scss';
-
-import PlaceholderImage from 'assets/images/placeholder_small.png'
 
 const getHref = (category: ICategory) => {
   let href = '/';
@@ -32,23 +32,20 @@ const CategoriesList: FC<Props> = ({ categories }) => {
                 <div className={styles.categoryImage}>
                   {category.image ? (
                     <Image
-                      src={
-                        category.image.variants.small?.url ||
-                        category.image.variants.original.url
-                      }
-                      width={
-                        category.image.variants.small?.meta.width ||
-                        category.image.variants.original.meta.width
-                      }
-                      height={
-                        category.image.variants.small?.meta.height ||
-                        category.image.variants.original.meta.width
-                      }
+                      {...getImageVariantProps(
+                        category.image.variants,
+                        'small'
+                      )}
                       objectFit="contain"
                       alt={category.name}
                     />
                   ) : (
-                    <Image src={PlaceholderImage} objectFit="contain" unoptimized />
+                    <Image
+                      src={PlaceholderImage}
+                      objectFit="contain"
+                      alt=""
+                      unoptimized
+                    />
                   )}
                 </div>
                 <div className={styles.categoryTitle}>{category.name}</div>

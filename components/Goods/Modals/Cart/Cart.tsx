@@ -6,13 +6,12 @@ import styles from './styles.module.scss';
 
 import { useGoods } from '../../../../src/context/goods';
 import ModalLayout from '../../../../src/hoc/withModal';
+import PlaceholderImage from 'assets/images/placeholder.png';
+import { getImageVariantProps } from 'assets/utils/images';
 
 import { Button } from '@nebo-team/vobaza.ui.button';
 import { Title } from '@nebo-team/vobaza.ui.title';
-import { Icon } from '@nebo-team/vobaza.ui.icon';
-
 import CartItemChangeModal from '../../../Cart/Modal/CartItemChangeModal';
-import PlaceholderImage from 'assets/images/placeholder.png';
 
 const CartModal: FC = () => {
   const { state, dispatch } = useGoods();
@@ -42,17 +41,19 @@ const CartModal: FC = () => {
                 {cartGood.images || cartGood.main_image ? (
                   cartGood.images ? (
                     <Image
-                      src={cartGood.images[0].variants.medium.url}
-                      width={cartGood.images[0].variants.medium.meta.width}
-                      height={cartGood.images[0].variants.medium.meta.height}
+                      {...getImageVariantProps(
+                        cartGood.images[0].variants,
+                        'medium'
+                      )}
                       objectFit="contain"
                       alt={cartGood.name}
                     />
                   ) : (
                     <Image
-                      src={cartGood.main_image.variants.medium.url}
-                      width={cartGood.main_image.variants.medium.meta.width}
-                      height={cartGood.main_image.variants.medium.meta.height}
+                      {...getImageVariantProps(
+                        cartGood.main_image.variants,
+                        'medium'
+                      )}
                       objectFit="contain"
                       alt={cartGood.name}
                     />

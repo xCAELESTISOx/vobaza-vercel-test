@@ -4,9 +4,10 @@ import Link from 'next/link';
 
 import styles from './styles.module.scss';
 import { ICategory } from '../../../src/models/ICategory';
+import PlaceholderImage from 'assets/images/placeholder_small.png';
+import { getImageVariantProps } from 'assets/utils/images';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
-import PlaceholderImage from 'assets/images/placeholder_small.png'
 
 type Props = {
   list: ICategory[];
@@ -30,23 +31,17 @@ const CatalogList: FC<Props> = ({ list }) => {
             <div className={styles.categoryImage}>
               {category.image ? (
                 <Image
-                  src={
-                    category.image.variants.small?.url ||
-                    category.image.variants.original.url
-                  }
-                  width={
-                    category.image.variants.small?.meta.width ||
-                    category.image.variants.original.meta.width
-                  }
-                  height={
-                    category.image.variants.small?.meta.height ||
-                    category.image.variants.original.meta.width
-                  }
+                  {...getImageVariantProps(category.image.variants, 'small')}
                   objectFit="contain"
                   alt={category.name}
                 />
               ) : (
-                <Image src={PlaceholderImage} objectFit="contain" alt={category.name} unoptimized />
+                <Image
+                  src={PlaceholderImage}
+                  objectFit="contain"
+                  alt={category.name}
+                  unoptimized
+                />
               )}
             </div>
             <div className={styles.categoryTitle}>{category.name}</div>

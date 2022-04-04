@@ -5,10 +5,11 @@ import Image from 'next/image';
 import styles from './styles.module.scss';
 import { toNumberWithSpaces } from '../../../assets/utils/formatters';
 import { Image as IImage } from '../../../src/models/IImage';
+import { getImageVariantProps } from 'assets/utils/images';
+import PlaceholderImage from 'assets/images/placeholder_small.png';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import ItemCounter from '../../UI/ItemCounter';
-import PlaceholderImage from 'assets/images/placeholder_small.png'
 
 export type ICartGood = {
   product: {
@@ -71,14 +72,20 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
           <a>
             {good.product.main_image ? (
               <Image
-                src={good.product.main_image.variants.small.url}
-                width={good.product.main_image.variants.small.meta.width}
-                height={good.product.main_image.variants.small.meta.height}
+                {...getImageVariantProps(
+                  good.product.main_image.variants,
+                  'small'
+                )}
                 objectFit="contain"
                 alt={good.product.name}
               />
             ) : (
-              <Image src={PlaceholderImage} objectFit="contain" alt={good.product.name} unoptimized />
+              <Image
+                src={PlaceholderImage}
+                objectFit="contain"
+                alt={good.product.name}
+                unoptimized
+              />
             )}
           </a>
         </Link>

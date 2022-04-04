@@ -25,6 +25,7 @@ const Collections: FC<Props> = ({ collections }) => {
                       layout="fill"
                       objectFit="cover"
                       alt={collection.title}
+                      unoptimized
                     />
                   </div>
                   <div
@@ -35,6 +36,7 @@ const Collections: FC<Props> = ({ collections }) => {
                       layout="fill"
                       objectFit="cover"
                       alt={collection.title}
+                      unoptimized
                     />
                   </div>
                   <div className={styles.collectionTextBlock}>

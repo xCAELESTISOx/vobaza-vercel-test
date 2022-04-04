@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useLightbox } from 'simple-react-lightbox';
-
 import { Navigation, Thumbs, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import { getImageVariantByFieldname } from '../../../assets/utils/images';
+import PlaceholderImage from 'assets/images/placeholder_small.png';
+
+import { LightboxViewer } from './LightboxViewer';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 import styles from './styles.module.scss';
-
-import { getImageVariantByFieldname } from '../../../assets/utils/images';
-import { LightboxViewer } from './LightboxViewer';
-import PlaceholderImage from 'assets/images/placeholder_small.png'
 
 const thumbsBreakpoints = {
   1300: { slidesPerView: 7 },
@@ -39,7 +38,13 @@ const getImagesUrlsFromVariant = (images, fieldname: string) => {
 const renderEmptyPlaceholder = () => {
   return (
     <SwiperSlide>
-      <Image className={styles.slideImage} src={PlaceholderImage} objectFit="contain" unoptimized />
+      <Image
+        className={styles.slideImage}
+        src={PlaceholderImage}
+        objectFit="contain"
+        alt=""
+        unoptimized
+      />
     </SwiperSlide>
   );
 };
@@ -79,6 +84,7 @@ const ProductImages = ({ images }) => {
             height={550}
             objectFit="contain"
             alt=""
+            unoptimized
           />
         </div>
       </SwiperSlide>
@@ -95,6 +101,7 @@ const ProductImages = ({ images }) => {
             height={img.meta.height}
             objectFit="contain"
             alt=""
+            unoptimized
           />
         </div>
       </SwiperSlide>

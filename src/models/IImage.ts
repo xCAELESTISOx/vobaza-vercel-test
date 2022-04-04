@@ -5,12 +5,13 @@ interface ImageVariant {
     height: number;
   };
 }
+interface ImageVariants {
+  [key: string]: ImageVariant;
+}
 
 interface Image {
   id: number;
-  variants: {
-    [key: string]: ImageVariant;
-  };
+  variants: ImageVariants;
 }
 
-export type { ImageVariant, Image };
+export type { ImageVariant, ImageVariants, Image };

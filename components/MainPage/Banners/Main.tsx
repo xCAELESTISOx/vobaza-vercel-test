@@ -62,6 +62,7 @@ const MainBanner: FC<Props> = ({ slides }) => {
                     src={slide.desktop_image}
                     layout="fill"
                     alt="Banner"
+                    unoptimized
                   />
                 )}
               </a>
@@ -75,6 +76,7 @@ const MainBanner: FC<Props> = ({ slides }) => {
                     alt="Banner"
                     layout="fill"
                     objectFit="cover"
+                    unoptimized
                   />
                 )}
               </a>

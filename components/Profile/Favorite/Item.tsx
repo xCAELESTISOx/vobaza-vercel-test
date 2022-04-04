@@ -9,10 +9,11 @@ import { api } from '../../../assets/api';
 import { useGoods } from '../../../src/context/goods';
 import { useCart } from '../../../src/hooks/useCart';
 import { Image as IImage } from '../../../src/models/IImage';
+import PlaceholderImage from 'assets/images/placeholder_small.png';
+import { getImageVariantProps } from 'assets/utils/images';
 
 import { Button } from '@nebo-team/vobaza.ui.button';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
-import PlaceholderImage from 'assets/images/placeholder_small.png'
 
 export type FavoriteGood = {
   id: number;
@@ -55,14 +56,17 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
         <a className={styles.profileFavoriteItemImage}>
           {good.main_image ? (
             <Image
-              src={good.main_image.variants.small.url}
-              width={good.main_image.variants.small.meta.width}
-              height={good.main_image.variants.small.meta.height}
+              {...getImageVariantProps(good.main_image.variants, 'small')}
               objectFit="contain"
               alt={good.name}
             />
           ) : (
-            <Image src={PlaceholderImage} objectFit="contain" unoptimized />
+            <Image
+              src={PlaceholderImage}
+              objectFit="contain"
+              alt=""
+              unoptimized
+            />
           )}
         </a>
       </Link>

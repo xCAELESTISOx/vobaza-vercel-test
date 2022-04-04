@@ -2,16 +2,17 @@ import React, { FC, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { toNumberWithSpaces } from '../../../assets/utils/formatters';
-
-import styles from './styles.module.scss';
-import { IGood } from '../../../src/models/IGood';
 import { useFavorite } from '../../../src/hooks/useFavorite';
+import { toNumberWithSpaces } from '../../../assets/utils/formatters';
+import PlaceholderImage from 'assets/images/placeholder.png';
+import { getImageVariantProps } from 'assets/utils/images';
+
+import { IGood } from '../../../src/models/IGood';
+import styles from './styles.module.scss';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import { Button } from '@nebo-team/vobaza.ui.button';
 import { useCart } from '../../../src/hooks/useCart';
-import PlaceholderImage from 'assets/images/placeholder.png'
 
 type Props = {
   good?: IGood;
@@ -97,14 +98,17 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
               <a>
                 {good.images ? (
                   <Image
-                    src={good.images[0].variants.medium.url}
-                    width={good.images[0].variants.medium.meta.width}
-                    height={good.images[0].variants.medium.meta.height}
+                    {...getImageVariantProps(good.images[0].variants, 'medium')}
                     objectFit="contain"
                     alt={good.name}
                   />
                 ) : (
-                  <Image src={PlaceholderImage} objectFit="contain" alt={good.name} unoptimized />
+                  <Image
+                    src={PlaceholderImage}
+                    objectFit="contain"
+                    alt={good.name}
+                    unoptimized
+                  />
                 )}
               </a>
             </Link>
@@ -124,14 +128,20 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
                 <div className={styles.cardVariant}>
                   {good.images ? (
                     <Image
-                      src={good.images[0].variants.extra_small.url}
-                      width={good.images[0].variants.extra_small.meta.width}
-                      height={good.images[0].variants.extra_small.meta.height}
+                      {...getImageVariantProps(
+                        good.images[0].variants,
+                        'extra_small'
+                      )}
                       objectFit="contain"
                       alt={good.name}
                     />
                   ) : (
-                    <Image src={PlaceholderImage} objectFit="contain" unoptimized />
+                    <Image
+                      src={PlaceholderImage}
+                      objectFit="contain"
+                      alt=""
+                      unoptimized
+                    />
                   )}
                 </div>
               </a>
