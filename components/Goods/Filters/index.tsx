@@ -109,6 +109,9 @@ const GoodsFilters: FC<Props> = ({ filters }) => {
         let values = null;
         if (filter.type === 'NUMERIC_RANGE') {
           values = activeFilters[key].toString().split('%-%');
+          if (filter.value_type === 'PRICE') {
+            values = values.map((value) => value / 100);
+          }
         } else {
           if (typeof activeFilters[key] === 'string') {
             values = [activeFilters[key]];
