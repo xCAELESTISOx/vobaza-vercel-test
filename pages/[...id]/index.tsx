@@ -144,8 +144,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
         ? {
             ...filter,
             meta: {
-              min: filter.meta.min / 100,
-              max: filter.meta.max / 100,
+              min: Math.floor(filter.meta.min / 100),
+              max: Math.ceil(filter.meta.max / 100),
             },
           }
         : filter
