@@ -139,6 +139,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       ({ meta }: IFilter) => meta.min < meta.max
     );
 
+    filters = filters.map(filter => filter.value_type === "PRICE" ? {...filter, meta : {
+      min : filter.meta.min / 100,
+      max : filter.meta.max / 100
+    }} : filter)
+
     if (category.ancestors && category.ancestors.length > 0) {
       category.ancestors.forEach((ancestor) => {
         breadcrumbs.push({

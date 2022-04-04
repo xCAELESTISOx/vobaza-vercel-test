@@ -37,7 +37,9 @@ const GoodsFilters: FC<Props> = ({ filters }) => {
 
     query[filter.id] =
       filter.type === 'NUMERIC_RANGE'
-        ? `${filter.values[0]}%-%${filter.values[1]}`
+        ? filter.value_type === 'PRICE'
+          ? `${filter.values[0] * 100}%-%${filter.values[1] * 100}`
+          : `${filter.values[0]}%-%${filter.values[1]}`
         : filter.values;
 
     router.replace(
@@ -48,6 +50,7 @@ const GoodsFilters: FC<Props> = ({ filters }) => {
       { scroll: false }
     );
   };
+
   const removeFilter = (id: number, value?: string) => {
     const newFilters = { ...currentFilters };
 
@@ -113,10 +116,12 @@ const GoodsFilters: FC<Props> = ({ filters }) => {
             values = Array.from(activeFilters[key]);
           }
         }
+
         addFilter({
           id: filter.id,
           name: filter.name,
           type: filter.type,
+          value_type: filter.value_type,
           values,
         });
       });

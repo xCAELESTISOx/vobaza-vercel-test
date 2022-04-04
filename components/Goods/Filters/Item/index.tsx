@@ -35,6 +35,7 @@ const GoodsFilterItemNumeric: FC<Props> = ({
     addFilter({
       id: filter.id,
       name: filter.name,
+      value_type : filter.value_type,
       type: filter.type,
       values: values,
     });
