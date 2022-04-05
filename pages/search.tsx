@@ -2,7 +2,7 @@ import { GetServerSideProps } from 'next';
 
 import { api } from '../assets/api';
 import styles from '../styles/Catalog.module.scss';
-import { IGood } from '../src/models/IGood';
+import { IGoodCard } from '../src/models/IGood';
 import { num2str } from '../assets/utils';
 import normalizeGoods from '../assets/utils/normalizeGoods';
 
@@ -17,7 +17,7 @@ let breadcrumbs = [
 ];
 
 interface Props {
-  goods: IGood[];
+  goods: IGoodCard[];
   meta: {
     list: {
       count: number;
@@ -58,7 +58,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     const params = {
       limit,
       offset: page ? (page - 1) * limit : 0,
-      format: 'FULL_WITH_MAIN_ATTRIBUTES',
+      format: 'PUBLIC_LIST',
       'filter[text]': query.text,
     };
     const [goodsRes] = await Promise.all([api.getGoods(params)]);

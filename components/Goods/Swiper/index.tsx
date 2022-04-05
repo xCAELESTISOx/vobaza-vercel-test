@@ -3,13 +3,13 @@ import { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import styles from './styles.module.scss';
-import { IGood } from '../../../src/models/IGood';
+import { IGoodCard } from '../../../src/models/IGood';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import GoodsCard from '../Card';
 
 type Props = {
-  goods: IGood[];
+  goods: IGoodCard[];
 };
 const GoodsSwiper: FC<Props> = ({ goods }) => {
   const prevRef = useRef(null);

@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import styles from './styles.module.scss';
-import { IGood } from '../../../src/models/IGood';
+import { IGoodCard } from '../../../src/models/IGood';
 import { IFilter } from '../../../src/models/IFilter';
 
 import { Pagination } from '@nebo-team/vobaza.ui.pagination';
@@ -13,7 +13,7 @@ import CartModal from '../Modals/Cart/Cart';
 
 type Props = {
   filters?: IFilter[];
-  goods: IGood[];
+  goods: IGoodCard[];
   meta: {
     list: {
       count: number;
@@ -51,9 +51,7 @@ const GoodsBlock: FC<Props> = ({ filters, goods, meta }) => {
             </Toggle>
           </div>
           <div className={styles.filtersBlock}>
-            <GoodsFilters
-              filters={filters}
-            />
+            <GoodsFilters filters={filters} />
           </div>
         </>
       )}

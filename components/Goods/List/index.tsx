@@ -2,10 +2,10 @@ import React, { FC } from 'react';
 import GoodsCard from '../Card';
 
 import styles from './styles.module.scss';
-import { IGood } from '../../../src/models/IGood';
+import { IGoodCard } from '../../../src/models/IGood';
 
 type Props = {
-  goods: IGood[];
+  goods: IGoodCard[];
 };
 
 const GoodsList: FC<Props> = ({ goods }) => {

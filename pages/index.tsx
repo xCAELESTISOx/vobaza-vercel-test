@@ -5,7 +5,7 @@ import styles from '../styles/Home.module.scss';
 import normalizeGoods from '../assets/utils/normalizeGoods';
 import normalizeCollections from '../assets/utils/normalizeCollections';
 import type { Banner } from '../src/models/IBanner';
-import { IGood } from '../src/models/IGood';
+import { IGoodCard } from '../src/models/IGood';
 import { ICategory } from '../src/models/ICategory';
 import { ICollection } from '../src/models/ICollection';
 
@@ -22,8 +22,8 @@ interface Props {
     slider: Array<Banner>;
     miniature: Array<Banner>;
   };
-  hits: IGood[];
-  newGoods: IGood[];
+  hits: IGoodCard[];
+  newGoods: IGoodCard[];
   popularCategories: ICategory[];
   collections: ICollection[];
 }

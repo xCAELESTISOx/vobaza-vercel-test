@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { api } from '../../assets/api/index';
 import { useGoods } from '../context/goods';
 
-import { IGood } from '../models/IGood';
+import { IGood, IGoodCard } from '../models/IGood';
 
-export const useFavorite = (good: IGood) => {
+export const useFavorite = (good: IGood | IGoodCard) => {
   const [currentFavorite, setCurrentFavorite] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { state, dispatch } = useGoods();

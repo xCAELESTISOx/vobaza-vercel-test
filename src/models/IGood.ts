@@ -46,6 +46,33 @@ interface IAttribute {
   type: 'MAIN' | 'ADDITIONAL';
 }
 
+export interface IGoodMerchant {
+  id: number;
+  status: keyof typeof StatusTypes;
+  company_type: IDictionaryItem;
+  legal_name: string;
+  brand: string;
+  phone: string;
+  provider_type: keyof typeof ProviderTypes;
+};
+
+export interface IGoodCard {
+  id: number;
+  slug: string;
+  name: string;
+  sku: string;
+  price: number;
+  list_price?: number;
+  main_image?: Image;
+  merchant: IGoodMerchant;
+  labels?: IDictionaryItem[];
+  valuable_attributes?: {
+    attribute: IAttribute;
+    value: any;
+  }[];
+  is_available: boolean;
+}
+
 export interface IGood {
   id: number;
   barcode: string;
@@ -71,15 +98,7 @@ export interface IGood {
   main_category: IСategory;
   other_categories: IСategory[];
 
-  merchant: {
-    id: number;
-    status: keyof typeof StatusTypes;
-    company_type: IDictionaryItem;
-    legal_name: string;
-    brand: string;
-    phone: string;
-    provider_type: keyof typeof ProviderTypes;
-  };
+  merchant: IGoodMerchant;
   merchant_sku: string;
 
   warehouse: {

@@ -77,7 +77,7 @@ export const api = {
   getHits() {
     const params = {
       limit: 6,
-      format: 'FULL_WITH_MAIN_ATTRIBUTES',
+      format: 'PUBLIC_LIST',
       'filter[label]': 'HIT',
     };
     return axios.get('/v1/products/random', { params });
@@ -85,7 +85,7 @@ export const api = {
   getNewGoods() {
     const params = {
       limit: 8,
-      format: 'FULL_WITH_MAIN_ATTRIBUTES',
+      format: 'PUBLIC_LIST',
       'filter[label]': 'NEW',
     };
     return axios.get('/v1/products/random', { params });

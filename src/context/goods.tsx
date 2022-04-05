@@ -1,21 +1,21 @@
 import * as React from 'react';
-import { IGood } from '../models/IGood';
+import { IGood, IGoodCard } from '../models/IGood';
 import { FavoriteGood } from '../../components/Profile/Favorite/Item';
 
 type Action =
   | { type: 'setFavorites'; payload: number[] }
-  | { type: 'addFavorite'; payload: IGood }
+  | { type: 'addFavorite'; payload: IGood | IGoodCard }
   | { type: 'removeFavorite'; payload?: number }
   | { type: 'setCartSize'; payload: number }
   | { type: 'setCartError'; payload: boolean }
   | { type: 'changeCartSize'; payload: number }
   | {
       type: 'addCartGood';
-      payload: { good: IGood | FavoriteGood; quantity: number };
+      payload: { good: IGoodCard | FavoriteGood; quantity: number };
     }
   | { type: 'closeCartModal' }
-  | { type : 'setOneClickGood'; payload: IGood }
-  | { type : 'closeOneClickModal' }
+  | { type: 'setOneClickGood'; payload: IGood }
+  | { type: 'closeOneClickModal' };
 type Dispatch = (action: Action) => void;
 type State = {
   favoriteIds: number[];
@@ -74,14 +74,14 @@ function goodsReducer(state, action) {
     case 'setOneClickGood': {
       return {
         ...state,
-        oneClickGood : action.payload
-      }
+        oneClickGood: action.payload,
+      };
     }
     case 'closeOneClickModal': {
       return {
         ...state,
-        oneClickGood : null
-      }
+        oneClickGood: null,
+      };
     }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);

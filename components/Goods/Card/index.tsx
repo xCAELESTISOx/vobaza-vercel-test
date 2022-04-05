@@ -7,7 +7,7 @@ import { toNumberWithSpaces } from '../../../assets/utils/formatters';
 import PlaceholderImage from 'assets/images/placeholder.png';
 import { getImageVariantProps } from 'assets/utils/images';
 
-import { IGood } from '../../../src/models/IGood';
+import { IGoodCard } from '../../../src/models/IGood';
 import styles from './styles.module.scss';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
@@ -15,7 +15,7 @@ import { Button } from '@nebo-team/vobaza.ui.button';
 import { useCart } from '../../../src/hooks/useCart';
 
 type Props = {
-  good?: IGood;
+  good?: IGoodCard;
   isFixedHeight?: boolean;
 };
 
@@ -34,7 +34,10 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
   };
 
   const checkExpress = () => {
-    if (good.labels.find((good) => good.code === 'EXPRESS-DELIVERY')?.active) {
+    if (
+      good.labels &&
+      good.labels.find((good) => good.code === 'EXPRESS-DELIVERY')?.active
+    ) {
       return true;
     }
     return false;
@@ -96,9 +99,12 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
           <div className={`${styles.cardImage} card__image`}>
             <Link href={`/product/${good.slug}_${good.id}_${good.sku}`}>
               <a>
-                {good.images ? (
+                {good.main_image ? (
                   <Image
-                    {...getImageVariantProps(good.images[0].variants, 'medium')}
+                    {...getImageVariantProps(
+                      good.main_image.variants,
+                      'medium'
+                    )}
                     objectFit="contain"
                     alt={good.name}
                   />
@@ -126,10 +132,10 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
                 }}
               >
                 <div className={styles.cardVariant}>
-                  {good.images ? (
+                  {good.main_image ? (
                     <Image
                       {...getImageVariantProps(
-                        good.images[0].variants,
+                        good.main_image.variants,
                         'extra_small'
                       )}
                       objectFit="contain"
@@ -245,7 +251,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
             </div> */}
             <div className={styles.cardInfo}>
               <div className={styles.cardFeatures}>
-                {good.attributes.map((feature) => (
+                {good.valuable_attributes.map((feature) => (
                   <div
                     className={styles.cardFeature}
                     key={feature.attribute.id}
@@ -260,7 +266,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
                 ))}
               </div>
               <div className={styles.cardCart}>
-                {good.quantity > 0 ? (
+                {good.is_available ? (
                   <Button
                     icon="Cart"
                     text="В корзину"

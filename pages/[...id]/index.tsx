@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { api } from '../../assets/api';
 import styles from '../../styles/Catalog.module.scss';
 import { ICategory } from '../../src/models/ICategory';
-import { IGood } from '../../src/models/IGood';
+import { IGoodCard } from '../../src/models/IGood';
 import { IFilter } from '../../src/models/IFilter';
 import normalizeGoods from '../../assets/utils/normalizeGoods';
 
@@ -37,7 +37,7 @@ const tmpSeoText = {
 interface Props {
   category: ICategory;
   filters: IFilter[];
-  goods: IGood[];
+  goods: IGoodCard[];
   meta: {
     list: {
       count: number;
@@ -108,7 +108,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     const params = {
       limit,
       offset: page ? (Number(page) - 1) * limit : 0,
-      format: 'FULL_WITH_MAIN_ATTRIBUTES',
+      format: 'PUBLIC_LIST',
       'filter[category_id]': categoryId,
     };
 
