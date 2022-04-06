@@ -1,6 +1,6 @@
-import { IGood } from '../../src/models/IGood';
+import { IGood, IGoodCard } from '../../src/models/IGood';
 
-export default function normalizeGoods(goods: IGood[]) {
+export default function normalizeGoods(goods: IGood[] | IGoodCard[]) {
   return goods.map((good) => {
     return {
       ...good,

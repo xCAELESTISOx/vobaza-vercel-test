@@ -10,7 +10,7 @@ import normalizeGoods from '../../assets/utils/normalizeGoods';
 import { api } from '../../assets/api';
 import { GetServerSideProps } from 'next';
 import { CategoryStatus, ICategory } from '../../src/models/ICategory';
-import { IGood } from '../../src/models/IGood';
+import { IGoodCard } from '../../src/models/IGood';
 
 const breadcrumbs: BreadcrumbType[] = [
   {
@@ -23,7 +23,7 @@ const limit = 40;
 
 interface Props {
   categories: ICategory[];
-  goods: IGood[];
+  goods: IGoodCard[];
   meta: {
     list: {
       count: number;
@@ -67,7 +67,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     const params = {
       limit,
       offset: page ? (Number(page) - 1) * limit : 0,
-      format: 'FULL_WITH_MAIN_ATTRIBUTES',
+      format: 'PUBLIC_LIST',
     };
 
     const [goodsRes, categoryRes] = await Promise.all([
