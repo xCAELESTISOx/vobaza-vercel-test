@@ -136,7 +136,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     meta = goodsRes.data.meta;
     category = categoryRes.data.data;
     filters = filtersRes.data.data.filter(
-      ({ meta }: IFilter) => meta.min < meta.max
+      ({ meta }: IFilter) => !meta.min || meta.min < meta.max
     );
 
     filters = filters.map((filter) =>
