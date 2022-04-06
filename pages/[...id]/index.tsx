@@ -135,9 +135,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     goods = normalizeGoods(goodsRes.data.data);
     meta = goodsRes.data.meta;
     category = categoryRes.data.data;
-    filters = filtersRes.data.data.filter(
-      ({ meta }: IFilter) => !meta.min || meta.min < meta.max
-    );
+    filters = filtersRes.data.data;
 
     filters = filters.map((filter) =>
       filter.value_type === 'PRICE'

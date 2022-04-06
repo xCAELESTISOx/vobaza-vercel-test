@@ -21,29 +21,40 @@ const GoodsFilterItemNumeric: FC<Props> = ({
   full = false,
   addFilter,
 }) => {
-  const [isTouched, setIsTouched] = useState(false);
   const [values, setValues] = useState<any>([
     filter.meta.min || 0,
     filter.meta.max || 100,
   ]);
+  const [filterValues, setFilterValues] = useState<any>([
+    filter.meta.min || 0,
+    filter.meta.max || 100,
+  ]);
 
-  const onClick = (e?) => {
-    if (e) {
-      e.preventDefault();
-    }
-    if (!isTouched) return;
+  const onClick = (e) => {
+    e.preventDefault();
+    if (
+      filter.meta.min === filter.meta.max ||
+      (!currentFilters[filter.id] &&
+        filterValues[0] === filter.meta.min &&
+        filterValues[1] === filter.meta.max)
+    )
+      return;
     addFilter({
       id: filter.id,
       name: filter.name,
-      value_type : filter.value_type,
+      value_type: filter.value_type,
       type: filter.type,
-      values: values,
+      values: filterValues,
     });
   };
-
-  const setValuesHandler = (value) => {
-    setIsTouched(true);
-    setValues(value);
+  const onButtonClick = (newValues: [number, number]) => {
+    addFilter({
+      id: filter.id,
+      name: filter.name,
+      value_type: filter.value_type,
+      type: filter.type,
+      values: newValues,
+    });
   };
 
   useEffect(() => {
@@ -52,25 +63,25 @@ const GoodsFilterItemNumeric: FC<Props> = ({
     } else {
       setValues([filter.meta.min || 0, filter.meta.max || 100]);
     }
-    setIsTouched(false);
   }, [currentFilters, filter]);
 
   return (
     <div className={styles.filter}>
       {full ? (
-        <>
+        <div className={styles.filterNumeric}>
+          <RangeBlock
+            min={filter.meta.min}
+            max={filter.meta.max}
+            incomeValues={values}
+            setIncomeValue={setValues}
+            onChange={setFilterValues}
+          />
           <button
             style={{ display: 'none' }}
             onClick={onClick}
             className="filtersJsButton"
           />
-          <RangeBlock
-            min={filter.meta.min}
-            max={filter.meta.max}
-            values={values}
-            onChange={setValuesHandler}
-          />
-        </>
+        </div>
       ) : (
         <FilterSelect
           variation="secondary"
@@ -79,16 +90,17 @@ const GoodsFilterItemNumeric: FC<Props> = ({
             { code: 'max', value: filter.meta.max },
           ]}
           type="range"
-          values={values}
-          onChange={setValuesHandler}
+          incomeValues={values}
+          setIncomeValues={setValues}
           placeholder={filter.name}
           buttonText="Показать"
-          onButtonClick={onClick}
+          onButtonClick={onButtonClick}
         />
       )}
     </div>
   );
 };
+
 const GoodsFilterItemListed: FC<Props> = ({
   filter,
   full = false,
@@ -167,11 +179,6 @@ const GoodsFilterItemListed: FC<Props> = ({
     <div className={styles.filter}>
       {full ? (
         <div className={styles.filterCheckboxes}>
-          <button
-            style={{ display: 'none' }}
-            onClick={onClick}
-            className="filtersJsButton"
-          />
           {values.map((item) => (
             <InputCheckbox
               key={item.code}
@@ -181,6 +188,11 @@ const GoodsFilterItemListed: FC<Props> = ({
               onChange={() => changeValues(item)}
             />
           ))}
+          <button
+            style={{ display: 'none' }}
+            onClick={onClick}
+            className="filtersJsButton"
+          />
         </div>
       ) : (
         <FilterSelect

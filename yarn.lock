@@ -245,7 +245,16 @@
   resolved "https://registry.yarnpkg.com/@napi-rs/triples/-/triples-1.0.3.tgz#76d6d0c3f4d16013c61e45dfca5ff1e6c31ae53c"
   integrity sha512-jDJTpta+P4p1NZTFVLHJ/TLFVYVcOqv6l8xwOeBKNPMgY/zDYH/YH7SJbvrr/h1RcS9GzbPcLKGzpuK9cV56UA==
 
-"@nebo-team/vobaza.ui.button@0.0.16", "@nebo-team/vobaza.ui.button@^0.0.16":
+"@nebo-team/vobaza.ui.button@0.0.17":
+  version "0.0.17"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.button/-/@nebo-team-vobaza.ui.button-0.0.17.tgz#5500a3279140b3252c1a42808a5ca60e9f16c5c5"
+  integrity sha1-VQCjJ5FAsyUsGkKAilymDp8WxcU=
+  dependencies:
+    "@nebo-team/vobaza.ui.icon" "0.0.14"
+    core-js "^3.0.0"
+    styled-components "5.3.1"
+
+"@nebo-team/vobaza.ui.button@^0.0.16":
   version "0.0.16"
   resolved "https://node.bit.dev/@nebo-team/vobaza.ui.button/-/@nebo-team-vobaza.ui.button-0.0.16.tgz#10cb3994570ea62a4942cb2b3d17ab5247d3b87a"
   integrity sha1-EMs5lFcOpipJQssrPRerUkfTuHo=
@@ -254,15 +263,15 @@
     core-js "^3.0.0"
     styled-components "5.3.1"
 
-"@nebo-team/vobaza.ui.filter-select@^0.0.29":
-  version "0.0.29"
-  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.filter-select/-/@nebo-team-vobaza.ui.filter-select-0.0.29.tgz#2ef64f52f14563d064699cd46e4aa69d57a65e29"
-  integrity sha1-LvZPUvFFY9BkaZzUbkqmnVemXik=
+"@nebo-team/vobaza.ui.filter-select@^0.0.36":
+  version "0.0.36"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.filter-select/-/@nebo-team-vobaza.ui.filter-select-0.0.36.tgz#de7f6c39c0f468349fe6ed8a9ef842696c8fb6a4"
+  integrity sha1-3n9sOcD0aDSf5u2KnvhCaWyPtqQ=
   dependencies:
-    "@nebo-team/vobaza.ui.button" "0.0.16"
-    "@nebo-team/vobaza.ui.icon" "0.0.13"
-    "@nebo-team/vobaza.ui.inputs.input-checkbox" "0.0.12"
-    "@nebo-team/vobaza.ui.range" "0.0.19"
+    "@nebo-team/vobaza.ui.button" "0.0.17"
+    "@nebo-team/vobaza.ui.icon" "0.0.14"
+    "@nebo-team/vobaza.ui.inputs.input-checkbox" "0.0.15"
+    "@nebo-team/vobaza.ui.range" "0.0.23"
     core-js "^3.0.0"
     styled-components "5.3.1"
 
@@ -273,12 +282,28 @@
   dependencies:
     core-js "^3.0.0"
 
+"@nebo-team/vobaza.ui.icon@0.0.14":
+  version "0.0.14"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.icon/-/@nebo-team-vobaza.ui.icon-0.0.14.tgz#0dcc241cde970a7bf1c0736d1eb0442187e61a63"
+  integrity sha1-DcwkHN6XCnvxwHNtHrBEIYfmGmM=
+  dependencies:
+    core-js "^3.0.0"
+
 "@nebo-team/vobaza.ui.inputs.input-checkbox@0.0.12":
   version "0.0.12"
   resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-checkbox/-/@nebo-team-vobaza.ui.inputs.input-checkbox-0.0.12.tgz#9c3ed878b11f637a8da2b28ec6c311de9618c9b8"
   integrity sha1-nD7YeLEfY3qNorKOxsMR3pYYybg=
   dependencies:
     "@nebo-team/vobaza.ui.icon" "0.0.13"
+    core-js "^3.0.0"
+    styled-components "5.3.1"
+
+"@nebo-team/vobaza.ui.inputs.input-checkbox@0.0.15":
+  version "0.0.15"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-checkbox/-/@nebo-team-vobaza.ui.inputs.input-checkbox-0.0.15.tgz#5bc88321c0fc92ecb96b35406e9f4e613412d516"
+  integrity sha1-W8iDIcD8kuy5azVAbp9OYTQS1RY=
+  dependencies:
+    "@nebo-team/vobaza.ui.icon" "0.0.14"
     core-js "^3.0.0"
     styled-components "5.3.1"
 
@@ -309,7 +334,16 @@
     core-js "^3.0.0"
     styled-components "5.3.1"
 
-"@nebo-team/vobaza.ui.inputs.input-text@0.0.32", "@nebo-team/vobaza.ui.inputs.input-text@^0.0.32":
+"@nebo-team/vobaza.ui.inputs.input-text@0.0.33":
+  version "0.0.33"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-text/-/@nebo-team-vobaza.ui.inputs.input-text-0.0.33.tgz#bc46ac19cfc4a74c186adfcf196d6a77910331c3"
+  integrity sha1-vEasGc/Ep0wYat/PGW1qd5EDMcM=
+  dependencies:
+    "@nebo-team/vobaza.ui.icon" "0.0.14"
+    core-js "^3.0.0"
+    styled-components "5.3.1"
+
+"@nebo-team/vobaza.ui.inputs.input-text@^0.0.32":
   version "0.0.32"
   resolved "https://node.bit.dev/@nebo-team/vobaza.ui.inputs.input-text/-/@nebo-team-vobaza.ui.inputs.input-text-0.0.32.tgz#b058cb011420c336af2f4f2927f9c9c7327a8d70"
   integrity sha1-sFjLARQgwzavL08pJ/nJxzJ6jXA=
@@ -327,12 +361,13 @@
     core-js "^3.0.0"
     styled-components "5.3.1"
 
-"@nebo-team/vobaza.ui.range@0.0.19", "@nebo-team/vobaza.ui.range@^0.0.19":
-  version "0.0.19"
-  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.range/-/@nebo-team-vobaza.ui.range-0.0.19.tgz#c36528cc6b1f3e43ef12cb2eddda5fcd5e3335ce"
-  integrity sha1-w2UozGsfPkPvEssu3dpfzV4zNc4=
+"@nebo-team/vobaza.ui.range@0.0.23", "@nebo-team/vobaza.ui.range@^0.0.23":
+  version "0.0.23"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.range/-/@nebo-team-vobaza.ui.range-0.0.23.tgz#49605f52194fc6fc37f65c24d9d08d758609b0db"
+  integrity sha1-SWBfUhlPxvw39lwk2dCNdYYJsNs=
   dependencies:
-    "@nebo-team/vobaza.ui.inputs.input-text" "0.0.32"
+    "@nebo-team/vobaza.ui.button" "0.0.17"
+    "@nebo-team/vobaza.ui.inputs.input-text" "0.0.33"
     core-js "^3.0.0"
     react-range "1.8.11"
     styled-components "5.3.1"
