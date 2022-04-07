@@ -66,7 +66,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     ]);
 
     user = propfileRes.data.data;
-    if (lastOrderRes.data && lastOrderRes.data.length > 0) {
+    if (lastOrderRes.data.data && lastOrderRes.data.data.length > 0) {
       lastOrder = {
         ...lastOrderRes.data.data[0],
         price: lastOrderRes.data.data[0].price / 100,

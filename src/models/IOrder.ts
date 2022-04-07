@@ -57,7 +57,10 @@ export interface IOrderItem {
   order_date: string,
   price: number,
   status: 'NEW',
-  products_images: Image[],
+  products_images: {
+    product_id: number,
+    image: Image,
+  }[],
   delivery: IOrderDelivery,
 }
 export interface IOrderItemFull {

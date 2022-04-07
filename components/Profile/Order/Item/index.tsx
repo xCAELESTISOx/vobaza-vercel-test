@@ -63,15 +63,15 @@ const ProfileOrderItem: FC<Props> = ({ order, isLast }) => {
             </div>
           )}
           <div className={styles.orderItemDeliveryItems}>
-            {order.products_images.map((image, index) => (
+            {order.products_images.map((item) => (
               <div
-                key={image.id || index}
+                key={item.product_id}
                 className={styles.orderItemDeliveryItem}
               >
                 <div className={styles.orderItemDeliveryItemImage}>
-                  {image ? (
+                  {item.image ? (
                     <Image
-                      {...getImageVariantProps(image.variants, 'small')}
+                      {...getImageVariantProps(item.image.variants, 'small')}
                       objectFit="contain"
                       alt=""
                     />
