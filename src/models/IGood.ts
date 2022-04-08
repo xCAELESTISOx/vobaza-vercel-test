@@ -56,6 +56,14 @@ export interface IGoodMerchant {
   provider_type: keyof typeof ProviderTypes;
 };
 
+export interface IGoodDocument {
+  id: number;
+  name: string;
+  size: number;
+  type: string;
+  url: string;
+};
+
 export interface IGoodCard {
   id: number;
   slug: string;
@@ -115,6 +123,7 @@ export interface IGood {
     attribute: IAttribute;
     value: any;
   }[];
+  documents?: IGoodDocument[];
   set: {}[];
 }
 

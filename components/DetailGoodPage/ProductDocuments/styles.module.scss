@@ -1,0 +1,35 @@
+.productDocument {
+  display: flex;
+
+  + .productDocument {
+    margin-top: 16px;
+  }
+}
+.productDocumentBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  min-width: 44px;
+  height: 24px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  text-transform: uppercase;
+  background: #ebebeb;
+  border-radius: 100px;
+}
+.productDocumentLink {
+  margin-top: 3px;
+  color: var(--primary-color, #af1ebe);
+  text-decoration-line: underline;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+}
+.productDocumentSize {
+  color: #909090;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+}

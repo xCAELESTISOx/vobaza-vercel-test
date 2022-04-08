@@ -1,15 +1,19 @@
 import type { GetServerSideProps } from 'next';
 import React, { FC, useEffect, useState } from 'react';
-import Link from 'next/link';
+import SimpleReactLightbox from 'simple-react-lightbox';
 
 import { api } from '../../../assets/api';
-
-import SimpleReactLightbox from 'simple-react-lightbox';
+import { useCart } from '../../../src/hooks/useCart';
+import { useGoods } from 'src/context/goods';
+import { mockProduct } from '../../../src/mock/detailProductPage';
+import { useFavorite } from '../../../src/hooks/useFavorite';
+import { getImageVariantByFieldname } from '../../../assets/utils/images';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import { Button } from '@nebo-team/vobaza.ui.button';
 import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select';
 import Breadcrumbs from '../../../components/Layout/Breadcrumbs';
+import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
 import { SelectTabs } from '../../../components/UI/SelectTabs';
 import { ProductImagesMemo } from '../../../components/DetailGoodPage/ProductImages';
 import { ProductVariants } from '../../../components/DetailGoodPage/ProductVariants';
@@ -26,17 +30,10 @@ import { ProductLoyaltyBonus } from '../../../components/DetailGoodPage/ProductL
 import { ProductCredit } from '../../../components/DetailGoodPage/ProductCredit';
 import { ProductDelivery } from '../../../components/DetailGoodPage/ProductDelivery';
 import CartModal from '../../../components/Goods/Modals/Cart/Cart';
-
-import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
+import OneClick from 'components/Goods/Modals/OneClick/OneClick';
+import { ProductDocuments } from 'components/DetailGoodPage/ProductDocuments';
 
 import styles from './styles.module.scss';
-import { useCart } from '../../../src/hooks/useCart';
-
-import { mockProduct } from '../../../src/mock/detailProductPage';
-import { useFavorite } from '../../../src/hooks/useFavorite';
-import { getImageVariantByFieldname } from '../../../assets/utils/images';
-import OneClick from 'components/Goods/Modals/OneClick/OneClick';
-import { useGoods } from 'src/context/goods';
 
 interface DetailGoodPage {
   product: any;
@@ -262,7 +259,11 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
                       size="big"
                       onClick={addToCartHandler}
                     />
-                    <Button text="Заказать в 1 клик" variation="dashed" onClick={openOneClickModal} />
+                    <Button
+                      text="Заказать в 1 клик"
+                      variation="dashed"
+                      onClick={openOneClickModal}
+                    />
                   </div>
 
                   <ProductCredit
@@ -280,10 +281,15 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
                 </>
               )}
 
-              {product.description_full && (
+              {(product.description_full || product.documents) && (
                 <div className={styles.productAccordionBlock}>
                   <ProductInfoAccordion title="Описание" autoDuration>
-                    <ProductDescription html={product.description_full} />
+                    {product.description_full && (
+                      <ProductDescription html={product.description_full} />
+                    )}
+                    {product.documents && (
+                      <ProductDocuments documents={product.documents} />
+                    )}
                   </ProductInfoAccordion>
                 </div>
               )}

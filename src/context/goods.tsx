@@ -11,7 +11,7 @@ type Action =
   | { type: 'changeCartSize'; payload: number }
   | {
       type: 'addCartGood';
-      payload: { good: IGoodCard | FavoriteGood; quantity: number };
+      payload: { good: IGoodCard | FavoriteGood | IGood; quantity: number };
     }
   | { type: 'closeCartModal' }
   | { type: 'setOneClickGood'; payload: IGood }
