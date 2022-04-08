@@ -1,15 +1,14 @@
 import React, { FC } from 'react';
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import type { BannerSlide } from './index';
+import { Banner } from 'src/models/IBanner';
 
 import styles from './styles.module.scss';
 
 type Props = {
-  slides: Array<BannerSlide>;
+  slides: Array<Banner>;
 };
 
 type SubBannerContent = {
@@ -40,7 +39,7 @@ const SubBanner: FC<Props> = ({ slides }) => {
             <a className={styles.subBanner}>
               {slide.desktop_image && (
                 <Image
-                  src={slide.desktop_image}
+                  src={slide.desktop_image.variants.original.url}
                   alt="Banner"
                   layout="fill"
                   objectFit="cover"
@@ -68,7 +67,10 @@ const SubBanner: FC<Props> = ({ slides }) => {
                 <a className={styles.subBanner}>
                   {(slide.mobile_image || slide.desktop_image) && (
                     <Image
-                      src={slide.mobile_image || slide.desktop_image}
+                      src={
+                        slide.mobile_image?.variants?.original.url ||
+                        slide.desktop_image.variants.original.url
+                      }
                       alt="Banner"
                       layout="fill"
                       objectFit="cover"

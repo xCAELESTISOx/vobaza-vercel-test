@@ -21,7 +21,7 @@ const Collections: FC<Props> = ({ collections }) => {
                 <div className={styles.collectionContent}>
                   <div className={styles.collectionImageBlock}>
                     <Image
-                      src={collection.desktop_image.variants[0].url}
+                      src={collection.desktop_image.variants.original.url}
                       layout="fill"
                       objectFit="cover"
                       alt={collection.title}
@@ -32,7 +32,7 @@ const Collections: FC<Props> = ({ collections }) => {
                     className={`${styles.collectionImageBlock} ${styles.mobile}`}
                   >
                     <Image
-                      src={collection.mobile_image.variants[0].url}
+                      src={collection.mobile_image.variants.original.url}
                       layout="fill"
                       objectFit="cover"
                       alt={collection.title}

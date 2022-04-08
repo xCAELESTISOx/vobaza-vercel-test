@@ -36,7 +36,7 @@ const getImagesUrlsFromVariant = (images, fieldname: string) => {
   return urls;
 };
 
-const renderEmptyPlaceholder = (isThumb: boolean) => {
+const renderEmptyPlaceholder = (isThumb?: boolean) => {
   return (
     <SwiperSlide>
       <div className={styles.slideImage}>

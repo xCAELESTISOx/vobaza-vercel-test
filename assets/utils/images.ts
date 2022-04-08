@@ -10,16 +10,6 @@ const getImageVariantByFieldname = (image: Image, fieldname: string) => {
   return null;
 };
 
-const getLastImageVariant = (image: Image) => {
-  try {
-    const imageVariant = Object.values(image.variants).pop();
-
-    return imageVariant;
-  } catch (error) { }
-
-  return null;
-};
-
 const getImageVariantProps = (variants: ImageVariants, fieldname: string) => {
   return {
     src: variants[fieldname + '_webp']?.url || variants[fieldname]?.url || variants.original?.url,
@@ -29,4 +19,4 @@ const getImageVariantProps = (variants: ImageVariants, fieldname: string) => {
   };
 };
 
-export { getLastImageVariant, getImageVariantByFieldname, getImageVariantProps };
+export { getImageVariantByFieldname, getImageVariantProps };

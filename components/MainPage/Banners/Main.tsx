@@ -1,16 +1,15 @@
 import React, { FC } from 'react';
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import type { BannerSlide } from './index';
+import { Banner } from 'src/models/IBanner';
 
 import styles from './styles.module.scss';
 
 type Props = {
-  slides: Array<BannerSlide>;
+  slides: Array<Banner>;
 };
 
 type MainBannerContent = {
@@ -59,7 +58,7 @@ const MainBanner: FC<Props> = ({ slides }) => {
                 {slide.desktop_image && (
                   <Image
                     className={styles.slideImage}
-                    src={slide.desktop_image}
+                    src={slide.desktop_image.variants.original.url}
                     layout="fill"
                     alt="Banner"
                     unoptimized
@@ -72,7 +71,10 @@ const MainBanner: FC<Props> = ({ slides }) => {
                 {(slide.mobile_image || slide.desktop_image) && (
                   <Image
                     className={styles.slideImage}
-                    src={slide.mobile_image || slide.desktop_image}
+                    src={
+                      slide.mobile_image?.variants?.original.url ||
+                      slide.desktop_image.variants.original.url
+                    }
                     alt="Banner"
                     layout="fill"
                     objectFit="cover"

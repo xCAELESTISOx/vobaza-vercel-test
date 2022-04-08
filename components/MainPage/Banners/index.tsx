@@ -1,7 +1,5 @@
 import React, { FC } from 'react';
 
-import { getLastImageVariant } from '../../../assets/utils/images';
-
 import MainBanner from './Main';
 import SubBanner from './Sub';
 
@@ -14,41 +12,17 @@ interface Props {
   forMiniature: Array<Banner>;
 }
 
-interface BannerSlide extends Omit<Banner, 'desktop_image' | 'mobile_image'> {
-  desktop_image: string;
-  mobile_image: string;
-}
-
-const normalizeSlide = (item: Banner): BannerSlide => {
-  const desktop_image = getLastImageVariant(item.desktop_image);
-  const mobile_image = getLastImageVariant(item.mobile_image);
-
-  const result = {
-    ...item,
-    desktop_image: desktop_image ? desktop_image.url : null,
-    mobile_image: mobile_image ? mobile_image.url : null,
-  };
-
-  return result;
-};
-
-const BottomTabBar: FC<Props> = (props) => {
-  const { forSlider, forMiniature } = props;
-
-  const sliderSlides = forSlider.map(normalizeSlide);
-  const miniatureSlides = forMiniature.map(normalizeSlide);
-
+const Banners: FC<Props> = ({ forSlider, forMiniature }) => {
   return (
     <div className="container">
       <div className={styles.banners}>
-        <MainBanner slides={sliderSlides} />
+        <MainBanner slides={forSlider} />
         <div className={styles.subBannersBlock}>
-          <SubBanner slides={miniatureSlides} />
+          <SubBanner slides={forMiniature} />
         </div>
       </div>
     </div>
   );
 };
 
-export default BottomTabBar;
-export type { BannerSlide };
+export default Banners;
