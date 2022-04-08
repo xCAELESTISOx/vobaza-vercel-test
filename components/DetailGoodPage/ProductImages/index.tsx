@@ -5,6 +5,7 @@ import { Navigation, Thumbs, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { getImageVariantByFieldname } from '../../../assets/utils/images';
+import PlaceholderImageFull from 'assets/images/placeholder.png';
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 
 import { LightboxViewer } from './LightboxViewer';
@@ -35,16 +36,17 @@ const getImagesUrlsFromVariant = (images, fieldname: string) => {
   return urls;
 };
 
-const renderEmptyPlaceholder = () => {
+const renderEmptyPlaceholder = (isThumb: boolean) => {
   return (
     <SwiperSlide>
-      <Image
-        className={styles.slideImage}
-        src={PlaceholderImage}
-        objectFit="contain"
-        alt=""
-        unoptimized
-      />
+      <div className={styles.slideImage}>
+        <Image
+          src={isThumb ? PlaceholderImage : PlaceholderImageFull}
+          objectFit="contain"
+          alt=""
+          unoptimized
+        />
+      </div>
     </SwiperSlide>
   );
 };
@@ -149,7 +151,7 @@ const ProductImages = ({ images }) => {
             onSwiper={setThumbsSwiper}
           >
             {!!thumbsImages.length && renderThumbImages()}
-            {!thumbsImages.length && renderEmptyPlaceholder()}
+            {!thumbsImages.length && renderEmptyPlaceholder(true)}
           </Swiper>
 
           <button className={`${styles.thumbsNavButton} product-swiper__prev`}>
