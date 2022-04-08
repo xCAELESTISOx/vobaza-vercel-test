@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import styles from './styles.module.scss';
@@ -26,6 +26,7 @@ const GoodsBlock: FC<Props> = ({ filters, goods, meta }) => {
   const router = useRouter();
   const { page } = router.query;
   const [isOnlyExpress, setIsOnlyExpress] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const toggleIsOnlyExpress = () => {
     setIsOnlyExpress(!isOnlyExpress);
@@ -40,6 +41,10 @@ const GoodsBlock: FC<Props> = ({ filters, goods, meta }) => {
     });
   };
 
+  useEffect(() => {
+    setIsLoading(false);
+  }, [goods]);
+
   return (
     <div className={styles.goodsBlock}>
       <CartModal />
@@ -51,12 +56,12 @@ const GoodsBlock: FC<Props> = ({ filters, goods, meta }) => {
             </Toggle>
           </div>
           <div className={styles.filtersBlock}>
-            <GoodsFilters filters={filters} />
+            <GoodsFilters filters={filters} setIsLoading={setIsLoading} />
           </div>
         </>
       )}
       {goods.length > 0 ? (
-        <div className={styles.goodsList}>
+        <div className={`${styles.goodsList} ${isLoading ? styles.busy : ''}`}>
           <GoodsList goods={goods} />
         </div>
       ) : (

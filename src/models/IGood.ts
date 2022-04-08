@@ -27,6 +27,13 @@ export enum StatusTypes {
   ARCHIVED = 'В архиве',
 }
 
+export enum GoodsSortTypes {
+  POPULARITY = 'По популярности',
+  NEWNESS = 'Новинки выше',
+  PRICE = 'Дешевые выше',
+  '-PRICE' = 'Дорогие выше',
+}
+
 interface IСategory {
   id: number;
   name: string;

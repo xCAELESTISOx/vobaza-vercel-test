@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 
 import styles from './styles.module.scss';
 import { IFilter, IFilterFront } from '../../../src/models/IFilter';
@@ -9,21 +9,56 @@ import { Icon } from '@nebo-team/vobaza.ui.icon';
 import FiltersModal from './Modal';
 import GoodsFilterItem from './Item';
 import GoodsFilterItemActive from './Item/Active';
+import { GoodsSortTypes } from 'src/models/IGood';
 
 type Props = {
   filters: IFilter[];
+  setIsLoading?: (value: boolean) => void;
 };
 
-const GoodsFilters: FC<Props> = ({ filters }) => {
+const getSortVariants = () => {
+  return Object.keys(GoodsSortTypes).map((key) => {
+    return { code: key, value: GoodsSortTypes[key] };
+  });
+};
+
+const GoodsFilters: FC<Props> = ({ filters, setIsLoading }) => {
   const router = useRouter();
-  const { page, id, ...activeFilters } = router.query;
+  const { page, id, sort, ...activeFilters } = router.query;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [currentSort, setCurrentSort] = useState({
+    code: 'POPULARITY',
+    value: GoodsSortTypes.POPULARITY,
+  });
   const [currentFilters, setCurrentFilters] = useState<IFilterFront[]>([]);
+  const sortVariants = useMemo(() => getSortVariants(), []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  //Sort
+  const setSort = (value) => {
+    setIsLoading(true);
+    setCurrentSort(value);
+  };
+  useEffect(() => {
+    let query = { ...router.query };
+    delete query['page'];
+    if (currentSort.code !== 'POPULARITY') {
+      query.sort = currentSort.code;
+    } else {
+      delete query['sort'];
+    }
+    router.replace(
+      {
+        query,
+      },
+      undefined,
+      { scroll: false }
+    );
+  }, [currentSort]);
+  // Filters
   const addFilter = (filter: IFilterFront) => {
     setCurrentFilters((prevArray) => {
       return {
@@ -41,6 +76,7 @@ const GoodsFilters: FC<Props> = ({ filters }) => {
           ? `${filter.values[0] * 100}%-%${filter.values[1] * 100}`
           : `${filter.values[0]}%-%${filter.values[1]}`
         : filter.values;
+    setIsLoading(true);
 
     router.replace(
       {
@@ -50,7 +86,6 @@ const GoodsFilters: FC<Props> = ({ filters }) => {
       { scroll: false }
     );
   };
-
   const removeFilter = (id: number, value?: string) => {
     const newFilters = { ...currentFilters };
 
@@ -78,6 +113,7 @@ const GoodsFilters: FC<Props> = ({ filters }) => {
     } else {
       delete query[id];
     }
+    setIsLoading(true);
 
     router.replace(
       {
@@ -90,6 +126,7 @@ const GoodsFilters: FC<Props> = ({ filters }) => {
   const removeAllFilters = () => {
     setCurrentFilters([]);
 
+    setIsLoading(true);
     router.replace(
       {
         query: {
@@ -127,6 +164,12 @@ const GoodsFilters: FC<Props> = ({ filters }) => {
           value_type: filter.value_type,
           values,
         });
+      });
+    }
+    if (sort) {
+      setCurrentSort({
+        code: sort.toString(),
+        value: GoodsSortTypes[sort.toString()],
       });
     }
   }, []);
@@ -171,13 +214,9 @@ const GoodsFilters: FC<Props> = ({ filters }) => {
           <FilterSelect
             className={styles.sortItem}
             variation="secondary"
-            variants={[
-              { code: 'item1', value: 'По популярности' },
-              { code: 'item2', value: 'Новинки выше' },
-              { code: 'item3', value: 'Дешевые выше' },
-              { code: 'item4', value: 'Дорогие выше' },
-            ]}
-            selected={{ code: 'item1', value: 'По популярности' }}
+            variants={sortVariants}
+            onChange={setSort}
+            selected={currentSort}
             isRightSide
           />
         </div>

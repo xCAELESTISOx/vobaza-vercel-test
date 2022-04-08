@@ -99,7 +99,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     },
   ];
 
-  const { page, id, ...activeFilters } = query;
+  const { page, id, sort, ...activeFilters } = query;
 
   const splitUrl = resolvedUrl.split('?')[0].split('_');
   const categoryId = Number(splitUrl[splitUrl.length - 1]) || 1;
@@ -111,6 +111,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       format: 'PUBLIC_LIST',
       'filter[category_id]': categoryId,
     };
+
+    if (sort) {
+      params['sort'] = sort;
+    }
 
     Object.entries(activeFilters).forEach((filter, index) => {
       params[`filter[filters][${index}][id]`] = filter[0];

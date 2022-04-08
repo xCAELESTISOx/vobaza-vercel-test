@@ -20,7 +20,13 @@
 }
 
 .goodsList {
+  position: relative;
   margin-top: 48px;
+
+  &.busy {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 
   @media screen and (max-width: 1024px) {
     margin-top: 32px;

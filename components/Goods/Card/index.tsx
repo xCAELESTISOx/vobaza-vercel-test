@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useFavorite } from '../../../src/hooks/useFavorite';
 import { toNumberWithSpaces } from '../../../assets/utils/formatters';
 import PlaceholderImage from 'assets/images/placeholder.png';
+import PlaceholderImageSmall from 'assets/images/placeholder_small.png';
 import { getImageVariantProps } from 'assets/utils/images';
 
 import { IGoodCard } from '../../../src/models/IGood';
@@ -143,7 +144,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
                     />
                   ) : (
                     <Image
-                      src={PlaceholderImage}
+                      src={PlaceholderImageSmall}
                       objectFit="contain"
                       alt=""
                       unoptimized
