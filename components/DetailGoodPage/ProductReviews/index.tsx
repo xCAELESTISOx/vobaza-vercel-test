@@ -31,7 +31,7 @@ const ProductReviews: FC<ProductReviews> = ({ reviewsInfo, productInfo }) => {
       />
 
       <section className={styles.reviewsBlock}>
-        <h3 className={styles.reviewsBlockTitle}>Отзывы</h3>
+        <h2 className={styles.reviewsBlockTitle}>Отзывы</h2>
         <div className={styles.reviewsContainer}>
           <ProductReviewsSidebar
             reviewsInfo={reviewsInfo}

@@ -32,6 +32,7 @@ import { ProductDelivery } from '../../../components/DetailGoodPage/ProductDeliv
 import CartModal from '../../../components/Goods/Modals/Cart/Cart';
 import OneClick from 'components/Goods/Modals/OneClick/OneClick';
 import { ProductDocuments } from 'components/DetailGoodPage/ProductDocuments';
+import GoodsList from 'components/Goods/List';
 
 import styles from './styles.module.scss';
 
@@ -317,6 +318,13 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
                 : null,
             }}
           />
+
+          {product.similar_products && product.similar_products.length > 0 && (
+            <div>
+              <h2 className={styles.productBlockTitle}>Похожие товары </h2>
+              <GoodsList goods={product.similar_products} />
+            </div>
+          )}
         </div>
       </div>
     </SimpleReactLightbox>
