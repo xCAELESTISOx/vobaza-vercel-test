@@ -1,22 +1,18 @@
 import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
-import Image from 'next/image';
 
 import { api } from '../../assets/api';
-import styles from '../../styles/Catalog.module.scss';
 import { ICategory } from '../../src/models/ICategory';
 import { IGoodCard } from '../../src/models/IGood';
 import { IFilter } from '../../src/models/IFilter';
 import normalizeGoods from '../../assets/utils/normalizeGoods';
 
-import tmpBannerImg1 from '../../src/tmp/bannerFilter.jpg';
-import tmpBannerImg2 from '../../src/tmp/bannerFilterMob.jpg';
-
 import Breadcrumbs, {
   BreadcrumbType,
 } from '../../components/Layout/Breadcrumbs';
-import CatalogList from '../../components/Catalog/List';
 import GoodsBlock from '../../components/Goods/Block';
+import CategoryHead from 'components/Goods/CategoryHead';
+
+import styles from '../../styles/Home.module.scss';
 
 const tmpSeoText = {
   __html: `<div class="ty-wysiwyg-content vb-category-description"><p class="text-justify">В интернет-магазине «ВоБаза» представлен большой каталог диванов с фото и ценами. Удобный фильтр по категориям создает возможность расширенного выбора товаров по всевозможным характеристикам мягкой мебели. Здесь вы сможете подобрать подходящую модель для спальни, гостиной, кабинета или офиса по стоимости от 15990 руб. и купить понравившийся диван с доставкой в день заказа, продукция всегда в наличии.&nbsp;
@@ -37,6 +33,7 @@ const tmpSeoText = {
 interface Props {
   category: ICategory;
   filters: IFilter[];
+  isExpress: boolean;
   goods: IGoodCard[];
   meta: {
     list: {
@@ -52,31 +49,23 @@ const limit = 40;
 export default function Catalog({
   category,
   filters,
+  isExpress,
   goods,
   meta,
   breadcrumbs,
 }) {
-  const router = useRouter();
-  const { page } = router.query as any;
-
   return (
     <div className={styles.homePage}>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <section>
         <div className="container">
-          <div className={styles.bannerBlockMobile}>
-            <Image src={tmpBannerImg2} alt="Banner" />
-          </div>
-          <h1 className={styles.sectionTitle}>
-            {category.name} {page && page !== '1' && ` – страница ${page}`}
-          </h1>
-          {category.children && category.children.length > 0 && (
-            <CatalogList list={category.children} />
-          )}
-          <div className={styles.bannerBlock}>
-            <Image src={tmpBannerImg1} alt="Banner" />
-          </div>
-          <GoodsBlock filters={filters} goods={goods} meta={meta} />
+          <CategoryHead category={category} isExpress={isExpress} />
+          <GoodsBlock
+            isExpress={isExpress}
+            filters={filters}
+            goods={goods}
+            meta={meta}
+          />
           <div className="seoText" dangerouslySetInnerHTML={tmpSeoText}></div>
         </div>
       </section>
@@ -92,16 +81,15 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   let meta = null;
   let category = null;
   let filters = null;
-  let breadcrumbs = [
-    {
-      title: 'Каталог мебели',
-      href: '/katalog',
-    },
-  ];
+  let breadcrumbs = [];
 
   const { page, id, sort, ...activeFilters } = query;
 
-  const splitUrl = resolvedUrl.split('?')[0].split('_');
+  const isExpress = resolvedUrl.indexOf('/ekspress-dostavka') !== -1;
+  const splitUrl = resolvedUrl
+    .split('?')[0]
+    .replace('/ekspress-dostavka', '')
+    .split('_');
   const categoryId = Number(splitUrl[splitUrl.length - 1]) || 1;
 
   try {
@@ -110,11 +98,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       offset: page ? (Number(page) - 1) * limit : 0,
       format: 'PUBLIC_LIST',
       'filter[category_id]': categoryId,
+      sort: sort || undefined,
+      'filter[label]': isExpress ? 'EXPRESS-DELIVERY' : undefined,
     };
-
-    if (sort) {
-      params['sort'] = sort;
-    }
 
     Object.entries(activeFilters).forEach((filter, index) => {
       params[`filter[filters][${index}][id]`] = filter[0];
@@ -153,17 +139,34 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
         : filter
     );
 
+    // Breadcrumbs
+    if (isExpress) {
+      breadcrumbs.push({
+        title: 'Экспресс-доставка',
+        href: '/katalog/ekspress-dostavka',
+      });
+    } else {
+      breadcrumbs.push({
+        title: 'Каталог мебели',
+        href: '/katalog',
+      });
+    }
+
     if (category.ancestors && category.ancestors.length > 0) {
       category.ancestors.forEach((ancestor) => {
         breadcrumbs.push({
           title: ancestor.name,
-          href: `/${ancestor.slug}_${ancestor.id}`,
+          href: `/${ancestor.slug}_${ancestor.id}${
+            isExpress ? '/ekspress-dostavka' : ''
+          }`,
         });
       });
     }
     breadcrumbs.push({
       title: category.name,
-      href: `/${category.slug}_${category.id}`,
+      href: `/${category.slug}_${category.id}${
+        isExpress ? '/ekspress-dostavka' : ''
+      }`,
     });
   } catch (error) {
     console.log(error);
@@ -179,6 +182,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     props: {
       category,
       filters,
+      isExpress,
       goods,
       meta,
       breadcrumbs,

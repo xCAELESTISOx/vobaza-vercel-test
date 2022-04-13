@@ -13,6 +13,8 @@ import CartModal from '../Modals/Cart/Cart';
 
 type Props = {
   filters?: IFilter[];
+  isExpress?: boolean;
+  withoutExpress?: boolean;
   goods: IGoodCard[];
   meta: {
     list: {
@@ -22,14 +24,50 @@ type Props = {
   };
 };
 
-const GoodsBlock: FC<Props> = ({ filters, goods, meta }) => {
+const GoodsBlock: FC<Props> = ({
+  filters,
+  isExpress,
+  withoutExpress,
+  goods,
+  meta,
+}) => {
   const router = useRouter();
   const { page } = router.query;
-  const [isOnlyExpress, setIsOnlyExpress] = useState(true);
+  const [isOnlyExpress, setIsOnlyExpress] = useState(!!isExpress);
   const [isLoading, setIsLoading] = useState(true);
 
   const toggleIsOnlyExpress = () => {
+    setIsLoading(true);
     setIsOnlyExpress(!isOnlyExpress);
+
+    if (!isOnlyExpress) {
+      const query = router.query;
+      delete query['page'];
+      delete query['id'];
+
+      router.push(
+        {
+          pathname: router.asPath.split('?')[0] + '/ekspress-dostavka',
+          query,
+        },
+        null,
+        { scroll: false }
+      );
+    } else {
+      const query = router.query;
+      delete query['page'];
+      delete query['id'];
+      router.push(
+        {
+          pathname: router.asPath
+            .split('?')[0]
+            .replace('/ekspress-dostavka', ''),
+          query,
+        },
+        null,
+        { scroll: false }
+      );
+    }
   };
 
   const onChangePagination = (value: number) => {
@@ -42,6 +80,9 @@ const GoodsBlock: FC<Props> = ({ filters, goods, meta }) => {
   };
 
   useEffect(() => {
+    setIsOnlyExpress(!!isExpress);
+  }, [isExpress]);
+  useEffect(() => {
     setIsLoading(false);
   }, [goods]);
 
@@ -50,11 +91,13 @@ const GoodsBlock: FC<Props> = ({ filters, goods, meta }) => {
       <CartModal />
       {filters && (
         <>
-          <div className={styles.goodsExpress}>
-            <Toggle isActive={isOnlyExpress} onClick={toggleIsOnlyExpress}>
-              Экспресс-доставка
-            </Toggle>
-          </div>
+          {!withoutExpress && (
+            <div className={styles.goodsExpress}>
+              <Toggle isActive={isOnlyExpress} onClick={toggleIsOnlyExpress}>
+                Экспресс-доставка
+              </Toggle>
+            </div>
+          )}
           <div className={styles.filtersBlock}>
             <GoodsFilters filters={filters} setIsLoading={setIsLoading} />
           </div>

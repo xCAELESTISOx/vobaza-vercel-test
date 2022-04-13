@@ -1,10 +1,15 @@
-@import './Home.module.scss';
+@import '../../../styles/Home.module.scss';
 
 .bannerBlock {
   max-height: 162px;
+  height: 162px;
   margin-top: 24px;
   border-radius: 8px;
   overflow: hidden;
+
+  &.clickable {
+    cursor: pointer;
+  }
 
   @media screen and (max-width: 767px) {
     display: none;
@@ -24,10 +29,19 @@
   display: none;
   margin-bottom: 8px;
   border-radius: 8px;
-  min-height: 36.231884057971vw;
+  min-height: 36vw;
+  height: 36vw;
   overflow: hidden;
+
+  &.clickable {
+    cursor: pointer;
+  }
 
   @media screen and (max-width: 767px) {
     display: block;
   }
+}
+
+.displayNone {
+  display: none;
 }

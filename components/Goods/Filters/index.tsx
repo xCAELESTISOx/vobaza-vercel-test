@@ -24,7 +24,7 @@ const getSortVariants = () => {
 
 const GoodsFilters: FC<Props> = ({ filters, setIsLoading }) => {
   const router = useRouter();
-  const { page, id, sort, ...activeFilters } = router.query;
+  const { page, id, sort, text, ...activeFilters } = router.query;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentSort, setCurrentSort] = useState({
     code: 'POPULARITY',
@@ -41,12 +41,12 @@ const GoodsFilters: FC<Props> = ({ filters, setIsLoading }) => {
   const setSort = (value) => {
     setIsLoading(true);
     setCurrentSort(value);
-  };
-  useEffect(() => {
+
     let query = { ...router.query };
     delete query['page'];
-    if (currentSort.code !== 'POPULARITY') {
-      query.sort = currentSort.code;
+
+    if (value.code !== 'POPULARITY') {
+      query.sort = value.code;
     } else {
       delete query['sort'];
     }
@@ -57,7 +57,8 @@ const GoodsFilters: FC<Props> = ({ filters, setIsLoading }) => {
       undefined,
       { scroll: false }
     );
-  }, [currentSort]);
+  };
+
   // Filters
   const addFilter = (filter: IFilterFront) => {
     setCurrentFilters((prevArray) => {
@@ -139,7 +140,7 @@ const GoodsFilters: FC<Props> = ({ filters, setIsLoading }) => {
   };
 
   useEffect(() => {
-    if (activeFilters) {
+    if (activeFilters && filters.length > 0) {
       Object.keys(activeFilters).forEach((key) => {
         const filter = filters.find((item) => item.id.toString() === key);
 
@@ -197,9 +198,11 @@ const GoodsFilters: FC<Props> = ({ filters, setIsLoading }) => {
                 />
               )
           )}
-          <button className={styles.filtersButton} onClick={toggleMenu}>
-            Еще фильтры
-          </button>
+          {filters.length > 0 && (
+            <button className={styles.filtersButton} onClick={toggleMenu}>
+              Еще фильтры
+            </button>
+          )}
         </div>
         <button className={styles.filtersMobileButton} onClick={toggleMenu}>
           <Icon name="Filters" />

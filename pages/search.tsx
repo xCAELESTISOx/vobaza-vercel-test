@@ -1,13 +1,14 @@
 import { GetServerSideProps } from 'next';
 
 import { api } from '../assets/api';
-import styles from '../styles/Catalog.module.scss';
 import { IGoodCard } from '../src/models/IGood';
 import { num2str } from '../assets/utils';
 import normalizeGoods from '../assets/utils/normalizeGoods';
 
 import Breadcrumbs from '../components/Layout/Breadcrumbs';
 import GoodsBlock from '../components/Goods/Block';
+
+import styles from '../styles/Home.module.scss';
 
 let breadcrumbs = [
   {
@@ -38,7 +39,7 @@ export default function Catalog({ goods, meta }) {
             {meta.list.count}{' '}
             {num2str(meta.list.count, ['товар', 'товара', 'товаров'])}
           </div>
-          <GoodsBlock goods={goods} meta={meta} />
+          <GoodsBlock filters={[]} withoutExpress goods={goods} meta={meta} />
         </div>
       </section>
     </div>
@@ -51,15 +52,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   let goods = null;
   let meta = null;
 
-  const page = Number(query.page);
+  const { page, sort, text } = query;
   const limit = 40;
 
   try {
     const params = {
       limit,
-      offset: page ? (page - 1) * limit : 0,
+      offset: page ? (Number(page) - 1) * limit : 0,
       format: 'PUBLIC_LIST',
-      'filter[text]': query.text,
+      sort: sort || undefined,
+      'filter[text]': text || undefined,
     };
     const [goodsRes] = await Promise.all([api.getGoods(params)]);
 
