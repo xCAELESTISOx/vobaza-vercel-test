@@ -91,13 +91,17 @@ const CartSidebar: FC<Props> = ({
       <div className={styles.cartSidebarCondition}>
         <p>
           Нажимая на кнопку, вы соглашаетесь с{' '}
-          <a target="_blank" href="/docs/termos_of_use.pdf" rel="noreferrer">
-            условиями Политики кофиденциальности
-          </a>
+          <Link href="/docs/termos_of_use.pdf">
+            <a target="_blank" rel="noreferrer">
+              условиями Политики кофиденциальности
+            </a>
+          </Link>
           , и{' '}
-          <a href="https://vobaza.ru/images/docs/termos_of_use.pdf">
-            пользовательского соглашения
-          </a>
+          <Link href="/docs/termos_of_use.pdf">
+            <a target="_blank" rel="noreferrer">
+              пользовательского соглашения
+            </a>
+          </Link>
         </p>
         <p>
           Нажимая {isOrder ? '«Оформить заказ»' : '«Перейти к оформлению»'} вы
