@@ -319,8 +319,16 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
             }}
           />
 
+          {product.set && product.set.length > 0 && (
+            <div className={styles.productBlockList}>
+              <h2 className={styles.productBlockTitle}>
+                Товары из этой серии{' '}
+              </h2>
+              <GoodsList goods={product.set} />
+            </div>
+          )}
           {product.similar_products && product.similar_products.length > 0 && (
-            <div>
+            <div className={styles.productBlockList}>
               <h2 className={styles.productBlockTitle}>Похожие товары </h2>
               <GoodsList goods={product.similar_products} />
             </div>
