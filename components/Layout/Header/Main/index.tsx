@@ -20,7 +20,7 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { dispatch } = useAuth();
   const { state } = useGoods();
-  const {favoriteIds, cartSize} = state
+  const { favoriteIds, cartSize } = state;
   const token = Cookies.get('token');
 
   const openAuthModal = () => {
@@ -65,7 +65,10 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
         </div>
         <div className={styles.headerButtons}>
           {token ? (
-            <div className={styles.headerButton}>
+            <div
+              className={styles.headerButton}
+              suppressHydrationWarning={true}
+            >
               <Link href="/profile">
                 <a className={styles.headerButton}>
                   <Icon name="Person"></Icon>
@@ -74,7 +77,11 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
               </Link>
             </div>
           ) : (
-            <div className={styles.headerButton} onClick={openAuthModal}>
+            <div
+              className={styles.headerButton}
+              onClick={openAuthModal}
+              suppressHydrationWarning={true}
+            >
               <Icon name="Person"></Icon>
               <span>Войти</span>
             </div>
@@ -101,9 +108,7 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
               <Icon name="Cart"></Icon>
               <span>Корзина</span>
               {cartSize > 0 && (
-                <span className={styles.headerButtonBadge}>
-                  {cartSize}
-                </span>
+                <span className={styles.headerButtonBadge}>{cartSize}</span>
               )}
             </a>
           </Link>

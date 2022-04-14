@@ -1,4 +1,11 @@
 .citySelect {
+  position: relative;
+
+  @media screen and (max-width: 767px) {
+    position: initial;
+  }
+}
+.citySelectButton {
   display: flex;
   align-items: center;
   font-size: 16px;
@@ -20,6 +27,9 @@
     }
   }
   svg:last-child {
+    &.open {
+      transform: rotate(180deg);
+    }
     @media screen and (max-width: 767px) {
       display: none;
     }

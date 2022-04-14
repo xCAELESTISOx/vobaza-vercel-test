@@ -67,8 +67,10 @@
   @media screen and (min-width: 1224px) {
     margin-left: 30px;
   }
-  @media screen and (max-width: 767px) {
-    display: none;
+  > div > button {
+    @media screen and (max-width: 767px) {
+      display: none;
+    }
   }
 }
 

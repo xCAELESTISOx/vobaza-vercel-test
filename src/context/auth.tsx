@@ -1,8 +1,12 @@
 import * as React from 'react';
 
-type Action = { type: 'login' } | { type: 'logout' } | { type: 'toggleModal' };
+type Action =
+  | { type: 'login' }
+  | { type: 'logout' }
+  | { type: 'toggleModal' }
+  | { type: 'setCity'; payload: string };
 type Dispatch = (action: Action) => void;
-type State = { isLoggedIn: boolean; isModalOpen: boolean };
+type State = { isLoggedIn: boolean; isModalOpen: boolean; city?: string };
 type AuthProviderProps = { children: React.ReactNode };
 
 const AuthStateContext = React.createContext<
@@ -20,6 +24,9 @@ function authReducer(state, action) {
     case 'toggleModal': {
       return { ...state, isModalOpen: !state.isModalOpen };
     }
+    case 'setCity': {
+      return { ...state, city: action.payload };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -30,6 +37,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   const [state, dispatch] = React.useReducer(authReducer, {
     isLoggedIn: false,
     isModalOpen: false,
+    city: null,
   });
   const value: any = { state, dispatch };
 
