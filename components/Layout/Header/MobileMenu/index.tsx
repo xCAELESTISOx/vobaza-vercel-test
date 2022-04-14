@@ -90,7 +90,7 @@ const HeaderMobileMenu: FC<Props> = ({ rootMenu, isOpen, close }) => {
             <Search />
           </div>
           <div className={styles.headerMobileMenuCity}>
-            <CitySelect />
+            <CitySelect withoutFetch />
           </div>
           <div className={styles.headerMobileMenuBlock}>
             {rootMenu.map((item) => (

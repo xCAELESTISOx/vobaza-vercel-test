@@ -24,7 +24,7 @@ const getSortVariants = () => {
 
 const GoodsFilters: FC<Props> = ({ filters, setIsLoading }) => {
   const router = useRouter();
-  const { page, id, sort, text, ...activeFilters } = router.query;
+  const { page, id, sort, text, city, ...activeFilters } = router.query;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentSort, setCurrentSort] = useState({
     code: 'POPULARITY',
@@ -70,6 +70,7 @@ const GoodsFilters: FC<Props> = ({ filters, setIsLoading }) => {
 
     let query = { ...router.query };
     delete query['page'];
+    delete query['city'];
 
     query[filter.id] =
       filter.type === 'NUMERIC_RANGE'

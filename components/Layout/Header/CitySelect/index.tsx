@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 
-import { dadataApi } from 'assets/api/dadata';
 import { useAuth } from 'src/context/auth';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
@@ -9,10 +9,16 @@ import CitySelectModal from './Modal/index';
 import CitySelectQuestionModal from './Modal/question';
 
 import styles from './styles.module.scss';
+import { dadataApi } from 'assets/api/dadata';
 
-const CitySelect: FC = () => {
+type Props = {
+  withoutFetch?: boolean;
+};
+
+const CitySelect: FC<Props> = ({ withoutFetch }) => {
+  const router = useRouter();
   const { state, dispatch } = useAuth();
-  const [city, setCity] = useState(Cookies.get('city'));
+  const [city, setCity] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isQuestionModalOpen, setIsQuestionModalOpen] = useState(false);
 
@@ -35,10 +41,12 @@ const CitySelect: FC = () => {
   };
 
   const getAddressByApi = async () => {
+    if (withoutFetch) return;
     const res = await dadataApi.getAddressByIp();
     const json = await res.json();
     const newCity = json.location?.data.city || 'Москва';
     setCity(newCity);
+    dispatch({ type: 'setCity', payload: newCity });
     setIsQuestionModalOpen(true);
   };
   const saveCity = (newCity: string) => {
@@ -48,13 +56,23 @@ const CitySelect: FC = () => {
   };
 
   useEffect(() => {
-    const savedCity = Cookies.get('city');
+    const savedCity = router.query.city;
     if (savedCity) {
       setCity(savedCity);
-    } else {
+    }
+    const cookieCity = Cookies.get('city');
+    if (!cookieCity) {
       getAddressByApi();
+    } else if (!savedCity) {
+      setCity(cookieCity);
     }
   }, []);
+
+  useEffect(() => {
+    if (city && router.query.city) {
+      delete router.query['city'];
+    }
+  }, [city]);
 
   useEffect(() => {
     if (state.city) {
@@ -63,7 +81,7 @@ const CitySelect: FC = () => {
   }, [state.city]);
 
   return (
-    <div className={styles.citySelect} suppressHydrationWarning={true}>
+    <div className={styles.citySelect}>
       {isModalOpen && (
         <CitySelectModal setCity={saveCity} closeModal={closeModal} />
       )}
@@ -75,20 +93,20 @@ const CitySelect: FC = () => {
           onCancel={onQuestionCancel}
         />
       )}
-      {city && (
-        <button
-          className={styles.citySelectButton}
-          onClick={toggleModal}
-          suppressHydrationWarning={true}
-        >
-          <Icon name="Location" />
-          {city}
-          <Icon
-            name="SmallArrowDown"
-            className={isModalOpen ? styles.open : ''}
-          />
-        </button>
-      )}
+      <button className={styles.citySelectButton} onClick={toggleModal}>
+        {city || router.query.city ? (
+          <>
+            <Icon name="Location" />
+            {city || router.query.city}
+            <Icon
+              name="SmallArrowDown"
+              className={isModalOpen ? styles.open : ''}
+            />
+          </>
+        ) : (
+          <div style={{ minWidth: '50px' }}></div>
+        )}
+      </button>
     </div>
   );
 };

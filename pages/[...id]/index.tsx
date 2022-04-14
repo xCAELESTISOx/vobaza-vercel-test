@@ -83,7 +83,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   let filters = null;
   let breadcrumbs = [];
 
-  const { page, id, sort, ...activeFilters } = query;
+  const { page, id, sort, city, ...activeFilters } = query;
 
   const isExpress = resolvedUrl.indexOf('/ekspress-dostavka') !== -1;
   const splitUrl = resolvedUrl
