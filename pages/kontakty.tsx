@@ -8,7 +8,7 @@ import StaticPagesMenu from '../components/StaticPages/Menu';
 import VkIcon from '../components/Layout/Footer/Credentials/VkIcon';
 import InstaIcon from '../components/Layout/Footer/Credentials/InstaIcon';
 import FbIcon from '../components/Layout/Footer/Credentials/FbIcon';
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 const breadcrumbs: BreadcrumbType[] = [
   {

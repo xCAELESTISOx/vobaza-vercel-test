@@ -5,8 +5,8 @@ import Image from 'next/image';
 import styles from './styles.module.scss';
 
 import tmpImg1 from './tmp/good1.jpg';
-import { Icon } from '@nebo-team/vobaza.ui.icon';
-import { Button } from '@nebo-team/vobaza.ui.button';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
 
 const CompareListItem: FC = () => {
   const [itemCount, setItemCount] = useState(1);

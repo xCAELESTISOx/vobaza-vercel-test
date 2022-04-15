@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 
 import styles from './styles.module.scss';
 
@@ -11,13 +11,16 @@ interface ProductDelivery {
 }
 
 interface ProductDeliveryItem {
+  children: ReactNode;
   title?: string;
   link?: string;
 }
 
-const ProductDeliveryItem: FC<ProductDeliveryItem> = (props) => {
-  const { title, link, children } = props;
-
+const ProductDeliveryItem: FC<ProductDeliveryItem> = ({
+  title,
+  link,
+  children,
+}) => {
   return (
     <div className={styles.productDeliveryItem}>
       <Link href="#">

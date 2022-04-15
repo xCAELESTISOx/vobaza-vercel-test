@@ -2,8 +2,8 @@ import Link from 'next/link';
 
 import styles from '../../styles/CheckoutComplete.module.scss';
 
-import { Button } from '@nebo-team/vobaza.ui.button';
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import Breadcrumbs, {
   BreadcrumbType,
 } from '../../components/Layout/Breadcrumbs';

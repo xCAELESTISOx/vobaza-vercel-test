@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
 
@@ -6,7 +6,7 @@ import styles from './styles.module.scss';
 import { useAuth } from '../../../../src/context/auth';
 import { useGoods } from '../../../../src/context/goods';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import Search from '../Search';
 import HeaderMobileMenu from '../MobileMenu';
 import CitySelect from '../CitySelect';
@@ -18,10 +18,10 @@ type Props = {
 
 const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { dispatch } = useAuth();
-  const { state } = useGoods();
-  const { favoriteIds, cartSize } = state;
-  const token = Cookies.get('token');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { state, dispatch } = useAuth();
+  const useGoodsObj = useGoods();
+  const { favoriteIds, cartSize } = useGoodsObj.state;
 
   const openAuthModal = () => {
     dispatch({ type: 'toggleModal' });
@@ -29,6 +29,14 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
   const toggleMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+
+  useEffect(() => {
+    if (!state.isLoggedIn) {
+      setIsLoggedIn(!!Cookies.get('token'));
+    } else {
+      setIsLoggedIn(state.isLoggedIn);
+    }
+  }, [state.isLoggedIn]);
 
   return (
     <div className="container">
@@ -64,11 +72,8 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
           </div>
         </div>
         <div className={styles.headerButtons}>
-          {token ? (
-            <div
-              className={styles.headerButton}
-              suppressHydrationWarning={true}
-            >
+          {isLoggedIn ? (
+            <div className={styles.headerButton}>
               <Link href="/profile">
                 <a className={styles.headerButton}>
                   <Icon name="Person"></Icon>
@@ -77,11 +82,7 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
               </Link>
             </div>
           ) : (
-            <div
-              className={styles.headerButton}
-              onClick={openAuthModal}
-              suppressHydrationWarning={true}
-            >
+            <div className={styles.headerButton} onClick={openAuthModal}>
               <Icon name="Person"></Icon>
               <span>Войти</span>
             </div>

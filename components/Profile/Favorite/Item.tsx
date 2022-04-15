@@ -12,8 +12,8 @@ import { Image as IImage } from '../../../src/models/IImage';
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 import { getImageVariantProps } from 'assets/utils/images';
 
-import { Button } from '@nebo-team/vobaza.ui.button';
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 export type FavoriteGood = {
   id: number;

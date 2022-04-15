@@ -6,7 +6,7 @@ import styles from './styles.module.scss';
 import { useAuth } from '../../../src/context/auth';
 import { useGoods } from '../../../src/context/goods';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import ProfileMenu from '../../Profile/Menu';
 
 const BottomTabBar: FC = () => {

@@ -6,11 +6,11 @@ import { api } from '../../../assets/api';
 import styles from '../../../styles/modules/inline-modal.module.scss';
 import { IError } from '../../../src/models/IError';
 
-import { Button } from '@nebo-team/vobaza.ui.button';
-import { Title } from '@nebo-team/vobaza.ui.title';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
+import { Title } from '@nebo-team/vobaza.ui.title/dist';
 import { useEffect, useState } from 'react';
-import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone';
-import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
+import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone/dist';
+import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
 
 interface Login {
   phone: string;
@@ -33,7 +33,7 @@ type Props = {
 };
 
 const LoginForm = ({ goRegister, onSuccess }: Props) => {
-  const [codeWasSent, setCodeWasSent] = useState(false)
+  const [codeWasSent, setCodeWasSent] = useState(false);
   const [isCodeTimeout, setIsCodeTimeout] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -43,7 +43,7 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
       setIsLoading(true);
       await api.requestCode({ phone: values.phone });
       setIsCodeTimeout(60);
-      setCodeWasSent(true)
+      setCodeWasSent(true);
       setIsLoading(false);
     } catch (error: any) {
       const errs = error.response.data.errors;

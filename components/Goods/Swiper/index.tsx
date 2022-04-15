@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import styles from './styles.module.scss';
 import { IGoodCard } from '../../../src/models/IGood';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import GoodsCard from '../Card';
 
 type Props = {
@@ -38,6 +38,8 @@ const GoodsSwiper: FC<Props> = ({ goods }) => {
   return (
     <div className="container">
       <div className={styles.goodsSwiperBlock}>
+        <div className={styles.goodsSwiperPanel} />
+        <div className={`${styles.goodsSwiperPanel} ${styles.left}`} />
         <Swiper
           modules={[Navigation]}
           navigation={{

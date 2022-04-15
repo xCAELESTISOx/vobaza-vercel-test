@@ -5,7 +5,7 @@ import styles from './styles.module.scss';
 import { IGoodCard } from '../../../src/models/IGood';
 import { IFilter } from '../../../src/models/IFilter';
 
-import { Pagination } from '@nebo-team/vobaza.ui.pagination';
+import { Pagination } from '@nebo-team/vobaza.ui.pagination/dist';
 import GoodsList from '../List/index';
 import Toggle from '../../UI/Toggle';
 import GoodsFilters from '../Filters';

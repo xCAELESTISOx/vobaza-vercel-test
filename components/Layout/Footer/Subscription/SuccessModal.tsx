@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
-import { Title } from '@nebo-team/vobaza.ui.title';
-import { Button } from '@nebo-team/vobaza.ui.button';
+import { Title } from '@nebo-team/vobaza.ui.title/dist';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import ModalLayout from '../../../../src/hoc/withModal';
 
 import styles from '../../../../styles/modules/inline-modal.module.scss';

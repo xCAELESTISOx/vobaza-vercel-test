@@ -3,9 +3,9 @@ import { FC, useEffect, useState } from 'react';
 import styles from './styles.module.scss';
 import { IFilter, IFilterFront } from '../../../../src/models/IFilter';
 
-import { FilterSelect } from '@nebo-team/vobaza.ui.filter-select';
-import { RangeBlock } from '@nebo-team/vobaza.ui.range';
-import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox';
+import { FilterSelect } from '@nebo-team/vobaza.ui.filter-select/dist';
+import { RangeBlock } from '@nebo-team/vobaza.ui.range/dist';
+import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
 
 type Props = {
   filter: IFilter;

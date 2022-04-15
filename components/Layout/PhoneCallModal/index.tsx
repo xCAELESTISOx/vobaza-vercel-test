@@ -5,10 +5,10 @@ import { useFormik } from 'formik';
 import styles from '../../../styles/modules/inline-modal.module.scss';
 import ModalLayout from '../../../src/hoc/withModal';
 
-import { Title } from '@nebo-team/vobaza.ui.title';
-import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone';
-import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
-import { Button } from '@nebo-team/vobaza.ui.button';
+import { Title } from '@nebo-team/vobaza.ui.title/dist';
+import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone/dist';
+import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import { api } from '../../../assets/api';
 
 interface PhoneCall {
@@ -36,15 +36,15 @@ const PhoneCallModal: FC<Props> = ({ isActive, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const makePhoneCallRequest = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      await api.makeOneClickOrder(values)
-      onClose()
-      resetForm()
-    } catch(e) {
-      console.log(e)
+      await api.makeOneClickOrder(values);
+      onClose();
+      resetForm();
+    } catch (e) {
+      console.log(e);
     }
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   const {
@@ -54,7 +54,7 @@ const PhoneCallModal: FC<Props> = ({ isActive, onClose }) => {
     handleBlur,
     errors,
     handleSubmit,
-    resetForm
+    resetForm,
   } = useFormik<PhoneCall>({
     initialValues,
     validationSchema,

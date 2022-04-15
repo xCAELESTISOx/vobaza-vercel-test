@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import styles from './styles.module.scss';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 type Props = {
   features: any[];

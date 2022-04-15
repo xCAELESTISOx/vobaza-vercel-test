@@ -5,7 +5,7 @@ import styles from './styles.module.scss';
 import { useGoods } from '../../../src/context/goods';
 import { api } from '../../../assets/api';
 
-import { Button } from '@nebo-team/vobaza.ui.button';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import CartListItem, { ICartGood } from '../ListItem';
 import CartItemChangeModal from '../Modal/CartItemChangeModal';
 

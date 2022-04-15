@@ -1,11 +1,12 @@
-import React, { FC, useRef } from 'react';
+import React, { FC, ReactNode, useRef } from 'react';
 
 import styles from './styles.module.scss';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { useCollapse } from '../../../src/hooks/useCollapse';
 
 type Props = {
+  children: ReactNode;
   title: string;
   className?: any;
   duration?: number;

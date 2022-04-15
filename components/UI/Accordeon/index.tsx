@@ -1,10 +1,11 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, ReactNode, useRef, useState } from 'react';
 
 import styles from './styles.module.scss';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 type Props = {
+  children: ReactNode;
   title: string;
   className?: any;
 };

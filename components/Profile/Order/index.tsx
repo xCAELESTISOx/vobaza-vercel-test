@@ -16,7 +16,7 @@ import {
   orderDeliveryTypeDictionary,
 } from '../../../src/models/IOrder';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 type Props = {
   order: IOrderItemFull;

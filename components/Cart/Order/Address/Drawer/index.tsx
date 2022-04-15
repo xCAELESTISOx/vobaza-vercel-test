@@ -6,7 +6,7 @@ import styles from './styles.module.scss';
 import Drawer from '../../../../../src/hoc/withDrawer';
 import { IOrderAddress } from '../../../../../src/models/IOrder';
 
-import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
+import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
 
 const validationSchema = yup.object({
   address: yup

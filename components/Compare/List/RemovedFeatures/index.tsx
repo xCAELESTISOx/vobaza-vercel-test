@@ -2,8 +2,8 @@ import { FC, useState } from 'react';
 
 import styles from './styles.module.scss';
 
-import { Button } from '@nebo-team/vobaza.ui.button';
-import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
+import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
 
 type Props = {
   removedFeatures: any[];

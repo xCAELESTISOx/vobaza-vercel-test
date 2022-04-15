@@ -3,7 +3,7 @@ import { FC } from 'react';
 import styles from '../styles.module.scss';
 import { IFilterFront } from '../../../../src/models/IFilter';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { toNumberWithSpaces } from '../../../../assets/utils/formatters';
 
 type Props = {

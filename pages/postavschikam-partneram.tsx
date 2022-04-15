@@ -5,7 +5,7 @@ import styles from '../styles/Partners.module.scss';
 
 import Breadcrumbs, { BreadcrumbType } from '../components/Layout/Breadcrumbs';
 import StaticPagesMenu from '../components/StaticPages/Menu';
-import { Button } from '@nebo-team/vobaza.ui.button';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
 
 const breadcrumbs: BreadcrumbType[] = [
   {

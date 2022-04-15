@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import Cookies from 'js-cookie';
@@ -8,12 +9,11 @@ import styles from '../../../styles/modules/inline-modal.module.scss';
 import { api } from '../../../assets/api';
 import { IError } from '../../../src/models/IError';
 
-import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
-import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox';
-import { Button } from '@nebo-team/vobaza.ui.button';
-import { Title } from '@nebo-team/vobaza.ui.title';
-import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone';
-import Link from 'next/link';
+import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
+import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
+import { Title } from '@nebo-team/vobaza.ui.title/dist';
+import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone/dist';
 
 interface Auth {
   name: string;
@@ -56,7 +56,7 @@ type Props = {
 };
 
 const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
-  const [codeWasSent, setCodeWasSent] = useState(false)
+  const [codeWasSent, setCodeWasSent] = useState(false);
   const [isCodeTimeout, setIsCodeTimeout] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -72,7 +72,7 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
         email: values.email,
       });
       setIsCodeTimeout(60);
-      setCodeWasSent(true)
+      setCodeWasSent(true);
       setIsLoading(false);
     } catch (error: any) {
       const errs = error.response.data.errors;
@@ -232,7 +232,7 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
                       target="_blank"
                       rel="noreferrer"
                       className={styles.inlineModalLink}
-                      onClick={e => e.stopPropagation()}
+                      onClick={(e) => e.stopPropagation()}
                     >
                       обработку персональных данных
                     </a>

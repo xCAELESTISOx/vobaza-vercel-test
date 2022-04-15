@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import styles from './withModal.module.scss';
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 export interface IModalLayout {
   isWide?: boolean;

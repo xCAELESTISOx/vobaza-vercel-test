@@ -1,4 +1,4 @@
-import { Button } from '@nebo-team/vobaza.ui.button';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
 
 import type { FC } from 'react';
 

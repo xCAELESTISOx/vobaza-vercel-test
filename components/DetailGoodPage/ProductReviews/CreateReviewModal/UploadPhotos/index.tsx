@@ -6,7 +6,7 @@ import React, {
   ChangeEventHandler,
 } from 'react';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 import styles from './styles.module.scss';
 

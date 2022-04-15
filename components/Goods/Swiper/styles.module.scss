@@ -15,6 +15,24 @@
     }
   }
 }
+.goodsSwiperPanel {
+  position: absolute;
+  left: calc((1600px - 100vw) / 2);
+  top: -30px;
+  background-color: #fff;
+  width: calc((100vw - 1600px) / 2);
+  height: 200%;
+  z-index: 100;
+
+  @media screen and (max-width: 1650px) {
+    display: none;
+  }
+
+  &.left {
+    left: initial;
+    right: calc((1600px - 100vw) / 2);
+  }
+}
 .swiper {
   overflow: visible;
 }

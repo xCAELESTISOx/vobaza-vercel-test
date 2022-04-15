@@ -6,7 +6,7 @@ import { api } from '../../assets/api';
 import checkAuth from '../../assets/api/auth';
 import { IOrderItem } from '../../src/models/IOrder';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import ProfileSidebar from '../../components/Profile/Sidebar';
 import ProfileData, { IProfile } from '../../components/Profile/Data';
 import ProfileOrderItem from '../../components/Profile/Order/Item';

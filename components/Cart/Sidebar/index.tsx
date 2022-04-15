@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import styles from './styles.module.scss';
 
-import { Button } from '@nebo-team/vobaza.ui.button';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import { toNumberWithSpaces } from '../../../assets/utils/formatters';
 
 type Props = {

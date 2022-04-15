@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import { useAuth } from 'src/context/auth';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import CitySelectModal from './Modal/index';
 import CitySelectQuestionModal from './Modal/question';
 

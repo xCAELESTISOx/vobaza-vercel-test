@@ -9,8 +9,8 @@ import ModalLayout from '../../../../src/hoc/withModal';
 import PlaceholderImage from 'assets/images/placeholder.png';
 import { getImageVariantProps } from 'assets/utils/images';
 
-import { Button } from '@nebo-team/vobaza.ui.button';
-import { Title } from '@nebo-team/vobaza.ui.title';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
+import { Title } from '@nebo-team/vobaza.ui.title/dist';
 import CartItemChangeModal from '../../../Cart/Modal/CartItemChangeModal';
 
 const CartModal: FC = () => {

@@ -2,9 +2,9 @@ import { FC, useState } from 'react';
 
 import styles from './styles.module.scss';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import OrderPaymentDrawer from './Drawer';
-import { Button } from '@nebo-team/vobaza.ui.button';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
 
 const OrderPayment: FC = () => {
   const [isDrawer, setIsDrawer] = useState(false);

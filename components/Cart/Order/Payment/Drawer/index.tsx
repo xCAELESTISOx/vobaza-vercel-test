@@ -3,8 +3,8 @@ import { FC, useState } from 'react';
 import styles from './styles.module.scss';
 import Drawer from '../../../../../src/hoc/withDrawer';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
-import { InputRadio } from '@nebo-team/vobaza.ui.inputs.input-radio';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
+import { InputRadio } from '@nebo-team/vobaza.ui.inputs.input-radio/dist';
 
 type Props = {
   isOpen: boolean;

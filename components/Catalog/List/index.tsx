@@ -7,7 +7,7 @@ import { ICategory } from '../../../src/models/ICategory';
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 import { getImageVariantProps } from 'assets/utils/images';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 type Props = {
   list: ICategory[];

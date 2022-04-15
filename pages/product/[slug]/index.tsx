@@ -9,9 +9,9 @@ import { mockProduct } from '../../../src/mock/detailProductPage';
 import { useFavorite } from '../../../src/hooks/useFavorite';
 import { getImageVariantByFieldname } from '../../../assets/utils/images';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
-import { Button } from '@nebo-team/vobaza.ui.button';
-import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
+import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select/dist';
 import Breadcrumbs from '../../../components/Layout/Breadcrumbs';
 import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
 import { SelectTabs } from '../../../components/UI/SelectTabs';
@@ -59,8 +59,6 @@ const normalizeProductInfo = (product) => {
   };
 
   const computedFields = {
-    discount: (product) =>
-      Math.round((product.price / product.list_price) * 100 - 100),
     creditMinimalPayment: (product) => {
       return Math.round(product.price / 12);
     },
@@ -241,8 +239,8 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
                 <ProductPrice
                   className={styles.productInfoShort}
                   price={product.price}
+                  list_price={product.list_price}
                   beforeDiscountPrice={product.list_price}
-                  discount={product.discount}
                 />
 
                 <div className={styles.productStockInfo}>

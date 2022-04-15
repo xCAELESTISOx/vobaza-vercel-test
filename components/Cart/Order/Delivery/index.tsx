@@ -12,12 +12,12 @@ import { getImageVariantProps } from 'assets/utils/images';
 import Toggle from '../../../UI/Toggle';
 import ItemCounter from '../../../UI/ItemCounter';
 import OrderDeliveryDrawer from './Drawer';
-import { Icon } from '@nebo-team/vobaza.ui.icon';
-import { Button } from '@nebo-team/vobaza.ui.button';
-import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
-import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select';
-import { InputRadio } from '@nebo-team/vobaza.ui.inputs.input-radio';
-import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
+import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
+import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select/dist';
+import { InputRadio } from '@nebo-team/vobaza.ui.inputs.input-radio/dist';
+import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
 
 type Props = {
   goods: ICartGood[];

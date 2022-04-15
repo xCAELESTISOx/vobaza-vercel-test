@@ -4,8 +4,8 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import styles from './styles.module.scss';
 import { IFilter, IFilterFront } from '../../../src/models/IFilter';
 
-import { FilterSelect } from '@nebo-team/vobaza.ui.filter-select';
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { FilterSelect } from '@nebo-team/vobaza.ui.filter-select/dist';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import FiltersModal from './Modal';
 import GoodsFilterItem from './Item';
 import GoodsFilterItemActive from './Item/Active';

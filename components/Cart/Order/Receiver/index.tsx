@@ -13,8 +13,8 @@ import styles from './styles.module.scss';
 import { useAuth } from '../../../../src/context/auth';
 import { IProfile } from '../../../Profile/Data';
 
-import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
-import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone';
+import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
+import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone/dist';
 
 export interface Receiver {
   name: string;

@@ -3,9 +3,9 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 
 import styles from './styles.module.scss';
-import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
-import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox';
-import { Button } from '@nebo-team/vobaza.ui.button';
+import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
+import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import { useRouter } from 'next/router';
 
 interface Address {

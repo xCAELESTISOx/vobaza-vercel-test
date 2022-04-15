@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 
 import styles from '../../styles/Blog.module.scss';
 
-import { Pagination } from '@nebo-team/vobaza.ui.pagination';
+import { Pagination } from '@nebo-team/vobaza.ui.pagination/dist';
 import Breadcrumbs, {
   BreadcrumbType,
 } from '../../components/Layout/Breadcrumbs';

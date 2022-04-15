@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 import styles from './styles.module.scss';
-import { Button } from '@nebo-team/vobaza.ui.button';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
 
 type Props = {
   openPhoneCallModal: () => void;

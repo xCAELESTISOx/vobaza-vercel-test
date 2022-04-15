@@ -9,7 +9,7 @@ import PlaceholderImageFull from 'assets/images/placeholder.png';
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 
 import { LightboxViewer } from './LightboxViewer';
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 import styles from './styles.module.scss';
 
@@ -141,6 +141,7 @@ const ProductImages = ({ images }) => {
         <div className={styles.thumbsSwiper}>
           <Swiper
             className={styles.swiper}
+            modules={[Thumbs]}
             watchSlidesProgress
             slidesPerView={5}
             spaceBetween={8}

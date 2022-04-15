@@ -1,8 +1,9 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, ReactNode } from 'react';
 
 import styles from './styles.module.scss';
 
 type Props = {
+  children: ReactNode;
   isActive: boolean;
   onClick: () => void;
 };

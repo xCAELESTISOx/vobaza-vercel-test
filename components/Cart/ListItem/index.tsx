@@ -8,7 +8,7 @@ import { Image as IImage } from '../../../src/models/IImage';
 import { getImageVariantProps } from 'assets/utils/images';
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import ItemCounter from '../../UI/ItemCounter';
 
 export type ICartGood = {

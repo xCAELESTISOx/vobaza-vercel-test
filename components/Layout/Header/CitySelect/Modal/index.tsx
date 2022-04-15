@@ -1,5 +1,5 @@
 import { useClickOutside } from '@nebo-team/vobaza.ui.filter-select/dist/filter-select';
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { dadataApi } from 'assets/api/dadata';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import useDebounce from 'src/hooks/useDebounce';

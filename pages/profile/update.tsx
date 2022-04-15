@@ -6,7 +6,7 @@ import { api } from '../../assets/api';
 import { IProfile } from '../../components/Profile/Data';
 import styles from '../../styles/Profile.module.scss';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import ProfileSidebar from '../../components/Profile/Sidebar';
 import ProfileUpdateForm from '../../components/Profile/UpdateForm';
 

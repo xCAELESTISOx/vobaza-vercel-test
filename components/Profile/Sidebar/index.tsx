@@ -8,7 +8,7 @@ import styles from './styles.module.scss';
 import { useGoods } from '../../../src/context/goods';
 import { useAuth } from '../../../src/context/auth';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 const ProfileSidebar: FC = () => {
   const authStore = useAuth();

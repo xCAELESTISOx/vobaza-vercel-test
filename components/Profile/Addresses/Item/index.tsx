@@ -1,4 +1,4 @@
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import router from 'next/router';
 import { FC } from 'react';
 

@@ -52,41 +52,43 @@ const MainBanner: FC<Props> = ({ slides }) => {
         className={styles.swiper}
       >
         {slides.map((slide) => (
-          <SwiperSlide key={slide.id} className={styles.mainSlide}>
-            <Link href={slide.url}>
-              <a className={styles.slide}>
-                {slide.desktop_image && (
-                  <Image
-                    className={styles.slideImage}
-                    src={slide.desktop_image.variants.original.url}
-                    layout="fill"
-                    alt="Banner"
-                    unoptimized
-                  />
-                )}
-              </a>
-            </Link>
-            <Link href={slide.url}>
-              <a className={`${styles.slide} ${styles.slideMobile}`}>
-                {(slide.mobile_image || slide.desktop_image) && (
-                  <Image
-                    className={styles.slideImage}
-                    src={
-                      slide.mobile_image?.variants?.original.url ||
-                      slide.desktop_image.variants.original.url
-                    }
-                    alt="Banner"
-                    layout="fill"
-                    objectFit="cover"
-                    unoptimized
-                  />
-                )}
-              </a>
-            </Link>
-            <MainBannerContent
-              title={slide.title}
-              description={slide.description}
-            />
+          <SwiperSlide key={slide.id}>
+            <div className={styles.mainSlide}>
+              <Link href={slide.url}>
+                <a className={styles.slide}>
+                  {slide.desktop_image && (
+                    <Image
+                      className={styles.slideImage}
+                      src={slide.desktop_image.variants.original.url}
+                      layout="fill"
+                      alt="Banner"
+                      unoptimized
+                    />
+                  )}
+                </a>
+              </Link>
+              <Link href={slide.url}>
+                <a className={`${styles.slide} ${styles.slideMobile}`}>
+                  {(slide.mobile_image || slide.desktop_image) && (
+                    <Image
+                      className={styles.slideImage}
+                      src={
+                        slide.mobile_image?.variants?.original.url ||
+                        slide.desktop_image.variants.original.url
+                      }
+                      alt="Banner"
+                      layout="fill"
+                      objectFit="cover"
+                      unoptimized
+                    />
+                  )}
+                </a>
+              </Link>
+              <MainBannerContent
+                title={slide.title}
+                description={slide.description}
+              />
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>

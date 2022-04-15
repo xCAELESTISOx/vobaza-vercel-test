@@ -5,9 +5,9 @@ import { useFormik } from 'formik';
 import styles from '../styles/Partners.module.scss';
 
 import Breadcrumbs, { BreadcrumbType } from '../components/Layout/Breadcrumbs';
-import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
-import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone';
-import { Button } from '@nebo-team/vobaza.ui.button';
+import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
+import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone/dist';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbType[] = [

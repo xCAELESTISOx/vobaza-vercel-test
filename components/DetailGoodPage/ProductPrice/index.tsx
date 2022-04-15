@@ -7,13 +7,16 @@ import styles from './styles.module.scss';
 interface ProductPrice {
   className?: string;
   price: number;
+  list_price?: number;
   beforeDiscountPrice?: number;
-  discount?: number;
 }
 
-const ProductPrice: FC<ProductPrice> = (props) => {
-  const { className = '', price, beforeDiscountPrice, discount } = props;
-
+const ProductPrice: FC<ProductPrice> = ({
+  className = '',
+  price,
+  list_price,
+  beforeDiscountPrice,
+}) => {
   const containerClasses = [className, styles.productPrice].join(' ');
 
   return (
@@ -24,9 +27,9 @@ const ProductPrice: FC<ProductPrice> = (props) => {
           {toNumberWithSpaces(beforeDiscountPrice)} ₽
         </div>
       )}
-      {discount && (
+      {list_price && (
         <div className={styles.priceDiscount}>
-          <span>{discount}%</span>
+          <span>{Math.round((price / list_price) * 100 - 100)}%</span>
         </div>
       )}
     </div>

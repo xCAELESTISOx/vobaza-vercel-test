@@ -9,10 +9,10 @@ import { getImageVariantProps } from 'assets/utils/images';
 import PlaceholderImage from 'assets/images/placeholder.png';
 import { useGoods } from 'src/context/goods';
 
-import { Title } from '@nebo-team/vobaza.ui.title';
-import { Button } from '@nebo-team/vobaza.ui.button';
-import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
-import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone';
+import { Title } from '@nebo-team/vobaza.ui.title/dist';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
+import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
+import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone/dist';
 import ModalLayout from 'src/hoc/withModal';
 
 import styles from './styles.module.scss';

@@ -3,7 +3,7 @@ import { FC, useState } from 'react';
 import styles from './styles.module.scss';
 import Drawer from '../../../../../src/hoc/withDrawer';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import {
   IOrderDelivery,
   IOrderDeliveryType,

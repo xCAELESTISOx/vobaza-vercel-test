@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import styles from './styles.module.scss';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import ProfileSidebar from '../Sidebar';
 
 type Props = {

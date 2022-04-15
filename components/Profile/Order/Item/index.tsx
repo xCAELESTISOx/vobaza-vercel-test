@@ -11,7 +11,7 @@ import { getImageVariantProps } from 'assets/utils/images';
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 import { IOrderDeliveryType, IOrderItem } from '../../../../src/models/IOrder';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 type Props = {
   order: IOrderItem;

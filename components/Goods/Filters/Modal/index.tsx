@@ -3,8 +3,8 @@ import { FC, useEffect } from 'react';
 import styles from './styles.module.scss';
 import { IFilter, IFilterFront } from '../../../../src/models/IFilter';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
-import { Button } from '@nebo-team/vobaza.ui.button';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import Accordeon from '../../../UI/Accordeon';
 import GoodsFilterItem from '../Item';
 

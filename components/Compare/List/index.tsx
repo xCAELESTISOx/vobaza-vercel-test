@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 
 import styles from './styles.module.scss';
 
-import { Button } from '@nebo-team/vobaza.ui.button';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import CompareListItem from './Item';
 import CompareListTable from './Table';
 import CompareListRemoveFeatures from './RemovedFeatures';

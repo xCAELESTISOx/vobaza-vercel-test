@@ -3,8 +3,8 @@ import { FC, useState } from 'react';
 import styles from './styles.module.scss';
 import { IOrderAddress } from '../../../../src/models/IOrder';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
-import { Button } from '@nebo-team/vobaza.ui.button';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import OrderAddressDrawer from './Drawer';
 
 type Props = {

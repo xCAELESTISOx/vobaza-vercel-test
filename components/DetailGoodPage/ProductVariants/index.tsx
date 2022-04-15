@@ -2,7 +2,7 @@ import React, { FC, useRef } from 'react';
 import { useCollapse } from '../../../src/hooks/useCollapse';
 import { useMatchMedia } from '../../../src/hooks/useMatchMedia';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 import styles from './styles.module.scss';
 
