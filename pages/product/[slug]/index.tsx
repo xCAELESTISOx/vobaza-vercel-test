@@ -38,14 +38,8 @@ import styles from './styles.module.scss';
 
 interface DetailGoodPage {
   product: any;
+  breadcrumbs: BreadcrumbType[];
 }
-
-const getBreadcrumbs = (): BreadcrumbType[] => [
-  {
-    title: 'Каталог мебели',
-    href: '/katalog',
-  },
-];
 
 const getPrice = (price: number) => {
   return price / 100;
@@ -83,7 +77,7 @@ const normalizeProductInfo = (product) => {
   }
 };
 
-const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
+const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
   const { currentFavorite, toggleFavorite } = useFavorite(product);
   const [selectedColorVariant, setSelectedColorVariant] = useState<any>(
     mockProduct.variants[0]
@@ -143,12 +137,6 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product }) => {
       </div>
     ));
   };
-
-  const breadcrumbs = getBreadcrumbs();
-  breadcrumbs.push({
-    title: product.main_category.name,
-    href: `/${product.main_category.slug}`,
-  });
 
   return (
     <SimpleReactLightbox>
@@ -347,6 +335,12 @@ export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({
   query,
 }) => {
   const productId = getProductIdFromSlug(query.slug as string);
+  let breadcrumbs = [
+    {
+      title: 'Каталог мебели',
+      href: '/katalog',
+    },
+  ] as BreadcrumbType[];
 
   try {
     const [productRes, attributesRes] = await Promise.all([
@@ -358,9 +352,16 @@ export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({
 
     product.attributes = attributesRes.data.data;
 
+    breadcrumbs.push({
+      title: product.main_category.name,
+      href: `/${product.main_category.slug}_${product.main_category.id}`,
+      clickableLast: true,
+    });
+
     return {
       props: {
         product: productRes.data.data,
+        breadcrumbs,
       },
     };
   } catch (err) {}

@@ -7,6 +7,7 @@ import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 export type BreadcrumbType = {
   title: string;
   href: string;
+  clickableLast?: boolean;
 };
 
 type Props = {
@@ -25,8 +26,14 @@ const Breadcrumbs: FC<Props> = ({ breadcrumbs }) => {
             <div key={breadcrumb.title} className={styles.breadcrumbsSeparator}>
               <Icon name="SmallArrowRight" />
             </div>
-            <Link key={'123' + breadcrumb.title} href={breadcrumb.href}>
-              <a className={styles.breadcrumb}>{breadcrumb.title}</a>
+            <Link key={'title' + breadcrumb.title} href={breadcrumb.href}>
+              <a
+                className={`${styles.breadcrumb} ${
+                  breadcrumb.clickableLast ? styles.clickable : ''
+                }`}
+              >
+                {breadcrumb.title}
+              </a>
             </Link>
           </Fragment>
         ))}

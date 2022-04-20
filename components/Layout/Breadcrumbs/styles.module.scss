@@ -19,7 +19,7 @@
     color: #808080;
   }
 
-  &:last-child {
+  &:last-child:not(.clickable) {
     color: #b3b3b3;
     pointer-events: none;
 
