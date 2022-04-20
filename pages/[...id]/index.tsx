@@ -102,6 +102,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       'filter[label]': isExpress ? 'EXPRESS-DELIVERY' : undefined,
     };
 
+    if (activeFilters && Object.keys(activeFilters).length) {
+      params['filter[include_variants]'] = true;
+    }
     Object.entries(activeFilters).forEach((filter, index) => {
       params[`filter[filters][${index}][id]`] = filter[0];
       const filterValue = filter[1].toString().split('%-%');

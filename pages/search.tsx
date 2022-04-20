@@ -62,6 +62,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       format: 'PUBLIC_LIST',
       sort: sort || undefined,
       'filter[text]': text || undefined,
+      'filter[include_variants]': true,
     };
     const [goodsRes] = await Promise.all([api.getGoods(params)]);
 
