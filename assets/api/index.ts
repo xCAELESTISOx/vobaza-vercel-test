@@ -33,10 +33,6 @@ export const api = {
     setTokenWithGuest();
     return axios.post('/customer/v1/register', data);
   },
-  checkRegisterCode(data: object) {
-    setTokenWithGuest();
-    return axios.post('/customer/v1/register/confirm', data);
-  },
   getGuestToken() {
     return axios.post('/v1/token');
   },

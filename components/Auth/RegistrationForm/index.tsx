@@ -99,8 +99,8 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
     try {
       setErrors({ ...errors, code: undefined });
       setIsLoading(true);
-      const response = await api.checkRegisterCode({
-        confirm_token: values.code,
+      const response = await api.checkLoginCode({
+        code: values.code,
       });
       Cookies.set('token', response.data.data.token);
       onSuccess();
