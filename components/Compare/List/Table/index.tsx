@@ -1,56 +1,83 @@
 import { FC } from 'react';
 
+import { IGoodCompare } from 'src/models/IGood';
+import { AttributeDataType, IAttributeCompare } from 'src/models/IAttributes';
+
 import styles from './styles.module.scss';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 type Props = {
-  features: any[];
-  items: number;
-  removedFeatures: any[];
-  removeFeature: (value) => void;
+  attributes: IAttributeCompare[];
+  goods: IGoodCompare[];
+  removedAttributes: any[];
+  removeAttribute: (id) => void;
+};
+
+const renderItem = (data_type: keyof typeof AttributeDataType, value) => {
+  switch (data_type) {
+    case 'BOOLEAN':
+      return value ? 'Да' : 'Нет';
+    case 'MANY_FROM_MANY':
+      return value
+        ? value.map((item) => (
+            <div key={item}>
+              <span
+                className={`${styles.compareListTableCheckbox} ${
+                  value ? styles.active : ''
+                }`}
+              >
+                <Icon name="Checkmark" />
+              </span>
+              {item}
+            </div>
+          ))
+        : '—';
+    case 'COLOR':
+      return value ? value[0].value : '—';
+    case 'DATE':
+      const date = new Date(value);
+      return value
+        ? `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
+        : '—';
+    default:
+      return value || '—';
+  }
 };
 
 const CompareListTable: FC<Props> = ({
-  features,
-  items,
-  removedFeatures,
-  removeFeature,
+  attributes,
+  goods,
+  removedAttributes,
+  removeAttribute,
 }) => {
   return (
     <div className={styles.compareListTable}>
-      {features.map((feature) => {
-        if (removedFeatures.includes(feature.title)) return <> </>;
+      {attributes.map((attribute) => {
+        if (removedAttributes.find((item) => item.id === attribute.id))
+          return null;
         else
           return (
-            <div key={feature.title} className={styles.compareListTableRow}>
+            <div key={attribute.id} className={styles.compareListTableRow}>
               <div className={styles.compareListTableTitle}>
                 <strong>
-                  {feature.title}:
+                  {attribute.name}:
                   <Icon
                     name="Trash"
                     onClick={() => {
-                      removeFeature(feature.title);
+                      removeAttribute(attribute);
                     }}
                   />
                 </strong>
               </div>
-              {[...Array(items)].map((item) => (
-                <div key={item} className={styles.compareListTableItem}>
-                  {feature.values.map((value) => (
-                    <div key={value} className={styles.compareListTableValue}>
-                      {feature.isBool && (
-                        <span
-                          className={`${styles.compareListTableCheckbox} ${
-                            value ? styles.active : ''
-                          }`}
-                        >
-                          <Icon name="Checkmark" />
-                        </span>
-                      )}
-                      {value || feature.isBool ? value : '-'}
-                    </div>
-                  ))}
+              {goods.map((item) => (
+                <div key={item.id} className={styles.compareListTableItem}>
+                  <div className={styles.compareListTableValue}>
+                    {renderItem(
+                      attribute.data_type,
+                      item.attributes_value[attribute.id]
+                    )}
+                  </div>
                 </div>
               ))}
             </div>

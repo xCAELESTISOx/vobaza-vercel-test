@@ -28,6 +28,9 @@
   &.active {
     background-color: #f2f2f2;
   }
+  &.active {
+    pointer-events: none;
+  }
 
   + .compareListMenuItem {
     margin-top: 4px;
@@ -60,7 +63,7 @@
   }
 
   button + button {
-    margin-left: 12px;
+    margin-left: 32px;
 
     @media screen and (max-width: 767px) {
       margin-left: 0;

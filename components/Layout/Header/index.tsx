@@ -7,6 +7,7 @@ import { useAuth } from '../../../src/context/auth';
 import SmallHeader from './Small';
 import MainHeader from './Main';
 import SubHeader from './Sub';
+import Cookies from 'js-cookie';
 
 const categories = [
   {
@@ -646,6 +647,16 @@ const Header: FC<Props> = ({ openPhoneCallModal }) => {
   const { state } = useAuth();
   const { isLoggedIn } = state;
 
+  const setCompareFromCookie = () => {
+    const ids = Cookies.get('compareIds');
+    if (ids) {
+      dispatch({
+        type: 'setCompare',
+        payload: ids.split(',').map((id) => +id),
+      });
+    }
+  };
+
   const getGlobalInfo = async () => {
     try {
       const globalInfoRes = await api.getGlobalInfo();
@@ -658,9 +669,20 @@ const Header: FC<Props> = ({ openPhoneCallModal }) => {
           type: 'setCartSize',
           payload: globalInfoRes.data.data.basket_size,
         });
+        if (globalInfoRes.data.data.compare_products_ids) {
+          dispatch({
+            type: 'setCompare',
+            payload: globalInfoRes.data.data.compare_products_ids,
+          });
+        } else {
+          setCompareFromCookie();
+        }
+      } else {
+        setCompareFromCookie();
       }
     } catch (error) {
       console.log(error);
+      setCompareFromCookie();
     }
   };
   useEffect(() => {

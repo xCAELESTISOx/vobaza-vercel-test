@@ -129,6 +129,26 @@ export const api = {
     await setTokenWithGuest(true);
     return axios.delete(`/v1/favorites/${id}`);
   },
+  // Compare
+  async getCompareList(ids: number[] | string[]) {
+    return axios.get(`/v1/compareList`, { params: { ids } });
+  },
+  async getAuthCompareList() {
+    setToken();
+    return axios.get(`/customer/v1/compareList`);
+  },
+  async addToAuthCompareList(id: number) {
+    setToken();
+    return axios.post(`/customer/v1/compareList/${id}`);
+  },
+  async removeFromAuthCompareList(id: number) {
+    setToken();
+    return axios.delete(`/customer/v1/compareList/${id}`);
+  },
+  async removeAuthCompareList() {
+    setToken();
+    return axios.delete(`/customer/v1/compareList`);
+  },
   // Cart
   async getCart() {
     await setTokenWithGuest();

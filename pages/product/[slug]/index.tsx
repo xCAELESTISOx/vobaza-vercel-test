@@ -32,6 +32,7 @@ import { ProductDelivery } from '../../../components/DetailGoodPage/ProductDeliv
 import CartModal from '../../../components/Goods/Modals/Cart/Cart';
 import OneClick from 'components/Goods/Modals/OneClick/OneClick';
 import { ProductDocuments } from 'components/DetailGoodPage/ProductDocuments';
+import { ProductCompare } from 'components/DetailGoodPage/ProductCompare';
 import GoodsList from 'components/Goods/List';
 
 import styles from './styles.module.scss';
@@ -178,12 +179,10 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                     >
                       <Icon name="Favorite" />{' '}
                       <span>
-                        {currentFavorite ? 'Из избранного' : 'В избранное'}
+                        {currentFavorite ? 'В избранном' : 'В избранное'}
                       </span>
                     </button>
-                    <button className={styles.leftMenuActionBtn}>
-                      <Icon name="Compare" /> <span>Сравнить</span>
-                    </button>
+                    <ProductCompare id={product.id} />
                   </div>
 
                   <ProductBadges

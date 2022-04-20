@@ -21,7 +21,7 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { state, dispatch } = useAuth();
   const useGoodsObj = useGoods();
-  const { favoriteIds, cartSize } = useGoodsObj.state;
+  const { favoriteIds, compareIds, cartSize } = useGoodsObj.state;
 
   const openAuthModal = () => {
     dispatch({ type: 'toggleModal' });
@@ -102,6 +102,11 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
             <a className={styles.headerButton}>
               <Icon name="Compare"></Icon>
               <span>Сравнение</span>
+              {compareIds && compareIds.length > 0 && (
+                <span className={styles.headerButtonBadge}>
+                  {compareIds.length}
+                </span>
+              )}
             </a>
           </Link>
           <Link href="/cart">

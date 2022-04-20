@@ -74,9 +74,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   } catch (error) {
     console.log(error);
     return {
-      redirect: {
-        destination: '/',
-        permanent: false,
+      props: {
+        initialGoods,
+        initialPrice,
+        withCountChange,
       },
     };
   }

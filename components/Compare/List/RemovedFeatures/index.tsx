@@ -1,4 +1,6 @@
-import { FC, useState } from 'react';
+import { FC, Fragment, useState } from 'react';
+
+import { IAttributeCompare } from 'src/models/IAttributes';
 
 import styles from './styles.module.scss';
 
@@ -6,49 +8,54 @@ import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
 
 type Props = {
-  removedFeatures: any[];
-  addFeatures: (value) => void;
+  removedAttributes: IAttributeCompare[];
+  addAttribute: (value) => void;
 };
 
 const CompareListRemoveFeatures: FC<Props> = ({
-  removedFeatures,
-  addFeatures,
+  removedAttributes,
+  addAttribute,
 }) => {
-  const [clickedFeatures, setClickedFeatures] = useState([]);
+  const [clickedAttributes, setClickedAttributes] = useState([]);
 
-  const tmpToggleFeature = (value) => {
-    if (clickedFeatures.includes(value)) {
-      setClickedFeatures(
-        clickedFeatures.filter((feature) => feature !== value)
+  const toggleAttribute = (value) => {
+    if (clickedAttributes.includes(value)) {
+      setClickedAttributes(
+        clickedAttributes.filter((attribute) => attribute.id !== value.id)
       );
     } else {
-      setClickedFeatures([...clickedFeatures, value]);
+      setClickedAttributes([...clickedAttributes, value]);
     }
   };
 
+  const addAttributeHandler = () => {
+    setClickedAttributes([]);
+    addAttribute(clickedAttributes);
+  };
+
   return (
-    <div className={styles.removedFeatures}>
-      <h3 className={styles.removedFeaturesTitle}>Добавить характеристику </h3>
-      <div className={styles.removedFeaturesList}>
-        {removedFeatures.map((feature) => (
-          <>
+    <div className={styles.removedAttributes}>
+      <h3 className={styles.removedAttributesTitle}>
+        Добавить характеристику{' '}
+      </h3>
+      <div className={styles.removedAttributesList}>
+        {removedAttributes.map((attribute) => (
+          <Fragment key={attribute.id}>
             <InputCheckbox
-              key={feature}
               variation="secondary"
-              label={feature}
-              onChange={() => tmpToggleFeature(feature)}
+              label={attribute.name}
+              onChange={() => toggleAttribute(attribute)}
             />
             &nbsp;&nbsp;&nbsp;
-          </>
+          </Fragment>
         ))}
       </div>
       <Button
-        className={styles.removedFeaturesButton}
-        color={'#bdc3c7'}
+        className={styles.removedAttributesButton}
+        variation="secondary"
         text="Добавить"
-        onClick={() => {
-          addFeatures(clickedFeatures);
-        }}
+        onClick={addAttributeHandler}
+        size="big"
       />
     </div>
   );

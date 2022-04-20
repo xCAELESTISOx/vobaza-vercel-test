@@ -1,24 +1,34 @@
 import * as React from 'react';
-import { IGood, IGoodCard } from '../models/IGood';
+import Cookies from 'js-cookie';
+
+import { IGood, IGoodCard, IGoodCompare } from '../models/IGood';
+
 import { FavoriteGood } from '../../components/Profile/Favorite/Item';
 
 type Action =
   | { type: 'setFavorites'; payload: number[] }
   | { type: 'addFavorite'; payload: IGood | IGoodCard }
   | { type: 'removeFavorite'; payload?: number }
+  | { type: 'setCompare'; payload: number[] }
+  | { type: 'addCompare'; payload: number }
+  | { type: 'removeCompare'; payload?: number }
   | { type: 'setCartSize'; payload: number }
   | { type: 'setCartError'; payload: boolean }
   | { type: 'changeCartSize'; payload: number }
   | {
       type: 'addCartGood';
-      payload: { good: IGoodCard | FavoriteGood | IGood; quantity: number };
+      payload: {
+        good: IGoodCard | FavoriteGood | IGood | IGoodCompare;
+        quantity: number;
+      };
     }
   | { type: 'closeCartModal' }
-  | { type: 'setOneClickGood'; payload: IGood }
+  | { type: 'setOneClickGood'; payload: IGood | IGoodCompare }
   | { type: 'closeOneClickModal' };
 type Dispatch = (action: Action) => void;
 type State = {
   favoriteIds: number[];
+  compareIds: number[];
   cartSize: number;
   cartError: false;
   cartGood?: IGood | null;
@@ -32,6 +42,7 @@ const GoodsStateContext = React.createContext<
 
 function goodsReducer(state, action) {
   switch (action.type) {
+    // Favorite
     case 'setFavorites': {
       return { ...state, favoriteIds: action.payload };
     }
@@ -49,6 +60,30 @@ function goodsReducer(state, action) {
         ),
       };
     }
+    // Compare
+    case 'setCompare': {
+      Cookies.set('compareIds', action.payload);
+      return { ...state, compareIds: action.payload };
+    }
+    case 'addCompare': {
+      const newIds = [...state.compareIds, action.payload];
+      Cookies.set('compareIds', newIds);
+
+      return {
+        ...state,
+        compareIds: newIds,
+      };
+    }
+    case 'removeCompare': {
+      const newIds = state.compareIds.filter((item) => item !== action.payload);
+      Cookies.set('compareIds', newIds);
+
+      return {
+        ...state,
+        compareIds: newIds,
+      };
+    }
+    // Cart
     case 'setCartSize': {
       return { ...state, cartSize: action.payload };
     }
@@ -71,6 +106,7 @@ function goodsReducer(state, action) {
         cartGood: null,
       };
     }
+    // OneClick
     case 'setOneClickGood': {
       return {
         ...state,
@@ -92,6 +128,7 @@ function goodsReducer(state, action) {
 function GoodsProvider({ children }: GoodsProviderProps) {
   const [state, dispatch] = React.useReducer(goodsReducer, {
     favoriteIds: [],
+    compareIds: [],
     cartSize: 0,
     cartError: false,
   });

@@ -3,10 +3,12 @@ import { useState } from 'react';
 import { api } from '../../assets/api';
 import { useGoods } from '../context/goods';
 
-import { IGood, IGoodCard } from '../models/IGood';
+import { IGood, IGoodCard, IGoodCompare } from '../models/IGood';
 import { FavoriteGood } from '../../components/Profile/Favorite/Item';
 
-export const useCart = (good: IGoodCard | FavoriteGood | IGood) => {
+export const useCart = (
+  good: IGoodCard | FavoriteGood | IGood | IGoodCompare
+) => {
   const [isLoading, setIsLoading] = useState(false);
   const { dispatch } = useGoods();
 

@@ -134,6 +134,20 @@ export interface IGood {
   set: {}[];
 }
 
+export interface IGoodCompare {
+  id: number;
+  name: string;
+  sku: string;
+  slug: string;
+  price: number;
+  list_price?: number;
+  is_available: boolean;
+  main_image?: Image;
+  attributes_value: {
+    [id: number]: number | string | boolean
+  }
+}
+
 export const goodStatusDictionary = {
   [GoodStatus.ACTIVE]: 'Активный',
   [GoodStatus.MODERATION]: 'На модерации',

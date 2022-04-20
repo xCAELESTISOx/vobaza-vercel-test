@@ -43,6 +43,12 @@ export interface IAttribute {
   categories?: IAttributeRelatedCategory[];
 }
 
+export interface IAttributeCompare {
+  id: string | number;
+  name: string;
+  data_type: keyof typeof AttributeDataType;
+}
+
 export interface IAttributeItem {
   attribute: IAttribute;
   value?: any;

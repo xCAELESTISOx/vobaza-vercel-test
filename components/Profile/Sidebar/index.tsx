@@ -32,6 +32,10 @@ const ProfileSidebar: FC = () => {
         type: 'setCartSize',
         payload: 0,
       });
+      dispatch({
+        type: 'setCompare',
+        payload: [],
+      });
       router.push('/');
     } catch (error) {
       console.log(error);
