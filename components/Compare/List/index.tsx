@@ -37,10 +37,13 @@ const CompareList: FC<Props> = ({ initialGoods, initialAttributes }) => {
   const clearList = () => {
     if (isLoading) return;
     setIsLoading(true);
-    try {
-      api.removeAuthCompareList();
-    } catch (error) {
-      console.log(error);
+    const token = Cookies.get('token');
+    if (token) {
+      try {
+        api.removeAuthCompareList();
+      } catch (error) {
+        console.log(error);
+      }
     }
     dispatch({ type: 'setCompare', payload: [] });
     router.push('/');
