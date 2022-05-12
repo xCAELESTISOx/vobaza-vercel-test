@@ -2,30 +2,52 @@ import { FC, useState } from 'react';
 
 import styles from './styles.module.scss';
 import { IOrderAddress } from '../../../../src/models/IOrder';
+import { IAddress } from 'src/models/IAddress';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import OrderAddressDrawer from './Drawer';
+import OrderWithAuthAddressDrawer from './Drawer/WithAuth';
 
 type Props = {
   address: IOrderAddress;
-  setAddress: (address: IOrderAddress) => void;
+  addresses: IAddress[];
+  setAddress: (t: IOrderAddress) => void;
+  setCurrentUserAddress: (t: IAddress) => void;
 };
-const OrderAddress: FC<Props> = ({ address, setAddress }) => {
+const OrderAddress: FC<Props> = ({
+  address,
+  addresses,
+  setAddress,
+  setCurrentUserAddress,
+}) => {
   const [isDrawer, setIsDrawer] = useState(false);
 
   const toggleChangeAddressDrawer = () => {
     setIsDrawer(!isDrawer);
   };
+  const setNewAddress = (address: IAddress) => {
+    setCurrentUserAddress(address);
+    setIsDrawer(!isDrawer);
+  };
 
   return (
     <div className={styles.orderAddress}>
-      <OrderAddressDrawer
-        address={address}
-        setAddress={setAddress}
-        onClose={toggleChangeAddressDrawer}
-        isOpen={isDrawer}
-      />
+      {addresses.length ? (
+        <OrderWithAuthAddressDrawer
+          addresses={addresses}
+          isOpen={isDrawer}
+          onClose={toggleChangeAddressDrawer}
+          onSubmit={setNewAddress}
+        />
+      ) : (
+        <OrderAddressDrawer
+          address={address}
+          setAddress={setAddress}
+          onClose={toggleChangeAddressDrawer}
+          isOpen={isDrawer}
+        />
+      )}
       <div className={styles.cartContent}>
         <div className={styles.cartHeader}>
           <h2 className={styles.cartTitle}>Адрес</h2>

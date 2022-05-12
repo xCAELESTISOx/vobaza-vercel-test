@@ -20,6 +20,12 @@
       transform: translateX(0);
     }
   }
+
+  &.fullHeight {
+    .drawerBlock {
+      overflow: initial;
+    }
+  }
 }
 
 .drawerContent {
@@ -33,7 +39,7 @@
   max-width: 492px;
   width: 100%;
   height: 100%;
-  padding: 36px 32px;
+  padding: 36px 0;
   background-color: #fff;
   transform: translateX(492px);
   transition: transform 0.2s ease-in-out;
@@ -44,6 +50,7 @@
 }
 
 .drawerHeader {
+  padding: 0 32px;
   margin-bottom: 16px;
 }
 .drawerClose {
@@ -63,6 +70,7 @@
 }
 
 .drawerBlock {
+  padding: 0 32px;
   overflow: auto;
 
   @media screen and (max-width: 576px) {
@@ -71,6 +79,8 @@
 }
 
 .drawerButton {
+  padding: 0 32px;
+
   margin-top: 28px;
 
   @media screen and (max-width: 576px) {

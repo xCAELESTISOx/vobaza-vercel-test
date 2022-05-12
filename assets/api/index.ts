@@ -1,7 +1,7 @@
 import initAxios from 'axios';
 import cookies from 'js-cookie';
 
-import { IOrder } from '../../src/models/IOrder';
+import { IOrder, IOrderDelivery } from '../../src/models/IOrder';
 
 export const axios = initAxios.create({
   baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/`,
@@ -197,6 +197,10 @@ export const api = {
   async createOrder(data: IOrder) {
     await setTokenWithGuest();
     return axios.post(`/v1/checkout`, data);
+  },
+  async createAuthOrder(data: { delivery: IOrderDelivery }) {
+    await setToken();
+    return axios.post(`/customer/v1/checkout`, data);
   },
   async getOrders() {
     await setToken();

@@ -5,3 +5,21 @@
     margin-top: 8px;
   }
 }
+
+.cartUser {
+  display: flex;
+
+  svg {
+    margin-right: 10px;
+  }
+}
+.cartUserItem {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+  color: #808080;
+
+  + .cartUserItem {
+    margin-top: 8px;
+  }
+}

@@ -1,13 +1,16 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Cookies from 'js-cookie';
 
 import styles from '../../styles/Cart.module.scss';
 import checkAuth from '../../assets/api/auth';
 import { api } from '../../assets/api';
+import { useAuth } from 'src/context/auth';
 import { useGoods } from '../../src/context/goods';
 import { ICartGood } from '../../components/Cart/ListItem';
 import { IProfile } from '../../components/Profile/Data';
+import { IAddress } from 'src/models/IAddress';
 import {
   IOrder,
   IOrderAddress,
@@ -23,16 +26,21 @@ import OrderPayment from '../../components/Cart/Order/Payment';
 
 type Props = {
   user: IProfile;
+  addresses: IAddress[];
   goods: ICartGood[];
   price: number;
 };
 
-export default function Checkout({ goods, price, user }) {
+export default function Checkout({ goods, addresses, price, user }) {
+  const { state } = useAuth();
   const formRef = useRef(null);
   const router = useRouter();
   const { dispatch } = useGoods();
+  const [currentUserAddress, setCurrentUserAddress] = useState(
+    addresses.find((item: IAddress) => item.is_default)
+  );
   const [address, setAddress] = useState<IOrderAddress>({
-    address: 'Ростов-на-Дону',
+    address: '',
     flat: '',
     entrance: '',
     floor: '',
@@ -46,11 +54,14 @@ export default function Checkout({ goods, price, user }) {
     formRef.current.submitForm();
   };
   const createOrder = async (customer: Receiver) => {
+    const token = Cookies.get('token');
+    console.log(token);
     try {
       let data = {
-        customer,
+        customer: token ? null : customer,
         delivery: {
           type: delivery ? delivery.tag : IOrderDeliveryType.none,
+          // TODO Address_id вместо address когда будет апи
           address: {
             ...address,
             floor: Number(address.floor),
@@ -63,7 +74,12 @@ export default function Checkout({ goods, price, user }) {
       if (delivery && delivery.time) {
         data.delivery.time_interval = delivery.time.code;
       }
-      const res = await api.createOrder(data);
+      let res = null;
+      if (token) {
+        res = await api.createAuthOrder(data);
+      } else {
+        res = await api.createOrder(data);
+      }
       dispatch({
         type: 'setCartSize',
         payload: 0,
@@ -75,6 +91,17 @@ export default function Checkout({ goods, price, user }) {
       }
     }
   };
+
+  useEffect(() => {
+    const cookieCity = Cookies.get('city');
+
+    if (router.query.city || state.city || cookieCity) {
+      setAddress({
+        ...address,
+        address: router.query.city?.toString() || state.city || cookieCity,
+      });
+    }
+  }, [state.city]);
 
   return (
     <div>
@@ -88,7 +115,12 @@ export default function Checkout({ goods, price, user }) {
                 initialUser={user}
                 createOrder={createOrder}
               />
-              <OrderAddress address={address} setAddress={setAddress} />
+              <OrderAddress
+                address={currentUserAddress || address}
+                setCurrentUserAddress={setCurrentUserAddress}
+                addresses={addresses}
+                setAddress={setAddress}
+              />
               <OrderDelivery
                 goods={goods}
                 address={address}
@@ -123,17 +155,22 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 }) => {
   let goods = [];
   let user = null;
+  let addresses = [];
   let price = 0;
 
   try {
     const isAuth = await checkAuth(req, true);
-    const [cartRes, propfileRes] = await Promise.all([
+    const [cartRes, addressesRes, propfileRes] = await Promise.all([
       api.getCart(),
+      isAuth ? api.getAddresses() : null,
       isAuth ? api.getProfile() : null,
     ]);
 
     if (propfileRes) {
       user = propfileRes.data.data;
+    }
+    if (addressesRes) {
+      addresses = addressesRes.data.data;
     }
     goods = cartRes.data.data.products;
     price = cartRes.data.data.order_price / 100;
@@ -142,6 +179,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       throw new Error();
     }
   } catch (error) {
+    console.dir(error.response.data);
     return {
       redirect: {
         destination: '/cart',
@@ -153,6 +191,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   return {
     props: {
       user,
+      addresses,
       goods,
       price,
     },

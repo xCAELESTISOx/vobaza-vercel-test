@@ -3,6 +3,11 @@
   border: 1px solid #e5e5e5;
   border-radius: 12px;
 
+  &.inline {
+    padding: 0;
+    border: none;
+  }
+
   @media screen and (max-width: 767px) {
     padding: 0;
     border: none;

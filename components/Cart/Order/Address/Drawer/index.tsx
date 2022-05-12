@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 
@@ -7,15 +7,15 @@ import Drawer from '../../../../../src/hoc/withDrawer';
 import { IOrderAddress } from '../../../../../src/models/IOrder';
 
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
+import { dadataApi } from 'assets/api/dadata';
+import { useClickOutside } from '@nebo-team/vobaza.ui.filter-select/dist/filter-select';
+import useDebounce from 'src/hooks/useDebounce';
 
 const validationSchema = yup.object({
   address: yup
     .string()
     .max(255, 'Количество символов в поле должно быть не больше 255')
     .required('Обязательное поле'),
-  flat: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255'),
   entrance: yup
     .string()
     .max(255, 'Количество символов в поле должно быть не больше 255'),
@@ -40,6 +40,9 @@ const OrderAddressDrawer: FC<Props> = ({
   address,
   setAddress,
 }) => {
+  const suggestRef = useRef(null);
+  useClickOutside(suggestRef, () => setAddreses([]));
+  const [addreses, setAddreses] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const setAddressHandler = () => {
@@ -55,12 +58,14 @@ const OrderAddressDrawer: FC<Props> = ({
   };
 
   const {
+    touched,
+    setFieldTouched,
     values,
+    setValues,
     setFieldValue,
     validateField,
     errors,
     handleSubmit,
-    setErrors,
   } = useFormik<IOrderAddress>({
     initialValues: address,
     validationSchema,
@@ -68,13 +73,47 @@ const OrderAddressDrawer: FC<Props> = ({
     validateOnChange: false,
     onSubmit: setAddressHandler,
   });
-
+  const handleChangeAddress = async (e) => {
+    setAddreses([]);
+    setFieldTouched('address');
+    handleChange(e);
+  };
+  const selectAddress = async (addressItem) => {
+    setAddreses([]);
+    setFieldTouched('address', false);
+    setFieldValue('address', addressItem.value);
+    if (addressItem.data.entrance) {
+      setFieldValue('entrance', addressItem.data.entrance);
+    }
+    if (addressItem.data.floor) {
+      setFieldValue('floor', addressItem.data.floor);
+    }
+  };
   const handleChange = async (e: any) => {
     await setFieldValue(e.target.name, e.target.value);
   };
   const handleBlur = async (e: any) => {
     validateField(e.target.name);
   };
+
+  const searchAddress = async () => {
+    const res = await dadataApi.findAddress(values.address);
+    const json = await res.json();
+    const addresesFromRes = json.suggestions;
+    setAddreses(addresesFromRes);
+  };
+  const debouncedSearchAddress = useDebounce(searchAddress, 800);
+
+  useEffect(() => {
+    if (touched.address && values.address) {
+      debouncedSearchAddress();
+    }
+  }, [values.address]);
+  useEffect(() => {
+    if (address) {
+      setValues(address);
+    }
+  }, [address]);
 
   return (
     <Drawer
@@ -83,36 +122,40 @@ const OrderAddressDrawer: FC<Props> = ({
       isOpen={isOpen}
       onClose={onClose}
       onButtonClick={handleSubmit}
+      isFullHeight
     >
       <form onSubmit={handleSubmit}>
         <div className={styles.orderAddressFormItem}>
           <InputText
             label="Адрес"
             name="address"
+            notion="Начните вводить название улицы"
             value={values.address}
-            onChange={handleChange}
+            onChange={handleChangeAddress}
             onBlur={handleBlur}
             error={errors?.address}
             disabled={isLoading}
             required
           />
-        </div>
-        <div className={styles.orderAddressFormItem}>
-          <InputText
-            label="Квартира"
-            name="flat"
-            value={values.flat}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            error={errors?.flat}
-            disabled={isLoading}
-          />
+          {addreses.length > 0 && (
+            <div className={styles.addressSelectModalSuggest} ref={suggestRef}>
+              {addreses.map((addressItem) => (
+                <div
+                  key={addressItem.value}
+                  className={styles.addressSelectModalSuggestItem}
+                  onClick={() => selectAddress(addressItem)}
+                >
+                  {addressItem.value}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className={styles.orderAddressFormItem}>
           <InputText
             label="Подъезд"
             name="entrance"
-            value={values.entrance.toString()}
+            value={values.entrance}
             onChange={handleChange}
             onBlur={handleBlur}
             error={errors?.entrance}
@@ -124,7 +167,7 @@ const OrderAddressDrawer: FC<Props> = ({
           <InputText
             label="Этаж"
             name="floor"
-            value={values.floor.toString()}
+            value={values.floor?.toString()}
             onChange={handleChange}
             onBlur={handleBlur}
             error={errors?.floor}

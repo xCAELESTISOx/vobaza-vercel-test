@@ -15,6 +15,7 @@ import { IProfile } from '../../../Profile/Data';
 
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
 import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone/dist';
+import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 export interface Receiver {
   name: string;
@@ -140,53 +141,66 @@ const OrderReceiver: FC<Props> = forwardRef(
               </div>
             )}
           </div>
-          <form onSubmit={handleSubmit}>
-            <div className={styles.orderReceiverFormItem}>
-              <InputText
-                label="Имя"
-                name="name"
-                value={values.name}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors?.name}
-                disabled={isLoading}
-                required
-              />
+          {token && initialUser ? (
+            <div className={styles.cartUser}>
+              <Icon name="Person" color="#B3B3B3" />
+              <div>
+                <div className={styles.cartUserItem}>
+                  {initialUser.name} {initialUser.surname}
+                </div>
+                <div className={styles.cartUserItem}>{initialUser.phone}</div>
+                <div className={styles.cartUserItem}>{initialUser.email}</div>
+              </div>
             </div>
-            <div className={styles.orderReceiverFormItem}>
-              <InputText
-                label="Фамилия"
-                name="surname"
-                value={values.surname}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors?.surname}
-                disabled={isLoading}
-              />
-            </div>
-            <div className={styles.orderReceiverFormItem}>
-              <InputPhone
-                label="Номер телефона"
-                name="phone"
-                value={values.phone}
-                onChange={handlePhoneChange}
-                onBlur={handleBlur}
-                error={errors?.phone}
-                required
-                disabled={isLoading}
-              />
-            </div>
-            <div className={styles.orderReceiverFormItem}>
-              <InputText
-                label="Электронная почта"
-                name="email"
-                value={values.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors?.email}
-              />
-            </div>
-          </form>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              <div className={styles.orderReceiverFormItem}>
+                <InputText
+                  label="Имя"
+                  name="name"
+                  value={values.name}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors?.name}
+                  disabled={isLoading}
+                  required
+                />
+              </div>
+              <div className={styles.orderReceiverFormItem}>
+                <InputText
+                  label="Фамилия"
+                  name="surname"
+                  value={values.surname}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors?.surname}
+                  disabled={isLoading}
+                />
+              </div>
+              <div className={styles.orderReceiverFormItem}>
+                <InputPhone
+                  label="Номер телефона"
+                  name="phone"
+                  value={values.phone}
+                  onChange={handlePhoneChange}
+                  onBlur={handleBlur}
+                  error={errors?.phone}
+                  required
+                  disabled={isLoading}
+                />
+              </div>
+              <div className={styles.orderReceiverFormItem}>
+                <InputText
+                  label="Электронная почта"
+                  name="email"
+                  value={values.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors?.email}
+                />
+              </div>
+            </form>
+          )}
         </div>
       </div>
     );

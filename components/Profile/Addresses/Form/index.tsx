@@ -9,7 +9,7 @@ import { dadataApi } from 'assets/api/dadata';
 import useDebounce from 'src/hooks/useDebounce';
 import { useAuth } from 'src/context/auth';
 import { IError } from 'src/models/IError';
-import { ElevatorType, IAddressFull } from 'src/models/IAddress';
+import { ElevatorType, IAddress, IAddressFull } from 'src/models/IAddress';
 
 import styles from './styles.module.scss';
 
@@ -47,9 +47,19 @@ const validationSchema = yup.object({
 
 type Props = {
   address?: IAddressFull;
+  inline?: boolean;
+  title?: string;
+  buttonText?: string;
+  submitHandler?: (t: IAddress) => void;
 };
 
-const ProfileAddressesForm: FC<Props> = ({ address }) => {
+const ProfileAddressesForm: FC<Props> = ({
+  address,
+  inline,
+  title,
+  buttonText,
+  submitHandler,
+}) => {
   const router = useRouter();
   const { state } = useAuth();
   const suggestRef = useRef(null);
@@ -65,12 +75,22 @@ const ProfileAddressesForm: FC<Props> = ({ address }) => {
         ...values,
         is_default: values.isDefault,
       };
+      let newId;
       if (address) {
         await api.changeAddress(data, address.id);
       } else {
-        await api.setAddress(data);
+        const res = await api.setAddress(data);
+        newId = res.data;
       }
-      router.push('/profile/address');
+      if (submitHandler) {
+        submitHandler({
+          id: newId,
+          is_default: values.isDefault,
+          address: values.address,
+        });
+      } else {
+        router.push('/profile/address');
+      }
     } catch (error) {
       const errs = error.response.data.errors;
       const backErrors = {} as any;
@@ -166,8 +186,13 @@ const ProfileAddressesForm: FC<Props> = ({ address }) => {
   }, [state.city]);
 
   return (
-    <form className={styles.addressForm} onSubmit={handleSubmit}>
-      <div className={styles.addressFormTitle}>Редактировать адрес </div>
+    <form
+      className={`${styles.addressForm} ${inline ? styles.inline : ''}`}
+      onSubmit={handleSubmit}
+    >
+      <div className={styles.addressFormTitle}>
+        {title || 'Редактировать адрес'}
+      </div>
       <div className={styles.addressFormItem}>
         <InputText
           label="Адрес"
@@ -220,47 +245,51 @@ const ProfileAddressesForm: FC<Props> = ({ address }) => {
           error={errors?.intercom}
         />
       </div>
-      <div className={styles.addressFormItem}>
-        <InputCheckbox
-          variation="secondary"
-          label="Лифт"
-          initialValue={values.elevator !== 'NONE'}
-          onChange={handleElevatorChange}
-          isError={Boolean(errors.isDefault)}
-        />
-      </div>
-      <div className={styles.addressFormItem}>
-        <div className={styles.addressFormRadio}>
-          <InputRadio
-            currentValue={{ code: values.elevator, value: values.elevator }}
-            value="FREIGHT"
-            label="Грузовой"
-            name="elevator"
-            onChange={handleElevatorChange as any}
-            disabled={values.elevator === 'NONE'}
-          />
-          <InputRadio
-            currentValue={{ code: values.elevator, value: values.elevator }}
-            value="PASSENGER"
-            label="Пассажирский"
-            name="elevator"
-            onChange={handleElevatorChange as any}
-            disabled={values.elevator === 'NONE'}
-          />
-        </div>
-      </div>
-      <div className={styles.addressFormItem}></div>
-      <div className={styles.addressFormItem}>
-        <InputCheckbox
-          variation="secondary"
-          label="Сделать адрес по умолчанию"
-          initialValue={values.isDefault}
-          onChange={handleCheckChange}
-          isError={Boolean(errors.isDefault)}
-        />
-      </div>
+      {!inline && (
+        <>
+          <div className={styles.addressFormItem}>
+            <InputCheckbox
+              variation="secondary"
+              label="Лифт"
+              initialValue={values.elevator !== 'NONE'}
+              onChange={handleElevatorChange}
+              isError={Boolean(errors.isDefault)}
+            />
+          </div>
+          <div className={styles.addressFormItem}>
+            <div className={styles.addressFormRadio}>
+              <InputRadio
+                currentValue={{ code: values.elevator, value: values.elevator }}
+                value="FREIGHT"
+                label="Грузовой"
+                name="elevator"
+                onChange={handleElevatorChange as any}
+                disabled={values.elevator === 'NONE'}
+              />
+              <InputRadio
+                currentValue={{ code: values.elevator, value: values.elevator }}
+                value="PASSENGER"
+                label="Пассажирский"
+                name="elevator"
+                onChange={handleElevatorChange as any}
+                disabled={values.elevator === 'NONE'}
+              />
+            </div>
+          </div>
+          <div className={styles.addressFormItem}></div>
+          <div className={styles.addressFormItem}>
+            <InputCheckbox
+              variation="secondary"
+              label="Сделать адрес по умолчанию"
+              initialValue={values.isDefault}
+              onChange={handleCheckChange}
+              isError={Boolean(errors.isDefault)}
+            />
+          </div>
+        </>
+      )}
       <div className={styles.addressFormButtons}>
-        <Button text="Сохранить" size="big" type="submit" />
+        <Button text={buttonText || 'Сохранить'} size={'big'} type="submit" />
       </div>
     </form>
   );

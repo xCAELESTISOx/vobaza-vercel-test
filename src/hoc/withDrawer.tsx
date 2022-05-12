@@ -8,6 +8,7 @@ export interface IModalLayout {
   isOpen: boolean;
   title?: string;
   buttonText?: string;
+  isFullHeight?: boolean;
   onButtonClick?(): void;
   onClose(): void;
 }
@@ -16,6 +17,7 @@ export default function Drawer({
   isOpen,
   title,
   buttonText,
+  isFullHeight,
   children,
   onClose,
   onButtonClick,
@@ -34,7 +36,9 @@ export default function Drawer({
 
   return (
     <div
-      className={`${styles.drawer} ${isOpen ? styles.active : ''}`}
+      className={`${styles.drawer} ${isOpen ? styles.active : ''} ${
+        isFullHeight ? styles.fullHeight : ''
+      }`}
       onClick={onClose}
     >
       <div className={styles.drawerContent} onClick={drawerClickHandler}>
