@@ -18,10 +18,12 @@ export const useCollapse = <T extends HTMLElement = HTMLElement>(
   const [innerDuration, setInnerDuration] = useState<number>(+duration || 200);
 
   useEffect(() => {
-    ref.current.style.transition = `height ${innerDuration}ms ease-in-out`;
-    ref.current.style.height = isOpen ? 'auto' : '0px';
-    ref.current.style.overflow = 'hidden';
-    ref.current.style.willChange = 'height';
+    if (ref.current) {
+      ref.current.style.transition = `height ${innerDuration}ms ease-in-out`;
+      ref.current.style.height = isOpen ? 'auto' : '0px';
+      ref.current.style.overflow = 'hidden';
+      ref.current.style.willChange = 'height';
+    }
   }, [ref, innerDuration]);
 
   useEffect(() => {
@@ -39,13 +41,14 @@ export const useCollapse = <T extends HTMLElement = HTMLElement>(
     let timer: NodeJS.Timeout = null;
 
     requestAnimationFrame(() => {
-      ref.current.style.height = ref.current.scrollHeight + 'px';
+      if (ref.current)
+        ref.current.style.height = ref.current.scrollHeight + 'px';
 
       requestAnimationFrame(() => {
         if (isOpen) {
           timer = setTimeout(setAuto, innerDuration);
         } else {
-          ref.current.style.height = '0px';
+          if (ref.current) ref.current.style.height = '0px';
         }
       });
     });

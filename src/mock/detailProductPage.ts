@@ -1,3 +1,5 @@
+import { AttributeDataType } from 'src/models/IAttributes';
+
 export const mockProduct = {
   // subinfo: 'Коричневый, экокожа, аккордеон',
   in_stock: true,
@@ -13,68 +15,180 @@ export const mockProduct = {
       nearest_date: '25.01',
     },
   },
-  variants: [
-    {
-      id: 1,
-      title: 'Вариант 1',
-      src: 'https://vobaza.ru/images/thumbnails/68/68/detailed/2/2350-vobaza-divan-slim-evroknizhka-baklazhan-purpurno-seryy-uglovoy-sleva-clone.jpg',
-    },
-    {
-      id: 2,
-      title: 'Вариант 2',
-      src: 'https://vobaza.ru/images/thumbnails/68/68/detailed/5/%D0%A1%D0%BB%D0%B8%D0%BC_1_g972-3g.jpg',
-    },
-    {
-      id: 3,
-      title: 'Вариант 3',
-      src: 'https://vobaza.ru/images/thumbnails/68/68/detailed/2/2354-vobaza-divan-slim-evroknizhka-bolotnyy-grafitovyy-uglovoy-sleva-clone.jpg',
-    },
-    {
-      id: 4,
-      title: 'Вариант 4',
-      src: 'https://vobaza.ru/images/thumbnails/68/68/detailed/5/%D0%A1%D0%BB%D0%B8%D0%BC_1_ejd3-aq.jpg',
-    },
-    {
-      id: 5,
-      title: 'Вариант 5',
-      src: 'https://vobaza.ru/images/thumbnails/68/68/detailed/3/2518-vobaza-divan-slim-delfin-glubokiy-siniy-pylnyy-goluboy-uglovoy-sleva-clone.jpg',
-    },
-    {
-      id: 6,
-      title: 'Вариант 6',
-      src: 'https://vobaza.ru/images/thumbnails/68/68/detailed/5/3091-vobaza-divan-uglovoy-slim-ugol-pravyy-siniy-goluboy.jpg',
-    },
-    {
-      id: 7,
-      title: 'Вариант 7',
-      src: 'https://vobaza.ru/images/thumbnails/68/68/detailed/5/3090-vobaza-divan-uglovoy-slim-ugol-pravyy-korichnevyy-bezhevyy.jpg',
-    },
-    {
-      id: 8,
-      title: 'Вариант 8',
-      src: 'https://vobaza.ru/images/thumbnails/68/68/detailed/5/%D0%A1%D0%BB%D0%B8%D0%BC_1_k5vo-0l.jpg',
-    },
-    {
-      id: 9,
-      title: 'Вариант 9',
-      src: 'https://vobaza.ru/images/thumbnails/68/68/detailed/2/2352-vobaza-divan-slim-evroknizhka-vanilnyy-mokkachino-uglovoy-sleva-clone.jpg',
-    },
-    {
-      id: 10,
-      title: 'Вариант 10',
-      src: 'https://vobaza.ru/images/thumbnails/68/68/detailed/2/2351-vobaza-divan-slim-evroknizhka-bezhevyy-ohra-uglovoy-sleva-clone.jpg',
-    },
-    {
-      id: 11,
-      title: 'Вариант 11',
-      src: 'https://vobaza.ru/images/thumbnails/68/68/detailed/5/%D0%A1%D0%BB%D0%B8%D0%BC_1_ckw8-19.jpg',
-    },
-    {
-      id: 12,
-      title: 'Вариант 12',
-      src: 'https://vobaza.ru/images/thumbnails/68/68/detailed/2/2353-vobaza-divan-slim-evroknizhka-korichnevato-oranzhevyy-shokoladnyy-uglovoy-sleva-clone.jpg',
-    },
-  ],
+  variants: {
+    variant_products: [
+      {
+        id: 1,
+        slug: 'kozanyi_divan_2',
+        sku: 'КД098-2-2',
+        main_image: {
+          id: 1,
+          variants: {
+            small: {
+              meta: { width: 48, height: 48 },
+              url: 'https://vobaza.ru/images/thumbnails/68/68/detailed/2/2350-vobaza-divan-slim-evroknizhka-baklazhan-purpurno-seryy-uglovoy-sleva-clone.jpg',
+            },
+          },
+        },
+      },
+      {
+        id: 2,
+        slug: 'Вариант 2',
+        sku: 'asdasd',
+        main_image: {
+          id: 1,
+          variants: {
+            small: {
+              meta: { width: 48, height: 48 },
+              url: 'https://vobaza.ru/images/thumbnails/68/68/detailed/5/%D0%A1%D0%BB%D0%B8%D0%BC_1_g972-3g.jpg',
+            },
+          },
+        },
+      },
+      {
+        id: 3,
+        slug: 'Вариант 3',
+        sku: 'asdasd',
+        main_image: {
+          id: 1,
+          variants: {
+            small: {
+              meta: { width: 48, height: 48 },
+              url: 'https://vobaza.ru/images/thumbnails/68/68/detailed/2/2354-vobaza-divan-slim-evroknizhka-bolotnyy-grafitovyy-uglovoy-sleva-clone.jpg',
+            },
+          },
+        },
+      },
+      {
+        id: 4,
+        slug: 'Вариант 4',
+        sku: 'asdasd',
+        main_image: {
+          id: 1,
+          variants: {
+            small: {
+              meta: { width: 48, height: 48 },
+              url: 'https://vobaza.ru/images/thumbnails/68/68/detailed/2/2350-vobaza-divan-slim-evroknizhka-baklazhan-purpurno-seryy-uglovoy-sleva-clone.jpg',
+            },
+          },
+        },
+      },
+      {
+        id: 5,
+        slug: 'Вариант 5',
+        sku: 'asdasd',
+        main_image: {
+          id: 1,
+          variants: {
+            small: {
+              meta: { width: 48, height: 48 },
+              url: 'https://vobaza.ru/images/thumbnails/68/68/detailed/5/%D0%A1%D0%BB%D0%B8%D0%BC_1_g972-3g.jpg',
+            },
+          },
+        },
+      },
+      {
+        id: 6,
+        slug: 'Вариант 6',
+        sku: 'asdasd',
+        main_image: {
+          id: 1,
+          variants: {
+            small: {
+              meta: { width: 48, height: 48 },
+              url: 'https://vobaza.ru/images/thumbnails/68/68/detailed/2/2354-vobaza-divan-slim-evroknizhka-bolotnyy-grafitovyy-uglovoy-sleva-clone.jpg',
+            },
+          },
+        },
+      },
+      {
+        id: 7,
+        slug: 'Вариант 7',
+        sku: 'asdasd',
+        main_image: {
+          id: 1,
+          variants: {
+            small: {
+              meta: { width: 48, height: 48 },
+              url: 'https://vobaza.ru/images/thumbnails/68/68/detailed/2/2350-vobaza-divan-slim-evroknizhka-baklazhan-purpurno-seryy-uglovoy-sleva-clone.jpg',
+            },
+          },
+        },
+      },
+      {
+        id: 8,
+        slug: 'Вариант 8',
+        sku: 'asdasd',
+        main_image: {
+          id: 1,
+          variants: {
+            small: {
+              meta: { width: 48, height: 48 },
+              url: 'https://vobaza.ru/images/thumbnails/68/68/detailed/5/%D0%A1%D0%BB%D0%B8%D0%BC_1_g972-3g.jpg',
+            },
+          },
+        },
+      },
+      {
+        id: 9,
+        slug: 'Вариант 9',
+        sku : 'asd',
+        main_image: {
+          id: 1,
+          variants: {
+            small: {
+              meta: { width: 48, height: 48 },
+              url: 'https://vobaza.ru/images/thumbnails/68/68/detailed/2/2354-vobaza-divan-slim-evroknizhka-bolotnyy-grafitovyy-uglovoy-sleva-clone.jpg',
+            },
+          },
+        },
+      },
+      // {
+      //   id: 10,
+      //   slug: 'Вариант 10',
+      //   src: 'https://vobaza.ru/images/thumbnails/68/68/detailed/2/2351-vobaza-divan-slim-evroknizhka-bezhevyy-ohra-uglovoy-sleva-clone.jpg',
+      // },
+      // {
+      //   id: 11,
+      //   slug: 'Вариант 11',
+      //   src: 'https://vobaza.ru/images/thumbnails/68/68/detailed/5/%D0%A1%D0%BB%D0%B8%D0%BC_1_ckw8-19.jpg',
+      // },
+      // {
+      //   id: 12,
+      //   slug: 'Вариант 12',
+      //   src: 'https://vobaza.ru/images/thumbnails/68/68/detailed/2/2353-vobaza-divan-slim-evroknizhka-korichnevato-oranzhevyy-shokoladnyy-uglovoy-sleva-clone.jpg',
+      // },
+    ],
+    variants: [
+      {
+        attribute: {
+          id: 1,
+          name: 'Ширина',
+          data_type: AttributeDataType.INTEGER,
+        },
+        values: [
+          {
+            is_current: true,
+            value: 'asd',
+            product: {
+              id: 1,
+              slug: 'Вариант 1',
+              sku: 'asdasd',
+              main_image: {
+                id: 1,
+                variants: {
+                  small: {
+                    meta: { width: 48, height: 48 },
+                    url: 'https://vobaza.ru/images/thumbnails/68/68/detailed/2/2350-vobaza-divan-slim-evroknizhka-baklazhan-purpurno-seryy-uglovoy-sleva-clone.jpg',
+                  },
+                },
+              },
+            },
+          },
+        ],
+      },
+    ],
+  },
   images: [
     // 'https://vobaza.ru/images/thumbnails/610/610/detailed/44/%D0%BE%D1%82%D1%82%D0%BE%D0%BC%D0%B0%D0%BD%D0%BA%D0%B0.jpg',
     // 'https://vobaza.ru/images/thumbnails/610/610/detailed/5/%D0%A1%D0%BB%D0%B8%D0%BC_1_ckw8-19.jpg',

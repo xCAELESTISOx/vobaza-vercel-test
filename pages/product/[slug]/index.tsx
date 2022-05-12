@@ -11,7 +11,7 @@ import { getImageVariantByFieldname } from '../../../assets/utils/images';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
-import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select/dist';
+import { InputSelect, Variant } from '@nebo-team/vobaza.ui.inputs.input-select/dist';
 import Breadcrumbs from '../../../components/Layout/Breadcrumbs';
 import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
 import { SelectTabs } from '../../../components/UI/SelectTabs';
@@ -36,9 +36,11 @@ import { ProductCompare } from 'components/DetailGoodPage/ProductCompare';
 import GoodsList from 'components/Goods/List';
 
 import styles from './styles.module.scss';
+import { IGood, IVariantProduct } from 'src/models/IGood';
+import { useRouter } from 'next/router';
 
 interface DetailGoodPage {
-  product: any;
+  product: IGood;
   breadcrumbs: BreadcrumbType[];
 }
 
@@ -80,9 +82,6 @@ const normalizeProductInfo = (product) => {
 
 const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
   const { currentFavorite, toggleFavorite } = useFavorite(product);
-  const [selectedColorVariant, setSelectedColorVariant] = useState<any>(
-    mockProduct.variants[0]
-  );
   const { addToCart } = useCart(product);
   const { dispatch } = useGoods();
 
@@ -91,15 +90,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
   };
 
   const [selectedOptions, setSelectedOptions] = useState<any>({});
-
-  useEffect(() => {
-    const options = {};
-    mockProduct.options.forEach((t) => {
-      options[t.id] = t.variants[0];
-    });
-
-    setSelectedOptions(options);
-  }, []);
+  const router = useRouter()
 
   const handelSelectOption = (name, e) => {
     const options = { ...selectedOptions };
@@ -107,36 +98,77 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
     options[name] = e;
 
     setSelectedOptions(options);
+
+    const curPropduct = selectedOptions[name]
+    
+    // router.push(`/product/${option.slug}_${option.id}_${option.sku}`)
   };
 
   const openOneClickModal = () => {
     dispatch({ type: 'setOneClickGood', payload: product });
   };
 
+  useEffect(() => {
+    const options = {};
+    product.variants.variants.forEach((t) => {
+      const currentOption = t.values.find(v => v.is_current)
+      options[t.attribute.id] = { code : currentOption.value.toString(), value : currentOption.value.toString() };
+    });
+
+    setSelectedOptions(options);
+  }, []);
+
   const renderOptions = () => {
-    return mockProduct.options.map((option) => (
-      <div className={styles.productOption} key={option.id}>
-        {option.variants.length > 5 ? (
+    const options = product.variants.variants;
+
+    if (!options) return <div />;
+
+    return options.map((option) => (<div
+      className={styles.productOption}
+      key={option.attribute.id + option.attribute.name}
+    >
+      {option.values.length > 1 &&
+        (option.values.length > 5 ? (
           <InputSelect
-            name={option.id}
-            label={option.label}
-            currentValue={selectedOptions[option.id]}
-            variants={option.variants}
-            onChange={(e) => handelSelectOption(option.id, e)}
+            name={option.attribute.id.toString()}
+            label={option.attribute.name}
+            currentValue={selectedOptions[option.attribute.id]}
+            variants={option.values.map((v) => {
+              let code = '';
+              let value = '';
+              if (typeof v.value === 'boolean') {
+                code = v.value === true ? 'YES' : 'NO';
+                value = v.value === true ? 'Да' : 'Нет';
+              } else {
+                code = v.value.toString();
+                value = v.value.toString();
+              }
+
+              return { code, value };
+            })}
+            onChange={(e) => handelSelectOption(option.attribute.id, e)}
           />
         ) : (
           <SelectTabs
-            label={option.label}
-            value={selectedOptions[option.id]}
-            variants={option.variants.map((v) => ({
-              code: v.code,
-              text: v.value,
-            }))}
-            onChange={(e) => handelSelectOption(option.id, e)}
+            label={option.attribute.name}
+            value={selectedOptions[option.attribute.id]}
+            variants={option.values.map((v) => {
+              let code = '';
+              let text = '';
+              if (typeof v.value === 'boolean') {
+                code = v.value === true ? 'YES' : 'NO';
+                text = v.value === true ? 'Да' : 'Нет';
+              } else {
+                code = v.value.toString();
+                text = v.value.toString();
+              }
+
+              return { code, text };
+            })}
+            onChange={(e) => handelSelectOption(option.attribute.id, e)}
           />
-        )}
-      </div>
-    ));
+        ))}
+    </div>));
   };
 
   return (
@@ -211,16 +243,17 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                 </div>
               </div>
 
-              {/* <div className={styles.productOptionList}>
-                <div className={styles.productOption}>
-                  <ProductVariants
-                    items={mockProduct.variants}
-                    selected={selectedColorVariant}
-                    onChange={setSelectedColorVariant}
-                  />
+              {product.variants.variant_products?.length > 1 && (
+                <div className={styles.productOptionList}>
+                  <div className={styles.productOption}>
+                    <ProductVariants
+                      id={product.id}
+                      items={product.variants.variant_products}
+                    />
+                  </div>
+                  {renderOptions()}
                 </div>
-                {renderOptions()}
-              </div> */}
+              )}
 
               <div className={styles.productInfoBlock}>
                 <ProductPrice

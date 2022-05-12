@@ -1,47 +1,47 @@
 import React, { FC, useRef } from 'react';
+
 import { useCollapse } from '../../../src/hooks/useCollapse';
 import { useMatchMedia } from '../../../src/hooks/useMatchMedia';
 
+import type { IVariantProduct } from 'src/models/IGood';
+
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
+import PlaceholderImage from 'assets/images/placeholder_small.png';
 
 import styles from './styles.module.scss';
+import Link from 'next/link';
+import Image from 'next/image';
 
 // TODO: Next-image
 
 interface VariantProps {
-  item: any;
+  item: IVariantProduct;
   active: boolean;
-  onClick: (item: any) => void;
 }
 
-const Variant: FC<VariantProps> = ({ item, active = false, onClick }) => {
-  const handleClick = () => {
-    onClick && onClick(item);
-  };
-
+const Variant: FC<VariantProps> = ({ item, active = false }) => {
   return (
-    <div
-      className={`${styles.variant} ${active ? styles.variantActive : ''}`}
-      title={item.title}
-      onClick={handleClick}
-    >
-      <div className={styles.variantImg}>
-        <img src={item.src} alt={item.title} />
+    <Link href={`/product/${item.slug}_${item.id}_${item.sku}`}>
+      <div
+        className={`${styles.variant} ${active ? styles.variantActive : ''}`}
+        title={item.slug}
+      >
+        <div className={styles.variantImg}>
+          <Image width={48} height={48} src={item.main_image?.variants.small.url || PlaceholderImage} alt={item.slug} />
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
 interface ProductVariantsProps {
-  items: any[];
-  selected: any;
-  onChange?: (item: any) => void;
+  id: number;
+  items: IVariantProduct[];
 }
 
 const ProductVariants: FC<ProductVariantsProps> = ({
+  id,
   items = [],
-  selected = null,
-  onChange = () => {},
 }) => {
   const hiddenVariantsRef = useRef(null);
   const [isOpen, toggleOpen] = useCollapse(hiddenVariantsRef, {
@@ -61,8 +61,7 @@ const ProductVariants: FC<ProductVariantsProps> = ({
           <Variant
             key={item.id}
             item={item}
-            active={selected && selected.id === item.id}
-            onClick={onChange}
+            active={item.id === id}
           />
         ))}
       </div>
@@ -90,8 +89,7 @@ const ProductVariants: FC<ProductVariantsProps> = ({
               <Variant
                 key={item.id}
                 item={item}
-                active={selected && selected.id === item.id}
-                onClick={onChange}
+                active={item.id === id}
               />
             ))}
           </div>

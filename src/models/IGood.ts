@@ -2,6 +2,7 @@ import { Image } from './IImage';
 import type { IDictionaryItem } from './IDictionary';
 
 import { CategoryStatus } from './ICategory';
+import { AttributeDataType, IAttribute, IAttributes } from './IAttributes';
 
 export enum GoodStatus {
   ACTIVE = 'ACTIVE',
@@ -41,17 +42,6 @@ interface IСategory {
   status: CategoryStatus;
 }
 
-interface IAttribute {
-  //TODO enum
-  data_type: string;
-  id: number;
-  name: string;
-  required: boolean;
-  slug: string;
-  status: CategoryStatus;
-  type: 'MAIN' | 'ADDITIONAL';
-}
-
 export interface IGoodMerchant {
   id: number;
   status: keyof typeof StatusTypes;
@@ -60,7 +50,7 @@ export interface IGoodMerchant {
   brand: string;
   phone: string;
   provider_type: keyof typeof ProviderTypes;
-};
+}
 
 export interface IGoodDocument {
   id: number;
@@ -68,7 +58,7 @@ export interface IGoodDocument {
   size: number;
   type: string;
   url: string;
-};
+}
 
 export interface IGoodCard {
   id: number;
@@ -87,6 +77,13 @@ export interface IGoodCard {
   is_available: boolean;
 }
 
+export interface IVariantProduct {
+  id: number;
+  sku: string;
+  slug: string;
+  main_image?: Image;
+}
+
 export interface IGood {
   id: number;
   barcode: string;
@@ -100,6 +97,12 @@ export interface IGood {
   model?: string;
   images?: Image[];
   main_image?: Image;
+  subinfo?: string;
+
+  inStonk?: boolean;
+  loyaltyBonus?: number;
+
+  creditMinimalPayment: number;
 
   price: number;
   list_price?: number;
@@ -115,6 +118,24 @@ export interface IGood {
   merchant: IGoodMerchant;
   merchant_sku: string;
 
+  similar_products: IGoodCard[];
+
+  variants: {
+    variant_products: IVariantProduct[];
+    variants: {
+      attribute: {
+        data_type: AttributeDataType;
+        id: number | string;
+        name: string;
+      };
+      values: {
+        is_current: boolean;
+        value: number | string;
+        product: IVariantProduct;
+      }[];
+    }[];
+  };
+
   warehouse: {
     id: number;
     name: string;
@@ -125,12 +146,9 @@ export interface IGood {
     meta_description: string;
   };
   labels: IDictionaryItem[];
-  attributes: {
-    attribute: IAttribute;
-    value: any;
-  }[];
+  attributes: IAttributes;
   documents?: IGoodDocument[];
-  set: {}[];
+  set: IGoodCard[];
 }
 
 export interface IGoodCompare {
@@ -143,8 +161,8 @@ export interface IGoodCompare {
   is_available: boolean;
   main_image?: Image;
   attributes_value: {
-    [id: number]: number | string | boolean
-  }
+    [id: number]: number | string | boolean;
+  };
 }
 
 export const goodStatusDictionary = {
