@@ -1,56 +1,69 @@
-import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
+import { FC, useState } from 'react';
 import router from 'next/router';
-import { FC } from 'react';
+
+import { api } from 'assets/api';
+import { IAddress } from 'src/models/IAddress';
+
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 import styles from './styles.module.scss';
 
 type Props = {
-  address: {
-    fullAddress: string;
-    isDefault: boolean;
-  };
-  onDelete: (fullAddress: string) => void;
-  onToggleDefault: (fullAddress: string) => void;
+  address: IAddress;
+  onDelete: (id: number) => void;
+  onToggleDefault: (id: number) => void;
 };
 const ProfileAddress: FC<Props> = ({ address, onDelete, onToggleDefault }) => {
-  const deleteAddress = (fullAddress) => {
-    //TODO api
-    onDelete(fullAddress);
+  const [isloading, setIsloading] = useState(false);
+
+  const deleteAddress = async () => {
+    if (isloading) return;
+    try {
+      setIsloading(true);
+      await api.deleteAddress(address.id);
+      onDelete(address.id);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsloading(false);
+    }
   };
   const editAddress = () => {
-    router.push('/profile/address/add');
+    router.push(`/profile/address/${address.id}`);
   };
-  const toggleDefault = (fullAddress) => {
-    //TODO api
-    onToggleDefault(fullAddress);
+  const toggleDefault = async () => {
+    if (isloading) return;
+    try {
+      setIsloading(true);
+      await api.setDefaultAddress(address.id);
+      onToggleDefault(address.id);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsloading(false);
+    }
   };
 
   return (
     <div
-      key={address.fullAddress}
+      key={address.address}
       className={`${styles.profileAddress} ${
-        address.isDefault ? styles.default : ''
+        address.is_default ? styles.default : ''
       }`}
     >
-      <div className={styles.profileAddressName}>{address.fullAddress}</div>
+      <div className={styles.profileAddressName}>{address.address}</div>
       <div className={styles.profileAddressButtons}>
         <div className={styles.profileAddressButton} onClick={editAddress}>
           <Icon name="WritePencil" /> Редактировать
         </div>
-        {!address.isDefault && (
-          <div
-            className={styles.profileAddressButton}
-            onClick={() => deleteAddress(address.fullAddress)}
-          >
+        {!address.is_default && (
+          <div className={styles.profileAddressButton} onClick={deleteAddress}>
             <Icon name="Trash" /> Удалить
           </div>
         )}
       </div>
-      <div
-        className={styles.profileAddressDefault}
-        onClick={() => toggleDefault(address.fullAddress)}
-      >
-        {address.isDefault ? 'Адрес по умолчанию' : 'Сделать по умолчанию '}
+      <div className={styles.profileAddressDefault} onClick={toggleDefault}>
+        {address.is_default ? 'Адрес по умолчанию' : 'Сделать по умолчанию '}
       </div>
     </div>
   );

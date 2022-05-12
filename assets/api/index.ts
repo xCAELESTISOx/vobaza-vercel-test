@@ -65,6 +65,31 @@ export const api = {
   subscribeMailing(data: { email: string }) {
     return axios.post('/v1/subscriptions', data);
   },
+  // Addresses
+  getAddresses() {
+    setToken();
+    return axios.get('/customer/v1/addresses');
+  },
+  getAddress(id: string | number) {
+    setToken();
+    return axios.get(`/customer/v1/addresses/${id}`);
+  },
+  setAddress(data: object) {
+    setToken();
+    return axios.post('/customer/v1/addresses', data);
+  },
+  changeAddress(data: object, id: number) {
+    setToken();
+    return axios.post(`/customer/v1/addresses/${id}`, data);
+  },
+  deleteAddress(id: string | number) {
+    setToken();
+    return axios.delete(`/customer/v1/addresses/${id}`);
+  },
+  setDefaultAddress(id: string | number) {
+    setToken();
+    return axios.post(`/customer/v1/addresses/${id}/default`);
+  },
   //Banners
   getBanners(params: { type: 'SLIDER' | 'MINIATURE'; limit?: number }) {
     return axios.get('/v1/banners', { params });

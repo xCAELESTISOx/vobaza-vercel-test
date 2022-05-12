@@ -38,7 +38,7 @@ interface IСategory {
   id: number;
   name: string;
   slug: string;
-  status: keyof typeof CategoryStatus;
+  status: CategoryStatus;
 }
 
 interface IAttribute {
@@ -48,8 +48,7 @@ interface IAttribute {
   name: string;
   required: boolean;
   slug: string;
-  //TODO enum
-  status: keyof typeof CategoryStatus;
+  status: CategoryStatus;
   type: 'MAIN' | 'ADDITIONAL';
 }
 

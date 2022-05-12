@@ -19,8 +19,25 @@ export const dadataApi = {
         "Authorization": "Token " + token
       },
       body: JSON.stringify({
-        query: query, from_bound: { value: "city" },
+        query: query,
+        from_bound: { value: "city" },
         to_bound: { value: "city" }
+      })
+    });
+  },
+  findAddress(query: string) {
+    return fetch(`${baseURL}suggest/address`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": "Token " + token
+      },
+      body: JSON.stringify({
+        query: query,
+        from_bound: { value: "city" },
+        to_bound: { value: "flat" }
       })
     });
   },

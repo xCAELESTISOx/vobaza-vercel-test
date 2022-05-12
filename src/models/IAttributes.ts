@@ -24,10 +24,11 @@ export enum AttributeDataType {
   ONE_FROM_MANY = 'ONE_FROM_MANY',
 }
 
+
 export interface IAttributeRelatedCategory {
   id: number;
   name: string;
-  status: keyof typeof CategoryStatus;
+  status: CategoryStatus;
 }
 
 export interface IAttribute {

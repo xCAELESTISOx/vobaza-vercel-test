@@ -1,19 +1,19 @@
 import { GetServerSideProps } from 'next';
 
-import { api } from 'assets/api';
 import checkAuth from 'assets/api/auth';
-import { IAddress } from 'src/models/IAddress';
+import { api } from 'assets/api';
+import { IAddressFull } from 'src/models/IAddress';
+
+import ProfileSidebar from '../../../components/Profile/Sidebar';
+import ProfileAddressesForm from '../../../components/Profile/Addresses/Form';
 
 import styles from '../../../styles/Profile.module.scss';
 
-import ProfileSidebar from '../../../components/Profile/Sidebar';
-import ProfileAddresses from '../../../components/Profile/Addresses';
-
 type Props = {
-  addreses: IAddress[];
+  address: IAddressFull;
 };
 
-export default function ProfileAddress({ addreses }: Props) {
+export default function ProfileAddressAdd({ address }: Props) {
   return (
     <div>
       <div className="container">
@@ -25,7 +25,7 @@ export default function ProfileAddress({ addreses }: Props) {
             </div>
             <div className={styles.profileContentBlock}>
               <h2 className={styles.profileSubtitle}>Мои адреса</h2>
-              <ProfileAddresses addreses={addreses} />
+              <ProfileAddressesForm address={address} />
             </div>
           </div>
         </div>
@@ -36,13 +36,14 @@ export default function ProfileAddress({ addreses }: Props) {
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({
   req,
+  params,
 }) => {
-  let addreses = [];
+  let address = null;
 
   try {
     await checkAuth(req);
-    const addressesRes = await api.getAddresses();
-    addreses = addressesRes.data.data;
+    const addressRes = await api.getAddress(params.id.toString());
+    address = addressRes.data.data;
   } catch (error: any) {
     return {
       redirect: {
@@ -54,7 +55,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 
   return {
     props: {
-      addreses,
+      address,
     },
   };
 };

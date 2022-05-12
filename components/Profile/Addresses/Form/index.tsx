@@ -1,29 +1,40 @@
-import { FC } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
+import Cookies from 'js-cookie';
+
+import { api } from 'assets/api';
+import { dadataApi } from 'assets/api/dadata';
+import useDebounce from 'src/hooks/useDebounce';
+import { useAuth } from 'src/context/auth';
+import { IError } from 'src/models/IError';
+import { ElevatorType, IAddressFull } from 'src/models/IAddress';
 
 import styles from './styles.module.scss';
+
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
 import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
+import { InputRadio } from '@nebo-team/vobaza.ui.inputs.input-radio';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
-import { useRouter } from 'next/router';
+import { useClickOutside } from '@nebo-team/vobaza.ui.filter-select/dist/filter-select';
 
 interface Address {
   address: string;
-  flat: string;
   entrance: string;
   floor: string;
   intercom: string;
   isDefault: boolean;
+  elevator: ElevatorType;
 }
 
 const initialValues = {
-  address: 'Санкт-Петербург',
-  flat: '',
+  address: '',
   entrance: '',
   floor: '',
   intercom: '',
   isDefault: false,
+  elevator: 'NONE',
 } as Address;
 
 const validationSchema = yup.object({
@@ -34,38 +45,125 @@ const validationSchema = yup.object({
   intercom: yup.string(),
 });
 
-const ProfileAddressesForm: FC = () => {
-  const router = useRouter();
+type Props = {
+  address?: IAddressFull;
+};
 
-  const getCodeHandler = () => {
-    // TODO api
-    router.push('/profile/address');
+const ProfileAddressesForm: FC<Props> = ({ address }) => {
+  const router = useRouter();
+  const { state } = useAuth();
+  const suggestRef = useRef(null);
+  useClickOutside(suggestRef, () => setAddreses([]));
+  const [addreses, setAddreses] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const saveAddress = async () => {
+    if (isLoading) return;
+    try {
+      setIsLoading(true);
+      const data = {
+        ...values,
+        is_default: values.isDefault,
+      };
+      if (address) {
+        await api.changeAddress(data, address.id);
+      } else {
+        await api.setAddress(data);
+      }
+      router.push('/profile/address');
+    } catch (error) {
+      const errs = error.response.data.errors;
+      const backErrors = {} as any;
+
+      errs.forEach((err: IError) => {
+        err.source && err.source !== ''
+          ? (backErrors[err.source] = err.title)
+          : (backErrors.address = err.title
+              ? err.title
+              : 'Непредвиденная ошибка, попробуйте ещё раз');
+      });
+      setErrors(backErrors);
+    } finally {
+      setIsLoading(false);
+    }
   };
   const {
     values,
     setFieldValue,
+    touched,
+    setFieldTouched,
     validateField,
     errors,
-    handleSubmit,
     setErrors,
+    handleChange,
+    handleSubmit,
   } = useFormik<Address>({
-    initialValues,
+    initialValues: address
+      ? {
+          address: address.address || '',
+          entrance: address.entrance || '',
+          floor: address.floor.toString() || '',
+          intercom: address.intercom || '',
+          isDefault: address.is_default,
+          elevator: address.elevator || 'NONE',
+        }
+      : initialValues,
     validationSchema,
     validateOnBlur: false,
     validateOnChange: false,
-    onSubmit: getCodeHandler,
+    onSubmit: saveAddress,
   });
-  const handleCodeChange = async (e: any) => {
-    if (e.target.value.length <= 5) {
-      await setFieldValue(e.target.name, e.target.value);
+  const handleChangeAddress = async (e) => {
+    setAddreses([]);
+    setFieldTouched('address');
+    handleChange(e);
+  };
+  const selectAddress = async (e) => {
+    setAddreses([]);
+    setFieldTouched('address', false);
+    await setFieldValue('address', e.target.dataset.value);
+  };
+  const handleElevatorChange = async (
+    val: boolean | { code: string; value: ElevatorType }
+  ) => {
+    if (val) {
+      if (typeof val === 'boolean' || val.value === 'FREIGHT') {
+        setFieldValue('elevator', 'FREIGHT');
+      } else {
+        setFieldValue('elevator', 'PASSENGER');
+      }
+    } else {
+      setFieldValue('elevator', 'NONE');
     }
   };
-  const handleCheckChange = async (e: any) => {
-    await setFieldValue('isDefault', e);
+  const handleCheckChange = async (bool: boolean) => {
+    await setFieldValue('isDefault', bool);
   };
-  const handleBlur = async (e: any) => {
+  const handleBlur: React.FocusEventHandler = async (e: any) => {
     validateField(e.target.name);
   };
+
+  const searchAddress = async () => {
+    const res = await dadataApi.findAddress(values.address);
+    const json = await res.json();
+    const addresesFromRes = json.suggestions;
+    setAddreses(addresesFromRes);
+  };
+  const debouncedSearchAddress = useDebounce(searchAddress, 800);
+
+  useEffect(() => {
+    if (touched.address && values.address) {
+      debouncedSearchAddress();
+    }
+  }, [values.address]);
+
+  useEffect(() => {
+    const cookieCity = Cookies.get('city');
+
+    if (!address && (router.query.city || state.city || cookieCity)) {
+      setFieldValue('address', router.query.city || state.city || cookieCity);
+    }
+  }, [state.city]);
 
   return (
     <form className={styles.addressForm} onSubmit={handleSubmit}>
@@ -75,36 +173,41 @@ const ProfileAddressesForm: FC = () => {
           label="Адрес"
           name="address"
           value={values.address}
-          onChange={handleCodeChange}
+          onChange={handleChangeAddress}
           onBlur={handleBlur}
           error={errors?.address}
           required
         />
+        {addreses.length > 0 && (
+          <div className={styles.addressSelectModalSuggest} ref={suggestRef}>
+            {addreses.map((addressItem) => (
+              <div
+                key={addressItem.value}
+                data-value={addressItem.value}
+                className={styles.addressSelectModalSuggestItem}
+                onClick={selectAddress}
+              >
+                {addressItem.value}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <div className={styles.addressFormItem}>
-        <InputText
-          label="Квартира"
-          name="flat"
-          value={values.flat}
-          onChange={handleCodeChange}
-          onBlur={handleBlur}
-          error={errors?.flat}
-        />
         <InputText
           label="Подъезд"
           name="entrance"
           value={values.entrance}
-          onChange={handleCodeChange}
+          onChange={handleChange}
           onBlur={handleBlur}
           error={errors?.entrance}
         />
-      </div>
-      <div className={styles.addressFormItem}>
         <InputText
           label="Этаж"
           name="floor"
           value={values.floor}
-          onChange={handleCodeChange}
+          valueType="integer"
+          onChange={handleChange}
           onBlur={handleBlur}
           error={errors?.floor}
         />
@@ -112,11 +215,41 @@ const ProfileAddressesForm: FC = () => {
           label="Домофон"
           name="intercom"
           value={values.intercom}
-          onChange={handleCodeChange}
+          onChange={handleChange}
           onBlur={handleBlur}
           error={errors?.intercom}
         />
       </div>
+      <div className={styles.addressFormItem}>
+        <InputCheckbox
+          variation="secondary"
+          label="Лифт"
+          initialValue={values.elevator !== 'NONE'}
+          onChange={handleElevatorChange}
+          isError={Boolean(errors.isDefault)}
+        />
+      </div>
+      <div className={styles.addressFormItem}>
+        <div className={styles.addressFormRadio}>
+          <InputRadio
+            currentValue={{ code: values.elevator, value: values.elevator }}
+            value="FREIGHT"
+            label="Грузовой"
+            name="elevator"
+            onChange={handleElevatorChange as any}
+            disabled={values.elevator === 'NONE'}
+          />
+          <InputRadio
+            currentValue={{ code: values.elevator, value: values.elevator }}
+            value="PASSENGER"
+            label="Пассажирский"
+            name="elevator"
+            onChange={handleElevatorChange as any}
+            disabled={values.elevator === 'NONE'}
+          />
+        </div>
+      </div>
+      <div className={styles.addressFormItem}></div>
       <div className={styles.addressFormItem}>
         <InputCheckbox
           variation="secondary"

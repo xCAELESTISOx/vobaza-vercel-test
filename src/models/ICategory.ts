@@ -1,17 +1,13 @@
 import type { Image } from './IImage';
 
-export enum CategoryStatus {
-  ACTIVE = 'ACTIVE',
-  NOT_ACTIVE = 'NOT_ACTIVE',
-  HIDDEN = 'HIDDEN',
-}
+export type CategoryStatus = "ACTIVE" | "NOT_ACTIVE" | "HIDDEN";
 
 export interface ICategory {
   id: number | string;
   slug: string;
   name: string;
   title: string;
-  status: keyof typeof CategoryStatus;
+  status: CategoryStatus;
   parent_id?: number | string;
   products_count?: number;
   active_products_count?: number;
@@ -27,8 +23,8 @@ export interface ICategory {
   image?: Image;
 }
 
-export const CategoryStatusDictionary = {
-  [CategoryStatus.ACTIVE]: 'Активна',
-  [CategoryStatus.NOT_ACTIVE]: 'Неактивна',
-  [CategoryStatus.HIDDEN]: 'Скрыта',
+export const CategoryStatusDictionary: Record<CategoryStatus, string> = {
+  ACTIVE: 'Активна',
+  NOT_ACTIVE: 'Неактивна',
+  HIDDEN: 'Скрыта',
 };

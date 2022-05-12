@@ -1,34 +1,26 @@
 import { FC, useState } from 'react';
+import { IAddress } from 'src/models/IAddress';
 import ProfileAddress from './Item';
 import ProfileAddressEmpty from './Item/Empty';
 
 import styles from './styles.module.scss';
 
-const tmpAddresses = [
-  {
-    fullAddress: 'Санкт-Петербург ',
-    isDefault: true,
-  },
-  {
-    fullAddress: 'Москва, ул Тверская, 6 стр 1 ',
-    isDefault: false,
-  },
-];
+type Props = {
+  addreses: IAddress[];
+};
 
-const ProfileAddresses: FC = () => {
-  const [addresses, setAddresses] = useState(tmpAddresses);
+const ProfileAddresses: FC<Props> = ({ addreses }) => {
+  const [addresses, setAddresses] = useState(addreses);
 
-  const deleteAddress = (fullAddress) => {
-    setAddresses([
-      ...addresses.filter((address) => address.fullAddress !== fullAddress),
-    ]);
+  const deleteAddress = (id: number) => {
+    setAddresses([...addresses.filter((address) => address.id !== id)]);
   };
-  const toggleDefault = (fullAddress) => {
+  const toggleDefault = (id: number) => {
     setAddresses([
       ...addresses.map((address) => {
-        if (address.isDefault) return { ...address, isDefault: false };
-        if (address.fullAddress === fullAddress)
-          return { ...address, isDefault: true };
+        if (address.is_default) return { ...address, is_default: false };
+        console.log(address.id, id);
+        if (address.id === id) return { ...address, is_default: true };
         return address;
       }),
     ]);
@@ -44,7 +36,7 @@ const ProfileAddresses: FC = () => {
       <div className={styles.profileAddresses}>
         {addresses.map((address) => (
           <ProfileAddress
-            key={address.fullAddress}
+            key={address.id}
             address={address}
             onDelete={deleteAddress}
             onToggleDefault={toggleDefault}
