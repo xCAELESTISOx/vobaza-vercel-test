@@ -1,6 +1,7 @@
 import type { GetServerSideProps } from 'next';
 import React, { FC, useEffect, useState } from 'react';
 import SimpleReactLightbox from 'simple-react-lightbox';
+import { useRouter } from 'next/router';
 
 import { api } from '../../../assets/api';
 import { useCart } from '../../../src/hooks/useCart';
@@ -8,10 +9,13 @@ import { useGoods } from 'src/context/goods';
 import { mockProduct } from '../../../src/mock/detailProductPage';
 import { useFavorite } from '../../../src/hooks/useFavorite';
 import { getImageVariantByFieldname } from '../../../assets/utils/images';
+import type { IGood } from 'src/models/IGood';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
-import { InputSelect, Variant } from '@nebo-team/vobaza.ui.inputs.input-select/dist';
+import {
+  InputSelect,
+} from '@nebo-team/vobaza.ui.inputs.input-select/dist';
 import Breadcrumbs from '../../../components/Layout/Breadcrumbs';
 import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
 import { SelectTabs } from '../../../components/UI/SelectTabs';
@@ -36,8 +40,6 @@ import { ProductCompare } from 'components/DetailGoodPage/ProductCompare';
 import GoodsList from 'components/Goods/List';
 
 import styles from './styles.module.scss';
-import { IGood, IVariantProduct } from 'src/models/IGood';
-import { useRouter } from 'next/router';
 
 interface DetailGoodPage {
   product: IGood;
@@ -84,25 +86,25 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
   const { currentFavorite, toggleFavorite } = useFavorite(product);
   const { addToCart } = useCart(product);
   const { dispatch } = useGoods();
+  const router = useRouter()
 
   const addToCartHandler = () => {
     addToCart();
   };
 
   const [selectedOptions, setSelectedOptions] = useState<any>({});
-  const router = useRouter()
 
-  const handelSelectOption = (name, e) => {
+  const handelSelectOption = (name, value) => {
     const options = { ...selectedOptions };
 
-    options[name] = e;
+    options[name] = value;
 
     setSelectedOptions(options);
-
-    const curPropduct = selectedOptions[name]
-    
-    // router.push(`/product/${option.slug}_${option.id}_${option.sku}`)
   };
+
+  const onOptionClick = (product : any) => {
+    router.push(`/product/${product.slug}_${product.id}_${product.sku}`)
+  }
 
   const openOneClickModal = () => {
     dispatch({ type: 'setOneClickGood', payload: product });
@@ -111,8 +113,11 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
   useEffect(() => {
     const options = {};
     product.variants.variants.forEach((t) => {
-      const currentOption = t.values.find(v => v.is_current)
-      options[t.attribute.id] = { code : currentOption.value.toString(), value : currentOption.value.toString() };
+      const currentOption = t.values.find((v) => v.is_current);
+      options[t.attribute.id] = {
+        code: currentOption.value.toString(),
+        value: currentOption.value.toString(),
+      };
     });
 
     setSelectedOptions(options);
@@ -123,52 +128,54 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
 
     if (!options) return <div />;
 
-    return options.map((option) => (<div
-      className={styles.productOption}
-      key={option.attribute.id + option.attribute.name}
-    >
-      {option.values.length > 1 &&
-        (option.values.length > 5 ? (
-          <InputSelect
-            name={option.attribute.id.toString()}
-            label={option.attribute.name}
-            currentValue={selectedOptions[option.attribute.id]}
-            variants={option.values.map((v) => {
-              let code = '';
-              let value = '';
-              if (typeof v.value === 'boolean') {
-                code = v.value === true ? 'YES' : 'NO';
-                value = v.value === true ? 'Да' : 'Нет';
-              } else {
-                code = v.value.toString();
-                value = v.value.toString();
-              }
+    return options.map((option) => (
+      <div
+        className={styles.productOption}
+        key={option.attribute.id + option.attribute.name}
+      >
+        {option.values.length > 1 &&
+          (option.values.length > 5 ? (
+            <InputSelect
+              name={option.attribute.id.toString()}
+              label={option.attribute.name}
+              currentValue={selectedOptions[option.attribute.id]}
+              variants={option.values.map((v) => {
+                let code = '';
+                let value = '';
+                if (typeof v.value === 'boolean') {
+                  code = v.value === true ? 'YES' : 'NO';
+                  value = v.value === true ? 'Да' : 'Нет';
+                } else {
+                  code = v.value.toString();
+                  value = v.value.toString();
+                }
 
-              return { code, value };
-            })}
-            onChange={(e) => handelSelectOption(option.attribute.id, e)}
-          />
-        ) : (
-          <SelectTabs
-            label={option.attribute.name}
-            value={selectedOptions[option.attribute.id]}
-            variants={option.values.map((v) => {
-              let code = '';
-              let text = '';
-              if (typeof v.value === 'boolean') {
-                code = v.value === true ? 'YES' : 'NO';
-                text = v.value === true ? 'Да' : 'Нет';
-              } else {
-                code = v.value.toString();
-                text = v.value.toString();
-              }
+                return { code, value };
+              })}
+              onChange={(value) => handelSelectOption(option.attribute.id, value)}
+            />
+          ) : (
+            <SelectTabs
+              label={option.attribute.name}
+              value={selectedOptions[option.attribute.id]}
+              variants={option.values.map((v) => {
+                let code = '';
+                let text = '';
+                if (typeof v.value === 'boolean') {
+                  code = v.value === true ? 'YES' : 'NO';
+                  text = v.value === true ? 'Да' : 'Нет';
+                } else {
+                  code = v.value.toString();
+                  text = v.value.toString();
+                }
 
-              return { code, text };
-            })}
-            onChange={(e) => handelSelectOption(option.attribute.id, e)}
-          />
-        ))}
-    </div>));
+                return { code, text, onClick : () => onOptionClick(v.product) };
+              })}
+              onChange={(value) => handelSelectOption(option.attribute.id, value)}
+            />
+          ))}
+      </div>
+    ));
   };
 
   return (

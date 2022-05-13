@@ -8,6 +8,7 @@ interface Variant {
   code?: string;
   id?: string;
   text: string;
+  onClick?: () => void;
 }
 
 interface SelectTabs {
@@ -27,6 +28,7 @@ const SelectTabs: FC<SelectTabs> = ({
 }) => {
   const handleClickTab = (tab: Variant) => {
     onChange && onChange(tab);
+    tab.onClick && tab.onClick()
   };
 
   return (
