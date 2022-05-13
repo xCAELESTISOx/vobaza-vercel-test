@@ -67,7 +67,9 @@ function goodsReducer(state, action) {
     }
     case 'addCompare': {
       const newIds = [...state.compareIds, action.payload];
-      Cookies.set('compareIds', newIds);
+      // Cookies set жрет только значения типа string, используем any,
+      // чтобы скормить массив насильно.
+      Cookies.set('compareIds', newIds as any);
 
       return {
         ...state,
