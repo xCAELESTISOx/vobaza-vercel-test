@@ -13,9 +13,7 @@ import type { IGood } from 'src/models/IGood';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
-import {
-  InputSelect,
-} from '@nebo-team/vobaza.ui.inputs.input-select/dist';
+import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select/dist';
 import Breadcrumbs from '../../../components/Layout/Breadcrumbs';
 import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
 import { SelectTabs } from '../../../components/UI/SelectTabs';
@@ -86,7 +84,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
   const { currentFavorite, toggleFavorite } = useFavorite(product);
   const { addToCart } = useCart(product);
   const { dispatch } = useGoods();
-  const router = useRouter()
+  const router = useRouter();
 
   const addToCartHandler = () => {
     addToCart();
@@ -102,9 +100,11 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
     setSelectedOptions(options);
   };
 
-  const onOptionClick = (product : any) => {
-    router.push(`/product/${product.slug}_${product.id}_${product.sku}`)
-  }
+  const onOptionClick = (product: any) => {
+    const destination = `/product/${product.slug}_${product.id}_${product.sku}`;
+
+    if (destination !== router.asPath) router.push(destination);
+  };
 
   const openOneClickModal = () => {
     dispatch({ type: 'setOneClickGood', payload: product });
@@ -150,9 +150,11 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                   value = v.value.toString();
                 }
 
-                return { code, value };
+                return { code, value, onClick: () => onOptionClick(v.product) };
               })}
-              onChange={(value) => handelSelectOption(option.attribute.id, value)}
+              onChange={(value) =>
+                handelSelectOption(option.attribute.id, value)
+              }
             />
           ) : (
             <SelectTabs
@@ -169,9 +171,11 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                   text = v.value.toString();
                 }
 
-                return { code, text, onClick : () => onOptionClick(v.product) };
+                return { code, text, onClick: () => onOptionClick(v.product) };
               })}
-              onChange={(value) => handelSelectOption(option.attribute.id, value)}
+              onChange={(value) =>
+                handelSelectOption(option.attribute.id, value)
+              }
             />
           ))}
       </div>
