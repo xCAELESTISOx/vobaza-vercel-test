@@ -47,15 +47,14 @@ export default function Checkout({ goods, addresses, price, user }) {
     intercom: '',
   });
   const [delivery, setDelivery] = useState<IOrderDelivery>(null);
-  const [elevatePrice, setElevatePrice] = useState(0);
-  const [assemblyPrice, setAssemblyPrice] = useState(0);
+  const [elevatePrice, setElevatePrice] = useState(null);
+  const [assemblyPrice, setAssemblyPrice] = useState(null);
 
   const submitHandler = () => {
     formRef.current.submitForm();
   };
   const createOrder = async (customer: Receiver) => {
     const token = Cookies.get('token');
-    console.log(token);
     try {
       let data = {
         customer: token ? null : customer,
@@ -124,6 +123,7 @@ export default function Checkout({ goods, addresses, price, user }) {
               <OrderDelivery
                 goods={goods}
                 address={address}
+                currentUserAddress={currentUserAddress}
                 delivery={delivery}
                 setDelivery={setDelivery}
                 elevatePrice={elevatePrice}

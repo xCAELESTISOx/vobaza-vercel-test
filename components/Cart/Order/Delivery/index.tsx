@@ -1,11 +1,14 @@
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import styles from './styles.module.scss';
 
+import { api } from 'assets/api';
 import { num2str } from '../../../../assets/utils';
 import { ICartGood } from '../../ListItem';
 import { IOrderAddress, IOrderDelivery } from '../../../../src/models/IOrder';
+import { IAddress } from 'src/models/IAddress';
+import useDebounce from 'src/hooks/useDebounce';
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 import { getImageVariantProps } from 'assets/utils/images';
 
@@ -17,11 +20,11 @@ import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
 import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select/dist';
 import { InputRadio } from '@nebo-team/vobaza.ui.inputs.input-radio/dist';
-import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
 
 type Props = {
   goods: ICartGood[];
   address: IOrderAddress;
+  currentUserAddress: IAddress;
   delivery: IOrderDelivery;
   setDelivery: (delivery: IOrderDelivery) => void;
   elevatePrice: any;
@@ -52,6 +55,7 @@ const tmpTimeVariants = [
 const OrderDelivery: FC<Props> = ({
   goods,
   address,
+  currentUserAddress,
   delivery,
   setDelivery,
   elevatePrice,
@@ -64,13 +68,9 @@ const OrderDelivery: FC<Props> = ({
   // Подъем и сборка
   const [isElevate, setIsElevate] = useState(false);
   const [isElevateWithElevator, setIsElevateWithElevator] = useState('true');
-  const [elevateType, setElevateType] = useState('all');
   const [floorCount, setFloorCount] = useState(0);
-  const [elevateItems, setElevateItems] = useState([]);
 
   const [isAssembly, setIsAssembly] = useState(false);
-  const [assemblyType, setAssemblyType] = useState('all');
-  const [assemblyItems, setAssemblyItems] = useState([]);
 
   const setDate = (date: string) => {
     setDelivery({ ...delivery, date });
@@ -81,55 +81,80 @@ const OrderDelivery: FC<Props> = ({
   const toggleChangeDeliveryDrawer = () => {
     setIsDrawer(!isDrawer);
   };
+
   const toggleIsElevate = () => {
     setIsElevate(!isElevate);
   };
+  const checkLiftPrice = async () => {
+    if (!isElevate || !floorCount) {
+      setElevatePrice(null);
+    } else {
+      const price = await getLiftPrice();
+      setElevatePrice(price);
+    }
+  };
+  const debouncedCheckLiftPrice = useDebounce(checkLiftPrice, 800);
+  const getLiftPrice = async () => {
+    if (!delivery) return null;
+    try {
+      const res = await api.getLiftPrice(
+        isElevateWithElevator === 'true' ? 'FREIGHT' : 'PASSENGER',
+        floorCount
+      );
+
+      return res.data?.data?.price / 100 || 0;
+    } catch (error) {
+      console.log(error);
+    }
+    return 0;
+  };
+
   const toggleIsAssembly = () => {
     setIsAssembly(!isAssembly);
   };
-
-  const toggleElevateItems = (index) => {
-    //
-    if (elevateItems.includes(index)) {
-      setElevateItems([...elevateItems.filter((item) => item !== index)]);
+  const checkAssemblyPrice = async () => {
+    if (!isAssembly) {
+      setAssemblyPrice(null);
     } else {
-      setElevateItems([...elevateItems, index]);
+      const price = await getAssemblyPrice();
+      setAssemblyPrice(price);
     }
   };
-  const toggleAssemblyItems = (index) => {
-    //
-    if (assemblyItems.includes(index)) {
-      setAssemblyItems([...assemblyItems.filter((item) => item !== index)]);
-    } else {
-      setAssemblyItems([...assemblyItems, index]);
+  const debouncedCheckAssemblyPrice = useDebounce(checkAssemblyPrice, 800);
+  const getAssemblyPrice = async () => {
+    if (!isAssembly) return null;
+    try {
+      const res = await api.getAssemblyPrice(
+        currentUserAddress?.address || address?.address
+      );
+
+      return res.data?.data?.price / 100 || 0;
+    } catch (error) {
+      console.log(error);
     }
+    return 0;
   };
 
   useEffect(() => {
-    if (!delivery || !isElevate || isElevateWithElevator === 'true') {
-      setElevatePrice(0);
-    } else if (elevateType === 'particle') {
-      setElevatePrice(elevateItems.length * 200 * floorCount);
-    } else {
-      setElevatePrice(goods.length * 200 * floorCount);
+    if (!delivery) {
+      setElevatePrice(null);
+      setIsElevate(false);
+      setAssemblyPrice(null);
+      setIsAssembly(false);
     }
-  }, [
-    delivery,
-    isElevate,
-    floorCount,
-    elevateType,
-    isElevateWithElevator,
-    elevateItems,
-  ]);
+  }, [delivery]);
+
   useEffect(() => {
-    if (!delivery || !isAssembly) {
-      setAssemblyPrice(0);
-    } else if (assemblyType === 'particle') {
-      setAssemblyPrice(assemblyItems.length * 3250);
+    debouncedCheckLiftPrice();
+  }, [isElevate, floorCount, isElevateWithElevator]);
+
+  useEffect(() => {
+    if (!delivery) {
+      setAssemblyPrice(null);
     } else {
-      setAssemblyPrice(goods.length * 3250);
+      debouncedCheckAssemblyPrice();
     }
-  }, [delivery, isAssembly, assemblyType, assemblyItems]);
+  }, [address?.address, currentUserAddress?.address, isAssembly]);
 
   const goodsCount = goods.reduce(
     (previousValue, currentValue) => previousValue + currentValue.quantity,
@@ -139,7 +164,10 @@ const OrderDelivery: FC<Props> = ({
   return (
     <div className={styles.orderDelivery}>
       <OrderDeliveryDrawer
-        withVariants={address.address.includes('Москва')}
+        withVariants={
+          address.address.includes('Москва') ||
+          currentUserAddress?.address.includes('Москва')
+        }
         setDelivery={setDelivery}
         onClose={toggleChangeDeliveryDrawer}
         isOpen={isDrawer}
@@ -202,11 +230,13 @@ const OrderDelivery: FC<Props> = ({
                 <Toggle isActive={isElevate} onClick={toggleIsElevate}>
                   <div className={styles.orderDeliverySubblockToggle}>
                     Подъем на этаж{' '}
-                    {isElevate && (
-                      <>
-                        –&nbsp;<span>{elevatePrice} ₽</span>
-                      </>
-                    )}
+                    {typeof elevatePrice === 'number' &&
+                      isElevate &&
+                      !!floorCount && (
+                        <>
+                          –&nbsp;<span>{elevatePrice} ₽</span>
+                        </>
+                      )}
                   </div>
                 </Toggle>
                 {isElevate && (
@@ -235,80 +265,16 @@ const OrderDelivery: FC<Props> = ({
                         onChange={() => setIsElevateWithElevator('false')}
                       />
                     </div>
-                    {isElevateWithElevator === 'false' && (
-                      <div className={styles.orderDeliveryRadioSubblock}>
-                        <div className={styles.orderDeliveryTabs}>
-                          <div
-                            className={`${styles.orderDeliveryTab} ${
-                              elevateType === 'all' ? styles.active : ''
-                            }`}
-                            onClick={() => {
-                              setElevateType('all');
-                            }}
-                          >
-                            Весь заказ
-                          </div>
-                          <div
-                            className={`${styles.orderDeliveryTab} ${
-                              elevateType === 'particle' ? styles.active : ''
-                            }`}
-                            onClick={() => {
-                              setElevateType('particle');
-                            }}
-                          >
-                            Выбранные товары
-                          </div>
-                        </div>
-                        <div className={styles.orderDeliveryCounter}>
-                          На какой этаж?
-                          <ItemCounter
-                            minCount={0}
-                            itemCount={floorCount}
-                            setItemCount={setFloorCount}
-                          />
-                        </div>
-                        {elevateType === 'particle' && (
-                          <div>
-                            {goods.map((item, index) => (
-                              <div
-                                key={item.product.id}
-                                className={styles.orderDeliveryTableItem}
-                              >
-                                <InputCheckbox
-                                  label={
-                                    <div
-                                      className={
-                                        styles.orderDeliveryTableItemWrap
-                                      }
-                                    >
-                                      <div
-                                        className={
-                                          styles.orderDeliveryTableItemImage
-                                        }
-                                      ></div>
-                                      <div
-                                        className={
-                                          styles.orderDeliveryTableItemText
-                                        }
-                                      >
-                                        Шкаф Соренто с раздвижными дверями дуб
-                                        стирлинг. кофе структурный матовый 3
-                                        двери
-                                      </div>
-                                    </div>
-                                  }
-                                  variation="secondary"
-                                  initialValue={elevateItems.includes(index)}
-                                  onChange={() => {
-                                    toggleElevateItems(index);
-                                  }}
-                                />
-                              </div>
-                            ))}
-                          </div>
-                        )}
+                    <div className={styles.orderDeliveryRadioSubblock}>
+                      <div className={styles.orderDeliveryCounter}>
+                        На какой этаж?
+                        <ItemCounter
+                          minCount={0}
+                          itemCount={floorCount}
+                          setItemCount={setFloorCount}
+                        />
                       </div>
-                    )}
+                    </div>
                   </div>
                 )}
               </div>
@@ -316,80 +282,13 @@ const OrderDelivery: FC<Props> = ({
                 <Toggle isActive={isAssembly} onClick={toggleIsAssembly}>
                   <div className={styles.orderDeliverySubblockToggle}>
                     Сборка{' '}
-                    {isAssembly && (
+                    {typeof assemblyPrice === 'number' && isAssembly && (
                       <>
                         –&nbsp;<span>{assemblyPrice} ₽</span>
                       </>
                     )}
                   </div>
                 </Toggle>
-                {isAssembly && (
-                  <div className={styles.orderDeliveryRadioBlock}>
-                    <div className={styles.orderDeliveryRadioSubblock}>
-                      <div className={styles.orderDeliveryTabs}>
-                        <div
-                          className={`${styles.orderDeliveryTab} ${
-                            assemblyType === 'all' ? styles.active : ''
-                          }`}
-                          onClick={() => {
-                            setAssemblyType('all');
-                          }}
-                        >
-                          Весь заказ
-                        </div>
-                        <div
-                          className={`${styles.orderDeliveryTab} ${
-                            assemblyType === 'particle' ? styles.active : ''
-                          }`}
-                          onClick={() => {
-                            setAssemblyType('particle');
-                          }}
-                        >
-                          Выбранные товары
-                        </div>
-                      </div>
-                      {assemblyType === 'particle' && (
-                        <div>
-                          {goods.map((item, index) => (
-                            <div
-                              key={item.product.id}
-                              className={styles.orderDeliveryTableItem}
-                            >
-                              <InputCheckbox
-                                label={
-                                  <div
-                                    className={
-                                      styles.orderDeliveryTableItemWrap
-                                    }
-                                  >
-                                    <div
-                                      className={
-                                        styles.orderDeliveryTableItemImage
-                                      }
-                                    ></div>
-                                    <div
-                                      className={
-                                        styles.orderDeliveryTableItemText
-                                      }
-                                    >
-                                      Шкаф Соренто с раздвижными дверями дуб
-                                      стирлинг. кофе структурный матовый 3 двери
-                                    </div>
-                                  </div>
-                                }
-                                variation="secondary"
-                                initialValue={assemblyItems.includes(index)}
-                                onChange={() => {
-                                  toggleAssemblyItems(index);
-                                }}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
           </>

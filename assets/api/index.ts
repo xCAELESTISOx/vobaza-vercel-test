@@ -202,6 +202,13 @@ export const api = {
     await setToken();
     return axios.post(`/customer/v1/checkout`, data);
   },
+  async getAssemblyPrice(address: string) {
+    return axios.get(`/v1/checkout/assembly`, { params: { address } });
+  },
+  async getLiftPrice(elevator: string, floor: number) {
+    return axios.get(`/v1/checkout/lift`, { params: { elevator, floor } });
+  },
+
   async getOrders() {
     await setToken();
     return axios.get(`/customer/v1/orders`);
