@@ -122,7 +122,7 @@ const ProfileAddressesForm: FC<Props> = ({
       ? {
           address: address.address || '',
           entrance: address.entrance || '',
-          floor: address.floor.toString() || '',
+          floor: address.floor?.toString() || '',
           intercom: address.intercom || '',
           isDefault: address.is_default,
           elevator: address.elevator || 'NONE',
