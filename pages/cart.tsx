@@ -7,7 +7,7 @@ import { api } from '../assets/api';
 import CartList from '../components/Cart/List';
 import CartSidebar from '../components/Cart/Sidebar';
 import { ICartGood } from '../components/Cart/ListItem';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Props = {
   initialGoods: ICartGood[];
@@ -17,6 +17,10 @@ type Props = {
 
 export default function Cart({ initialGoods, initialPrice, withCountChange }) {
   const [orderPrice, setOrderPrice] = useState(initialPrice);
+
+  useEffect(() => {
+    setOrderPrice(initialPrice);
+  }, [initialPrice]);
 
   return (
     <div>
