@@ -112,74 +112,82 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
 
   useEffect(() => {
     const options = {};
-    product.variants.variants.forEach((t) => {
-      const currentOption = t.values.find((v) => v.is_current);
-      options[t.attribute.id] = {
-        code: currentOption.value.toString(),
-        value: currentOption.value.toString(),
-      };
-    });
+    if (product.variants && product.variants.variants)
+      product.variants.variants.forEach((t) => {
+        const currentOption = t.values.find((v) => v.is_current);
+        options[t.attribute.id] = {
+          code: currentOption.value.toString(),
+          value: currentOption.value.toString(),
+        };
+      });
 
     setSelectedOptions(options);
-  }, []);
+  }, [product.variants]);
 
   const renderOptions = () => {
     const options = product.variants.variants;
 
     if (!options) return <div />;
 
-    return options.map((option) => (
-      <div
-        className={styles.productOption}
-        key={option.attribute.id + option.attribute.name}
-      >
-        {option.values.length > 1 &&
-          (option.values.length > 5 ? (
-            <InputSelect
-              name={option.attribute.id.toString()}
-              label={option.attribute.name}
-              currentValue={selectedOptions[option.attribute.id]}
-              variants={option.values.map((v) => {
-                let code = '';
-                let value = '';
-                if (typeof v.value === 'boolean') {
-                  code = v.value === true ? 'YES' : 'NO';
-                  value = v.value === true ? 'Да' : 'Нет';
-                } else {
-                  code = v.value.toString();
-                  value = v.value.toString();
-                }
+    
+    return options.map((option) => {
+      const values = option.values.sort((a, b) => {
+        return a.product.id - b.product.id;
+      })
 
-                return { code, value, onClick: () => onOptionClick(v.product) };
-              })}
-              onChange={(value) =>
-                handelSelectOption(option.attribute.id, value)
-              }
-            />
-          ) : (
-            <SelectTabs
-              label={option.attribute.name}
-              value={selectedOptions[option.attribute.id]}
-              variants={option.values.map((v) => {
-                let code = '';
-                let text = '';
-                if (typeof v.value === 'boolean') {
-                  code = v.value === true ? 'YES' : 'NO';
-                  text = v.value === true ? 'Да' : 'Нет';
-                } else {
-                  code = v.value.toString();
-                  text = v.value.toString();
+      return (
+        <div
+          className={styles.productOption}
+          key={option.attribute.id + option.attribute.name}
+        >
+          {values.length > 1 &&
+            (values.length > 5 ? (
+              <InputSelect
+                name={option.attribute.id.toString()}
+                label={option.attribute.name}
+                currentValue={selectedOptions[option.attribute.id]}
+                variants={values.map((v) => {
+                  let code = '';
+                  let value = '';
+                  if (typeof v.value === 'boolean') {
+                    code = v.value === true ? 'YES' : 'NO';
+                    value = v.value === true ? 'Да' : 'Нет';
+                  } else {
+                    code = v.value.toString();
+                    value = v.value.toString();
+                  }
+  
+                  return { code, value, onClick: () => onOptionClick(v.product) };
+                })}
+                onChange={(value) =>
+                  handelSelectOption(option.attribute.id, value)
                 }
-
-                return { code, text, onClick: () => onOptionClick(v.product) };
-              })}
-              onChange={(value) =>
-                handelSelectOption(option.attribute.id, value)
-              }
-            />
-          ))}
-      </div>
-    ));
+              />
+            ) : (
+              <SelectTabs
+                label={option.attribute.name}
+                value={selectedOptions[option.attribute.id]}
+                variants={values.map((v) => {
+                  let code = '';
+                  let text = '';
+                  if (typeof v.value === 'boolean') {
+                    code = v.value === true ? 'YES' : 'NO';
+                    text = v.value === true ? 'Да' : 'Нет';
+                  } else {
+                    code = v.value.toString();
+                    text = v.value.toString();
+                  }
+  
+                  return { code, text, onClick: () => onOptionClick(v.product) };
+                })}
+                onChange={(value) =>
+                  handelSelectOption(option.attribute.id, value)
+                }
+              />
+            ))}
+        </div>
+      )
+    });
   };
 
   return (
