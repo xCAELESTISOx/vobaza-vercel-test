@@ -42,6 +42,7 @@ export interface IOrderDelivery {
   date?: string,
   time_interval?: string,
   address: IOrderAddress,
+  address_id: number,
   status?: 'NONE'
 }
 

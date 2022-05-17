@@ -36,7 +36,7 @@ export default function Checkout({ goods, addresses, price, user }) {
   const formRef = useRef(null);
   const router = useRouter();
   const { dispatch } = useGoods();
-  const [currentUserAddress, setCurrentUserAddress] = useState(
+  const [currentUserAddress, setCurrentUserAddress] = useState<IAddress>(
     addresses.find((item: IAddress) => item.is_default)
   );
   const [address, setAddress] = useState<IOrderAddress>({
@@ -60,13 +60,16 @@ export default function Checkout({ goods, addresses, price, user }) {
         customer: token ? null : customer,
         delivery: {
           type: delivery ? delivery.tag : IOrderDeliveryType.none,
-          // TODO Address_id вместо address когда будет апи
-          address: {
-            ...address,
-            floor: Number(address.floor),
-          },
         },
       } as IOrder;
+      if (token) {
+        data.delivery.address_id = currentUserAddress.id;
+      } else {
+        data.delivery.address = {
+          ...address,
+          floor: Number(address.floor),
+        };
+      }
       if (delivery && delivery.date) {
         data.delivery.date = delivery.date;
       }
