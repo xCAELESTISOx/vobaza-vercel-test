@@ -4,7 +4,7 @@ import { Tab } from './Tab';
 
 import styles from './styles.module.scss';
 
-interface Variant {
+export interface Variant {
   code?: string;
   id?: string;
   text: string;

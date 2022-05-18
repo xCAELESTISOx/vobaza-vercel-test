@@ -57,7 +57,7 @@ const ProductVariants: FC<ProductVariantsProps> = ({
   return (
     <div className={styles.variantsContainer}>
       <div className={styles.variantsGrid}>
-        {items.slice(0, ITEMS_PER_ROW).map((item, index) => (
+        {items.slice(0, ITEMS_PER_ROW).map((item) => (
           <Variant
             key={item.id}
             item={item}
@@ -85,7 +85,7 @@ const ProductVariants: FC<ProductVariantsProps> = ({
       {isOverLimit && (
         <div ref={hiddenVariantsRef} className={styles.variantsDrawer}>
           <div className={styles.variantsGrid}>
-            {items.slice(ITEMS_PER_ROW).map((item, index) => (
+            {items.slice(ITEMS_PER_ROW).map((item) => (
               <Variant
                 key={item.id}
                 item={item}
