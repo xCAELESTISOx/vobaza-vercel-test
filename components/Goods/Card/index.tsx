@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -21,15 +21,15 @@ type Props = {
 };
 
 const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
-  // const [currentImage, setCurrentImage] = useState(0);
+  const [currentImage, setCurrentImage] = useState(null);
   const cardRef = useRef(null);
   const cardContainerRef = useRef(null);
   const { currentFavorite, toggleFavorite } = useFavorite(good);
   const { addToCart } = useCart(good);
 
-  // const resetImage = () => {
-  //   setCurrentImage(0);
-  // };
+  const resetImage = () => {
+    setCurrentImage(null);
+  };
   const addToCartHandler = () => {
     addToCart();
   };
@@ -77,11 +77,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
   };
 
   return (
-    <div
-      className={styles.cardWrapper}
-      ref={cardRef}
-      // onMouseLeave={resetImage}
-    >
+    <div className={styles.cardWrapper} ref={cardRef} onMouseLeave={resetImage}>
       <div className={styles.cardContainer} ref={cardContainerRef}>
         <div className={styles.card}>
           <div className={styles.cardHeader}>
@@ -98,12 +94,20 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
             </div>
           </div>
           <div className={`${styles.cardImage} card__image`}>
-            <Link href={`/product/${good.slug}_${good.id}_${good.sku}`}>
+            <Link
+              href={
+                currentImage
+                  ? `/product/${currentImage.slug}_${currentImage.id}_${currentImage.sku}`
+                  : `/product/${good.slug}_${good.id}_${good.sku}`
+              }
+            >
               <a>
                 {good.main_image ? (
                   <Image
                     {...getImageVariantProps(
-                      good.main_image.variants,
+                      currentImage
+                        ? currentImage.main_image.variants
+                        : good.main_image.variants,
                       'medium'
                     )}
                     objectFit="contain"
@@ -127,11 +131,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
           </div>
           <div className={styles.cardVariants}>
             <Link href={`/product/${good.slug}_${good.id}_${good.sku}`}>
-              <a
-                onMouseEnter={() => {
-                  // setCurrentImage('');
-                }}
-              >
+              <a onMouseEnter={resetImage}>
                 <div className={styles.cardVariant}>
                   {good.main_image ? (
                     <Image
@@ -153,55 +153,49 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
                 </div>
               </a>
             </Link>
-            {/* <Link href="/">
-              <a
-                onMouseEnter={() => {
-                  setCurrentImage(tmpImg2);
-                }}
-              >
-                <div className={styles.cardVariant}>
-                  <Image src={tmpImg2} alt="123" />
-                </div>
-              </a>
-            </Link>
-            <Link href="/">
-              <a
-                onMouseEnter={() => {
-                  setCurrentImage(tmpImg1);
-                }}
-              >
-                <div className={styles.cardVariant}>
-                  <Image src={tmpImg1} alt="123" />
-                </div>
-              </a>
-            </Link>
-            <Link href="/">
-              <a
-                onMouseEnter={() => {
-                  setCurrentImage(tmpImg1);
-                }}
-              >
-                <div className={styles.cardVariant}>
-                  <Image src={tmpImg1} alt="123" />
-                </div>
-              </a>
-            </Link>
-            <Link href="/">
-              <a
-                onMouseEnter={() => {
-                  setCurrentImage(tmpImg1);
-                }}
-              >
-                <div className={styles.cardVariant}>
-                  <Image src={tmpImg1} alt="123" />
-                </div>
-              </a>
-            </Link>
-            <Link href="/">
-              <a>
-                <div className={styles.cardVariant}>+8</div>
-              </a>
-            </Link> */}
+            {good.variant_products &&
+              good.variant_products.length > 0 &&
+              good.variant_products.slice(0, 4).map((item) => (
+                <Link
+                  key={item.id}
+                  href={`/product/${item.slug}_${item.id}_${item.sku}`}
+                >
+                  <a
+                    onMouseEnter={() => {
+                      setCurrentImage(item);
+                    }}
+                  >
+                    <div className={styles.cardVariant}>
+                      {item.main_image ? (
+                        <Image
+                          {...getImageVariantProps(
+                            item.main_image.variants,
+                            'extra_small'
+                          )}
+                          objectFit="contain"
+                          alt={good.name}
+                        />
+                      ) : (
+                        <Image
+                          src={PlaceholderImageSmall}
+                          objectFit="contain"
+                          alt=""
+                          unoptimized
+                        />
+                      )}
+                    </div>
+                  </a>
+                </Link>
+              ))}
+            {good.variant_products && good.variant_products.length > 4 && (
+              <Link href="/">
+                <a>
+                  <div className={styles.cardVariant}>
+                    +{good.variant_products.length - 4}
+                  </div>
+                </a>
+              </Link>
+            )}
           </div>
           <div className={styles.cardContent}>
             <Link href={`/product/${good.slug}_${good.id}_${good.sku}`}>

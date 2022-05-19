@@ -75,6 +75,7 @@ export interface IGoodCard {
     value: any;
   }[];
   is_available: boolean;
+  variant_products?: IVariantProduct[]
 }
 
 export interface IVariantProduct {
