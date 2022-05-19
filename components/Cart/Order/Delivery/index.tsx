@@ -164,9 +164,8 @@ const OrderDelivery: FC<Props> = ({
   return (
     <div className={styles.orderDelivery}>
       <OrderDeliveryDrawer
-        withVariants={
-          address.address.includes('Москва') ||
-          currentUserAddress?.address.includes('Москва')
+        address={
+          currentUserAddress ? currentUserAddress.address : address.address
         }
         setDelivery={setDelivery}
         onClose={toggleChangeDeliveryDrawer}

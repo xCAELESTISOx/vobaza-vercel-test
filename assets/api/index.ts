@@ -208,6 +208,9 @@ export const api = {
   async getLiftPrice(elevator: string, floor: number) {
     return axios.get(`/v1/checkout/lift`, { params: { elevator, floor } });
   },
+  async getDeliveryPrice(address: string) {
+    return axios.get(`/v1/checkout/delivery`, { params: { address } });
+  },
 
   async getOrders() {
     await setToken();

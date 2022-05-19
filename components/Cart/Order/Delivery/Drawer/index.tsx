@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import styles from './styles.module.scss';
 import Drawer from '../../../../../src/hoc/withDrawer';
@@ -8,9 +8,10 @@ import {
   IOrderDelivery,
   IOrderDeliveryType,
 } from '../../../../../src/models/IOrder';
+import { api } from 'assets/api';
 
 type Props = {
-  withVariants: boolean;
+  address: string;
   setDelivery: (delivery: IOrderDelivery) => void;
   isOpen: boolean;
   onClose: () => void;
@@ -34,11 +35,12 @@ const tmpVariants = [
 ];
 
 const OrderDeliveryDrawer: FC<Props> = ({
-  withVariants,
+  address,
   setDelivery,
   isOpen = false,
   onClose,
 }) => {
+  const [variants, setVariants] = useState([]);
   const [currentVariant, setCurrentVariant] = useState<IOrderDelivery>(null);
 
   const setDeliveryHandler = () => {
@@ -54,6 +56,42 @@ const OrderDeliveryDrawer: FC<Props> = ({
     }
   };
 
+  useEffect(() => {
+    async function getDeliveryPrice() {
+      try {
+        const res = await api.getDeliveryPrice(address);
+        const variantsArr = [];
+
+        if (res.data?.data?.normal) {
+          variantsArr.push({
+            name: 'Доставка',
+            price: Math.round(res.data.data.normal / 100),
+            tag: IOrderDeliveryType.normal,
+            date: '',
+            time: null,
+          });
+        }
+        if (res.data?.data?.express) {
+          variantsArr.push({
+            name: 'Экспресс-доставка',
+            price: Math.round(res.data.data.express / 100),
+            tag: IOrderDeliveryType.express,
+            date: '',
+            time: null,
+          });
+        }
+        setVariants(variantsArr);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    if (address) {
+      setCurrentVariant(null);
+      setDelivery(null);
+      getDeliveryPrice();
+    }
+  }, [address]);
+
   return (
     <Drawer
       title="Способ получения"
@@ -63,8 +101,8 @@ const OrderDeliveryDrawer: FC<Props> = ({
       onButtonClick={setDeliveryHandler}
     >
       <div className={styles.deliveryDrawerCards}>
-        {withVariants &&
-          tmpVariants.map((variant: any) => (
+        {variants.length > 0 &&
+          variants.map((variant: any) => (
             <div
               key={variant.tag}
               className={`${styles.deliveryDrawerCard} ${
