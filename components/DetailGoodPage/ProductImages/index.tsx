@@ -120,7 +120,7 @@ const ProductImages = ({ images }) => {
             className={styles.mainSwiper}
             modules={[Navigation, Thumbs, Pagination]}
             speed={600}
-            loop
+            loop={mainImages.length && mainImages.length > 1}
             allowTouchMove
             navigation={{
               prevEl: '.product-swiper__prev',
