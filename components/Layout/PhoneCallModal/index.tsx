@@ -10,6 +10,7 @@ import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone/dist';
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import { api } from '../../../assets/api';
+import { IError } from 'src/models/IError';
 
 interface PhoneCall {
   phone: string;
@@ -41,8 +42,18 @@ const PhoneCallModal: FC<Props> = ({ isActive, onClose }) => {
       await api.makeOneClickOrder(values);
       onClose();
       resetForm();
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      const errs = error.response.data.errors;
+      const backErrors = {} as any;
+
+      errs.forEach((err: IError) => {
+        err.source && err.source !== ''
+          ? (backErrors[err.source] = err.title)
+          : (backErrors.phone = err.title
+              ? err.title
+              : 'Непредвиденная ошибка, попробуйте ещё раз');
+      });
+      setErrors(backErrors);
     }
     setIsLoading(false);
   };
@@ -53,6 +64,7 @@ const PhoneCallModal: FC<Props> = ({ isActive, onClose }) => {
     handleChange,
     handleBlur,
     errors,
+    setErrors,
     handleSubmit,
     resetForm,
   } = useFormik<PhoneCall>({
