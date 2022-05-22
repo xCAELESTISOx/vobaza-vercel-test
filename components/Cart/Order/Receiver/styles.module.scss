@@ -4,6 +4,19 @@
   + .orderReceiverFormItem {
     margin-top: 8px;
   }
+
+  &.orderReceiverFormRadioItem {
+    margin: 16px 0;
+  }
+}
+.orderReceiverFormRadioItem {
+  display: flex;
+  width: 100%;
+}
+.orderReceiverFormRadio {
+  + .orderReceiverFormRadio {
+    margin-left: 16px;
+  }
 }
 
 .cartUser {
