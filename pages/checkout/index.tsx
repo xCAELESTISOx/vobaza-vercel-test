@@ -56,12 +56,13 @@ export default function Checkout({ goods, addresses, price, user }) {
   const createOrder = async (customer: Receiver) => {
     const token = Cookies.get('token');
     try {
-      let data = {
+      const data = {
         customer: token ? null : customer,
         delivery: {
           type: delivery ? delivery.tag : IOrderDeliveryType.none,
         },
-      } as IOrder;
+        // TODO: Привести к типу IOrder
+      } as any;
       if (token) {
         data.delivery.address_id = currentUserAddress.id;
       } else {

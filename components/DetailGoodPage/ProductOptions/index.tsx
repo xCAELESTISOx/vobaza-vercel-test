@@ -77,7 +77,7 @@ export const ProductOptions = ({
   if (!options) return <div />;
 
   return (
-    <>
+    <div className={styles.productOptions}>
       {options.map(({ attribute, selectValues, tabsValues }) => {
         return (
           <div
@@ -106,6 +106,6 @@ export const ProductOptions = ({
           </div>
         );
       })}
-    </>
+    </div>
   );
 };
