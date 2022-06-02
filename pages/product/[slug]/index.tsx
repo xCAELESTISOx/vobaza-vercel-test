@@ -199,7 +199,11 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                       items={product.variants.variant_products}
                     />
                   </div>
-                  <ProductOptions variants={product.variants} selectedOptions={selectedOptions} handelSelectOption={handelSelectOption} />
+                  <ProductOptions
+                    variants={product.variants}
+                    selectedOptions={selectedOptions}
+                    handelSelectOption={handelSelectOption}
+                  />
                 </div>
               )}
 
@@ -305,16 +309,16 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
   );
 };
 
-const getProductIdFromSlug = (slug: string) => {
-  const parsedId = Number(slug.split('_').slice(-2, -1)[0]);
+const getProductSlug = (slug: string): string | null => {
+  const parseSlug = slug.replace('/ekspress-dostavka', '').split('-')[0];
 
-  return !isNaN(parsedId) ? parsedId : null;
+  return parseSlug || null;
 };
 
 export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({
   query,
 }) => {
-  const productId = getProductIdFromSlug(query.slug as string);
+  const slug = getProductSlug(query.slug as string);
   let breadcrumbs = [
     {
       title: 'Каталог мебели',
@@ -323,24 +327,23 @@ export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({
   ] as BreadcrumbType[];
 
   try {
-    const [productRes, attributesRes] = await Promise.all([
-      api.getGood(productId),
-      api.getGoodAttributes(productId),
-    ]);
+    const productRes = await api.getGoodBySlug(slug);
     const product = productRes.data.data;
-    normalizeProductInfo(productRes.data.data);
+
+    const attributesRes = await api.getGoodAttributes(product.id);
+    normalizeProductInfo(product);
 
     product.attributes = attributesRes.data.data;
 
     breadcrumbs.push({
       title: product.main_category.name,
-      href: `/${product.main_category.slug}_${product.main_category.id}`,
+      href: `/${product.main_category.slug}`,
       clickableLast: true,
     });
 
     return {
       props: {
-        product: productRes.data.data,
+        product,
         breadcrumbs,
       },
     };

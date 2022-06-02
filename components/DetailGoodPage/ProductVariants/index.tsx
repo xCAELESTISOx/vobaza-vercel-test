@@ -21,13 +21,18 @@ interface VariantProps {
 
 const Variant: FC<VariantProps> = ({ item, active = false }) => {
   return (
-    <Link href={`/product/${item.slug}_${item.id}_${item.sku}`}>
+    <Link href={`/product/${item.slug}-${item.sku}`}>
       <div
         className={`${styles.variant} ${active ? styles.variantActive : ''}`}
         title={item.slug}
       >
         <div className={styles.variantImg}>
-          <Image width={48} height={48} src={item.main_image?.variants.small.url || PlaceholderImage} alt={item.slug} />
+          <Image
+            width={48}
+            height={48}
+            src={item.main_image?.variants.small.url || PlaceholderImage}
+            alt={item.slug}
+          />
         </div>
       </div>
     </Link>
@@ -39,10 +44,7 @@ interface ProductVariantsProps {
   items: IVariantProduct[];
 }
 
-const ProductVariants: FC<ProductVariantsProps> = ({
-  id,
-  items = [],
-}) => {
+const ProductVariants: FC<ProductVariantsProps> = ({ id, items = [] }) => {
   const hiddenVariantsRef = useRef(null);
   const [isOpen, toggleOpen] = useCollapse(hiddenVariantsRef, {
     duration: 300,
@@ -58,11 +60,7 @@ const ProductVariants: FC<ProductVariantsProps> = ({
     <div className={styles.variantsContainer}>
       <div className={styles.variantsGrid}>
         {items.slice(0, ITEMS_PER_ROW).map((item) => (
-          <Variant
-            key={item.id}
-            item={item}
-            active={item.id === id}
-          />
+          <Variant key={item.id} item={item} active={item.id === id} />
         ))}
       </div>
 
@@ -86,11 +84,7 @@ const ProductVariants: FC<ProductVariantsProps> = ({
         <div ref={hiddenVariantsRef} className={styles.variantsDrawer}>
           <div className={styles.variantsGrid}>
             {items.slice(ITEMS_PER_ROW).map((item) => (
-              <Variant
-                key={item.id}
-                item={item}
-                active={item.id === id}
-              />
+              <Variant key={item.id} item={item} active={item.id === id} />
             ))}
           </div>
         </div>

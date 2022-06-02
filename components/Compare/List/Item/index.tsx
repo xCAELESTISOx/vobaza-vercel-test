@@ -45,7 +45,7 @@ const CompareListItem: FC<Props> = ({ good, deleteGood }) => {
         <Icon name="Trash" /> Удалить
       </button>
       <div className={styles.compareListItemImage}>
-        <Link href={`/product/${good.slug}_${good.id}_${good.sku}`}>
+        <Link href={`/product/${good.slug}-${good.sku}`}>
           <a>
             {good.main_image ? (
               <Image
@@ -65,7 +65,7 @@ const CompareListItem: FC<Props> = ({ good, deleteGood }) => {
         </Link>
       </div>
       <div className={styles.compareListItemTitle}>
-        <Link href={`/product/${good.slug}_${good.id}_${good.sku}`}>
+        <Link href={`/product/${good.slug}-${good.sku}`}>
           <a>{good.name}</a>
         </Link>
       </div>

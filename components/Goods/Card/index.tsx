@@ -97,8 +97,8 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
             <Link
               href={
                 currentImage
-                  ? `/product/${currentImage.slug}_${currentImage.id}_${currentImage.sku}`
-                  : `/product/${good.slug}_${good.id}_${good.sku}`
+                  ? `/product/${currentImage.slug}-${currentImage.sku}`
+                  : `/product/${good.slug}-${good.sku}`
               }
             >
               <a>
@@ -130,7 +130,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
             )}
           </div>
           <div className={styles.cardVariants}>
-            <Link href={`/product/${good.slug}_${good.id}_${good.sku}`}>
+            <Link href={`/product/${good.slug}_${good.sku}`}>
               <a onMouseEnter={resetImage}>
                 <div className={styles.cardVariant}>
                   {good.main_image ? (
@@ -156,10 +156,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
             {good.variant_products &&
               good.variant_products.length > 0 &&
               good.variant_products.slice(0, 4).map((item) => (
-                <Link
-                  key={item.id}
-                  href={`/product/${item.slug}_${item.id}_${item.sku}`}
-                >
+                <Link key={item.id} href={`/product/${item.slug}_${item.sku}`}>
                   <a
                     onMouseEnter={() => {
                       setCurrentImage(item);
@@ -198,7 +195,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
             )}
           </div>
           <div className={styles.cardContent}>
-            <Link href={`/product/${good.slug}_${good.id}_${good.sku}`}>
+            <Link href={`/product/${good.slug}_${good.sku}`}>
               <a className={styles.cardTitle} title={good.name}>
                 {good.name}
               </a>

@@ -124,6 +124,9 @@ export const api = {
   getGood(id: number | string) {
     return axios.get(`/v1/products/${id}`);
   },
+  getGoodBySlug(slug: string) {
+    return axios.get(`v1/products/bySlug/${slug}`);
+  },
   getGoodAttributes(id: number | string) {
     return axios.get(`/v1/products/${id}/attributes`);
   },
@@ -137,6 +140,13 @@ export const api = {
       maxDepth: 1,
     };
     return axios.get(`/v1/categories/${id}`, { params });
+  },
+  getCategoryBySlug(slug: string) {
+    const params = {
+      include: 'ancestors,children',
+      maxDepth: 1,
+    };
+    return axios.get(`/v1/categories/bySlug/${slug}`, { params });
   },
   getCategoryFilters(id) {
     return axios.get(`/v1/categories/${id}/filters`);

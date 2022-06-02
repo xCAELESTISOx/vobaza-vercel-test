@@ -66,9 +66,7 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
   return (
     <div className={styles.cartListItem}>
       <div className={styles.cartListItemImageBlock}>
-        <Link
-          href={`/product/${good.product.slug}_${good.product.id}_${good.product.sku}`}
-        >
+        <Link href={`/product/${good.product.slug}-${good.product.sku}`}>
           <a>
             {good.product.main_image ? (
               <Image
@@ -91,18 +89,9 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
         </Link>
       </div>
       <div className={styles.cartListItemContent}>
-        <Link
-          href={`/product/${good.product.slug}_${good.product.id}_${good.product.sku}`}
-        >
+        <Link href={`/product/${good.product.slug}-${good.product.sku}`}>
           <a className={styles.cartListItemTitle}>{good.product.name}</a>
         </Link>
-        {/* <div className={styles.cartListItemFeatures}>
-          <div className={styles.cartListItemFeature}>169х110х93</div>
-          <div className={styles.cartListItemFeature}>Велюр</div>
-          <div className={styles.cartListItemFeature}>Аккордеон</div>
-          <div className={styles.cartListItemFeature}>Ортопедические латы</div>
-          <div className={styles.cartListItemFeature}>160х200</div>
-        </div> */}
         <div className={styles.cartListItemButtons}>
           <ItemCounter
             minCount={1}

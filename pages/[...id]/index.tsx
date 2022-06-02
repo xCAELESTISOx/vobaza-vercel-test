@@ -90,14 +90,27 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     .split('?')[0]
     .replace('/ekspress-dostavka', '')
     .split('_');
-  const categoryId = Number(splitUrl[splitUrl.length - 1]) || 1;
+  const splitedUrl = resolvedUrl
+    .split('?')[0]
+    .replace('/ekspress-dostavka', '')
+    .split('/');
+
+  const categoryId = Number(splitUrl[splitUrl.length - 1]);
+  // const slug = query.id[0];
 
   try {
+    // TODO: Удалить проверку и categoryId после добавления динамического меню
+    const categoryRes = isNaN(categoryId)
+      ? await api.getCategoryBySlug(splitedUrl[splitedUrl.length - 1])
+      : await api.getCategory(categoryId);
+    category = categoryRes.data.data;
+
     const params = {
       limit,
       offset: page ? (Number(page) - 1) * limit : 0,
       format: 'PUBLIC_LIST',
-      'filter[category_id]': categoryId,
+      // TODO: Удалить проверку и categoryId после добавления динамического меню
+      'filter[category_id]': isNaN(categoryId) ? category.id : categoryId,
       sort: sort || undefined,
       'filter[label]': isExpress ? 'EXPRESS-DELIVERY' : undefined,
     };
@@ -119,15 +132,14 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       }
     });
 
-    const [goodsRes, categoryRes, filtersRes] = await Promise.all([
+    const [goodsRes, filtersRes] = await Promise.all([
       api.getGoods(params),
-      api.getCategory(categoryId),
-      api.getCategoryFilters(categoryId),
+      // TODO: Удалить проверку и categoryId после добавления динамического меню
+      api.getCategoryFilters(isNaN(categoryId) ? category.id : categoryId),
     ]);
 
     goods = normalizeGoods(goodsRes.data.data);
     meta = goodsRes.data.meta;
-    category = categoryRes.data.data;
     filters = filtersRes.data.data;
 
     filters = filters.map((filter) =>
@@ -159,17 +171,13 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       category.ancestors.forEach((ancestor) => {
         breadcrumbs.push({
           title: ancestor.name,
-          href: `/${ancestor.slug}_${ancestor.id}${
-            isExpress ? '/ekspress-dostavka' : ''
-          }`,
+          href: `/${ancestor.slug}${isExpress ? '/ekspress-dostavka' : ''}`,
         });
       });
     }
     breadcrumbs.push({
       title: category.name,
-      href: `/${category.slug}_${category.id}${
-        isExpress ? '/ekspress-dostavka' : ''
-      }`,
+      href: `/${category.slug}${isExpress ? '/ekspress-dostavka' : ''}`,
     });
   } catch (error) {
     console.log(error);

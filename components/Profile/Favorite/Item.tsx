@@ -52,7 +52,7 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
 
   return (
     <div className={styles.profileFavoriteItem}>
-      <Link href={`/product/${good.slug}_${good.id}_${good.sku}`}>
+      <Link href={`/product/${good.slug}-${good.sku}`}>
         <a className={styles.profileFavoriteItemImage}>
           {good.main_image ? (
             <Image
@@ -72,7 +72,7 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
       </Link>
       <div className={styles.profileFavoriteItemInfoBlock}>
         <div>
-          <Link href={`/product/${good.slug}_${good.id}_${good.sku}`}>
+          <Link href={`/product/${good.slug}-${good.sku}`}>
             <a className={styles.profileFavoriteItemTitle}>{good.name}</a>
           </Link>
           {/* <div className={styles.profileFavoriteItemInfo}>{item.info}</div> */}

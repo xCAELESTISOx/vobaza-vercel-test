@@ -26,7 +26,7 @@ export const ProductOptions = ({
   const router = useRouter();
 
   const onOptionClick = (product: IVariantProduct) => {
-    const destination = `/product/${product.slug}_${product.id}_${product.sku}`;
+    const destination = `/product/${product.slug}-${product.sku}`;
 
     if (destination !== router.asPath) router.push(destination);
   };

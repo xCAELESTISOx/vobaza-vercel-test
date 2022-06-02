@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import styles from './styles.module.scss';
-import { ICategory } from '../../../src/models/ICategory';
+import type { ICategory } from '../../../src/models/ICategory';
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 import { getImageVariantProps } from 'assets/utils/images';
 
@@ -16,9 +16,9 @@ type Props = {
 const getHref = (category: ICategory) => {
   let href = '/';
   if (category.ancestors && category.ancestors.length > 0) {
-    href += `${category.ancestors[0]?.slug}_${category.ancestors[0]?.id}/`;
+    href += `${category.ancestors[0]?.slug}/`;
   }
-  href += `${category.slug}_${category.id}`;
+  href += `${category.slug}`;
   return href;
 };
 

@@ -11,9 +11,9 @@ import styles from './styles.module.scss';
 const getHref = (category: ICategory) => {
   let href = '/';
   if (category.ancestors && category.ancestors.length > 0) {
-    href += `${category.ancestors[0]?.slug}_${category.ancestors[0]?.id}/`;
+    href += `${category.ancestors[0]?.slug}/`;
   }
-  href += `${category.slug}_${category.id}`;
+  href += `${category.slug}`;
   return href;
 };
 
