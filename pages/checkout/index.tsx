@@ -61,6 +61,7 @@ export default function Checkout({ goods, addresses, price, user }) {
         delivery: {
           type: delivery ? delivery.tag : IOrderDeliveryType.none,
         },
+        ...(customer.recipient && { recipient: customer.recipient }),
         // TODO: Привести к типу IOrder
       } as any;
       if (token) {
@@ -89,6 +90,8 @@ export default function Checkout({ goods, addresses, price, user }) {
       });
       router.push(`/checkout/complete?order_id=${res.data.data.number}`);
     } catch (error) {
+      console.log('Error from the page');
+      
       if (error.response.data.errors) {
         throw error;
       }

@@ -23,55 +23,22 @@ export interface Receiver {
   surname: string;
   phone: string;
   email: string;
-  isOtherCustomer: string;
-  otherPhone: string;
-  otherName: string;
+  recipient?: {
+    name: string;
+    phone: string;
+  } | null;
 }
 
-const initialValues = {
+const phoneRegExp =
+  /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+
+const initialValues: Receiver = {
   name: '',
   surname: '',
   phone: '',
   email: '',
-  isOtherCustomer: 'false',
-  otherPhone: '',
-  otherName: '',
-} as Receiver;
-
-const validationSchema = yup.object({
-  name: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
-  surname: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255'),
-  phone: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
-  email: yup
-    .string()
-    .email('Не валидный email')
-    .max(255, 'Количество символов в поле должно быть не больше 255'),
-  isOtherCustomer: yup.string(),
-  otherPhone: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .when(['isOtherCustomer'], (isOtherCustomer, schema) => {
-      return isOtherCustomer === 'true'
-        ? schema.required('Обязательное поле')
-        : schema;
-    }),
-  otherName: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .when(['isOtherCustomer'], (isOtherCustomer, schema) => {
-      return isOtherCustomer === 'true'
-        ? schema.required('Обязательное поле')
-        : schema;
-    }),
-});
+  recipient: null,
+};
 
 type Props = {
   ref: any;
@@ -84,6 +51,47 @@ const OrderReceiver: FC<Props> = forwardRef(
     const { dispatch } = useAuth();
     const token = Cookies.get('token');
     const [isLoading, setIsLoading] = useState(false);
+    const [getsAnotherRecipient, setGetsAnotherRecipient] = useState<
+      'true' | 'false'
+    >('false');
+
+    const validationSchema = yup.object({
+      name: yup
+        .string()
+        .max(255, 'Количество символов в поле должно быть не больше 255')
+        .required('Обязательное поле'),
+      surname: yup
+        .string()
+        .max(255, 'Количество символов в поле должно быть не больше 255'),
+      phone: yup
+        .string()
+        .max(255, 'Количество символов в поле должно быть не больше 255')
+        .required('Обязательное поле'),
+      email: yup
+        .string()
+        .email('Не валидный email')
+        .max(255, 'Количество символов в поле должно быть не больше 255'),
+      recipient: yup
+        .object({
+          name: yup
+            .string()
+            .max(100, 'Количество символов в поле должно быть не больше 100')
+            .when([], (schema) => {
+              return getsAnotherRecipient === 'true'
+                ? schema.required('Обязательное поле')
+                : schema;
+            }),
+          phone: yup
+            .string()
+            .matches(phoneRegExp, 'Невалидный номер телефона')
+            .when([], (schema) => {
+              return getsAnotherRecipient === 'true'
+                ? schema.required('Обязательное поле')
+                : schema;
+            }),
+        })
+        .nullable(),
+    });
 
     useImperativeHandle(ref, () => ({
       submitForm() {
@@ -96,13 +104,21 @@ const OrderReceiver: FC<Props> = forwardRef(
         setIsLoading(true);
         await createOrder(values);
       } catch (error) {
-        const newErrors = {};
+        const newErrors = {} as any;
         error.response.data.errors.forEach((err) => {
           const errSourse = err.source.split('.');
+
+          if (errSourse[0] === 'recipient') {
+            newErrors.recipient = {};
+            newErrors.recipient[errSourse[1]] = err.title;
+          }
+
           if (errSourse[0] === 'customer') {
             newErrors[errSourse[1]] = err.title;
           }
         });
+        console.log(newErrors);
+
         setErrors(newErrors);
         setIsLoading(false);
       }
@@ -130,14 +146,17 @@ const OrderReceiver: FC<Props> = forwardRef(
     const handleChange = async (e: any) => {
       await setFieldValue(e.target.name, e.target.value);
     };
+    const changeAnotherRecipient = (val: 'true' | 'false') => {
+      if (val === 'true') setFieldValue('recipient', { phone: '7', name: '' });
+      else setFieldValue('recipient', null);
+
+      setGetsAnotherRecipient(val);
+    };
     const handlePhoneChange = async (value: string) => {
       await setFieldValue('phone', value);
     };
-    const handleOtherChange = async (value: string) => {
-      await setFieldValue('isOtherCustomer', value);
-    };
     const handleOtherPhoneChange = async (value: string) => {
-      await setFieldValue('otherPhone', value);
+      await setFieldValue('recipient.phone', value);
     };
     const handleBlur = async (e: any) => {
       validateField(e.target.name);
@@ -154,11 +173,15 @@ const OrderReceiver: FC<Props> = forwardRef(
       });
     }, [initialUser, setValues]);
 
+    useEffect(() => {
+      setErrors({});
+    }, [getsAnotherRecipient]);
+
     return (
       <div className={styles.orderReceiver}>
         <div className={styles.cartContent}>
           <div className={styles.cartHeader}>
-            <h2 className={styles.cartTitle}>Получатель</h2>
+            <h2 className={styles.cartTitle}>Покупатель</h2>
             {!token && (
               <div>
                 <span>Уже зарегистрированы? </span>
@@ -247,9 +270,9 @@ const OrderReceiver: FC<Props> = forwardRef(
                       value: 'false',
                     }}
                     label="Получу я"
-                    value={values.isOtherCustomer}
+                    value={getsAnotherRecipient}
                     name="withElevator"
-                    onChange={() => handleOtherChange('false')}
+                    onChange={() => changeAnotherRecipient('false')}
                   />
                 </div>
                 <div className={styles.orderReceiverFormRadio}>
@@ -259,33 +282,33 @@ const OrderReceiver: FC<Props> = forwardRef(
                       value: 'true',
                     }}
                     label="Получит другой человек"
-                    value={values.isOtherCustomer}
+                    value={getsAnotherRecipient}
                     name="withElevator"
-                    onChange={() => handleOtherChange('true')}
+                    onChange={() => changeAnotherRecipient('true')}
                   />
                 </div>
               </div>
               <div className={styles.orderReceiverFormItem}>
                 <InputPhone
                   label="Номер телефона получателя"
-                  name="otherPhone"
-                  value={values.otherPhone}
+                  name="recipient.phone"
+                  value={values.recipient?.phone || ''}
                   onChange={handleOtherPhoneChange}
                   onBlur={handleBlur}
-                  error={errors?.otherPhone}
+                  error={errors?.recipient?.phone || ''}
                   required
-                  disabled={isLoading || values.isOtherCustomer === 'false'}
+                  disabled={isLoading || getsAnotherRecipient === 'false'}
                 />
               </div>
               <div className={styles.orderReceiverFormItem}>
                 <InputText
-                  label="Имя покупателя"
-                  name="otherName"
-                  value={values.otherName}
+                  label="Имя получателя"
+                  name="recipient.name"
+                  value={values.recipient?.name || ''}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={errors?.otherName}
-                  disabled={isLoading || values.isOtherCustomer === 'false'}
+                  error={errors?.recipient?.name || ''}
+                  disabled={isLoading || getsAnotherRecipient === 'false'}
                   required
                 />
               </div>
