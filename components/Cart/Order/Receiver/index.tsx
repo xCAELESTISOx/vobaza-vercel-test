@@ -1,6 +1,7 @@
 import {
   FC,
   forwardRef,
+  SyntheticEvent,
   useEffect,
   useImperativeHandle,
   useState,
@@ -23,7 +24,7 @@ export interface Receiver {
   surname: string;
   phone: string;
   email: string;
-  recipient?: {
+  recipient: {
     name: string;
     phone: string;
   } | null;
@@ -143,8 +144,8 @@ const OrderReceiver: FC<Props> = forwardRef(
       onSubmit: orderHandler,
     });
 
-    const handleChange = async (e: any) => {
-      await setFieldValue(e.target.name, e.target.value);
+    const handleChange = async (e: SyntheticEvent<HTMLInputElement>) => {
+      await setFieldValue(e.currentTarget.name, e.currentTarget.value);
     };
     const changeAnotherRecipient = (val: 'true' | 'false') => {
       if (val === 'true') setFieldValue('recipient', { phone: '7', name: '' });
@@ -158,8 +159,8 @@ const OrderReceiver: FC<Props> = forwardRef(
     const handleOtherPhoneChange = async (value: string) => {
       await setFieldValue('recipient.phone', value);
     };
-    const handleBlur = async (e: any) => {
-      validateField(e.target.name);
+    const handleBlur = async (e: SyntheticEvent<HTMLInputElement>) => {
+      validateField(e.currentTarget.name);
     };
 
     const openLoginModal = () => {
