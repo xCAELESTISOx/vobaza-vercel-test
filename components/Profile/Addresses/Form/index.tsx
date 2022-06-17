@@ -87,6 +87,7 @@ const ProfileAddressesForm: FC<Props> = ({
           id: newId,
           is_default: values.isDefault,
           address: values.address,
+          floor : +values.floor
         });
       } else {
         router.push('/profile/address');

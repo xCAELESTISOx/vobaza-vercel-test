@@ -9,7 +9,7 @@ import { toNumberWithSpaces } from '../../../assets/utils/formatters';
 type Props = {
   price?: number;
   delivery?: any;
-  elevatePrice?: number;
+  liftPrice?: number;
   assemblyPrice?: number;
   isOrder?: boolean;
   onButtonClick?: () => void;
@@ -18,7 +18,7 @@ type Props = {
 const CartSidebar: FC<Props> = ({
   price,
   delivery,
-  elevatePrice = 0,
+  liftPrice = 0,
   assemblyPrice = 0,
   isOrder = false,
   onButtonClick,
@@ -49,7 +49,7 @@ const CartSidebar: FC<Props> = ({
               </span>
               <span className={styles.cartSidebarOrderDecorator} />
               <span className={styles.cartSidebarOrderPrice}>
-                {toNumberWithSpaces(elevatePrice)} ₽
+                {toNumberWithSpaces(liftPrice)} ₽
               </span>
             </div>
             <div className={styles.cartSidebarOrderItem}>
@@ -67,7 +67,7 @@ const CartSidebar: FC<Props> = ({
           {isOrder ? 'Итого:' : 'Сумма заказа:'}
         </span>
         {toNumberWithSpaces(
-          price + elevatePrice + assemblyPrice + (delivery ? delivery.price : 0)
+          price + liftPrice + assemblyPrice + (delivery ? delivery.price : 0)
         )}{' '}
         ₽
       </div>

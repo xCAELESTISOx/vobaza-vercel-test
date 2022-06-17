@@ -1,9 +1,6 @@
 import React, { FC } from 'react';
 
-import {
-  AttributeDataType,
-  IAttributeItem,
-} from '../../../src/models/IAttributes';
+import { AttributeDataType, IAttributeItem } from '../../../src/models/IAttributes';
 import type { IAttributes } from '../../../src/models/IAttributes';
 
 import styles from './styles.module.scss';
@@ -97,12 +94,7 @@ const AttributesBlock: FC<AttributesBlock> = (props) => {
   return (
     <div className={styles.attributesBlock}>
       <div className={styles.attributesBlockTitle}>{title}</div>
-      <div>
-        {attributes &&
-          attributes.map((item) => (
-            <AttributeItem key={item.attribute.id} data={item} />
-          ))}
-      </div>
+      <div>{attributes && attributes.map((item) => <AttributeItem key={item.attribute.id} data={item} />)}</div>
     </div>
   );
 };
@@ -116,9 +108,7 @@ const ProductAttributes: FC<ProductAttributes> = ({ attributes }) => {
 
   return (
     <div className={styles.container}>
-      {main && (
-        <AttributesBlock title="Основные характеристики" attributes={main} />
-      )}
+      {main && <AttributesBlock title="Основные характеристики" attributes={main} />}
       {additional &&
         additional.map((block) => (
           <AttributesBlock

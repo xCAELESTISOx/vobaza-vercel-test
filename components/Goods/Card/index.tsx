@@ -106,7 +106,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
                   <Image
                     {...getImageVariantProps(
                       currentImage
-                        ? currentImage.main_image.variants
+                        ? currentImage.main_image?.variants
                         : good.main_image.variants,
                       'medium'
                     )}

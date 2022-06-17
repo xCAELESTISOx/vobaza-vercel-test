@@ -1,31 +1,7 @@
-import initAxios from 'axios';
 import cookies from 'js-cookie';
 
-import { IOrder, IOrderDelivery } from '../../src/models/IOrder';
-
-export const axios = initAxios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/`,
-});
-
-const setToken = () => {
-  const token = cookies.get('token');
-  if (token) {
-    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-  }
-};
-
-const setTokenWithGuest = async (withRequest?: boolean) => {
-  let token = cookies.get('token') || cookies.get('guestToken');
-
-  if (!token && withRequest) {
-    const guestTokenRes = await api.getGuestToken();
-    token = guestTokenRes.data.data.token;
-    cookies.set('guestToken', token);
-  }
-  if (token) {
-    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-  }
-};
+import { axios, setToken, setTokenWithGuest } from './axios';
+import { ordersAPI } from './modules/orders';
 
 export const api = {
   //Auth
@@ -189,60 +165,14 @@ export const api = {
     await setTokenWithGuest();
     return axios.get(`/v1/basket`);
   },
-  async addGoodToCart(
-    id: number | string,
-    data: { quantity: number; include?: string }
-  ) {
+  async addGoodToCart(id: number | string, data: { quantity: number; include?: string }) {
     await setTokenWithGuest(true);
     return axios.post(`/v1/basket/${id}/add`, data);
   },
-  async removeGoodFromCart(
-    id: number | string,
-    data: { quantity: number; include?: string }
-  ) {
+  async removeGoodFromCart(id: number | string, data: { quantity: number; include?: string }) {
     await setTokenWithGuest(true);
     return axios.post(`/v1/basket/${id}/sub`, data);
   },
   //Order
-  async createOrder(data: IOrder) {
-    await setTokenWithGuest();
-    return axios.post(`/v1/checkout`, data);
-  },
-  async createAuthOrder(data: { delivery: IOrderDelivery }) {
-    await setToken();
-    return axios.post(`/customer/v1/checkout`, data);
-  },
-  async getAssemblyPrice(address: string) {
-    return axios.get(`/v1/checkout/assembly`, { params: { address } });
-  },
-  async getLiftPrice(elevator: string, floor: number) {
-    return axios.get(`/v1/checkout/lift`, { params: { elevator, floor } });
-  },
-  async getDeliveryPrice(address: string) {
-    return axios.get(`/v1/checkout/delivery`, { params: { address } });
-  },
-
-  async getOrders() {
-    await setToken();
-    return axios.get(`/customer/v1/orders`);
-  },
-  async getLastOrder() {
-    await setToken();
-    return axios.get(`/customer/v1/orders`, { params: { limit: 1 } });
-  },
-  async getOrder(id) {
-    await setToken();
-    return axios.get(`/customer/v1/orders/${id}`);
-  },
-  // Callback order
-  async makeOneClickOrder(data: { phone: string; name?: string }) {
-    setTokenWithGuest();
-    await axios.post('/v1/callback', data);
-  },
-  async createOneClickOrder(
-    productId: number,
-    data: { name: string; phone: string; email?: string }
-  ) {
-    return axios.post(`/v1/products/${productId}/oneClickOrder`, data);
-  },
+  ...ordersAPI,
 };

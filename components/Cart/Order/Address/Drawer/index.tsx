@@ -1,44 +1,38 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import * as yup from 'yup';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 
-import styles from './styles.module.scss';
-import Drawer from '../../../../../src/hoc/withDrawer';
-import { IOrderAddress } from '../../../../../src/models/IOrder';
-
-import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
-import { dadataApi } from 'assets/api/dadata';
+import type { IOrderAddress } from '../../../../../src/models/IOrder';
 import { useClickOutside } from '@nebo-team/vobaza.ui.filter-select/dist/filter-select';
 import useDebounce from 'src/hooks/useDebounce';
 
+import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
+import Drawer from '../../../../../src/hoc/withDrawer';
+
+import { dadataApi } from 'assets/api/dadata';
+import styles from './styles.module.scss';
+
 const validationSchema = yup.object({
-  address: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
-  entrance: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255'),
-  floor: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255'),
-  intercom: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255'),
+  address: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
+  entrance: yup.string().max(255, 'Количество символов в поле должно быть не больше 255'),
+  floor: yup.string().max(255, 'Количество символов в поле должно быть не больше 255'),
+  intercom: yup.string().max(255, 'Количество символов в поле должно быть не больше 255'),
 });
 
 type Props = {
   address: IOrderAddress;
-  setAddress: (address: IOrderAddress) => void;
+  // setAddress: (address: IOrderAddress) => void;
+  setOuterFieldValue: (name: string, value: any) => void;
   isOpen: boolean;
   onClose: () => void;
 };
 
 const OrderAddressDrawer: FC<Props> = ({
   isOpen = false,
+  setOuterFieldValue,
   onClose,
   address,
-  setAddress,
+  // setAddress,
 }) => {
   const suggestRef = useRef(null);
   useClickOutside(suggestRef, () => setAddreses([]));
@@ -48,7 +42,8 @@ const OrderAddressDrawer: FC<Props> = ({
   const setAddressHandler = () => {
     try {
       setIsLoading(true);
-      setAddress(values);
+      setOuterFieldValue('address', values);
+      // setAddress(values);
       setIsLoading(false);
       onClose();
     } catch (e) {
@@ -57,22 +52,14 @@ const OrderAddressDrawer: FC<Props> = ({
     }
   };
 
-  const {
-    touched,
-    setFieldTouched,
-    values,
-    setValues,
-    setFieldValue,
-    validateField,
-    errors,
-    handleSubmit,
-  } = useFormik<IOrderAddress>({
-    initialValues: address,
-    validationSchema,
-    validateOnBlur: false,
-    validateOnChange: false,
-    onSubmit: setAddressHandler,
-  });
+  const { touched, setFieldTouched, values, setValues, setFieldValue, validateField, errors, handleSubmit } =
+    useFormik<IOrderAddress>({
+      initialValues: address,
+      validationSchema,
+      validateOnBlur: false,
+      validateOnChange: false,
+      onSubmit: setAddressHandler,
+    });
   const handleChangeAddress = async (e) => {
     setAddreses([]);
     setFieldTouched('address');
@@ -173,6 +160,7 @@ const OrderAddressDrawer: FC<Props> = ({
             error={errors?.floor}
             valueType="integer"
             disabled={isLoading}
+            required
           />
         </div>
         <div className={styles.orderAddressFormItem}>

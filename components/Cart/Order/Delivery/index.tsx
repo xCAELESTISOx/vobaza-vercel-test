@@ -1,106 +1,66 @@
 import React, { FC, useEffect, useState } from 'react';
 import Image from 'next/image';
 
-import styles from './styles.module.scss';
-
-import { api } from 'assets/api';
+import useToggle from 'src/hooks/useToggle';
 import { num2str } from '../../../../assets/utils';
-import { ICartGood } from '../../ListItem';
-import { IOrderAddress, IOrderDelivery } from '../../../../src/models/IOrder';
-import { IAddress } from 'src/models/IAddress';
 import useDebounce from 'src/hooks/useDebounce';
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 import { getImageVariantProps } from 'assets/utils/images';
+import type { ICartGood } from '../../ListItem';
+import type { IDeliveryVariants, ILocalOrder } from '../../../../src/models/IOrder';
+import type { IAddress } from 'src/models/IAddress';
 
-import Toggle from '../../../UI/Toggle';
-import ItemCounter from '../../../UI/ItemCounter';
+import DeliveryLiftingAssembly from './DeliveryLiftingAssembly';
 import OrderDeliveryDrawer from './Drawer';
-import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
-import { Button } from '@nebo-team/vobaza.ui.button/dist';
-import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
 import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select/dist';
-import { InputRadio } from '@nebo-team/vobaza.ui.inputs.input-radio/dist';
+import { InputCalendar } from 'components/UI/InputCalendar';
+import { Button } from '@nebo-team/vobaza.ui.button/dist';
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
+
+import styles from './styles.module.scss';
+import { api } from 'assets/api';
 
 type Props = {
+  data: ILocalOrder;
+  setFieldValue: (name: string, value: any) => void;
+
   goods: ICartGood[];
-  address: IOrderAddress;
   currentUserAddress: IAddress;
-  delivery: IOrderDelivery;
-  setDelivery: (delivery: IOrderDelivery) => void;
-  elevatePrice: any;
-  setElevatePrice: (elevatePrice: any) => void;
-  assemblyPrice: any;
+  setLiftPrice: (value: any) => void;
+  liftPrice: number;
+  assemblyPrice: number;
   setAssemblyPrice: (assemblyPrice: any) => void;
 };
 
-const tmpTimeVariants = [
-  {
-    code: 'TI_09_12',
-    value: '09:00 - 12:00',
-  },
-  {
-    code: 'TI_12_15',
-    value: '12:00 - 15:00',
-  },
-  {
-    code: 'TI_15_18',
-    value: '15:00 - 18:00',
-  },
-  {
-    code: 'TI_18_21',
-    value: '18:00 - 21:00',
-  },
-];
-
 const OrderDelivery: FC<Props> = ({
+  data,
+  setFieldValue,
   goods,
-  address,
   currentUserAddress,
-  delivery,
-  setDelivery,
-  elevatePrice,
-  setElevatePrice,
+  liftPrice,
   assemblyPrice,
+  setLiftPrice,
   setAssemblyPrice,
 }) => {
-  const [isDrawer, setIsDrawer] = useState(false);
+  const [isDrawerOpen, toggleDrawer] = useToggle(false);
 
   // Подъем и сборка
-  const [isElevate, setIsElevate] = useState(false);
-  const [isElevateWithElevator, setIsElevateWithElevator] = useState('true');
-  const [floorCount, setFloorCount] = useState(0);
-
   const [isAssembly, setIsAssembly] = useState(false);
+  const [deliveryVariants, setDeliveryVariants] = useState<IDeliveryVariants | null>(null);
 
-  const setDate = (date: string) => {
-    setDelivery({ ...delivery, date });
-  };
+  const { delivery, lift, address } = data;
+
   const setTime = (time) => {
-    setDelivery({ ...delivery, time });
+    setFieldValue('delivery.time', time);
   };
   const toggleChangeDeliveryDrawer = () => {
-    setIsDrawer(!isDrawer);
+    toggleDrawer(!isDrawerOpen);
   };
 
-  const toggleIsElevate = () => {
-    setIsElevate(!isElevate);
-  };
-  const checkLiftPrice = async () => {
-    if (!isElevate || !floorCount) {
-      setElevatePrice(null);
-    } else {
-      const price = await getLiftPrice();
-      setElevatePrice(price);
-    }
-  };
-  const debouncedCheckLiftPrice = useDebounce(checkLiftPrice, 800);
   const getLiftPrice = async () => {
-    if (!delivery) return null;
+    if (!delivery || !lift) return null;
     try {
-      const res = await api.getLiftPrice(
-        isElevateWithElevator === 'true' ? 'FREIGHT' : 'PASSENGER',
-        floorCount
-      );
+      const res = await api.getLiftPrice(lift.elevator, +address.floor);
 
       return res.data?.data?.price / 100 || 0;
     } catch (error) {
@@ -109,9 +69,16 @@ const OrderDelivery: FC<Props> = ({
     return 0;
   };
 
-  const toggleIsAssembly = () => {
-    setIsAssembly(!isAssembly);
+  const checkLiftPrice = async () => {
+    if (!lift || !address?.floor) {
+      setLiftPrice(0);
+    } else {
+      const price = await getLiftPrice();
+      setLiftPrice(price);
+    }
   };
+  const debouncedCheckLiftPrice = useDebounce(checkLiftPrice, 800);
+
   const checkAssemblyPrice = async () => {
     if (!isAssembly) {
       setAssemblyPrice(null);
@@ -124,9 +91,7 @@ const OrderDelivery: FC<Props> = ({
   const getAssemblyPrice = async () => {
     if (!isAssembly) return null;
     try {
-      const res = await api.getAssemblyPrice(
-        currentUserAddress?.address || address?.address
-      );
+      const res = await api.getAssemblyPrice(currentUserAddress?.address || address?.address);
 
       return res.data?.data?.price / 100 || 0;
     } catch (error) {
@@ -135,10 +100,14 @@ const OrderDelivery: FC<Props> = ({
     return 0;
   };
 
+  const onDateSelect = (val: Date) => {
+    setFieldValue('delivery.date', val);
+  };
+
   useEffect(() => {
     if (!delivery) {
-      setElevatePrice(null);
-      setIsElevate(false);
+      setLiftPrice(0);
+      setFieldValue('lift', null);
       setAssemblyPrice(null);
       setIsAssembly(false);
     }
@@ -146,7 +115,7 @@ const OrderDelivery: FC<Props> = ({
 
   useEffect(() => {
     debouncedCheckLiftPrice();
-  }, [isElevate, floorCount, isElevateWithElevator]);
+  }, [lift]);
 
   useEffect(() => {
     if (!delivery) {
@@ -156,29 +125,26 @@ const OrderDelivery: FC<Props> = ({
     }
   }, [address?.address, currentUserAddress?.address, isAssembly]);
 
-  const goodsCount = goods.reduce(
-    (previousValue, currentValue) => previousValue + currentValue.quantity,
-    0
-  );
+  const goodsCount = goods.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0);
+  const timeSlots = deliveryVariants?.time_slots?.map(({ from, to }) => ({ value: `${from}-${to}` })) || [];
+  const minDate = delivery?.min_date
+    ? deliveryVariants?.types.find(({ name }) => name === delivery.name).min_date
+    : undefined || undefined;
 
   return (
     <div className={styles.orderDelivery}>
       <OrderDeliveryDrawer
-        address={
-          currentUserAddress ? currentUserAddress.address : address.address
-        }
-        setDelivery={setDelivery}
+        address={currentUserAddress ? currentUserAddress.address : address.address}
+        setFieldValue={setFieldValue}
+        setDeliveryVariants={setDeliveryVariants}
         onClose={toggleChangeDeliveryDrawer}
-        isOpen={isDrawer}
+        isOpen={isDrawerOpen}
       />
       <div className={styles.cartContent}>
         <div className={styles.cartHeader}>
           <h2 className={styles.cartTitle}>Доставка ВоБаза</h2>
           <div className={styles.cartHeaderButtons}>
-            <button
-              className={styles.cartHeaderButton}
-              onClick={toggleChangeDeliveryDrawer}
-            >
+            <button className={styles.cartHeaderButton} onClick={toggleChangeDeliveryDrawer}>
               Изменить
             </button>
           </div>
@@ -187,16 +153,13 @@ const OrderDelivery: FC<Props> = ({
           <div className={styles.orderDeliveryTextItem}>
             <Icon name="Car" />
             <span>
-              {delivery
-                ? `${delivery.name}, ${delivery.price} ₽`
-                : `Нажмите "Оформить Заказ", мы свяжемся с Вами`}
+              {delivery ? `${delivery.name}, ${delivery.price} ₽` : `Нажмите "Оформить Заказ", мы свяжемся с Вами`}
             </span>
           </div>
           <div className={styles.orderDeliveryTextItem}>
             <Icon name="Scales" />
             <span>
-              {goodsCount} {num2str(goodsCount, ['товар', 'товара', 'товаров'])}{' '}
-              ・533 кг
+              {goodsCount} {num2str(goodsCount, ['товар', 'товара', 'товаров'])} ・533 кг
             </span>
           </div>
         </div>
@@ -204,11 +167,14 @@ const OrderDelivery: FC<Props> = ({
           <>
             <div className={styles.orderDeliveryInputs}>
               <div className={styles.orderDeliveryInput}>
-                <InputText
+                <InputCalendar
                   label="Дата доставки"
                   name="date"
-                  value={delivery.date}
-                  onChange={(e) => setDate(e.target.value)}
+                  value={delivery.date ? new Date(delivery.date) : undefined}
+                  calendarOptions={{
+                    minDate: minDate ? new Date(minDate) : undefined,
+                  }}
+                  onChange={onDateSelect}
                 />
               </div>
               <div className={styles.orderDeliveryInput}>
@@ -216,80 +182,20 @@ const OrderDelivery: FC<Props> = ({
                   name="time"
                   label="Время доставки"
                   currentValue={delivery.time}
-                  variants={tmpTimeVariants}
+                  variants={timeSlots}
                   onChange={setTime}
+                  keyField="value"
                 />
               </div>
             </div>
-            <div className={styles.orderDeliverySubblock}>
-              <h2 className={styles.orderDeliverySubblockTitle}>
-                Подъем и сборка
-              </h2>
-              <div className={styles.orderDeliverySubblockToggleBlock}>
-                <Toggle isActive={isElevate} onClick={toggleIsElevate}>
-                  <div className={styles.orderDeliverySubblockToggle}>
-                    Подъем на этаж{' '}
-                    {typeof elevatePrice === 'number' &&
-                      isElevate &&
-                      !!floorCount && (
-                        <>
-                          –&nbsp;<span>{elevatePrice} ₽</span>
-                        </>
-                      )}
-                  </div>
-                </Toggle>
-                {isElevate && (
-                  <div className={styles.orderDeliveryRadioBlock}>
-                    <div className={styles.orderDeliveryRadio}>
-                      <InputRadio
-                        currentValue={{
-                          code: 'true',
-                          value: 'true',
-                        }}
-                        label="Грузовой лифт"
-                        value={isElevateWithElevator}
-                        name="withElevator"
-                        onChange={() => setIsElevateWithElevator('true')}
-                      />
-                    </div>
-                    <div className={styles.orderDeliveryRadio}>
-                      <InputRadio
-                        currentValue={{
-                          code: 'false',
-                          value: 'false',
-                        }}
-                        label="Пассажирский лифт или по лестнице "
-                        value={isElevateWithElevator}
-                        name="withElevator"
-                        onChange={() => setIsElevateWithElevator('false')}
-                      />
-                    </div>
-                    <div className={styles.orderDeliveryRadioSubblock}>
-                      <div className={styles.orderDeliveryCounter}>
-                        На какой этаж?
-                        <ItemCounter
-                          minCount={0}
-                          itemCount={floorCount}
-                          setItemCount={setFloorCount}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div className={styles.orderDeliverySubblockToggleBlock}>
-                <Toggle isActive={isAssembly} onClick={toggleIsAssembly}>
-                  <div className={styles.orderDeliverySubblockToggle}>
-                    Сборка{' '}
-                    {typeof assemblyPrice === 'number' && isAssembly && (
-                      <>
-                        –&nbsp;<span>{assemblyPrice} ₽</span>
-                      </>
-                    )}
-                  </div>
-                </Toggle>
-              </div>
-            </div>
+            <DeliveryLiftingAssembly
+              address={data.address}
+              setFieldValue={setFieldValue}
+              liftPrice={liftPrice}
+              assembly={data.assembly}
+              assemblyPrice={assemblyPrice}
+              lift={lift}
+            />
           </>
         )}
         <div className={styles.orderDeliveryItems}>
@@ -297,20 +203,12 @@ const OrderDelivery: FC<Props> = ({
             <div key={good.product.id} className={styles.orderDeliveryItem}>
               {good.product.main_image ? (
                 <Image
-                  {...getImageVariantProps(
-                    good.product.main_image.variants,
-                    'small'
-                  )}
+                  {...getImageVariantProps(good.product.main_image.variants, 'small')}
                   objectFit="contain"
                   alt={good.product.name}
                 />
               ) : (
-                <Image
-                  src={PlaceholderImage}
-                  objectFit="contain"
-                  alt={good.product.name}
-                  unoptimized
-                />
+                <Image src={PlaceholderImage} objectFit="contain" alt={good.product.name} unoptimized />
               )}
             </div>
           ))}

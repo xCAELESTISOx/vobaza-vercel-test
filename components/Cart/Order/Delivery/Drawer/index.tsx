@@ -1,54 +1,38 @@
 import { FC, useEffect, useState } from 'react';
 
-import styles from './styles.module.scss';
-import Drawer from '../../../../../src/hoc/withDrawer';
+import type { IDeliveryVariants, ILocalOrderDelivery } from 'src/models/IOrder';
+import { EOrderDeliveryType } from '../../../../../src/models/IOrder';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
-import {
-  IOrderDelivery,
-  IOrderDeliveryType,
-} from '../../../../../src/models/IOrder';
+import Drawer from 'src/hoc/withDrawer';
+
+import styles from './styles.module.scss';
 import { api } from 'assets/api';
 
 type Props = {
   address: string;
-  setDelivery: (delivery: IOrderDelivery) => void;
+  setFieldValue: (name: string, value: any) => void;
+  setDeliveryVariants: (variants: IDeliveryVariants) => void;
   isOpen: boolean;
   onClose: () => void;
 };
 
-const tmpVariants = [
-  {
-    name: 'Доставка',
-    price: 990,
-    tag: IOrderDeliveryType.normal,
-    date: '',
-    time: null,
-  },
-  {
-    name: 'Экспресс-доставка',
-    price: 1980,
-    tag: IOrderDeliveryType.express,
-    date: '',
-    time: null,
-  },
-];
-
 const OrderDeliveryDrawer: FC<Props> = ({
   address,
-  setDelivery,
+  setFieldValue,
+  setDeliveryVariants,
   isOpen = false,
   onClose,
 }) => {
-  const [variants, setVariants] = useState([]);
-  const [currentVariant, setCurrentVariant] = useState<IOrderDelivery>(null);
+  const [variants, setVariants] = useState<ILocalOrderDelivery[]>([]);
+  const [currentVariant, setCurrentVariant] = useState<ILocalOrderDelivery>(null);
 
   const setDeliveryHandler = () => {
     try {
       if (currentVariant) {
-        setDelivery(currentVariant);
+        setFieldValue('delivery', currentVariant);
       } else {
-        setDelivery(null);
+        setFieldValue('delivery', null);
       }
       onClose();
     } catch (e) {
@@ -59,27 +43,38 @@ const OrderDeliveryDrawer: FC<Props> = ({
   useEffect(() => {
     async function getDeliveryPrice() {
       try {
-        const res = await api.getDeliveryPrice(address);
+        const res = await api.getDeliveryTypes(address);
+        const { types, time_slots } = res.data?.data;
+
         const variantsArr = [];
 
-        if (res.data?.data?.normal) {
-          variantsArr.push({
+        if (types.normal) {
+          const newItem: ILocalOrderDelivery = {
             name: 'Доставка',
-            price: Math.round(res.data.data.normal / 100),
-            tag: IOrderDeliveryType.normal,
-            date: '',
-            time: null,
-          });
+            price: Math.round(types.normal.price / 100),
+            tag: EOrderDeliveryType.normal,
+            date: null,
+            min_date: types.normal.min_date,
+          };
+          variantsArr.push(newItem);
         }
-        if (res.data?.data?.express) {
-          variantsArr.push({
+        if (types.express) {
+          const newItem: ILocalOrderDelivery = {
             name: 'Экспресс-доставка',
-            price: Math.round(res.data.data.express / 100),
-            tag: IOrderDeliveryType.express,
-            date: '',
-            time: null,
-          });
+            price: Math.round(types.express.price / 100),
+            tag: EOrderDeliveryType.express,
+            date: null,
+            min_date: types.express.min_date,
+          };
+          variantsArr.push(newItem);
         }
+
+        const deliveryVariants = {
+          time_slots,
+          types: variantsArr,
+        };
+        setDeliveryVariants(deliveryVariants);
+
         setVariants(variantsArr);
       } catch (error) {
         console.log(error);
@@ -87,7 +82,8 @@ const OrderDeliveryDrawer: FC<Props> = ({
     }
     if (address) {
       setCurrentVariant(null);
-      setDelivery(null);
+      // setDelivery(null);
+      setFieldValue('delivery', null);
       getDeliveryPrice();
     }
   }, [address]);
@@ -106,45 +102,32 @@ const OrderDeliveryDrawer: FC<Props> = ({
             <div
               key={variant.tag}
               className={`${styles.deliveryDrawerCard} ${
-                currentVariant && currentVariant.tag === variant.tag
-                  ? styles.active
-                  : ''
+                currentVariant && currentVariant.tag === variant.tag ? styles.active : ''
               }`}
               onClick={() => {
                 setCurrentVariant(variant);
               }}
             >
-              <Icon
-                className={styles.deliveryDrawerCardIcon}
-                name="Checkmark"
-              />
-              <div className={styles.deliveryDrawerCardType}>
-                {variant.name}
-              </div>
-              <div className={styles.deliveryDrawerCardPrice}>
-                {variant.price} ₽
-              </div>
+              <Icon className={styles.deliveryDrawerCardIcon} name="Checkmark" />
+              <div className={styles.deliveryDrawerCardType}>{variant.name}</div>
+              <div className={styles.deliveryDrawerCardPrice}>{variant.price} ₽</div>
             </div>
           ))}
         <div
-          className={`${styles.deliveryDrawerCard} ${
-            !currentVariant ? styles.active : ''
-          }`}
+          className={`${styles.deliveryDrawerCard} ${!currentVariant ? styles.active : ''}`}
           onClick={() => {
             setCurrentVariant(null);
           }}
         >
           <Icon className={styles.deliveryDrawerCardIcon} name="Checkmark" />
-          <div className={styles.deliveryDrawerCardType}>
-            Оформить заказ с менеджером
-          </div>
+          <div className={styles.deliveryDrawerCardType}>Оформить заказ с менеджером</div>
           <div className={styles.deliveryDrawerCardPrice}>Бесплатно</div>
         </div>
       </div>
       {!currentVariant && (
         <p className={styles.deliveryDrawerText}>
-          Нажмите кнопку &laquo;Оформить заказ&raquo;, с&nbsp;вами свяжется
-          менеджер для уточнения даты и&nbsp;стоимости доставки.
+          Нажмите кнопку &laquo;Оформить заказ&raquo;, с&nbsp;вами свяжется менеджер для уточнения даты и&nbsp;стоимости
+          доставки.
         </p>
       )}
     </Drawer>

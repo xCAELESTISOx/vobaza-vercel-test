@@ -1,4 +1,4 @@
-import { axios } from './index';
+import { axios } from "./axios";
 
 export default async function checkAuth(req: any, withGuest?: boolean, withoutError?: boolean) {
   const { cookies } = req;

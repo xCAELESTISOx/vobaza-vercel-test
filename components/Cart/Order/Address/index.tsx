@@ -12,15 +12,10 @@ import OrderWithAuthAddressDrawer from './Drawer/WithAuth';
 type Props = {
   address: IOrderAddress;
   addresses: IAddress[];
-  setAddress: (t: IOrderAddress) => void;
+  setFieldValue: (name: string, value: any) => void;
   setCurrentUserAddress: (t: IAddress) => void;
 };
-const OrderAddress: FC<Props> = ({
-  address,
-  addresses,
-  setAddress,
-  setCurrentUserAddress,
-}) => {
+const OrderAddress: FC<Props> = ({ address, addresses, setFieldValue, setCurrentUserAddress }) => {
   const [isDrawer, setIsDrawer] = useState(false);
 
   const toggleChangeAddressDrawer = () => {
@@ -43,7 +38,7 @@ const OrderAddress: FC<Props> = ({
       ) : (
         <OrderAddressDrawer
           address={address}
-          setAddress={setAddress}
+          setOuterFieldValue={setFieldValue}
           onClose={toggleChangeAddressDrawer}
           isOpen={isDrawer}
         />
@@ -52,18 +47,12 @@ const OrderAddress: FC<Props> = ({
         <div className={styles.cartHeader}>
           <h2 className={styles.cartTitle}>Адрес</h2>
           <div className={styles.cartHeaderButtons}>
-            <button
-              className={styles.cartHeaderButton}
-              onClick={toggleChangeAddressDrawer}
-            >
+            <button className={styles.cartHeaderButton} onClick={toggleChangeAddressDrawer}>
               Изменить
             </button>
           </div>
         </div>
-        <div
-          className={styles.orderAddressText}
-          onClick={toggleChangeAddressDrawer}
-        >
+        <div className={styles.orderAddressText} onClick={toggleChangeAddressDrawer}>
           <Icon name="Geoposition" />
           <span>{address.address}</span>
         </div>

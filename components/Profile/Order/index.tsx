@@ -2,21 +2,17 @@ import { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import styles from './styles.module.scss';
 import { num2str } from '../../../assets/utils';
-import {
-  formatOrderDate,
-  formatOrderTimeInterval,
-} from 'assets/utils/formatters';
+import { formatOrderDate, formatOrderTimeInterval } from 'assets/utils/formatters';
 import { getImageVariantProps } from 'assets/utils/images';
-import PlaceholderImage from 'assets/images/placeholder_small.png';
-import {
-  IOrderDeliveryType,
-  IOrderItemFull,
-  orderDeliveryTypeDictionary,
-} from '../../../src/models/IOrder';
+import { EOrderDeliveryType, orderDeliveryTypeDictionary } from '../../../src/models/IOrder';
+import type { IOrderItemFull } from '../../../src/models/IOrder';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
+
+import PlaceholderImage from 'assets/images/placeholder_small.png';
+
+import styles from './styles.module.scss';
 
 type Props = {
   order: IOrderItemFull;
@@ -62,17 +58,13 @@ const ProfileOrder: FC<Props> = ({ order }) => {
           <div className={styles.orderBlockHeader}>
             <div className={styles.orderBlockHeaderTitle}>Доставка ВоБаза</div>
             <div className={styles.orderBlockHeaderStatus}>
-              открыт{' '}
-              <span
-                className={`${styles.orderBlockHeaderStatusDot} ${styles.orange}`}
-              ></span>
+              открыт <span className={`${styles.orderBlockHeaderStatusDot} ${styles.orange}`}></span>
             </div>
           </div>
           <div className={styles.orderDetail}>
             <Icon name="Scales" />
             <span>
-              {productQuantity}{' '}
-              {num2str(productQuantity, ['товар', 'товара', 'товаров'])}
+              {productQuantity} {num2str(productQuantity, ['товар', 'товара', 'товаров'])}
             </span>
             <span> ・ 166 кг</span>
           </div>
@@ -81,18 +73,9 @@ const ProfileOrder: FC<Props> = ({ order }) => {
               <div key={product.sku} className={styles.orderItem}>
                 <div className={styles.orderItemImage}>
                   {product.image ? (
-                    <Image
-                      {...getImageVariantProps(product.image.variants, 'small')}
-                      objectFit="contain"
-                      alt=""
-                    />
+                    <Image {...getImageVariantProps(product.image.variants, 'small')} objectFit="contain" alt="" />
                   ) : (
-                    <Image
-                      src={PlaceholderImage}
-                      objectFit="contain"
-                      alt=""
-                      unoptimized
-                    />
+                    <Image src={PlaceholderImage} objectFit="contain" alt="" unoptimized />
                   )}
                 </div>
                 <div className={styles.orderItemInfoBlock}>
@@ -100,10 +83,7 @@ const ProfileOrder: FC<Props> = ({ order }) => {
                   <div className={styles.orderItemPrices}>
                     {product.item_list_price && (
                       <div className={styles.orderItemPriceOld}>
-                        {Intl.NumberFormat('ru-RU').format(
-                          product.item_list_price / 100
-                        )}{' '}
-                        ₽
+                        {Intl.NumberFormat('ru-RU').format(product.item_list_price / 100)} ₽
                       </div>
                     )}
                     <div className={styles.orderItemPrice}>
@@ -117,9 +97,7 @@ const ProfileOrder: FC<Props> = ({ order }) => {
           <div>
             <div className={styles.orderDelivery}>
               <div>
-                <div className={styles.orderDeliveryTitle}>
-                  Способ получения{' '}
-                </div>
+                <div className={styles.orderDeliveryTitle}>Способ получения </div>
                 <div className={styles.orderDeliveryItem}>
                   <Icon name="Car" />
                   {orderDeliveryTypeDictionary[order.delivery.type]}
@@ -129,13 +107,11 @@ const ProfileOrder: FC<Props> = ({ order }) => {
                   {order.delivery.address.address}
                 </div>
               </div>
-              {order.delivery.type !== IOrderDeliveryType.none && (
+              {order.delivery.type !== EOrderDeliveryType.none && (
                 <div>
-                  <div className={styles.orderDeliveryTitle}>
-                    Дата и время доставки
-                  </div>
+                  <div className={styles.orderDeliveryTitle}>Дата и время доставки</div>
                   <div className={styles.orderDeliveryItem}>
-                    {formatOrderDate(order.delivery.date, false, true)}{' '}
+                    {formatOrderDate(order.delivery.date as string, false, true)}{' '}
                     {formatOrderTimeInterval(order.delivery.time_interval)}
                   </div>
                 </div>
@@ -151,10 +127,7 @@ const ProfileOrder: FC<Props> = ({ order }) => {
           </div>
           <div className={styles.orderBlockFooterTotal}>
             <div className={styles.orderBlockFooterValueTitle}>Итого</div>
-            <div className={styles.orderBlockFooterTotalPrice}>
-              {' '}
-              {Intl.NumberFormat('ru-RU').format(order.price)} ₽
-            </div>
+            <div className={styles.orderBlockFooterTotalPrice}> {Intl.NumberFormat('ru-RU').format(order.price)} ₽</div>
           </div>
         </div>
       </div>
