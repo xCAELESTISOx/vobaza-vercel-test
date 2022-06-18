@@ -1,8 +1,6 @@
-const toNumberWithSpaces = (price: number) => {
+export const toNumberWithSpaces = (price: number) => {
   return Intl.NumberFormat('ru-RU').format(price);
 };
-
-export { toNumberWithSpaces };
 
 export const formatOrderDate = (dateString: string, withYear: boolean, withDay?: boolean) => {
   if (!dateString) return 'Неизвестно';

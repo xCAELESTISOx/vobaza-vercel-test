@@ -2,13 +2,16 @@ import { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import styles from './styles.module.scss';
 import { formatOrderDate, formatOrderTimeInterval } from 'assets/utils/formatters';
 import { getImageVariantProps } from 'assets/utils/images';
+import { EOrderDeliveryType } from '../../../../src/models/IOrder';
+import type { IOrderItem } from '../../../../src/models/IOrder';
+
 import PlaceholderImage from 'assets/images/placeholder_small.png';
-import { EOrderDeliveryType, IOrderItem } from '../../../../src/models/IOrder';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
+
+import styles from './styles.module.scss';
 
 type Props = {
   order: IOrderItem;
@@ -58,15 +61,17 @@ const ProfileOrderItem: FC<Props> = ({ order, isLast }) => {
               </div>
             ))}
           </div>
-          {order.delivery.type !== EOrderDeliveryType.none && !isLast && (
-            <div className={styles.orderItemDeliveryDate}>
-              <div>Дата и время доставки</div>
-              <div className={styles.orderItemDeliveryDateItem}>
-                {formatOrderDate(order.delivery.date as string, false, true)}{' '}
-                {formatOrderTimeInterval(order.delivery.time_interval)}
+          {order.delivery.type !== EOrderDeliveryType.none &&
+            !isLast &&
+            (order.delivery.date || order.delivery.time_interval) && (
+              <div className={styles.orderItemDeliveryDate}>
+                <div>Дата и время доставки</div>
+                <div className={styles.orderItemDeliveryDateItem}>
+                  {formatOrderDate(order.delivery.date as string, false, true)}{' '}
+                  {formatOrderTimeInterval(order.delivery.time_interval)}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
           {isLast && (
             <Link href={`/profile/orders/${order.id}`}>

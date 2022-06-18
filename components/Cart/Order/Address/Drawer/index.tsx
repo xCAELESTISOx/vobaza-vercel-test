@@ -15,7 +15,7 @@ import styles from './styles.module.scss';
 const validationSchema = yup.object({
   address: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
   entrance: yup.string().max(255, 'Количество символов в поле должно быть не больше 255'),
-  floor: yup.string().max(255, 'Количество символов в поле должно быть не больше 255'),
+  floor: yup.number().min(1, 'Номер этажа не может быть меньше единицы').required('Обязательное поле'),
   intercom: yup.string().max(255, 'Количество символов в поле должно быть не больше 255'),
 });
 

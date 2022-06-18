@@ -81,15 +81,17 @@ const OrderReceiver: FC<Props> = forwardRef(({ initialUser, createOrder }, ref) 
     } catch (error) {
       const newErrors = {} as any;
       error.response.data.errors.forEach((err) => {
-        const errSourse = err.source.split('.');
+        if (err.source) {
+          const errSourse = err.source.split('.');
 
-        if (errSourse[0] === 'recipient') {
-          newErrors.recipient = {};
-          newErrors.recipient[errSourse[1]] = err.title;
-        }
+          if (errSourse[0] === 'recipient') {
+            newErrors.recipient = {};
+            newErrors.recipient[errSourse[1]] = err.title;
+          }
 
-        if (errSourse[0] === 'customer') {
-          newErrors[errSourse[1]] = err.title;
+          if (errSourse[0] === 'customer') {
+            newErrors[errSourse[1]] = err.title;
+          }
         }
       });
       console.log(newErrors);

@@ -17,13 +17,7 @@ type Props = {
   onClose: () => void;
 };
 
-const OrderDeliveryDrawer: FC<Props> = ({
-  address,
-  setFieldValue,
-  setDeliveryVariants,
-  isOpen = false,
-  onClose,
-}) => {
+const OrderDeliveryDrawer: FC<Props> = ({ address, setFieldValue, setDeliveryVariants, isOpen = false, onClose }) => {
   const [variants, setVariants] = useState<ILocalOrderDelivery[]>([]);
   const [currentVariant, setCurrentVariant] = useState<ILocalOrderDelivery>(null);
 

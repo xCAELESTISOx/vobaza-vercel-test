@@ -107,15 +107,16 @@ const ProfileOrder: FC<Props> = ({ order }) => {
                   {order.delivery.address.address}
                 </div>
               </div>
-              {order.delivery.type !== EOrderDeliveryType.none && (
-                <div>
-                  <div className={styles.orderDeliveryTitle}>Дата и время доставки</div>
-                  <div className={styles.orderDeliveryItem}>
-                    {formatOrderDate(order.delivery.date as string, false, true)}{' '}
-                    {formatOrderTimeInterval(order.delivery.time_interval)}
+              {order.delivery.type !== EOrderDeliveryType.none &&
+                (order.delivery.date || order.delivery.time_interval) && (
+                  <div>
+                    <div className={styles.orderDeliveryTitle}>Дата и время доставки</div>
+                    <div className={styles.orderDeliveryItem}>
+                      {formatOrderDate(order.delivery.date as string, false, true)}{' '}
+                      {formatOrderTimeInterval(order.delivery.time_interval)}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
             </div>
           </div>
         </div>
