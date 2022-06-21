@@ -1,0 +1,29 @@
+.tabsGroupWrapper {
+   display: flex;
+}
+.tabsGroup {
+   display: flex;
+   flex-wrap: nowrap;
+   border-radius: 10px;
+   overflow: hidden;
+}
+.tabsGroupItem {
+   margin: 0 1px;
+   background: rgb(242, 242, 242);
+   padding: 8px 40px;
+   cursor: pointer;
+
+   color: rgba(26, 26, 26);
+
+   &.checked {
+      background-color: rgb(243, 221, 245);
+      color: rgb(175, 30, 190);
+   }
+
+   input {
+      z-index: -99;
+      height: 0;
+      opacity: 0;
+      width: 0;
+   }
+}

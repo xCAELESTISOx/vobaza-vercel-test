@@ -92,7 +92,10 @@ export interface ILocalOrder {
     phone: string;
   };
   assembly?: {
-    product_ids: number[];
+    /** Используется, если нет full_order */
+    product_ids?: number[];
+    /** Используется, если нет product_ids */
+    full_order?: boolean;
   };
   /** Если lift Не передается, значит услуга подъёма на этаж не требуется */
   lift?: {

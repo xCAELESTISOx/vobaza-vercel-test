@@ -70,16 +70,16 @@ export default function Checkout({ goods, addresses, price, user }) {
     try {
       const data = normalizeOrder(values, token, customer, userId);
 
+      console.log(data);
+
       let res = null;
       if (token) {
         res = await api.createAuthOrder(data);
       } else {
         res = await api.createOrder(data);
       }
-      dispatch({
-        type: 'setCartSize',
-        payload: 0,
-      });
+      dispatch({ type: 'setCartSize', payload: 0 });
+
       router.push(`/checkout/complete?order_id=${res.data.data.number}`);
     } catch (error) {
       console.log(error);
@@ -162,7 +162,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => 
       throw new Error();
     }
   } catch (error) {
-    console.dir(error.response.data);
+    console.dir(error.response?.data);
     return {
       redirect: {
         destination: '/cart',

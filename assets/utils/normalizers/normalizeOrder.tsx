@@ -3,7 +3,7 @@ import type { ILocalOrder } from 'src/models/IOrder';
 import type { IReceiver } from 'components/Cart/Order/Receiver';
 
 export const normalizeOrder = (data: ILocalOrder, token: string, customer: IReceiver, userAddressId?: number) => {
-  const { delivery, lift, address } = data;
+  const { delivery, lift, address, assembly } = data;
 
   const newData = {
     delivery: {
@@ -11,7 +11,7 @@ export const normalizeOrder = (data: ILocalOrder, token: string, customer: IRece
     },
     ...(!token && { customer }),
     ...(customer.recipient && { recipient: customer.recipient }),
-    ...(lift && { lift: { ...lift, floor : address.floor } }),
+    ...(lift && { lift: { ...lift, floor: address.floor } }),
   } as any;
 
   if (token) {
@@ -19,7 +19,7 @@ export const normalizeOrder = (data: ILocalOrder, token: string, customer: IRece
   } else {
     newData.delivery.address = {
       ...address,
-      ...(address.floor && { floor : address.floor }),
+      ...(address.floor && { floor: address.floor }),
       ...(lift.elevator && { elevator: lift.elevator }),
     };
   }
@@ -39,6 +39,7 @@ export const normalizeOrder = (data: ILocalOrder, token: string, customer: IRece
       newData.delivery.date = undefined;
     }
   }
+
   if (delivery && delivery.time) {
     const splitedTimeSlot = delivery.time.value.split('-');
     const newTimeSlot = {
@@ -47,6 +48,10 @@ export const normalizeOrder = (data: ILocalOrder, token: string, customer: IRece
     };
 
     newData.delivery.time_interval = newTimeSlot;
+  }
+
+  if (assembly && (assembly.product_ids.length || assembly.full_order)) {
+    newData.assembly = assembly;
   }
 
   return newData;

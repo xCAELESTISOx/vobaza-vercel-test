@@ -84,9 +84,18 @@
 .orderDeliveryRadioBlock {
   display: flex;
   padding-top: 20px;
+
+  @media screen and (max-width: 767px) {
+    display: block;
+  }
 }
 .orderDeliveryRadio {
   margin-right: 20px;
+
+  @media screen and (max-width: 767px) {
+    margin-left: 12px;
+    margin-bottom: 16px;
+  }
 }
 .orderDeliveryRadioSubblock {
   margin-left: 32px;
@@ -194,4 +203,27 @@
     vertical-align: middle;
     border-radius: 8px;
   }
+}
+.orderAssemblyContent {
+  margin-left: 20px;
+  padding: 8px 0;
+}
+.orderAssemblyItem {
+  margin-top: 16px;
+}
+.orderAssemblyProduct {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+.orderAssemblyProductContent {
+  display: flex;
+  align-items: center;
+  margin-left: 12px;
+}
+.orderAssemblyProductName {
+  margin-left: 16px;
+
+  font-weight: 400;
+  font-size: 15px;
 }

@@ -24,8 +24,8 @@ type Props = {
   assemblyPrice: number;
   data: ILocalOrder;
   goods: ICartGood[];
-  setLiftPrice: (value: any) => void;
-  setAssemblyPrice: (assemblyPrice: any) => void;
+  setLiftPrice: (value: number) => void;
+  setAssemblyPrice: (assemblyPrice: number) => void;
   setFieldValue: (name: string, value: any) => void;
 };
 
@@ -41,10 +41,9 @@ const OrderDelivery: FC<Props> = ({
   const [isDrawerOpen, toggleDrawer] = useToggle(false);
 
   // Подъем и сборка
-  const [isAssembly, setIsAssembly] = useState(false);
   const [deliveryVariants, setDeliveryVariants] = useState<IDeliveryVariants | null>(null);
 
-  const { delivery, lift, address } = data;
+  const { delivery, lift, address, assembly } = data;
 
   const setTime = (time) => {
     setFieldValue('delivery.time', time);
@@ -63,7 +62,7 @@ const OrderDelivery: FC<Props> = ({
     } catch (error) {
       console.log(error);
     }
-    
+
     return 0;
   };
 
@@ -78,7 +77,7 @@ const OrderDelivery: FC<Props> = ({
   const debouncedCheckLiftPrice = useDebounce(checkLiftPrice, 800);
 
   const checkAssemblyPrice = async () => {
-    if (!isAssembly) {
+    if (!assembly) {
       setAssemblyPrice(null);
     } else {
       const price = await getAssemblyPrice();
@@ -88,7 +87,7 @@ const OrderDelivery: FC<Props> = ({
   const debouncedCheckAssemblyPrice = useDebounce(checkAssemblyPrice, 800);
 
   const getAssemblyPrice = async () => {
-    if (!isAssembly) return null;
+    if (!assembly) return null;
     try {
       const res = await api.getAssemblyPrice(address?.address);
 
@@ -108,7 +107,7 @@ const OrderDelivery: FC<Props> = ({
       setLiftPrice(0);
       setFieldValue('lift', null);
       setAssemblyPrice(null);
-      setIsAssembly(false);
+      setFieldValue('assembly', null);
     }
   }, [delivery]);
 
@@ -122,7 +121,7 @@ const OrderDelivery: FC<Props> = ({
     } else {
       debouncedCheckAssemblyPrice();
     }
-  }, [address?.address, isAssembly]);
+  }, [address?.address, assembly]);
 
   const goodsCount = goods.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0);
   const timeSlots = deliveryVariants?.time_slots?.map(({ from, to }) => ({ value: `${from}-${to}` })) || [];
@@ -190,24 +189,24 @@ const OrderDelivery: FC<Props> = ({
             <DeliveryLiftingAssembly
               address={data.address}
               setFieldValue={setFieldValue}
-              liftPrice={liftPrice}
-              assembly={data.assembly}
               assemblyPrice={assemblyPrice}
+              liftPrice={liftPrice}
+              goods={goods}
               lift={lift}
             />
           </>
         )}
         <div className={styles.orderDeliveryItems}>
-          {goods.map((good) => (
-            <div key={good.product.id} className={styles.orderDeliveryItem}>
-              {good.product.main_image ? (
+          {goods.map(({ product }) => (
+            <div key={product.id} className={styles.orderDeliveryItem}>
+              {product.main_image ? (
                 <Image
-                  {...getImageVariantProps(good.product.main_image.variants, 'small')}
+                  {...getImageVariantProps(product.main_image.variants, 'small')}
                   objectFit="contain"
-                  alt={good.product.name}
+                  alt={product.name}
                 />
               ) : (
-                <Image src={PlaceholderImage} objectFit="contain" alt={good.product.name} unoptimized />
+                <Image src={PlaceholderImage} objectFit="contain" alt={product.name} unoptimized />
               )}
             </div>
           ))}
