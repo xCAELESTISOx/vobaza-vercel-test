@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 
-import type { IAddress, IAddressFull } from 'src/models/IAddress';
+import type { IAddressFull } from 'src/models/IAddress';
 
 import { AuthorizedAddressForm } from 'components/Profile/Addresses/Form/Presenters/AuthorizedForm';
 import OrderWithAuthAddressItem from './item';
@@ -10,10 +10,10 @@ import { Icon } from '@nebo-team/vobaza.ui.icon';
 import styles from './styles.module.scss';
 
 type Props = {
-  addresses: IAddress[];
+  addresses: IAddressFull[];
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (t: IAddress) => void;
+  onSubmit: (t: IAddressFull) => void;
 };
 
 const OrderWithAuthAddressDrawer: FC<Props> = ({ addresses: initialAddresses, isOpen = false, onClose, onSubmit }) => {

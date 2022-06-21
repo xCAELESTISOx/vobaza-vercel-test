@@ -164,6 +164,16 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
       <div className={styles.addressFormRow}>
         <div className={styles.addressFormItem}>
           <InputText
+            label="Квартира"
+            name="flat"
+            value={values.flat?.toString() || ''}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors?.flat}
+          />
+        </div>
+        <div className={styles.addressFormItem}>
+          <InputText
             label="Подъезд"
             name="entrance"
             value={values.entrance}
@@ -172,6 +182,8 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
             error={errors?.entrance}
           />
         </div>
+      </div>
+      <div className={styles.addressFormRow}>
         <div className={styles.addressFormItem}>
           <InputText
             label="Этаж"
@@ -184,8 +196,6 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
             required
           />
         </div>
-      </div>
-      <div className={styles.addressFormRow}>
         <div className={styles.addressFormItem}>
           <InputText
             label="Домофон"
@@ -194,16 +204,6 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
             onChange={handleChange}
             onBlur={handleBlur}
             error={errors?.intercom}
-          />
-        </div>
-        <div className={styles.addressFormItem}>
-          <InputText
-            label="Квартира"
-            name="flat"
-            value={values.flat?.toString() || ''}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            error={errors?.flat}
           />
         </div>
       </div>

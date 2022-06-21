@@ -55,6 +55,7 @@ const OrderDelivery: FC<Props> = ({
 
   const getLiftPrice = async () => {
     if (!delivery || !lift) return null;
+
     try {
       const res = await api.getLiftPrice(lift.elevator, +address.floor);
 
@@ -62,6 +63,7 @@ const OrderDelivery: FC<Props> = ({
     } catch (error) {
       console.log(error);
     }
+    
     return 0;
   };
 
