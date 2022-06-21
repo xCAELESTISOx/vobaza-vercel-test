@@ -1,13 +1,13 @@
 import { GetServerSideProps } from 'next';
 
 import checkAuth from 'assets/api/auth';
-import { api } from 'assets/api';
-import { IAddressFull } from 'src/models/IAddress';
+import type { IAddressFull } from 'src/models/IAddress';
 
 import ProfileSidebar from '../../../components/Profile/Sidebar';
-import ProfileAddressesForm from '../../../components/Profile/Addresses/Form';
+import { AuthorizedAddressForm } from 'components/Profile/Addresses/Form/Presenters/AuthorizedForm';
 
 import styles from '../../../styles/Profile.module.scss';
+import { api } from 'assets/api';
 
 type Props = {
   address: IAddressFull;
@@ -25,7 +25,7 @@ export default function ProfileAddressAdd({ address }: Props) {
             </div>
             <div className={styles.profileContentBlock}>
               <h2 className={styles.profileSubtitle}>Мои адреса</h2>
-              <ProfileAddressesForm address={address} />
+              <AuthorizedAddressForm address={address} />
             </div>
           </div>
         </div>
@@ -34,10 +34,7 @@ export default function ProfileAddressAdd({ address }: Props) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({
-  req,
-  params,
-}) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req, params }) => {
   let address = null;
 
   try {

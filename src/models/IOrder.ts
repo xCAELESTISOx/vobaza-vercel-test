@@ -1,5 +1,5 @@
 import type { Image } from '../../src/models/IImage';
-import { ElevatorType } from './IAddress';
+import { ElevatorType, IAddressFull } from './IAddress';
 
 export interface ILocalOrderDelivery {
   name: string;
@@ -22,13 +22,9 @@ export const orderDeliveryTypeDictionary = {
   [EOrderDeliveryType.normal]: 'Доставка',
   [EOrderDeliveryType.express]: 'Экспресс-доставка ',
 };
-export interface IOrderAddress {
-  address: string;
-  entrance?: string;
-  intercom?: string;
-  floor: string | number;
-  elevator?: ElevatorType;
-  flat?: string;
+
+export interface IOrderAddress extends Omit<IAddressFull, 'id' | 'is_default'> {
+  id?: number;
 }
 
 export interface IOrderCustomer {

@@ -1,34 +1,35 @@
 import { FC, useState } from 'react';
 
-import styles from './styles.module.scss';
-import { IOrderAddress } from '../../../../src/models/IOrder';
-import { IAddress } from 'src/models/IAddress';
+import type { IOrderAddress } from '../../../../src/models/IOrder';
+import type { IAddressFull } from 'src/models/IAddress';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import OrderAddressDrawer from './Drawer';
 import OrderWithAuthAddressDrawer from './Drawer/WithAuth';
 
+import styles from './styles.module.scss';
+
 type Props = {
   address: IOrderAddress;
-  addresses: IAddress[];
+  addresses: IAddressFull[];
   setFieldValue: (name: string, value: any) => void;
-  setCurrentUserAddress: (t: IAddress) => void;
 };
-const OrderAddress: FC<Props> = ({ address, addresses, setFieldValue, setCurrentUserAddress }) => {
+const OrderAddress: FC<Props> = ({ address, addresses, setFieldValue }) => {
   const [isDrawer, setIsDrawer] = useState(false);
 
   const toggleChangeAddressDrawer = () => {
     setIsDrawer(!isDrawer);
   };
-  const setNewAddress = (address: IAddress) => {
-    setCurrentUserAddress(address);
+  const setNewAddress = (address: IAddressFull) => {
     setIsDrawer(!isDrawer);
+    setFieldValue('address', address);
   };
 
   return (
     <div className={styles.orderAddress}>
       {addresses.length ? (
+        // Адресс авторизованного пользователя
         <OrderWithAuthAddressDrawer
           addresses={addresses}
           isOpen={isDrawer}
@@ -36,13 +37,10 @@ const OrderAddress: FC<Props> = ({ address, addresses, setFieldValue, setCurrent
           onSubmit={setNewAddress}
         />
       ) : (
-        <OrderAddressDrawer
-          address={address}
-          setOuterFieldValue={setFieldValue}
-          onClose={toggleChangeAddressDrawer}
-          isOpen={isDrawer}
-        />
+        // Адресс неавторизованного пользователя
+        <OrderAddressDrawer setOuterFieldValue={setFieldValue} onClose={toggleChangeAddressDrawer} isOpen={isDrawer} />
       )}
+
       <div className={styles.cartContent}>
         <div className={styles.cartHeader}>
           <h2 className={styles.cartTitle}>Адрес</h2>

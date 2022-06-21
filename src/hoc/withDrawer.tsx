@@ -36,9 +36,7 @@ export default function Drawer({
 
   return (
     <div
-      className={`${styles.drawer} ${isOpen ? styles.active : ''} ${
-        isFullHeight ? styles.fullHeight : ''
-      }`}
+      className={`${styles.drawer} ${isOpen ? styles.active : ''} ${isFullHeight ? styles.fullHeight : ''}`}
       onClick={onClose}
     >
       <div className={styles.drawerContent} onClick={drawerClickHandler}>
@@ -51,14 +49,11 @@ export default function Drawer({
           </div>
         )}
         <div className={styles.drawerBlock}>{children}</div>
-        <div className={styles.drawerButton}>
-          <Button
-            text={buttonText}
-            size="big"
-            isFullScreen
-            onClick={onButtonClick}
-          />
-        </div>
+        {buttonText && (
+          <div className={styles.drawerButton}>
+            <Button text={buttonText} size="big" isFullScreen onClick={onButtonClick} />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,11 +1,11 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
-import { IAddress } from 'src/models/IAddress';
+import type { IAddress, IAddressFull } from 'src/models/IAddress';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { AuthorizedAddressForm } from 'components/Profile/Addresses/Form/Presenters/AuthorizedForm';
 import OrderWithAuthAddressItem from './item';
-import ProfileAddressesForm from 'components/Profile/Addresses/Form';
-import Drawer from '../../../../../../src/hoc/withDrawer';
+import Drawer from 'src/hoc/withDrawer';
+import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 import styles from './styles.module.scss';
 
@@ -16,22 +16,16 @@ type Props = {
   onSubmit: (t: IAddress) => void;
 };
 
-const OrderWithAuthAddressDrawer: FC<Props> = ({
-  addresses: initialAddresses,
-  isOpen = false,
-  onClose,
-  onSubmit,
-}) => {
+const OrderWithAuthAddressDrawer: FC<Props> = ({ addresses: initialAddresses, isOpen = false, onClose, onSubmit }) => {
   const [addresses, setAddresses] = useState(initialAddresses);
   const [isNewOpened, setIsNewOpened] = useState(false);
-  const [currentAddress, setCurrentAddress] = useState(
-    addresses.find((address) => address.is_default)
-  );
+  const [currentAddress, setCurrentAddress] = useState(addresses.find((address) => address.is_default));
+
   const handleSubmit = () => {
     onSubmit(currentAddress);
   };
 
-  const addNewAddress = (item: IAddress) => {
+  const addNewAddress = (item: IAddressFull) => {
     onSubmit(item);
     setAddresses([...addresses, item]);
     setCurrentAddress(item);
@@ -41,14 +35,12 @@ const OrderWithAuthAddressDrawer: FC<Props> = ({
     setIsNewOpened(true);
   };
 
+  useEffect(() => {
+    isNewOpened && setIsNewOpened(false);
+  }, [isOpen]);
+
   return (
-    <Drawer
-      title="Адрес"
-      buttonText="Подтвердить"
-      isOpen={isOpen}
-      onClose={onClose}
-      onButtonClick={handleSubmit}
-    >
+    <Drawer title="Адрес" buttonText="Подтвердить" isOpen={isOpen} onClose={onClose} onButtonClick={handleSubmit}>
       <>
         {addresses.map((address) => (
           <OrderWithAuthAddressItem
@@ -59,12 +51,7 @@ const OrderWithAuthAddressDrawer: FC<Props> = ({
           />
         ))}
         {isNewOpened ? (
-          <ProfileAddressesForm
-            title="Новый адрес"
-            buttonText="Добавить адрес"
-            submitHandler={addNewAddress}
-            inline
-          />
+          <AuthorizedAddressForm onSubmit={addNewAddress} inline />
         ) : (
           <div className={styles.orderAddressAdd} onClick={openNewAddress}>
             <Icon name="Plus" />

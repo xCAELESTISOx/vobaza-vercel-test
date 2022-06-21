@@ -22,6 +22,25 @@
     font-size: 18px;
   }
 }
+.addressFormRow {
+  display: flex;
+  margin-top: 16px;
+  width: calc(100% + 16px);
+  margin-left: -16px;
+
+  .addressFormItem {
+    width: 50%;
+    margin-left: 16px;
+
+    + .addressFormItem {
+      margin-top: 0;
+    }
+  }
+
+  &:first-of-type {
+    margin-top: 40px;
+  }
+}
 .addressFormItem {
   display: flex;
   position: relative;

@@ -11,7 +11,7 @@ import { normalizeOrder } from 'assets/utils/normalizers/normalizeOrder';
 import { EOrderDeliveryType, ILocalOrder } from '../../src/models/IOrder';
 import type { ICartGood } from '../../components/Cart/ListItem';
 import type { IProfile } from '../../components/Profile/Data';
-import type { IAddress } from 'src/models/IAddress';
+import type { IAddress, IAddressFull } from 'src/models/IAddress';
 import type { IReceiver } from '../../components/Cart/Order/Receiver';
 
 import CartSidebar from '../../components/Cart/Sidebar';
@@ -23,23 +23,9 @@ import OrderPayment from '../../components/Cart/Order/Payment';
 import styles from '../../styles/Cart.module.scss';
 import { api } from '../../assets/api';
 
-const initialValues: ILocalOrder = {
-  delivery: {
-    name: '',
-    price: 0,
-    tag: EOrderDeliveryType.none,
-    min_date: '',
-  },
-  address: {
-    address: '',
-    floor: 1,
-    elevator: 'NONE',
-  },
-};
-
 type Props = {
   user: IProfile;
-  addresses: IAddress[];
+  addresses: IAddressFull[];
   goods: ICartGood[];
   price: number;
 };
@@ -50,9 +36,19 @@ export default function Checkout({ goods, addresses, price, user }) {
   const router = useRouter();
   const { dispatch } = useGoods();
 
-  const [currentUserAddress, setCurrentUserAddress] = useState<IAddress>(
-    addresses.find((item: IAddress) => item.is_default)
-  );
+  const initialValues: ILocalOrder = {
+    delivery: {
+      name: '',
+      price: 0,
+      tag: EOrderDeliveryType.none,
+      min_date: '',
+    },
+    address: addresses.find((item: IAddressFull) => item.is_default) || {
+      address: '',
+      floor: 1,
+      elevator: 'NONE',
+    },
+  };
 
   const [liftPrice, setLiftPrice] = useState(null);
   const [assemblyPrice, setAssemblyPrice] = useState(null);
@@ -69,7 +65,7 @@ export default function Checkout({ goods, addresses, price, user }) {
 
   const createOrder = async (customer: IReceiver) => {
     const token = Cookies.get('token');
-    const userId = currentUserAddress?.id;
+    const userId = values.address?.id;
 
     try {
       const data = normalizeOrder(values, token, customer, userId);
@@ -97,7 +93,7 @@ export default function Checkout({ goods, addresses, price, user }) {
   useEffect(() => {
     const cookieCity = Cookies.get('city');
 
-    if (router.query.city || state.city || cookieCity) {
+    if ((router.query.city || state.city || cookieCity) && !values.address.address) {
       setFieldValue('address.address', router.query.city?.toString() || state.city || cookieCity);
     }
   }, [state.city]);
@@ -110,17 +106,11 @@ export default function Checkout({ goods, addresses, price, user }) {
           <div className={styles.cartContent}>
             <div className={styles.cartContentBlock}>
               <OrderReceiver ref={formRef} initialUser={user} createOrder={createOrder} />
-              <OrderAddress
-                address={currentUserAddress || values.address}
-                setCurrentUserAddress={setCurrentUserAddress}
-                addresses={addresses}
-                setFieldValue={setFieldValue}
-              />
+              <OrderAddress address={values.address} addresses={addresses} setFieldValue={setFieldValue} />
               <OrderDelivery
                 data={values}
                 setFieldValue={setFieldValue}
                 goods={goods}
-                currentUserAddress={currentUserAddress}
                 setLiftPrice={setLiftPrice}
                 setAssemblyPrice={setAssemblyPrice}
                 liftPrice={liftPrice}

@@ -1,7 +1,7 @@
 import styles from '../../../styles/Profile.module.scss';
 
 import ProfileSidebar from '../../../components/Profile/Sidebar';
-import ProfileAddressesForm from '../../../components/Profile/Addresses/Form';
+import { AuthorizedAddressForm } from 'components/Profile/Addresses/Form/Presenters/AuthorizedForm';
 
 export default function ProfileAddressAdd() {
   return (
@@ -15,7 +15,7 @@ export default function ProfileAddressAdd() {
             </div>
             <div className={styles.profileContentBlock}>
               <h2 className={styles.profileSubtitle}>Мои адреса</h2>
-              <ProfileAddressesForm />
+              <AuthorizedAddressForm />
             </div>
           </div>
         </div>
