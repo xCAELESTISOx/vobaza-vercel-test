@@ -42,25 +42,27 @@ const OrderDeliveryDrawer: FC<Props> = ({ address, setFieldValue, setDeliveryVar
 
         const variantsArr = [];
 
-        if (types.normal) {
-          const newItem: ILocalOrderDelivery = {
-            name: 'Доставка',
-            price: Math.round(types.normal.price / 100),
-            tag: EOrderDeliveryType.normal,
-            date: null,
-            min_date: types.normal.min_date,
-          };
-          variantsArr.push(newItem);
-        }
-        if (types.express) {
-          const newItem: ILocalOrderDelivery = {
-            name: 'Экспресс-доставка',
-            price: Math.round(types.express.price / 100),
-            tag: EOrderDeliveryType.express,
-            date: null,
-            min_date: types.express.min_date,
-          };
-          variantsArr.push(newItem);
+        if (types) {
+          if (types.normal) {
+            const newItem: ILocalOrderDelivery = {
+              name: 'Доставка',
+              price: Math.round(types.normal.price / 100),
+              tag: EOrderDeliveryType.normal,
+              date: null,
+              min_date: types.normal.min_date,
+            };
+            variantsArr.push(newItem);
+          }
+          if (types.express) {
+            const newItem: ILocalOrderDelivery = {
+              name: 'Экспресс-доставка',
+              price: Math.round(types.express.price / 100),
+              tag: EOrderDeliveryType.express,
+              date: null,
+              min_date: types.express.min_date,
+            };
+            variantsArr.push(newItem);
+          }
         }
 
         const deliveryVariants = {

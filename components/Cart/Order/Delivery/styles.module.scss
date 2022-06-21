@@ -1,4 +1,4 @@
-@import '../../styles.module.scss';
+@import "../../styles.module.scss";
 
 .orderDeliveryText {
   display: flex;
@@ -78,18 +78,15 @@
     font-weight: 500;
   }
 }
+.orderDeliveryLift {
+  padding: 24px 0 0 20px;
+}
 .orderDeliveryRadioBlock {
-  padding: 20px 0 0 20px;
+  display: flex;
+  padding-top: 20px;
 }
 .orderDeliveryRadio {
-  + .orderDeliveryRadio {
-    margin-top: 20px;
-  }
-
-  //
-  span {
-    font-size: 14px;
-  }
+  margin-right: 20px;
 }
 .orderDeliveryRadioSubblock {
   margin-left: 32px;
