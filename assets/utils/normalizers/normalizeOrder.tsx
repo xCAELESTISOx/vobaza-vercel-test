@@ -50,7 +50,7 @@ export const normalizeOrder = (data: ILocalOrder, token: string, customer: IRece
     newData.delivery.time_interval = newTimeSlot;
   }
 
-  if (assembly && (assembly.product_ids.length || assembly.full_order)) {
+  if (assembly && (assembly.product_ids?.length || assembly.full_order)) {
     newData.assembly = assembly;
   }
 

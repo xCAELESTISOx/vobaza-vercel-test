@@ -28,7 +28,7 @@ const DeliveryLiftingAssembly = ({
   return (
     <div className={styles.orderDeliverySubblock}>
       <h2 className={styles.orderDeliverySubblockTitle}>Подъем и сборка</h2>
-      <DeliveryLift floor={address.floor} liftPrice={liftPrice} lift={lift} setFieldValue={setFieldValue} />
+      <DeliveryLift address={address} liftPrice={liftPrice} lift={lift} setFieldValue={setFieldValue} />
       <DeliveryAssembly goods={goods} assemblyPrice={assemblyPrice} setFieldValue={setFieldValue} />
     </div>
   );

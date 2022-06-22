@@ -12,12 +12,12 @@ import styles from './styles.module.scss';
 
 type Props = {
   liftPrice: number;
-  floor: number;
+  address: ILocalOrder['address'];
   lift: ILocalOrder['lift'] | null;
   setFieldValue: (name: string, value: any) => void;
 };
 
-const DeliveryLift = ({ liftPrice, floor, lift, setFieldValue }: Props) => {
+const DeliveryLift = ({ liftPrice, address, lift, setFieldValue }: Props) => {
   const setCounter = (val: number) => {
     setFieldValue('address.floor', val);
   };
@@ -26,7 +26,7 @@ const DeliveryLift = ({ liftPrice, floor, lift, setFieldValue }: Props) => {
     if (lift) {
       setFieldValue('lift', null);
     } else {
-      setFieldValue('lift', { elevator: 'NONE', floor: 1 });
+      setFieldValue('lift', { elevator: address.elevator || 'NONE', floor: address.floor || 1 });
     }
   };
 
@@ -47,7 +47,7 @@ const DeliveryLift = ({ liftPrice, floor, lift, setFieldValue }: Props) => {
       <Toggle isActive={!!lift} onClick={toggleIsElevate}>
         <div className={styles.orderDeliverySubblockToggle}>
           Подъем на этаж{' '}
-          {liftPrice && lift && floor ? (
+          {liftPrice && lift && address.floor ? (
             <>
               –&nbsp;<span>{liftPrice} ₽</span>
             </>
@@ -87,7 +87,7 @@ const DeliveryLift = ({ liftPrice, floor, lift, setFieldValue }: Props) => {
           <div className={styles.orderDeliveryRadioSubblock}>
             <div className={styles.orderDeliveryCounter}>
               На какой этаж?
-              <ItemCounter minCount={1} itemCount={floor} setItemCount={setCounter} />
+              <ItemCounter minCount={1} itemCount={address.floor} setItemCount={setCounter} />
             </div>
           </div>
         </div>
