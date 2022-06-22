@@ -30,8 +30,7 @@ export default function Cart() {
           </div>
           <h1 className={styles.checkoutCompleteTitle}>Спасибо за заказ!</h1>
           <div className={styles.checkoutCompleteText}>
-            Ваш заказ &#8470;&nbsp;{query.order_id || 0} успешно оформлен. Все
-            данные отправленны на&nbsp;вашу почту и&nbsp;в&nbsp;смс
+            Ваш заказ &#8470;&nbsp;{query.order_id || 0} успешно оформлен. Скоро с вами свяжется менеджер для подтверждения
           </div>
           <Link href="/">
             <a className={styles.checkoutCompleteButton}>
