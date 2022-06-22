@@ -22,7 +22,11 @@ const validationSchema = yup.object({
   address: yup.string().required('Обязательное поле'),
   flat: yup.string(),
   entrance: yup.string(),
-  floor: yup.string().required('Обязательное поле'),
+  floor: yup
+    .number()
+    .typeError('Обязательное поле')
+    .min(1, 'Этаж не может быть ниже первого')
+    .required('Обязательное поле'),
   intercom: yup.string(),
 });
 
