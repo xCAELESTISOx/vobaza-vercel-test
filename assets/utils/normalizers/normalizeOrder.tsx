@@ -20,7 +20,7 @@ export const normalizeOrder = (data: ILocalOrder, token: string, customer: IRece
     newData.delivery.address = {
       ...address,
       ...(address.floor && { floor: address.floor }),
-      ...(lift.elevator && { elevator: lift.elevator }),
+      ...(lift && lift.elevator && { elevator: lift.elevator }),
     };
   }
 
