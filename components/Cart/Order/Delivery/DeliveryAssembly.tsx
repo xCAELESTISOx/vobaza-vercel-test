@@ -3,10 +3,12 @@ import Image from 'next/image';
 
 import type { ITarget } from 'components/UI/RadioTabsGroup';
 import type { ICartGood } from 'components/Cart/ListItem';
+import Toggle from 'components/UI/Toggle';
 
 import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
 import { RadioTabsGroup } from 'components/UI/RadioTabsGroup';
-import Toggle from 'components/UI/Toggle';
+
+import PlaceholderImage from 'assets/images/placeholder_small.png';
 
 import styles from './styles.module.scss';
 
@@ -114,7 +116,11 @@ const DeliveryAssembly = ({ assemblyPrice, goods, setFieldValue }: Props) => {
                     onChange={(val) => onAssemblyProductChange(val, index)}
                   />
                   <div className={styles.orderAssemblyProductContent}>
-                    <Image src={item.main_image.variants.small.url} height="48" width="48" alt={item.name} />
+                    {item?.main_image?.variants ? (
+                      <Image src={item.main_image.variants.small.url} height="48" width="48" alt={item.name} />
+                    ) : (
+                      <Image src={PlaceholderImage} height="48" width="48" objectFit="contain" alt={item.name} unoptimized />
+                    )}
                     <h4 className={styles.orderAssemblyProductName}>{item.name}</h4>
                   </div>
                 </div>

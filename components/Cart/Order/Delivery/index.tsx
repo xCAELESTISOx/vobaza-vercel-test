@@ -4,7 +4,6 @@ import Image from 'next/image';
 import useToggle from 'src/hooks/useToggle';
 import { num2str } from '../../../../assets/utils';
 import useDebounce from 'src/hooks/useDebounce';
-import PlaceholderImage from 'assets/images/placeholder_small.png';
 import { getImageVariantProps } from 'assets/utils/images';
 import type { ICartGood } from '../../ListItem';
 import type { IDeliveryVariants, ILocalOrder } from '../../../../src/models/IOrder';
@@ -15,6 +14,8 @@ import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select/dist';
 import { InputCalendar } from 'components/UI/InputCalendar';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
+
+import PlaceholderImage from 'assets/images/placeholder_small.png';
 
 import styles from './styles.module.scss';
 import { api } from 'assets/api';
