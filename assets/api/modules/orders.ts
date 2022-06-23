@@ -10,8 +10,8 @@ export const ordersAPI = {
     await setToken();
     return axios.post(`/customer/v1/checkout`, data);
   },
-  async getAssemblyPrice(address: string) {
-    return axios.get(`/v1/checkout/assembly`, { params: { address } });
+  async getAssemblyPrice(address: string, product_ids: number[]) {
+    return axios.get(`/v1/checkout/assembly`, { params: { address, product_ids } });
   },
   async getLiftPrice(elevator: string, floor: number) {
     return axios.get(`/v1/checkout/lift`, { params: { elevator, floor } });

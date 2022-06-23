@@ -3,20 +3,17 @@ import Image from 'next/image';
 
 import type { ITarget } from 'components/UI/RadioTabsGroup';
 import type { ICartGood } from 'components/Cart/ListItem';
-import Toggle from 'components/UI/Toggle';
+import type { IOrderAddress } from 'src/models/IOrder';
+import useDebounce from 'src/hooks/useDebounce';
 
 import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
 import { RadioTabsGroup } from 'components/UI/RadioTabsGroup';
+import Toggle from 'components/UI/Toggle';
 
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 
 import styles from './styles.module.scss';
-
-type Props = {
-  assemblyPrice: number;
-  goods: ICartGood[];
-  setFieldValue: (name: string, value: any) => void;
-};
+import { api } from 'assets/api';
 
 const tabsVariants = [
   { code: 'FULL', value: 'Весь заказ' },
@@ -39,10 +36,42 @@ const filterProducts = (goods: ICartGood[]) => {
   return newProducts;
 };
 
-const DeliveryAssembly = ({ assemblyPrice, goods, setFieldValue }: Props) => {
+type Props = {
+  assemblyPrice: number;
+  goods: ICartGood[];
+  address: IOrderAddress;
+  setFieldValue: (name: string, value: any) => void;
+  setAssemblyPrice: (value: number | null) => void;
+};
+
+const DeliveryAssembly = ({ address, assemblyPrice, goods, setFieldValue, setAssemblyPrice }: Props) => {
   const [assemblyType, setAssemblyType] = useState<'FULL' | 'PARTIAL'>('FULL');
   const [isAssembly, setIsAssembly] = useState(false);
   const [productsList, setProductsList] = useState(filterProducts(goods));
+
+  const getAssemblyPrice = async () => {
+    const newProductIds = productsList.filter(({ assembly }) => assembly).map(({ id }) => id);
+
+    if (!isAssembly || !newProductIds.length) return null;
+    try {
+      const res = await api.getAssemblyPrice(address?.address, newProductIds);
+
+      return res.data?.data?.price / 100 || 0;
+    } catch (error) {
+      console.log(error);
+    }
+    return 0;
+  };
+
+  const checkAssemblyPrice = async () => {
+    if (!isAssembly) {
+      setAssemblyPrice(null);
+    } else {
+      const price = await getAssemblyPrice();
+      setAssemblyPrice(price);
+    }
+  };
+  const debouncedCheckAssemblyPrice = useDebounce(checkAssemblyPrice, 800);
 
   const toggleIsAssembly = () => {
     // Ресет значений
@@ -83,12 +112,20 @@ const DeliveryAssembly = ({ assemblyPrice, goods, setFieldValue }: Props) => {
     isAssembly && setFieldValue('assembly', { product_ids: newProductIds });
   }, [productsList]);
 
+  useEffect(() => {
+    if (!isAssembly) {
+      setAssemblyPrice(null);
+    } else {
+      debouncedCheckAssemblyPrice();
+    }
+  }, [address?.address, isAssembly, productsList]);
+
   return (
     <div className={styles.orderDeliverySubblockToggleBlock}>
       <Toggle isActive={isAssembly} onClick={toggleIsAssembly}>
         <div className={styles.orderDeliverySubblockToggle}>
           Сборка{' '}
-          {assemblyPrice && isAssembly ? (
+          {assemblyPrice !== null && isAssembly ? (
             <>
               –&nbsp;<span>{assemblyPrice} ₽</span>
             </>
@@ -119,7 +156,14 @@ const DeliveryAssembly = ({ assemblyPrice, goods, setFieldValue }: Props) => {
                     {item?.main_image?.variants ? (
                       <Image src={item.main_image.variants.small.url} height="48" width="48" alt={item.name} />
                     ) : (
-                      <Image src={PlaceholderImage} height="48" width="48" objectFit="contain" alt={item.name} unoptimized />
+                      <Image
+                        src={PlaceholderImage}
+                        height="48"
+                        width="48"
+                        objectFit="contain"
+                        alt={item.name}
+                        unoptimized
+                      />
                     )}
                     <h4 className={styles.orderAssemblyProductName}>{item.name}</h4>
                   </div>

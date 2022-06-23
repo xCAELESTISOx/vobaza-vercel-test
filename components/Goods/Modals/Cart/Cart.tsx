@@ -26,14 +26,17 @@ const CartModal: FC = () => {
 
   return (
     <>
-      {cartError && <CartItemChangeModal onClose={onCloseError} />}
+      {cartError && (
+        <CartItemChangeModal
+          title="Данный товар закончился"
+          description="Товар более не доступен, выберите другой"
+          onClose={onCloseError}
+        />
+      )}
       {cartGood && (
         <ModalLayout onClose={onClose} isWide>
           <div className={styles.inlineModalContent}>
-            <Title
-              element="h1"
-              className={`${styles.inlineModalTitle} ${styles.wide}`}
-            >
+            <Title element="h1" className={`${styles.inlineModalTitle} ${styles.wide}`}>
               Товар добавлен в корзину
             </Title>
             <div className={styles.favoriteModalItem}>
@@ -41,42 +44,27 @@ const CartModal: FC = () => {
                 {cartGood.images || cartGood.main_image ? (
                   cartGood.images ? (
                     <Image
-                      {...getImageVariantProps(
-                        cartGood.images[0].variants,
-                        'medium'
-                      )}
+                      {...getImageVariantProps(cartGood.images[0].variants, 'medium')}
                       objectFit="contain"
                       alt={cartGood.name}
                     />
                   ) : (
                     <Image
-                      {...getImageVariantProps(
-                        cartGood.main_image.variants,
-                        'medium'
-                      )}
+                      {...getImageVariantProps(cartGood.main_image.variants, 'medium')}
                       objectFit="contain"
                       alt={cartGood.name}
                     />
                   )
                 ) : (
-                  <Image
-                    src={PlaceholderImage}
-                    objectFit="contain"
-                    alt=""
-                    unoptimized
-                  />
+                  <Image src={PlaceholderImage} objectFit="contain" alt="" unoptimized />
                 )}
               </div>
               <div className={styles.favoriteModalItemBlock}>
                 <div className={styles.favoriteModalItemInfo}>
                   <div onClick={onClose}>
-                    <div className={styles.favoriteModalItemSku}>
-                      Артикул: {cartGood.sku}
-                    </div>
+                    <div className={styles.favoriteModalItemSku}>Артикул: {cartGood.sku}</div>
                     <Link href={`/product/${cartGood.slug}-${cartGood.sku}`}>
-                      <a className={styles.favoriteModalItemTitle}>
-                        {cartGood.name}
-                      </a>
+                      <a className={styles.favoriteModalItemTitle}>{cartGood.name}</a>
                     </Link>
                   </div>
                   <div className={styles.favoriteModalItemPrice}>
@@ -86,21 +74,10 @@ const CartModal: FC = () => {
                   </div>
                 </div>
                 <div className={styles.favoriteModalButtons}>
-                  <Button
-                    variation="secondary"
-                    onClick={onClose}
-                    size="big"
-                    text="Продолжить покупки"
-                    isFullScreen
-                  />
+                  <Button variation="secondary" onClick={onClose} size="big" text="Продолжить покупки" isFullScreen />
                   <Link href="/checkout">
                     <a>
-                      <Button
-                        onClick={onClose}
-                        size="big"
-                        text="Перейти к оформлению"
-                        isFullScreen
-                      />
+                      <Button onClick={onClose} size="big" text="Перейти к оформлению" isFullScreen />
                     </a>
                   </Link>
                 </div>

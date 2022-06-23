@@ -77,27 +77,7 @@ const OrderDelivery: FC<Props> = ({
   };
   const debouncedCheckLiftPrice = useDebounce(checkLiftPrice, 800);
 
-  const checkAssemblyPrice = async () => {
-    if (!assembly) {
-      setAssemblyPrice(null);
-    } else {
-      const price = await getAssemblyPrice();
-      setAssemblyPrice(price);
-    }
-  };
-  const debouncedCheckAssemblyPrice = useDebounce(checkAssemblyPrice, 800);
-
-  const getAssemblyPrice = async () => {
-    if (!assembly) return null;
-    try {
-      const res = await api.getAssemblyPrice(address?.address);
-
-      return res.data?.data?.price / 100 || 0;
-    } catch (error) {
-      console.log(error);
-    }
-    return 0;
-  };
+  
 
   const onDateSelect = (val: Date) => {
     setFieldValue('delivery.date', val);
@@ -116,13 +96,6 @@ const OrderDelivery: FC<Props> = ({
     debouncedCheckLiftPrice();
   }, [lift, address.floor]);
 
-  useEffect(() => {
-    if (!delivery) {
-      setAssemblyPrice(null);
-    } else {
-      debouncedCheckAssemblyPrice();
-    }
-  }, [address?.address, assembly]);
 
   const goodsCount = goods.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0);
   const timeSlots = deliveryVariants?.time_slots?.map(({ from, to }) => ({ value: `${from}-${to}` })) || [];
@@ -194,6 +167,7 @@ const OrderDelivery: FC<Props> = ({
               liftPrice={liftPrice}
               goods={goods}
               lift={lift}
+              setAssemblyPrice={setAssemblyPrice}
             />
           </>
         )}

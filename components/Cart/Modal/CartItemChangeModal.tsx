@@ -8,29 +8,25 @@ import ModalLayout from '../../../src/hoc/withModal';
 import styles from '../../../styles/modules/inline-modal.module.scss';
 
 interface Props {
+  title?: string;
+  description?: string;
   onClose?: () => void;
 }
 
-const CartItemChangeModal: FC<Props> = ({ onClose }) => {
+const CartItemChangeModal: FC<Props> = ({ description, title, onClose }) => {
   return (
     <ModalLayout onClose={onClose}>
       <div className={styles.inlineModal}>
         <div className={styles.inlineModalContent}>
           <Title element="h2" className={styles.inlineModalTitle}>
-            Количество товаров к корзине изменилось
+            {title || 'Количество товаров к корзине изменилось'}
           </Title>
           <p className={styles.inlineModalText}>
-            Некоторые товары более не доступны и удалены из корзины
+            {description || 'Некоторые товары более не доступны и удалены из корзины'}
           </p>
           <Link href="/cart">
             <a>
-              <Button
-                className={styles.inlineModalItem}
-                text="В Корзину"
-                size="big"
-                isFullScreen
-                onClick={onClose}
-              />
+              <Button className={styles.inlineModalItem} text="В Корзину" size="big" isFullScreen onClick={onClose} />
             </a>
           </Link>
         </div>
