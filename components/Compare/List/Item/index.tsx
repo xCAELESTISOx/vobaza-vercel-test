@@ -7,13 +7,14 @@ import { useCart } from 'src/hooks/useCart';
 import { IGoodCompare } from 'src/models/IGood';
 import { toNumberWithSpaces } from 'assets/utils/formatters';
 import { getImageVariantProps } from 'assets/utils/images';
+
+import ItemCounter from 'components/UI/ItemCounter';
+import { Icon } from '@nebo-team/vobaza.ui.icon';
+import { Button } from '@nebo-team/vobaza.ui.button';
+
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 
 import styles from './styles.module.scss';
-
-import { Icon } from '@nebo-team/vobaza.ui.icon';
-import { Button } from '@nebo-team/vobaza.ui.button';
-import ItemCounter from 'components/UI/ItemCounter';
 
 type Props = {
   good: IGoodCompare;
@@ -38,10 +39,7 @@ const CompareListItem: FC<Props> = ({ good, deleteGood }) => {
 
   return (
     <div className={styles.compareListItem}>
-      <button
-        className={styles.compareListItemDelete}
-        onClick={deleteGoodHandler}
-      >
+      <button className={styles.compareListItemDelete} onClick={deleteGoodHandler}>
         <Icon name="Trash" /> Удалить
       </button>
       <div className={styles.compareListItemImage}>
@@ -54,12 +52,7 @@ const CompareListItem: FC<Props> = ({ good, deleteGood }) => {
                 alt={good.name}
               />
             ) : (
-              <Image
-                src={PlaceholderImage}
-                objectFit="contain"
-                alt={good.name}
-                unoptimized
-              />
+              <Image src={PlaceholderImage} objectFit="contain" alt={good.name} unoptimized />
             )}
           </a>
         </Link>
@@ -71,14 +64,10 @@ const CompareListItem: FC<Props> = ({ good, deleteGood }) => {
       </div>
       <div className={styles.compareListItemPrices}>
         {good.list_price && (
-          <div className={styles.compareListItemOldPrice}>
-            {toNumberWithSpaces(good.list_price)} ₽
-          </div>
+          <div className={styles.compareListItemOldPrice}>{toNumberWithSpaces(good.list_price)} ₽</div>
         )}
         &nbsp;
-        <div className={styles.compareListItemPrice}>
-          {toNumberWithSpaces(good.price)} ₽
-        </div>
+        <div className={styles.compareListItemPrice}>{toNumberWithSpaces(good.price)} ₽</div>
       </div>
       {good.is_available ? (
         <>
@@ -86,11 +75,7 @@ const CompareListItem: FC<Props> = ({ good, deleteGood }) => {
             <label htmlFor="count" className={styles.compareListItemCartLabel}>
               Кол-во:
             </label>
-            <ItemCounter
-              minCount={1}
-              itemCount={count}
-              setItemCount={setCount}
-            />
+            <ItemCounter minCount={1} itemCount={count} setItemCount={setCount} />
           </div>
           <div className={styles.compareListItemCartButtons}>
             <Button text="В корзину" onClick={addToCartHandler} />
