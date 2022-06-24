@@ -23,14 +23,15 @@ const tabsVariants = [
 const filterProducts = (goods: ICartGood[]) => {
   const newProducts = [];
   goods.forEach(({ product, quantity }) => {
-    [...Array.from({ length: quantity })].forEach((_, index) =>
-      newProducts.push({
-        ...product,
-        position_id: product.id + ' ' + index,
-        assembly: true,
-        ...(quantity > 1 && { name: product.name + ' - #' + (index + 1) }),
-      })
-    );
+    [...Array.from({ length: quantity })].forEach((_, index) => {
+      if (product.assembly === 'PROFESSIONAL' || product.assembly === 'SIMPLY')
+        newProducts.push({
+          ...product,
+          assembly: true,
+          position_id: product.id + ' ' + index,
+          ...(quantity > 1 && { name: product.name + ' - #' + (index + 1) }),
+        });
+    });
   });
 
   return newProducts;

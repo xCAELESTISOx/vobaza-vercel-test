@@ -19,6 +19,7 @@ export type ICartGood = {
     name: string;
     price: number;
     list_price?: number;
+    assembly: 'NONE' | 'SIMPLY' | 'PROFESSIONAL';
     main_image: IImage;
   };
   quantity: number;
@@ -70,20 +71,12 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
           <a>
             {good.product.main_image ? (
               <Image
-                {...getImageVariantProps(
-                  good.product.main_image.variants,
-                  'small'
-                )}
+                {...getImageVariantProps(good.product.main_image.variants, 'small')}
                 objectFit="contain"
                 alt={good.product.name}
               />
             ) : (
-              <Image
-                src={PlaceholderImage}
-                objectFit="contain"
-                alt={good.product.name}
-                unoptimized
-              />
+              <Image src={PlaceholderImage} objectFit="contain" alt={good.product.name} unoptimized />
             )}
           </a>
         </Link>
@@ -93,31 +86,19 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
           <a className={styles.cartListItemTitle}>{good.product.name}</a>
         </Link>
         <div className={styles.cartListItemButtons}>
-          <ItemCounter
-            minCount={1}
-            itemCount={count}
-            setItemCount={setCount}
-            isLoading={isLoading}
-            isWhite
-          />
-          <div className={styles.cartListItemPriceForOne}>
-            {toNumberWithSpaces(good.product.price)} ₽ / шт
-          </div>
+          <ItemCounter minCount={1} itemCount={count} setItemCount={setCount} isLoading={isLoading} isWhite />
+          <div className={styles.cartListItemPriceForOne}>{toNumberWithSpaces(good.product.price)} ₽ / шт</div>
         </div>
       </div>
       <div className={styles.cartListItemPriceBlock}>
         <div className={styles.cartListItemPrice}>
           {good.product.list_price && (
-            <div className={styles.cartListItemPriceOld}>
-              {toNumberWithSpaces(good.list_price)} ₽
-            </div>
+            <div className={styles.cartListItemPriceOld}>{toNumberWithSpaces(good.list_price)} ₽</div>
           )}
           <div>{toNumberWithSpaces(good.price)} ₽</div>
         </div>
         <button
-          className={`${styles.cartListItemDelete} ${
-            isLoading ? styles.pending : ''
-          }`}
+          className={`${styles.cartListItemDelete} ${isLoading ? styles.pending : ''}`}
           onClick={deleteItemHandler}
         >
           <Icon name="Trash" />
