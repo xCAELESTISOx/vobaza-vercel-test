@@ -26,7 +26,7 @@ const DeliveryLift = ({ liftPrice, address, lift, setFieldValue }: Props) => {
     if (lift) {
       setFieldValue('lift', null);
     } else {
-      setFieldValue('lift', { elevator: address.elevator || 'NONE', floor: address.floor || 1 });
+      setFieldValue('lift', { elevator: address.elevator || 'NONE', floor: address.floor || 1, full_order: true });
     }
   };
 
