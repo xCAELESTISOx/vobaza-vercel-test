@@ -26,7 +26,10 @@ const ProductSeller: FC<ProductSeller> = (props) => {
         </div> */}
           <div className={styles.sellerTitleWrapper}>
             <div className={styles.sellerLabel}>Продавец:</div>
-            <div className={styles.sellerTitle}>{merchant.legal_name}</div>
+            <div className={styles.sellerTitle}>
+              {/* {merchant.legal_name} */}
+              ВоБаза
+            </div>
           </div>
         </div>
       )}
@@ -38,7 +41,7 @@ const ProductSeller: FC<ProductSeller> = (props) => {
         <div className={styles.sellerConditionsItem}>
           <Icon name="ArrowLeft" />
           <span>
-            Возрат 14 дней, при соблюдении{' '}
+            Возрат 7 дней, при соблюдении{' '}
             <Link href="/obmen-i-vozvrat">
               <a className={styles.sellerLink}>условий</a>
             </Link>

@@ -141,7 +141,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
             <div className={styles.left}>
               <div className={styles.leftContent}>
                 <div className={styles.leftMenu}>
-                  <div className={styles.leftMenuItem}>
+                  {/* <div className={styles.leftMenuItem}>
                     <RatingStars
                       size="Small"
                       value={mockProduct.reviews.average_score}
@@ -149,7 +149,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                     <div className={styles.productReviews}>
                       {mockProduct.reviews.count} отзывов
                     </div>
-                  </div>
+                  </div> */}
                   <div className={styles.leftMenuActions}>
                     <button
                       className={`${styles.leftMenuActionBtn} ${
@@ -217,7 +217,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
 
                 <div className={styles.productStockInfo}>
                   <ProductStock inStock={product.inStonk} />
-                  <ProductLoyaltyBonus value={product.loyaltyBonus} />
+                  {/* <ProductLoyaltyBonus value={product.loyaltyBonus} /> */}
                 </div>
               </div>
 
@@ -237,10 +237,10 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                     />
                   </div>
 
-                  <ProductCredit
+                  {/* <ProductCredit
                     className={styles.productInfoBlock}
                     creditPayment={product.creditMinimalPayment}
-                  />
+                  /> */}
 
                   <ProductDelivery
                     className={styles.productInfoBlock}
@@ -276,7 +276,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
             </div>
           </div>
 
-          <ProductReviews
+          {/* <ProductReviews
             reviewsInfo={mockProduct.reviews}
             productInfo={{
               id: product.id,
@@ -287,7 +287,9 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                 ? getImageVariantByFieldname(product.images[0], 'small')
                 : null,
             }}
-          />
+          /> */}
+
+          <br /><br /><br />
 
           {product.set && product.set.length > 0 && (
             <div className={styles.productBlockList}>
