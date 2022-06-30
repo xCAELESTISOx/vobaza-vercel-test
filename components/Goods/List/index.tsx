@@ -1,8 +1,10 @@
 import React, { FC } from 'react';
+
+import type { IGoodCard } from '../../../src/models/IGood';
+
 import GoodsCard from '../Card';
 
 import styles from './styles.module.scss';
-import { IGoodCard } from '../../../src/models/IGood';
 
 type Props = {
   goods: IGoodCard[];

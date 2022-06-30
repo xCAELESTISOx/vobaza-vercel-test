@@ -1,6 +1,7 @@
 import cookies from 'js-cookie';
 
 import { axios, setToken, setTokenWithGuest } from './axios';
+import { CategoriesAPI } from './modules/category';
 import { ordersAPI } from './modules/orders';
 
 export const api = {
@@ -106,27 +107,6 @@ export const api = {
   getGoodAttributes(id: number | string) {
     return axios.get(`/v1/products/${id}/attributes`);
   },
-  //Category
-  getRootCategories() {
-    return axios.get(`/v1/categories`);
-  },
-  getCategory(id) {
-    const params = {
-      include: 'ancestors,children',
-      maxDepth: 1,
-    };
-    return axios.get(`/v1/categories/${id}`, { params });
-  },
-  getCategoryBySlug(slug: string) {
-    const params = {
-      include: 'ancestors,children',
-      maxDepth: 1,
-    };
-    return axios.get(`/v1/categories/bySlug/${slug}`, { params });
-  },
-  getCategoryFilters(id) {
-    return axios.get(`/v1/categories/${id}/filters`);
-  },
   //Favorites
   async getFavorites() {
     await setTokenWithGuest();
@@ -173,6 +153,7 @@ export const api = {
     await setTokenWithGuest(true);
     return axios.post(`/v1/basket/${id}/sub`, data);
   },
+  ...CategoriesAPI,
   //Order
   ...ordersAPI,
 };

@@ -1,9 +1,8 @@
 import { FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import styles from './styles.module.scss';
-import { IGoodCard } from '../../../src/models/IGood';
-import { IFilter } from '../../../src/models/IFilter';
+import type { IFilter } from '../../../src/models/IFilter';
+import type { IGoodCard } from '../../../src/models/IGood';
 
 import { Pagination } from '@nebo-team/vobaza.ui.pagination/dist';
 import GoodsList from '../List/index';
@@ -11,10 +10,13 @@ import Toggle from '../../UI/Toggle';
 import GoodsFilters from '../Filters';
 import CartModal from '../Modals/Cart/Cart';
 
+import styles from './styles.module.scss';
+
 type Props = {
-  filters?: IFilter[];
   isExpress?: boolean;
   withoutExpress?: boolean;
+  filters?: IFilter[];
+  baseFilters?: IFilter[];
   goods: IGoodCard[];
   meta: {
     list: {
@@ -24,17 +26,12 @@ type Props = {
   };
 };
 
-const GoodsBlock: FC<Props> = ({
-  filters,
-  isExpress,
-  withoutExpress,
-  goods,
-  meta,
-}) => {
-  const router = useRouter();
-  const { page } = router.query;
+const GoodsBlock: FC<Props> = ({ filters, baseFilters, isExpress, withoutExpress, goods, meta }) => {
   const [isOnlyExpress, setIsOnlyExpress] = useState(!!isExpress);
   const [isLoading, setIsLoading] = useState(true);
+  
+  const router = useRouter();
+  const { page } = router.query;
 
   const toggleIsOnlyExpress = () => {
     setIsLoading(true);
@@ -59,9 +56,7 @@ const GoodsBlock: FC<Props> = ({
       delete query['id'];
       router.push(
         {
-          pathname: router.asPath
-            .split('?')[0]
-            .replace('/ekspress-dostavka', ''),
+          pathname: router.asPath.split('?')[0].replace('/ekspress-dostavka', ''),
           query,
         },
         null,
@@ -82,6 +77,7 @@ const GoodsBlock: FC<Props> = ({
   useEffect(() => {
     setIsOnlyExpress(!!isExpress);
   }, [isExpress]);
+
   useEffect(() => {
     setIsLoading(false);
   }, [goods]);
@@ -99,7 +95,7 @@ const GoodsBlock: FC<Props> = ({
             </div>
           )}
           <div className={styles.filtersBlock}>
-            <GoodsFilters filters={filters} setIsLoading={setIsLoading} />
+            <GoodsFilters filters={filters} baseFilters={baseFilters} setIsLoading={setIsLoading} />
           </div>
         </>
       )}
@@ -108,9 +104,7 @@ const GoodsBlock: FC<Props> = ({
           <GoodsList goods={goods} />
         </div>
       ) : (
-        <div className={styles.goodsListEmpty}>
-          По вашему запросу ничего не найдено
-        </div>
+        <div className={styles.goodsListEmpty}>По вашему запросу ничего не найдено</div>
       )}
       {meta?.list?.pages_count > 1 && (
         <div className={styles.pagination}>

@@ -6,9 +6,7 @@ import { IGoodCard } from '../../src/models/IGood';
 import { IFilter } from '../../src/models/IFilter';
 import normalizeGoods from '../../assets/utils/normalizeGoods';
 
-import Breadcrumbs, {
-  BreadcrumbType,
-} from '../../components/Layout/Breadcrumbs';
+import Breadcrumbs, { BreadcrumbType } from '../../components/Layout/Breadcrumbs';
 import GoodsBlock from '../../components/Goods/Block';
 import CategoryHead from 'components/Goods/CategoryHead';
 
@@ -31,9 +29,10 @@ const tmpSeoText = {
 };
 
 interface Props {
+  isExpress: boolean;
   category: ICategory;
   filters: IFilter[];
-  isExpress: boolean;
+  baseFilters: IFilter[];
   goods: IGoodCard[];
   meta: {
     list: {
@@ -46,26 +45,14 @@ interface Props {
 
 const limit = 40;
 
-export default function Catalog({
-  category,
-  filters,
-  isExpress,
-  goods,
-  meta,
-  breadcrumbs,
-}) {
+export default function Catalog({ category, filters, baseFilters, isExpress, goods, meta, breadcrumbs }) {
   return (
     <div className={styles.homePage}>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <section>
         <div className="container">
           <CategoryHead category={category} isExpress={isExpress} />
-          <GoodsBlock
-            isExpress={isExpress}
-            filters={filters}
-            goods={goods}
-            meta={meta}
-          />
+          <GoodsBlock isExpress={isExpress} filters={filters} baseFilters={baseFilters} goods={goods} meta={meta} />
           <div className="seoText" dangerouslySetInnerHTML={tmpSeoText}></div>
         </div>
       </section>
@@ -73,27 +60,19 @@ export default function Catalog({
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({
-  resolvedUrl,
-  query,
-}) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUrl, query }) => {
   let goods = null;
   let meta = null;
   let category = null;
   let filters = null;
+  let baseFilters = null;
   let breadcrumbs = [];
 
   const { page, id, sort, city, ...activeFilters } = query;
 
   const isExpress = resolvedUrl.indexOf('/ekspress-dostavka') !== -1;
-  const splitUrl = resolvedUrl
-    .split('?')[0]
-    .replace('/ekspress-dostavka', '')
-    .split('_');
-  const splitedUrl = resolvedUrl
-    .split('?')[0]
-    .replace('/ekspress-dostavka', '')
-    .split('/');
+  const splitUrl = resolvedUrl.split('?')[0].replace('/ekspress-dostavka', '').split('_');
+  const splitedUrl = resolvedUrl.split('?')[0].replace('/ekspress-dostavka', '').split('/');
 
   const categoryId = Number(splitUrl[splitUrl.length - 1]);
   // const slug = query.id[0];
@@ -132,23 +111,37 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       }
     });
 
-    const [goodsRes, filtersRes] = await Promise.all([
+    const [goodsRes, filtersRes, baseFiltersRes] = await Promise.all([
       api.getGoods(params),
       // TODO: Удалить проверку и categoryId после добавления динамического меню
+      api.getCategoryFilters(isNaN(categoryId) ? category.id : categoryId, params),
       api.getCategoryFilters(isNaN(categoryId) ? category.id : categoryId),
     ]);
 
     goods = normalizeGoods(goodsRes.data.data);
     meta = goodsRes.data.meta;
     filters = filtersRes.data.data;
+    baseFilters = baseFiltersRes.data.data;
 
     filters = filters.map((filter) =>
       filter.value_type === 'PRICE'
         ? {
             ...filter,
             meta: {
-              min: Math.floor(filter.meta.min / 100),
-              max: Math.ceil(filter.meta.max / 100),
+              min: +(filter.meta.min / 100).toFixed(0),
+              max: +(filter.meta.max / 100).toFixed(0),
+            },
+          }
+        : filter
+    );
+
+    baseFilters = baseFilters.map((filter) =>
+      filter.value_type === 'PRICE'
+        ? {
+            ...filter,
+            meta: {
+              min: +(filter.meta.min / 100).toFixed(0),
+              max: +(filter.meta.max / 100).toFixed(0),
             },
           }
         : filter
@@ -193,6 +186,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     props: {
       category,
       filters,
+      baseFilters,
       isExpress,
       goods,
       meta,

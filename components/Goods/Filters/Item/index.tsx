@@ -1,65 +1,60 @@
 import { FC, useEffect, useState } from 'react';
 
-import styles from './styles.module.scss';
-import { IFilter, IFilterFront } from '../../../../src/models/IFilter';
+import type { IFilter, IFilterFront } from '../../../../src/models/IFilter';
 
+import { IFilterSelectVariant } from '@nebo-team/vobaza.ui.filter-select/dist';
 import { FilterSelect } from '@nebo-team/vobaza.ui.filter-select/dist';
 import { RangeBlock } from '@nebo-team/vobaza.ui.range/dist';
 import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
 
+import styles from './styles.module.scss';
+
 type Props = {
-  filter: IFilter;
-  currentFilters: IFilterFront[];
-  full?: boolean;
   ref?: any;
-  addFilter: (filter: IFilterFront) => void;
+  full?: boolean;
+  filter: IFilter;
+  baseFilter: IFilter;
+  currentFilters: { [key: number]: IFilterFront };
+  addFilters: (filters: IFilterFront[]) => void;
 };
 
-const GoodsFilterItemNumeric: FC<Props> = ({
-  filter,
-  currentFilters,
-  full = false,
-  addFilter,
-}) => {
-  const [values, setValues] = useState<any>([
-    filter.meta.min || 0,
-    filter.meta.max || 100,
-  ]);
-  const [filterValues, setFilterValues] = useState<any>([
-    filter.meta.min || 0,
-    filter.meta.max || 100,
-  ]);
+const GoodsFilterItemNumeric: FC<Props> = ({ filter, currentFilters, full = false, addFilters }) => {
+  const [values, setValues] = useState<[number, number]>([filter.meta.min || 0, filter.meta.max || 100]);
+  const [filterValues, setFilterValues] = useState<[number, number]>([filter.meta.min || 0, filter.meta.max || 100]);
 
   const onClick = (e) => {
     e.preventDefault();
     if (
       filter.meta.min === filter.meta.max ||
-      (!currentFilters[filter.id] &&
-        filterValues[0] === filter.meta.min &&
-        filterValues[1] === filter.meta.max)
+      (!currentFilters[filter.id] && filterValues[0] === filter.meta.min && filterValues[1] === filter.meta.max)
     )
       return;
-    addFilter({
-      id: filter.id,
-      name: filter.name,
-      value_type: filter.value_type,
-      type: filter.type,
-      values: filterValues,
-    });
+    addFilters([
+      {
+        id: filter.id,
+        name: filter.name,
+        value_type: filter.value_type,
+        type: filter.type,
+        values: filterValues,
+      },
+    ]);
   };
+
   const onButtonClick = (newValues: [number, number]) => {
-    addFilter({
-      id: filter.id,
-      name: filter.name,
-      value_type: filter.value_type,
-      type: filter.type,
-      values: newValues,
-    });
+    addFilters([
+      {
+        id: filter.id,
+        name: filter.name,
+        value_type: filter.value_type,
+        type: filter.type,
+        values: newValues,
+      },
+    ]);
   };
 
   useEffect(() => {
-    if (currentFilters[filter.id]) {
-      setValues(currentFilters[filter.id].values);
+    if (currentFilters && currentFilters[filter.id]) {
+      setValues(currentFilters[filter.id].values as [number, number]);
     } else {
       setValues([filter.meta.min || 0, filter.meta.max || 100]);
     }
@@ -76,11 +71,7 @@ const GoodsFilterItemNumeric: FC<Props> = ({
             setIncomeValue={setValues}
             onChange={setFilterValues}
           />
-          <button
-            style={{ display: 'none' }}
-            onClick={onClick}
-            className="filtersJsButton"
-          />
+          <button style={{ display: 'none' }} onClick={onClick} className="filtersJsButton" />
         </div>
       ) : (
         <FilterSelect
@@ -101,34 +92,31 @@ const GoodsFilterItemNumeric: FC<Props> = ({
   );
 };
 
-const GoodsFilterItemListed: FC<Props> = ({
-  filter,
-  full = false,
-  currentFilters,
-  addFilter,
-}) => {
+const GoodsFilterItemListed: FC<Props> = ({ filter, baseFilter, full = false, currentFilters, addFilters }) => {
   const [isTouched, setIsTouched] = useState(false);
-  const [values, setValues] = useState<any>(
-    filter.meta.items.map((item) => {
-      return {
-        code: item,
-        value: item,
-        isActive: false,
-      };
-    })
+  const [values, setValues] = useState<IFilterSelectVariant[]>(
+    baseFilter.meta.items
+      .map((item) => {
+        return {
+          code: item,
+          value: item,
+          isActive: false,
+          disabled: !filter.meta.items.find((val) => val === item),
+        };
+      })
+      .sort((a, b) => (a.disabled === b.disabled ? 0 : a.disabled ? 1 : -1))
   );
 
   useEffect(() => {
-    if (currentFilters[filter.id]) {
+    if (currentFilters && currentFilters[filter.id]) {
       const currentValues = currentFilters[filter.id].values;
       setValues((prevArray) =>
         prevArray.map((item) => {
-          if (currentValues.includes(item.value)) {
+          if (currentValues.includes(item.value))
             return {
               ...item,
               isActive: true,
             };
-          }
           return { ...item, isActive: false };
         })
       );
@@ -143,22 +131,24 @@ const GoodsFilterItemListed: FC<Props> = ({
   }, [currentFilters, filter]);
 
   const onClick = (e?) => {
-    if (e) {
-      e.preventDefault();
-    }
+    e && e.preventDefault();
     if (!isTouched) return;
+
     const newValues = [];
     values
       .filter((item) => item.isActive)
       .forEach((item) => {
         newValues.push(item.value);
       });
-    addFilter({
-      id: filter.id,
-      name: filter.name,
-      type: filter.type,
-      values: newValues,
-    });
+
+    addFilters([
+      {
+        id: filter.id,
+        name: filter.name,
+        type: filter.type,
+        values: newValues,
+      },
+    ]);
   };
 
   const changeValues = (val) => {
@@ -175,6 +165,25 @@ const GoodsFilterItemListed: FC<Props> = ({
     );
   };
 
+  useEffect(() => {
+    const filteredBaseFilters = baseFilter.meta.items
+      .map((item) => {
+        let isActive = false;
+        if (currentFilters && currentFilters[filter.id] && currentFilters[filter.id].values.includes(item))
+          isActive = true;
+
+        return {
+          code: item,
+          value: item,
+          isActive,
+          disabled: !filter.meta.items.find((val) => val === item),
+        };
+      })
+      .sort((a, b) => (a.disabled === b.disabled ? 0 : a.disabled ? 1 : -1));
+
+    setValues(filteredBaseFilters);
+  }, [baseFilter]);
+
   return (
     <div className={styles.filter}>
       {full ? (
@@ -186,13 +195,10 @@ const GoodsFilterItemListed: FC<Props> = ({
               label={item.value}
               initialValue={item.isActive}
               onChange={() => changeValues(item)}
+              disabled={item.disabled}
             />
           ))}
-          <button
-            style={{ display: 'none' }}
-            onClick={onClick}
-            className="filtersJsButton"
-          />
+          <button style={{ display: 'none' }} onClick={onClick} className="filtersJsButton" />
         </div>
       ) : (
         <FilterSelect
@@ -210,15 +216,11 @@ const GoodsFilterItemListed: FC<Props> = ({
   );
 };
 
-const GoodsFilterItem: FC<Props> = ({ filter, ...props }) => {
+const GoodsFilterItem: FC<Props> = ({ filter, baseFilter, ...props }) => {
   return (
     <div className={styles.filter}>
-      {filter.type === 'NUMERIC_RANGE' && (
-        <GoodsFilterItemNumeric filter={filter} {...props} />
-      )}
-      {filter.type === 'LISTED' && (
-        <GoodsFilterItemListed filter={filter} {...props} />
-      )}
+      {filter.type === 'NUMERIC_RANGE' && <GoodsFilterItemNumeric filter={filter} baseFilter={baseFilter} {...props} />}
+      {filter.type === 'LISTED' && <GoodsFilterItemListed filter={filter} baseFilter={baseFilter} {...props} />}
     </div>
   );
 };

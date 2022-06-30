@@ -1,10 +1,11 @@
 import { FC } from 'react';
 
-import styles from '../styles.module.scss';
-import { IFilterFront } from '../../../../src/models/IFilter';
+import type { IFilterFront } from '../../../../src/models/IFilter';
+import { toNumberWithSpaces } from '../../../../assets/utils/formatters';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
-import { toNumberWithSpaces } from '../../../../assets/utils/formatters';
+
+import styles from '../styles.module.scss';
 
 type Props = {
   filter: IFilterFront;
@@ -13,9 +14,7 @@ type Props = {
 
 const renderNumericText = (filter: IFilterFront) => {
   if (filter.name === 'Цена')
-    return `${filter.name}: ${toNumberWithSpaces(
-      filter.values[0]
-    )} ₽ - ${toNumberWithSpaces(filter.values[1])} ₽`;
+    return `${filter.name}: ${toNumberWithSpaces(filter.values[0])} ₽ - ${toNumberWithSpaces(filter.values[1])} ₽`;
   return `${filter.name}: ${filter.values[0]} - ${filter.values[1]}`;
 };
 
@@ -23,10 +22,7 @@ const GoodsFilterItemActive: FC<Props> = ({ filter, removeFilter }) => {
   return (
     <>
       {filter.type === 'NUMERIC_RANGE' ? (
-        <button
-          className={`${styles.active} ${styles.filtersButton}`}
-          onClick={() => removeFilter(filter.id)}
-        >
+        <button className={`${styles.active} ${styles.filtersButton}`} onClick={() => removeFilter(filter.id)}>
           {renderNumericText(filter)}
           <Icon name="Cross" />
         </button>

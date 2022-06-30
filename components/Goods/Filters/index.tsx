@@ -1,18 +1,20 @@
 import { useRouter } from 'next/router';
 import { FC, useEffect, useMemo, useState } from 'react';
 
-import styles from './styles.module.scss';
-import { IFilter, IFilterFront } from '../../../src/models/IFilter';
+import type { IFilter, IFilterFront } from '../../../src/models/IFilter';
+import { GoodsSortTypes } from 'src/models/IGood';
 
 import { FilterSelect } from '@nebo-team/vobaza.ui.filter-select/dist';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import FiltersModal from './Modal';
 import GoodsFilterItem from './Item';
 import GoodsFilterItemActive from './Item/Active';
-import { GoodsSortTypes } from 'src/models/IGood';
+
+import styles from './styles.module.scss';
 
 type Props = {
   filters: IFilter[];
+  baseFilters: IFilter[];
   setIsLoading?: (value: boolean) => void;
 };
 
@@ -22,7 +24,7 @@ const getSortVariants = () => {
   });
 };
 
-const GoodsFilters: FC<Props> = ({ filters, setIsLoading }) => {
+const GoodsFilters: FC<Props> = ({ filters, baseFilters, setIsLoading }) => {
   const router = useRouter();
   const { page, id, sort, text, city, ...activeFilters } = router.query;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,7 +32,7 @@ const GoodsFilters: FC<Props> = ({ filters, setIsLoading }) => {
     code: 'POPULARITY',
     value: GoodsSortTypes.POPULARITY,
   });
-  const [currentFilters, setCurrentFilters] = useState<IFilterFront[]>([]);
+  const [currentFilters, setCurrentFilters] = useState<{ [key: number]: IFilterFront }>(null);
   const sortVariants = useMemo(() => getSortVariants(), []);
 
   const toggleMenu = () => {
@@ -60,34 +62,39 @@ const GoodsFilters: FC<Props> = ({ filters, setIsLoading }) => {
   };
 
   // Filters
-  const addFilter = (filter: IFilterFront) => {
+  const addFilters = (filters: IFilterFront[]) => {
+    // Добавляем новые фильтры, заменяем старые на новые
     setCurrentFilters((prevArray) => {
-      return {
-        ...prevArray,
-        [filter.id]: filter,
-      };
+      const newValues = { ...prevArray };
+
+      filters.forEach((filter) => {
+        newValues[filter.id] = filter;
+      });
+
+      return newValues;
     });
 
     let query = { ...router.query };
     delete query['page'];
     delete query['city'];
 
-    query[filter.id] =
-      filter.type === 'NUMERIC_RANGE'
-        ? filter.value_type === 'PRICE'
-          ? `${filter.values[0] * 100}%-%${filter.values[1] * 100}`
-          : `${filter.values[0]}%-%${filter.values[1]}`
-        : filter.values;
+    filters.forEach((filter) => {
+      if (filter.type === 'NUMERIC_RANGE') {
+        if (filter.value_type === 'PRICE') {
+          query[filter.id] = `${filter.values[0] * 100}%-%${filter.values[1] * 100}`;
+        } else {
+          query[filter.id] = `${filter.values[0]}%-%${filter.values[1]}`;
+        }
+      } else {
+        query[filter.id] = filter.values;
+      }
+    });
+
     setIsLoading(true);
 
-    router.replace(
-      {
-        query,
-      },
-      undefined,
-      { scroll: false }
-    );
+    router.replace({ query }, undefined, { scroll: false });
   };
+
   const removeFilter = (id: number, value?: string) => {
     const newFilters = { ...currentFilters };
 
@@ -117,16 +124,11 @@ const GoodsFilters: FC<Props> = ({ filters, setIsLoading }) => {
     }
     setIsLoading(true);
 
-    router.replace(
-      {
-        query,
-      },
-      undefined,
-      { scroll: false }
-    );
+    router.replace({ query }, undefined, { scroll: false });
   };
+
   const removeAllFilters = () => {
-    setCurrentFilters([]);
+    setCurrentFilters(null);
 
     setIsLoading(true);
     router.replace(
@@ -141,6 +143,7 @@ const GoodsFilters: FC<Props> = ({ filters, setIsLoading }) => {
   };
 
   useEffect(() => {
+    const newFilters: IFilterFront[] = [];
     if (activeFilters && filters.length > 0) {
       Object.keys(activeFilters).forEach((key) => {
         const filter = filters.find((item) => item.id.toString() === key);
@@ -159,7 +162,7 @@ const GoodsFilters: FC<Props> = ({ filters, setIsLoading }) => {
           }
         }
 
-        addFilter({
+        newFilters.push({
           id: filter.id,
           name: filter.name,
           type: filter.type,
@@ -168,6 +171,9 @@ const GoodsFilters: FC<Props> = ({ filters, setIsLoading }) => {
         });
       });
     }
+
+    addFilters(newFilters);
+
     if (sort) {
       setCurrentSort({
         code: sort.toString(),
@@ -176,14 +182,55 @@ const GoodsFilters: FC<Props> = ({ filters, setIsLoading }) => {
     }
   }, []);
 
+  useEffect(() => {
+    let newFilters: IFilterFront[] = [];
+    if (activeFilters && filters.length > 0) {
+      Object.keys(activeFilters).forEach((key) => {
+        const filter = filters.find((item) => item.id.toString() === key);
+
+        let values = null;
+        if (filter.type === 'NUMERIC_RANGE') {
+          let activeValues = (activeFilters[key] as string).split('%-%').map((i) => +i);
+
+          if (filter.value_type === 'PRICE') {
+            activeValues = activeValues.map((item) => +item / 100);
+          }
+
+          if (activeValues[0] !== filter.meta.min || activeValues[1] !== filter.meta.max) {
+            values = [];
+            values[0] = filter.meta.min;
+            values[1] = filter.meta.max;
+
+            newFilters.push({
+              id: filter.id,
+              name: filter.name,
+              type: filter.type,
+              value_type: filter.value_type,
+              values,
+            });
+          }
+        }
+      });
+    }
+
+    if (newFilters.length) {
+      addFilters(newFilters);
+    }
+  }, [filters]);
+
+  useEffect(() => {
+    removeAllFilters();
+  }, [router.asPath.split('?')[0]]);
+
   return (
     <>
       <FiltersModal
         isOpen={isMenuOpen}
         filters={filters}
+        baseFilters={baseFilters}
         currentFilters={currentFilters}
         close={toggleMenu}
-        addFilter={addFilter}
+        addFilters={addFilters}
         removeAllFilters={removeAllFilters}
       />
       <div className={styles.filtersBlock}>
@@ -194,8 +241,9 @@ const GoodsFilters: FC<Props> = ({ filters, setIsLoading }) => {
                 <GoodsFilterItem
                   key={filter.id}
                   filter={filter}
+                  baseFilter={baseFilters.find((item) => item.id === filter.id)}
                   currentFilters={currentFilters}
-                  addFilter={addFilter}
+                  addFilters={addFilters}
                 />
               )
           )}
@@ -209,9 +257,7 @@ const GoodsFilters: FC<Props> = ({ filters, setIsLoading }) => {
           <Icon name="Filters" />
           Фильтры
           {activeFilters && Object.keys(activeFilters).length > 0 && (
-            <span className={styles.filtersBadge}>
-              {Object.keys(activeFilters).length}
-            </span>
+            <span className={styles.filtersBadge}>{Object.keys(activeFilters).length}</span>
           )}
         </button>
         <div className={styles.sort}>
@@ -225,20 +271,13 @@ const GoodsFilters: FC<Props> = ({ filters, setIsLoading }) => {
           />
         </div>
       </div>
-      {currentFilters && Object.values(currentFilters).length > 0 && (
+      {currentFilters && Object.keys(currentFilters).length > 0 && (
         <div className={styles.filtersBlock}>
           <div className={styles.filters}>
             {Object.values(currentFilters).map((filter: IFilterFront) => (
-              <GoodsFilterItemActive
-                key={filter.id}
-                filter={filter}
-                removeFilter={removeFilter}
-              />
+              <GoodsFilterItemActive key={filter.id} filter={filter} removeFilter={removeFilter} />
             ))}
-            <button
-              className={`${styles.remove} ${styles.filtersButton}`}
-              onClick={removeAllFilters}
-            >
+            <button className={`${styles.remove} ${styles.filtersButton}`} onClick={removeAllFilters}>
               Очистить все
             </button>
           </div>

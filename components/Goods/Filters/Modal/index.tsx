@@ -11,18 +11,20 @@ import GoodsFilterItem from '../Item';
 type Props = {
   isOpen: boolean;
   filters: IFilter[];
-  currentFilters: IFilterFront[];
+  baseFilters: IFilter[];
+  currentFilters: { [key: number]: IFilterFront };
   close: () => void;
-  addFilter: (filter: IFilterFront) => void;
+  addFilters: (filters: IFilterFront[]) => void;
   removeAllFilters: () => void;
 };
 
 const FiltersModal: FC<Props> = ({
   isOpen,
   filters,
+  baseFilters,
   currentFilters,
   removeAllFilters,
-  addFilter,
+  addFilters,
   close,
 }) => {
   const menuClickHandler = (e) => {
@@ -49,10 +51,7 @@ const FiltersModal: FC<Props> = ({
   }, [isOpen]);
 
   return (
-    <div
-      className={`${styles.filtersModal} ${isOpen && styles.filtersModalOpen}`}
-      onClick={close}
-    >
+    <div className={`${styles.filtersModal} ${isOpen && styles.filtersModalOpen}`} onClick={close}>
       <div className={styles.filtersContent} onClick={menuClickHandler}>
         <div className={styles.filterHeader}>
           <div className={styles.filtersClose} onClick={close}>
@@ -62,15 +61,12 @@ const FiltersModal: FC<Props> = ({
         </div>
         <div className={styles.filtersBlock}>
           {filters.map((filter) => (
-            <Accordeon
-              key={filter.id}
-              title={filter.name}
-              className={styles.filtersAccordeon}
-            >
+            <Accordeon key={filter.id} title={filter.name} className={styles.filtersAccordeon}>
               <GoodsFilterItem
                 filter={filter}
+                baseFilter={baseFilters.find((item) => item.id === filter.id)}
                 currentFilters={currentFilters}
-                addFilter={addFilter}
+                addFilters={addFilters}
                 full
               />
             </Accordeon>
@@ -78,11 +74,7 @@ const FiltersModal: FC<Props> = ({
         </div>
         <div className={styles.filtersButtons}>
           <Button text="Показать все" isFullScreen onClick={applyAll}></Button>
-          <Button
-            text="Очистить фильтры"
-            isFullScreen
-            onClick={removeAll}
-          ></Button>
+          <Button text="Очистить фильтры" isFullScreen onClick={removeAll}></Button>
         </div>
       </div>
     </div>
