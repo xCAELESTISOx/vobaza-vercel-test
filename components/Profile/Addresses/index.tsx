@@ -19,7 +19,6 @@ const ProfileAddresses: FC<Props> = ({ addreses }) => {
     setAddresses([
       ...addresses.map((address) => {
         if (address.is_default) return { ...address, is_default: false };
-        
         if (address.id === id) return { ...address, is_default: true };
         return address;
       }),

@@ -76,7 +76,7 @@ const HeaderMobileMenu: FC<Props> = ({ rootMenu, isOpen, close }) => {
                 <a>Все товары раздела</a>
               </Link>
             </div>
-            {currentMenuItem.menu.map((menu) => (
+            {currentMenuItem.menu && currentMenuItem.menu.map((menu) => (
               <HeaderMobileSubMenuItem
                 key={menu.title}
                 item={menu}

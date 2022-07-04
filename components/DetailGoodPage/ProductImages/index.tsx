@@ -38,16 +38,14 @@ const getImagesUrlsFromVariant = (images, fieldname: string) => {
 
 const renderEmptyPlaceholder = (isThumb?: boolean) => {
   return (
-    <SwiperSlide>
-      <div className={styles.slideImage}>
-        <Image
-          src={isThumb ? PlaceholderImage : PlaceholderImageFull}
-          objectFit="contain"
-          alt=""
-          unoptimized
-        />
-      </div>
-    </SwiperSlide>
+    <div className={styles.slideImage}>
+      <Image
+        src={isThumb ? PlaceholderImage : PlaceholderImageFull}
+        objectFit="contain"
+        alt=""
+        unoptimized
+      />
+    </div>
   );
 };
 
@@ -115,55 +113,63 @@ const ProductImages = ({ images }) => {
       <LightboxViewer images={fullImages} onClose={handleLightboxClosed} />
 
       <div className={styles.images}>
-        <div className={styles.mainSwiperWrapper}>
-          <Swiper
-            className={styles.mainSwiper}
-            modules={[Navigation, Thumbs, Pagination]}
-            speed={600}
-            loop={mainImages.length && mainImages.length > 1}
-            allowTouchMove
-            navigation={{
-              prevEl: '.product-swiper__prev',
-              nextEl: '.product-swiper__next',
-            }}
-            thumbs={{ swiper: thumbsSwiper }}
-            pagination={{
-              el: '.product-images-pagination',
-              type: 'bullets',
-            }}
-            onSwiper={setMainSwiper}
-          >
-            {!!mainImages.length && renderMainImages()}
-            {!mainImages.length && renderEmptyPlaceholder()}
-          </Swiper>
-        </div>
-        <div className={`${styles.pagination} product-images-pagination`}></div>
-        <div className={styles.thumbsSwiper}>
-          <Swiper
-            className={styles.swiper}
-            modules={[Thumbs]}
-            watchSlidesProgress
-            slidesPerView={5}
-            spaceBetween={8}
-            speed={600}
-            slideToClickedSlide
-            centerInsufficientSlides
-            breakpoints={thumbsBreakpoints}
-            onSwiper={setThumbsSwiper}
-          >
-            {!!thumbsImages.length && renderThumbImages()}
-            {!thumbsImages.length && renderEmptyPlaceholder(true)}
-          </Swiper>
+        {
+          mainImages.length > 0 ?
+            <>
+              <div className={styles.mainSwiperWrapper}>
+                <Swiper
+                  className={styles.mainSwiper}
+                  modules={[Navigation, Thumbs, Pagination]}
+                  speed={600}
+                  loop={mainImages.length && mainImages.length > 1}
+                  allowTouchMove
+                  navigation={{
+                    prevEl: '.product-swiper__prev',
+                    nextEl: '.product-swiper__next',
+                  }}
+                  thumbs={{ swiper: thumbsSwiper }}
+                  pagination={{
+                    el: '.product-images-pagination',
+                    type: 'bullets',
+                  }}
+                  onSwiper={setMainSwiper}
+                >
+                  {!!mainImages.length && renderMainImages()}
+                </Swiper>
+              </div>
+            </> : renderEmptyPlaceholder()
+        }
+        {
+          mainImages.length > 1 &&
+          <>
+            <div className={`${styles.pagination} product-images-pagination`}></div>
+            <div className={styles.thumbsSwiper}>
+              <Swiper
+                className={styles.swiper}
+                modules={[Thumbs]}
+                watchSlidesProgress
+                slidesPerView={5}
+                spaceBetween={8}
+                speed={600}
+                slideToClickedSlide
+                centerInsufficientSlides
+                breakpoints={thumbsBreakpoints}
+                onSwiper={setThumbsSwiper}
+              >
+                {!!thumbsImages.length && renderThumbImages()}
+              </Swiper>
 
-          <button className={`${styles.thumbsNavButton} product-swiper__prev`}>
-            <Icon name="ArrowLeft" />
-          </button>
-          <button
-            className={`${styles.thumbsNavButton} ${styles.thumbsNavButtonNext} product-swiper__next`}
-          >
-            <Icon name="ArrowRight" />
-          </button>
-        </div>
+              <button className={`${styles.thumbsNavButton} product-swiper__prev`}>
+                <Icon name="ArrowLeft" />
+              </button>
+              <button
+                className={`${styles.thumbsNavButton} ${styles.thumbsNavButtonNext} product-swiper__next`}
+              >
+                <Icon name="ArrowRight" />
+              </button>
+            </div>
+          </>
+        }
       </div>
     </>
   );

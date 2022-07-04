@@ -57,7 +57,7 @@ const HeaderMobileSubMenuItem: FC<Props> = ({ item }) => {
         <div className={styles.subMenuList} ref={refPanel}>
           {item.children.map((menuItem) => (
             <div key={menuItem.title} className={styles.subMenuListItem}>
-              <Link href={item.href}>
+              <Link href={menuItem.href}>
                 <a>{menuItem.title}</a>
               </Link>
             </div>

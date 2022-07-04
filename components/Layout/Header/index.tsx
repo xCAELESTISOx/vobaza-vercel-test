@@ -501,39 +501,39 @@ const mobileCategories = [
               },
               {
                 title: ' Угловые диваны ',
-                href: '/katalog/divany',
+                href: '/katalog/divany1',
               },
               {
                 title: 'Диваны-кровати ',
-                href: '/katalog/divany',
+                href: '/katalog/divany2',
               },
               {
                 title: 'Кушетки ',
-                href: '/katalog/divany',
+                href: '/katalog/divany3',
               },
               {
                 title: ' Модульные диваны ',
-                href: '/katalog/divany',
+                href: '/katalog/divany4',
               },
               {
                 title: 'Софы ',
-                href: '/katalog/divany',
+                href: '/katalog/divany5',
               },
               {
                 title: 'Садовые диваны  ',
-                href: '/katalog/divany',
+                href: '/katalog/divany6',
               },
               {
                 title: 'Кухонные диваны',
-                href: '/katalog/divany',
+                href: '/katalog/divany7',
               },
               {
                 title: 'Детские диваны',
-                href: '/katalog/divany',
+                href: '/katalog/divany8',
               },
               {
                 title: 'Подушки для диванов  ',
-                href: '/katalog/divany',
+                href: '/katalog/divany9',
               },
             ],
           },

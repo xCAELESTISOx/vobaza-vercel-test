@@ -23,8 +23,13 @@
 .burgerMenu {
   display: none;
   margin-right: 10px;
+  color: #1a1a1a;
   &:hover {
     color: var(--primary-color, #af1ebe);
+  }
+
+  & svg {
+    color: #1a1a1a;
   }
 
   @media screen and (max-width: 1080px) {
@@ -35,6 +40,7 @@
   }
 }
 .logo {
+  display: block;
   svg {
     width: 160px;
     height: 27px;
@@ -146,7 +152,7 @@
 .headerButtonBadge {
   position: absolute;
   top: 0;
-  right: 10px;
+  right: 4px;
   display: flex;
   align-items: center;
   justify-content: center;

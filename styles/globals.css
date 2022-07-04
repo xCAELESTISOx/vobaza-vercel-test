@@ -7,6 +7,9 @@
 
   --container-size: 1345px;
 }
+html {
+  overflow: hidden;
+}
 
 html,
 body {
@@ -21,6 +24,9 @@ body {
 }
 body {
   max-height: 100vh;
+}
+
+section {
   overflow-x: hidden;
 }
 

@@ -126,5 +126,9 @@
         color: var(--primary-color, #af1ebe);
       }
     }
+
+    > div:last-child button {
+        color: #1a1a1a;
+    }
   }
 }

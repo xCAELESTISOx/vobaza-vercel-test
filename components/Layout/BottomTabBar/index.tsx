@@ -15,8 +15,13 @@ const BottomTabBar: FC = () => {
   const { dispatch } = useAuth();
   const { favoriteIds, cartSize } = goodsState.state;
 
-  const openMenu = () => {
-    //TODO openMenu
+  const openMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    if (!isProfileMenuOpen) {
+      setIsProfileOpen(true);
+    }
   };
   const profileClickHandler = () => {
     if (Cookies.get('token')) {
@@ -47,7 +52,9 @@ const BottomTabBar: FC = () => {
           <a className={styles.tab}>
             <div className={styles.tabIcon}>
               <Icon name="Cart" />
-              {cartSize && cartSize > 0 && <div className={styles.tabBadge}>{cartSize}</div>}
+              {cartSize > 0 && (
+                <div className={styles.tabBadge}>{cartSize}</div>
+              )}
             </div>
             <div className={styles.tabTitle}>Корзина</div>
           </a>
