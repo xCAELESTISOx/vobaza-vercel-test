@@ -114,7 +114,7 @@ const GoodsFilters: FC<Props> = ({ filters, baseFilters, setIsLoading }) => {
     }
     setCurrentFilters(newFilters);
 
-    let query = { ...router.query };
+    const query = { ...router.query };
     delete query['page'];
 
     if (newValues && newValues.length > 0) {
@@ -131,15 +131,16 @@ const GoodsFilters: FC<Props> = ({ filters, baseFilters, setIsLoading }) => {
     setCurrentFilters(null);
 
     setIsLoading(true);
-    router.replace(
-      {
-        query: {
-          id: router.query.id,
+    if (router.query.id)
+      router.replace(
+        {
+          query: {
+            id: router.query.id,
+          },
         },
-      },
-      undefined,
-      { scroll: false }
-    );
+        undefined,
+        { scroll: false }
+      );
   };
 
   useEffect(() => {

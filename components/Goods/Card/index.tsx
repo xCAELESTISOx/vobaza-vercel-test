@@ -76,8 +76,8 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
   };
 
   const displayImageSize = !currentImage?.main_image && {
-    height: good.main_image?.variants.medium?.meta.height,
-    width: good.main_image?.variants.medium?.meta.width,
+    height: good.main_image?.variants.medium?.meta.height || '100%',
+    width: good.main_image?.variants.medium?.meta.width || '100%',
   };
 
   return (
