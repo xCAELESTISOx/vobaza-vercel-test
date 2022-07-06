@@ -47,9 +47,7 @@ const BottomTabBar: FC = () => {
           <a className={styles.tab}>
             <div className={styles.tabIcon}>
               <Icon name="Cart" />
-              {cartSize && cartSize > 0 && (
-                <div className={styles.tabBadge}>{cartSize}</div>
-              )}
+              {cartSize && cartSize > 0 && <div className={styles.tabBadge}>{cartSize}</div>}
             </div>
             <div className={styles.tabTitle}>Корзина</div>
           </a>
@@ -58,9 +56,7 @@ const BottomTabBar: FC = () => {
           <a className={styles.tab}>
             <div className={styles.tabIcon}>
               <Icon name="Favorite" />
-              {favoriteIds.length > 0 && (
-                <div className={styles.tabBadge}>{favoriteIds.length}</div>
-              )}
+              {favoriteIds.length > 0 && <div className={styles.tabBadge}>{favoriteIds.length}</div>}
             </div>
             <div className={styles.tabTitle}>Избранное</div>
           </a>

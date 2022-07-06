@@ -145,6 +145,7 @@ export interface IGood {
     title: string;
     page_name: string;
     meta_description: string;
+    keywords: string;
   };
   labels: IDictionaryItem[];
   attributes: IAttributes;
