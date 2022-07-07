@@ -1,4 +1,5 @@
 import { GetServerSideProps } from 'next';
+import Head from 'next/head';
 
 import { api } from '../../assets/api';
 import { ICategory } from '../../src/models/ICategory';
@@ -45,18 +46,25 @@ interface Props {
 
 const limit = 40;
 
-export default function Catalog({ category, filters, baseFilters, isExpress, goods, meta, breadcrumbs }) {
+export default function Catalog({ category, filters, baseFilters, isExpress, goods, meta, breadcrumbs }: Props) {
   return (
-    <div className={styles.homePage}>
-      <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <section>
-        <div className="container">
-          <CategoryHead category={category} isExpress={isExpress} />
-          <GoodsBlock isExpress={isExpress} filters={filters} baseFilters={baseFilters} goods={goods} meta={meta} />
-          <div className="seoText" dangerouslySetInnerHTML={tmpSeoText}></div>
-        </div>
-      </section>
-    </div>
+    <>
+      <Head>
+        {category.seo_title && <title>{category.seo_title}</title>}
+        {category.keywords && <meta name="keywords" content={category.keywords} />}
+        {category.seo_description && <meta name="description" content={category.seo_description} />}
+      </Head>
+      <div className={styles.homePage}>
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
+        <section>
+          <div className="container">
+            <CategoryHead category={category} isExpress={isExpress} />
+            <GoodsBlock isExpress={isExpress} filters={filters} baseFilters={baseFilters} goods={goods} meta={meta} />
+            <div className="seoText" dangerouslySetInnerHTML={tmpSeoText}></div>
+          </div>
+        </section>
+      </div>
+    </>
   );
 }
 

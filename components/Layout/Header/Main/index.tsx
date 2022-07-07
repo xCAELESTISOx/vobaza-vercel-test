@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
 
-import styles from './styles.module.scss';
 import { useAuth } from '../../../../src/context/auth';
 import { useGoods } from '../../../../src/context/goods';
 
@@ -10,6 +9,8 @@ import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import Search from '../Search';
 import HeaderMobileMenu from '../MobileMenu';
 import CitySelect from '../CitySelect';
+
+import styles from './styles.module.scss';
 
 type Props = {
   mobileCategories: any[];
@@ -39,11 +40,7 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
 
   return (
     <div className="container">
-      <HeaderMobileMenu
-        isOpen={activeMobCatalog}
-        rootMenu={mobileCategories}
-        close={toggleMenu}
-      />
+      <HeaderMobileMenu isOpen={activeMobCatalog} rootMenu={mobileCategories} close={toggleMenu} />
       <div className={`${styles.mainHeader}`}>
         <div className={styles.mainHeaderMobile}>
           <button className={styles.burgerMenu} onClick={toggleMenu}>
@@ -91,9 +88,7 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
               <Icon name="Favorite"></Icon>
               <span>Избранное</span>
               {favoriteIds && favoriteIds.length > 0 && (
-                <span className={styles.headerButtonBadge}>
-                  {favoriteIds.length}
-                </span>
+                <span className={styles.headerButtonBadge}>{favoriteIds.length}</span>
               )}
             </a>
           </Link>
@@ -102,9 +97,7 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
               <Icon name="Compare"></Icon>
               <span>Сравнение</span>
               {compareIds && compareIds.length > 0 && (
-                <span className={styles.headerButtonBadge}>
-                  {compareIds.length}
-                </span>
+                <span className={styles.headerButtonBadge}>{compareIds.length}</span>
               )}
             </a>
           </Link>
@@ -112,9 +105,7 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
             <a className={styles.headerButton}>
               <Icon name="Cart"></Icon>
               <span>Корзина</span>
-              {cartSize > 0 && (
-                <span className={styles.headerButtonBadge}>{cartSize}</span>
-              )}
+              {cartSize > 0 && <span className={styles.headerButtonBadge}>{cartSize}</span>}
             </a>
           </Link>
         </div>

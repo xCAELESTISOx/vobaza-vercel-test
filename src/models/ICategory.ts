@@ -16,11 +16,14 @@ export interface ICategory {
   updated_at?: string;
   children?: ICategory[];
   ancestors?: ICategory[];
-  description?: string;
   code?: string;
-  keywords?: string;
   attributes?: Array<object>;
   image?: Image;
+  // SEO
+  seo_title? : string;
+  seo_description? : string;
+  description?:string;
+  keywords?: string;
 }
 
 export const CategoryStatusDictionary: Record<CategoryStatus, string> = {
