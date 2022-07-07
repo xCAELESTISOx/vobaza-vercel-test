@@ -16,15 +16,16 @@ type Action =
   | { type: 'setCartError'; payload: boolean }
   | { type: 'changeCartSize'; payload: number }
   | {
-      type: 'addCartGood';
-      payload: {
-        good: IGoodCard | FavoriteGood | IGood | IGoodCompare;
-        quantity: number;
-      };
-    }
+    type: 'addCartGood';
+    payload: {
+      good: IGoodCard | FavoriteGood | IGood | IGoodCompare;
+      quantity: number;
+    };
+  }
   | { type: 'closeCartModal' }
   | { type: 'setOneClickGood'; payload: IGood | IGoodCompare }
-  | { type: 'closeOneClickModal' };
+  | { type: 'closeOneClickModal' }
+  | { type: 'toogleMobCatalog'; payload: boolean };
 type Dispatch = (action: Action) => void;
 type State = {
   favoriteIds: number[];
@@ -33,6 +34,7 @@ type State = {
   cartError: false;
   cartGood?: IGood | null;
   oneClickGood?: IGood | null;
+  activeMobCatalog: boolean;
 };
 type GoodsProviderProps = { children: React.ReactNode };
 
@@ -121,6 +123,9 @@ function goodsReducer(state, action) {
         oneClickGood: null,
       };
     }
+    case 'toogleMobCatalog': {
+      return { ...state, activeMobCatalog: action.payload };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -133,6 +138,7 @@ function GoodsProvider({ children }: GoodsProviderProps) {
     compareIds: [],
     cartSize: 0,
     cartError: false,
+    activeMobCatalog: false
   });
   const value: any = { state, dispatch };
 

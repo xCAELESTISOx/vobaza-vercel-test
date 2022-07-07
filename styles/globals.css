@@ -24,9 +24,6 @@ body {
 }
 body {
   max-height: 100vh;
-}
-
-section {
   overflow-x: hidden;
 }
 

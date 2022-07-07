@@ -13,15 +13,13 @@ const BottomTabBar: FC = () => {
   const [isProfileMenuOpen, setIsProfileOpen] = useState(false);
   const goodsState = useGoods();
   const { dispatch } = useAuth();
-  const { favoriteIds, cartSize } = goodsState.state;
+  const { favoriteIds, cartSize, activeMobCatalog } = goodsState.state;
 
   const openMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     e.preventDefault();
 
-    if (!isProfileMenuOpen) {
-      setIsProfileOpen(true);
-    }
+    goodsState.dispatch({ type: 'toogleMobCatalog', payload: !activeMobCatalog });
   };
   const profileClickHandler = () => {
     if (Cookies.get('token')) {

@@ -17,17 +17,16 @@ type Props = {
 };
 
 const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { state, dispatch } = useAuth();
   const useGoodsObj = useGoods();
-  const { favoriteIds, compareIds, cartSize } = useGoodsObj.state;
+  const { favoriteIds, compareIds, cartSize, activeMobCatalog } = useGoodsObj.state;
 
   const openAuthModal = () => {
     dispatch({ type: 'toggleModal' });
   };
   const toggleMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+    useGoodsObj.dispatch({ type: 'toogleMobCatalog', payload: !activeMobCatalog });
   };
 
   useEffect(() => {
@@ -41,7 +40,7 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
   return (
     <div className="container">
       <HeaderMobileMenu
-        isOpen={isMobileMenuOpen}
+        isOpen={activeMobCatalog}
         rootMenu={mobileCategories}
         close={toggleMenu}
       />
