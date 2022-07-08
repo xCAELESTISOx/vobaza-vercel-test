@@ -7,3 +7,13 @@
   display: inline-flex;
   padding-top: 40px;
 }
+
+@media screen and (max-width: 720px) {
+  .paymentInfo {
+    padding: 80px 0 35px;
+  }
+
+  .paymentInfoBtn {
+    padding-top: 20px;
+  }
+}
