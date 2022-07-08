@@ -38,6 +38,7 @@ const CategoriesList: FC<Props> = ({ categories }) => {
                       )}
                       objectFit="contain"
                       alt={category.name}
+                      width="100%"
                     />
                   ) : (
                     <Image
@@ -45,6 +46,7 @@ const CategoriesList: FC<Props> = ({ categories }) => {
                       objectFit="contain"
                       alt=""
                       unoptimized
+                      width="100%"
                     />
                   )}
                 </div>

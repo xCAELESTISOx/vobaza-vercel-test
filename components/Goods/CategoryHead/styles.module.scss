@@ -1,8 +1,7 @@
 @import '../../../styles/Home.module.scss';
 
 .bannerBlock {
-  max-height: 162px;
-  height: 162px;
+  height: auto;
   margin-top: 24px;
   border-radius: 8px;
   overflow: hidden;
@@ -25,6 +24,7 @@
     vertical-align: middle;
   }
 }
+
 .bannerBlockMobile {
   display: none;
   margin-bottom: 8px;

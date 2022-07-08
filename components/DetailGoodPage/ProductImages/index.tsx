@@ -7,6 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { getImageVariantByFieldname } from '../../../assets/utils/images';
 import PlaceholderImageFull from 'assets/images/placeholder.png';
 import PlaceholderImage from 'assets/images/placeholder_small.png';
+import type { ImageVariant } from 'src/models/IImage';
 
 import { LightboxViewer } from './LightboxViewer';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
@@ -18,7 +19,7 @@ const thumbsBreakpoints = {
   1550: { slidesPerView: 8 },
 };
 
-const getImagesUrlsFromVariant = (images, fieldname: string) => {
+const getImagesUrlsFromVariant = (images, fieldname: string): ImageVariant[] => {
   const urls = [];
 
   if (Array.isArray(images))
@@ -108,9 +109,20 @@ const ProductImages = ({ images }) => {
     ));
   };
 
+  const moreOneImage = mainImages.length > 1;
+
+  const lightboxViewerButtons = {
+    showNextButton: moreOneImage,
+    showPrevButton: moreOneImage,
+  }
+
   return (
     <>
-      <LightboxViewer images={fullImages} onClose={handleLightboxClosed} />
+      <LightboxViewer
+        images={fullImages}
+        onClose={handleLightboxClosed}
+        buttons={lightboxViewerButtons}
+      />
 
       <div className={styles.images}>
         {
@@ -140,7 +152,7 @@ const ProductImages = ({ images }) => {
             </> : renderEmptyPlaceholder()
         }
         {
-          mainImages.length > 1 &&
+          moreOneImage &&
           <>
             <div className={`${styles.pagination} product-images-pagination`}></div>
             <div className={styles.thumbsSwiper}>

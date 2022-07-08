@@ -17,6 +17,7 @@
     padding-bottom: 16px;
   }
 }
+
 .headerMenuContent {
   display: flex;
   width: 100%;
@@ -38,6 +39,7 @@
     color: var(--primary-color, #af1ebe);
   }
 }
+
 .rootMenu {
   display: flex;
   flex-direction: column;
@@ -49,10 +51,11 @@
   border-radius: 8px;
   overflow-y: auto;
 
-  + .subMenu {
+  +.subMenu {
     padding-left: 16px;
   }
 }
+
 .rootMenuItemDivided {
   position: relative;
   padding-top: 12px;
@@ -67,6 +70,7 @@
     border-top: 1px solid #c4c4c4;
   }
 }
+
 .rootMenuLink {
   display: flex;
   align-items: center;
@@ -93,6 +97,7 @@
   gap: 60px;
   width: 100%;
 }
+
 .subMenuRootTitle {
   display: block;
   margin-bottom: 40px;
@@ -105,13 +110,14 @@
     color: var(--primary-color, #af1ebe);
   }
 }
+
 .subMenuRootBlockList {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 40px;
 
   .subMenuItem {
-    + .subMenuItem {
+    +.subMenuItem {
       margin-top: 16px;
     }
   }
@@ -123,10 +129,12 @@
   gap: 32px;
   width: 100%;
 }
+
 .subMenuBlock {
   display: flex;
   flex-direction: column;
 }
+
 .subMenuItem {
   max-width: max-content;
   font-size: 16px;
@@ -137,10 +145,11 @@
     color: var(--primary-color, #af1ebe);
   }
 
-  + .subMenuItem {
+  +.subMenuItem {
     margin-top: 24px;
   }
 }
+
 .subMenuItemGray {
   color: #4f4c4c;
   font-weight: 400;
@@ -151,11 +160,13 @@
   padding-top: 24px;
   border-top: 1px solid #f0f0f0;
 }
+
 .headerMenuBottomItem {
-  + .headerMenuBottomItem {
+  +.headerMenuBottomItem {
     margin-left: 32px;
   }
 }
+
 .headerMenuBottomLink {
   max-width: max-content;
   color: var(--primary-color, #af1ebe);
@@ -167,6 +178,7 @@
     color: #000;
   }
 }
+
 .headerMenuTags {
   display: flex;
   flex-wrap: wrap;
@@ -175,9 +187,11 @@
   margin: 0 -4px;
   border-top: 1px solid #f0f0f0;
 }
+
 .headerMenuTagItem {
   margin: 0 4px 16px;
 }
+
 .headerMenuTagLink {
   display: block;
   padding: 4px 12px;
@@ -187,11 +201,13 @@
   border: 1px solid #ebebeb;
   border-radius: 40px;
 
-  &.active {
+  &.active,
+  &:hover {
     background-color: #efd2f2;
     border-color: #efd2f2;
     color: var(--primary-color, #af1ebe);
   }
+
   &.lined {
     background-color: white;
     border-color: var(--primary-color, #af1ebe);

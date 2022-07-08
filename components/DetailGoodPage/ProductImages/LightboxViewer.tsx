@@ -1,6 +1,9 @@
 import { SRLWrapper } from 'simple-react-lightbox';
 
-const options = {
+import type { ImageVariant } from 'src/models/IImage';
+import type { ILightboxOptions } from 'src/models/ILightbox';
+
+const BASIC_OPTIONS: ILightboxOptions = {
   settings: {
     disablePanzoom: true,
     overlayColor: 'rgba(255, 255, 255, 1)',
@@ -20,10 +23,21 @@ const options = {
     showThumbnailsButton: false,
     backgroundColor: '#f2f2f2',
     iconColor: '#af1ebe',
+    showNextButton: true,
+    showPrevButton: true,
   },
 };
-const LightboxViewer = (props) => {
-  const { images, onClose } = props;
+interface IProps {
+  images: ImageVariant[];
+  onClose: (e) => void;
+  buttons?: {
+    showNextButton: boolean;
+    showPrevButton: boolean;
+  };
+}
+
+const LightboxViewer = ({ images, onClose, buttons }: IProps) => {
+  const options = buttons ? { ...BASIC_OPTIONS, buttons: { ...BASIC_OPTIONS.buttons, ...buttons } } : BASIC_OPTIONS;
 
   const callbacks = {
     onLightboxClosed: onClose,

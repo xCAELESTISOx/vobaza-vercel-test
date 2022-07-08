@@ -1,4 +1,5 @@
 interface ImageVariant {
+  id?: number;
   url: string;
   meta: {
     width: number;

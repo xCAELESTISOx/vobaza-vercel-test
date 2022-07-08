@@ -37,7 +37,7 @@ interface DetailGoodPage {
   product: IGood;
   breadcrumbs: BreadcrumbType[];
 }
-
+ProductOptions
 const getPrice = (price: number) => {
   return price / 100;
 };
@@ -310,7 +310,7 @@ export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({ q
         breadcrumbs,
       },
     };
-  } catch (err) {}
+  } catch (err) { }
 
   return {
     redirect: {

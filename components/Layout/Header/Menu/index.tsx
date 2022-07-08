@@ -16,10 +16,15 @@ const HeaderMenu: FC<Props> = ({ rootMenu, withRoot, closeMenu }) => {
     withRoot ? rootMenu[0] : rootMenu
   );
 
+  const [allProducts, setAllProducts] = useState(false)
+
   const showAllMenuTags = () => {
     setIsAllTags(true);
   };
   const menuTabHover = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setAllProducts(false);
     if (e.target.dataset.tag) {
       setCurrentMenuItem(
         rootMenu.find((item) => item.tag === e.target.dataset.tag)
@@ -42,17 +47,17 @@ const HeaderMenu: FC<Props> = ({ rootMenu, withRoot, closeMenu }) => {
             {rootMenu.map((menu) => (
               <div
                 key={menu.title}
-                className={`${
-                  menu.isDivided ? styles.rootMenuItemDivided : ''
-                } `}
+                className={`${menu.isDivided ? styles.rootMenuItemDivided : ''
+                  } `}
               >
                 <Link href={menu.href}>
                   <a
                     data-tag={menu.tag}
                     onMouseEnter={menuTabHover}
+                    // onMouseLeave={() =>  setCurrentMenuItem(rootMenu[0])}
                     onClick={closeMenu}
                     className={`${styles.rootMenuLink}
-                  ${currentMenuItem.tag === menu.tag ? styles.active : ''}`}
+                  ${(!allProducts && (currentMenuItem.tag === menu.tag)) ? styles.active : ''}`}
                   >
                     <MenuIcon name={menu.icon} />
                     {menu.title}
@@ -62,12 +67,17 @@ const HeaderMenu: FC<Props> = ({ rootMenu, withRoot, closeMenu }) => {
             ))}
             <div className={styles.rootMenuItemDivided}>
               <Link href="/katalog">
-                <a className={`${styles.rootMenuLink}`}>Все товары</a>
+                <a
+                  className={`${styles.rootMenuLink}`}
+                  onMouseEnter={() => setAllProducts(true)}
+                >
+                  Все товары
+                </a>
               </Link>
             </div>
           </div>
         )}
-        {withRoot ? (
+        {!allProducts && withRoot ? (
           <div className={styles.subMenuRoot}>
             {currentMenuItem &&
               currentMenuItem.menu.map((rootMenuItem, index) => (
@@ -126,9 +136,8 @@ const HeaderMenu: FC<Props> = ({ rootMenu, withRoot, closeMenu }) => {
               <div key={tag.title} className={styles.headerMenuTagItem}>
                 <Link href={tag.href}>
                   <a
-                    className={`${styles.headerMenuTagLink} ${
-                      false ? styles.active : ''
-                    }`}
+                    className={`${styles.headerMenuTagLink} ${false ? styles.active : ''
+                      }`}
                   >
                     {tag.title}
                   </a>
