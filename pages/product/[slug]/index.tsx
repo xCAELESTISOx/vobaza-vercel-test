@@ -37,7 +37,7 @@ interface DetailGoodPage {
   product: IGood;
   breadcrumbs: BreadcrumbType[];
 }
-ProductOptions
+
 const getPrice = (price: number) => {
   return price / 100;
 };
