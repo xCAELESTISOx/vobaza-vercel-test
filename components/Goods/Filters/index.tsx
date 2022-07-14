@@ -273,7 +273,7 @@ const GoodsFilters: FC<Props> = ({ filters, baseFilters, setIsLoading }) => {
         </div>
       </div>
       {currentFilters && Object.keys(currentFilters).length > 0 && (
-        <div className={styles.filtersBlock}>
+        <div className={styles.filtersBlock} style={{ zIndex: 14 }}>
           <div className={styles.filters}>
             {Object.values(currentFilters).map((filter: IFilterFront) => (
               <GoodsFilterItemActive key={filter.id} filter={filter} removeFilter={removeFilter} />

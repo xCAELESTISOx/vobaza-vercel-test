@@ -29,6 +29,20 @@ const tmpSeoText = {
 <p class="text-justify">Мы предлагаем исключительно качественную мягкую мебель, получившую много положительных отзывов и высокие оценки покупателей. Стоимость продукции всегда обоснована и не включает в себя лишние наценки, поскольку мы работаем напрямую с производителями. Каждый клиент «ВоБаза» может приобрести любую мягкую мебель с гарантией от 1 года.</p></div>`,
 };
 
+const convertFilters = (filters: IFilter[]) => {
+  return filters.map((filter) =>
+    filter.value_type === 'PRICE'
+      ? {
+          ...filter,
+          meta: {
+            min: +(filter.meta.min / 100).toFixed(0),
+            max: +(filter.meta.max / 100).toFixed(0),
+          },
+        }
+      : filter
+  );
+};
+
 interface Props {
   isExpress: boolean;
   category: ICategory;
@@ -131,29 +145,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
     filters = filtersRes.data.data;
     baseFilters = baseFiltersRes.data.data;
 
-    filters = filters.map((filter) =>
-      filter.value_type === 'PRICE'
-        ? {
-            ...filter,
-            meta: {
-              min: +(filter.meta.min / 100).toFixed(0),
-              max: +(filter.meta.max / 100).toFixed(0),
-            },
-          }
-        : filter
-    );
-
-    baseFilters = baseFilters.map((filter) =>
-      filter.value_type === 'PRICE'
-        ? {
-            ...filter,
-            meta: {
-              min: +(filter.meta.min / 100).toFixed(0),
-              max: +(filter.meta.max / 100).toFixed(0),
-            },
-          }
-        : filter
-    );
+    filters = convertFilters(filters);
+    baseFilters = convertFilters(baseFilters);
 
     // Breadcrumbs
     if (isExpress) {
@@ -181,7 +174,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
       href: `/${category.slug}${isExpress ? '/ekspress-dostavka' : ''}`,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return {
       redirect: {
         destination: '/',

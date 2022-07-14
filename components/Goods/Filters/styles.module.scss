@@ -1,4 +1,6 @@
 .filtersBlock {
+  position: relative;
+  z-index: 15;
   display: flex;
   margin-top: 16px;
 }
@@ -128,7 +130,7 @@
     }
 
     > div:last-child button {
-        color: #1a1a1a;
+      color: #1a1a1a;
     }
   }
 }

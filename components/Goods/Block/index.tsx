@@ -29,7 +29,7 @@ type Props = {
 const GoodsBlock: FC<Props> = ({ filters, baseFilters, isExpress, withoutExpress, goods, meta }) => {
   const [isOnlyExpress, setIsOnlyExpress] = useState(!!isExpress);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const router = useRouter();
   const { page } = router.query;
 

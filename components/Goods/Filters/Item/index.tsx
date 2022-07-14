@@ -98,8 +98,8 @@ const GoodsFilterItemListed: FC<Props> = ({ filter, baseFilter, full = false, cu
     baseFilter.meta.items
       .map((item) => {
         return {
+          value: item === 'true' ? 'Да' : item === 'false' ? 'Нет' : item,
           code: item,
-          value: item,
           isActive: false,
           disabled: !filter.meta.items.find((val) => val === item),
         };
@@ -112,7 +112,7 @@ const GoodsFilterItemListed: FC<Props> = ({ filter, baseFilter, full = false, cu
       const currentValues = currentFilters[filter.id].values;
       setValues((prevArray) =>
         prevArray.map((item) => {
-          if (currentValues.includes(item.value))
+          if (currentValues.includes(item.code))
             return {
               ...item,
               isActive: true,
@@ -138,7 +138,7 @@ const GoodsFilterItemListed: FC<Props> = ({ filter, baseFilter, full = false, cu
     values
       .filter((item) => item.isActive)
       .forEach((item) => {
-        newValues.push(item.value);
+        newValues.push(item.code);
       });
 
     addFilters([
@@ -173,8 +173,8 @@ const GoodsFilterItemListed: FC<Props> = ({ filter, baseFilter, full = false, cu
           isActive = true;
 
         return {
+          value: item === 'true' ? 'Да' : item === 'false' ? 'Нет' : item,
           code: item,
-          value: item,
           isActive,
           disabled: !filter.meta.items.find((val) => val === item),
         };
