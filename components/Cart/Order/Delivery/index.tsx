@@ -22,6 +22,7 @@ import { api } from 'assets/api';
 
 type Props = {
   liftPrice: number;
+  orderWeight?: number;
   assemblyPrice: number;
   data: ILocalOrder;
   goods: ICartGood[];
@@ -31,12 +32,13 @@ type Props = {
 };
 
 const OrderDelivery: FC<Props> = ({
-  data,
-  setFieldValue,
-  goods,
   liftPrice,
+  orderWeight,
   assemblyPrice,
+  data,
+  goods,
   setLiftPrice,
+  setFieldValue,
   setAssemblyPrice,
 }) => {
   const [isDrawerOpen, toggleDrawer] = useToggle(false);
@@ -44,7 +46,7 @@ const OrderDelivery: FC<Props> = ({
   // Подъем и сборка
   const [deliveryVariants, setDeliveryVariants] = useState<IDeliveryVariants | null>(null);
 
-  const { delivery, lift, address, assembly } = data;
+  const { delivery, lift, address } = data;
 
   const setTime = (time) => {
     setFieldValue('delivery.time', time);
@@ -77,8 +79,6 @@ const OrderDelivery: FC<Props> = ({
   };
   const debouncedCheckLiftPrice = useDebounce(checkLiftPrice, 800);
 
-  
-
   const onDateSelect = (val: Date) => {
     setFieldValue('delivery.date', val);
   };
@@ -95,7 +95,6 @@ const OrderDelivery: FC<Props> = ({
   useEffect(() => {
     debouncedCheckLiftPrice();
   }, [lift, address.floor]);
-
 
   const goodsCount = goods.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0);
   const timeSlots = deliveryVariants?.time_slots?.map(({ from, to }) => ({ value: `${from}-${to}` })) || [];
@@ -121,19 +120,21 @@ const OrderDelivery: FC<Props> = ({
             </button>
           </div>
         </div>
-        <div className={styles.orderDeliveryText}>
+        <div className={`${styles.orderDeliveryText} ${!!delivery ? styles.row : ''}`}>
           <div className={styles.orderDeliveryTextItem}>
             <Icon name="Car" />
             <span>
               {delivery ? `${delivery.name}, ${delivery.price} ₽` : `Нажмите "Оформить Заказ", мы свяжемся с Вами`}
             </span>
           </div>
-          <div className={styles.orderDeliveryTextItem}>
-            <Icon name="Scales" />
-            <span>
-              {goodsCount} {num2str(goodsCount, ['товар', 'товара', 'товаров'])} ・533 кг
-            </span>
-          </div>
+          {orderWeight && (
+            <div className={styles.orderDeliveryTextItem}>
+              <Icon name="Scales" />
+              <span>
+                {goodsCount} {num2str(goodsCount, ['товар', 'товара', 'товаров'])} {orderWeight} кг
+              </span>
+            </div>
+          )}
         </div>
         {delivery && (
           <>

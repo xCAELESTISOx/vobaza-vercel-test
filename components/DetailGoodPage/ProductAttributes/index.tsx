@@ -108,7 +108,7 @@ const ProductAttributes: FC<ProductAttributes> = ({ attributes }) => {
 
   return (
     <div className={styles.container}>
-      {main && <AttributesBlock title="Основные характеристики" attributes={main} />}
+      {!!main.length && <AttributesBlock title="Основные характеристики" attributes={main} />}
       {additional &&
         additional.map((block) => (
           <AttributesBlock

@@ -10,9 +10,9 @@ import { ICartGood } from '../components/Cart/ListItem';
 import { useEffect, useState } from 'react';
 
 type Props = {
-  initialGoods: ICartGood[];
-  initialPrice: number;
   withCountChange: boolean;
+  initialPrice: number;
+  initialGoods: ICartGood[];
 };
 
 export default function Cart({ initialGoods, initialPrice, withCountChange }) {
@@ -29,11 +29,7 @@ export default function Cart({ initialGoods, initialPrice, withCountChange }) {
           <h2 className={styles.cartTitle}>Корзина</h2>
           <div className={styles.cartContent}>
             <div className={styles.cartContentBlock}>
-              <CartList
-                initialGoods={initialGoods}
-                setOrderPrice={setOrderPrice}
-                withCountChange={withCountChange}
-              />
+              <CartList initialGoods={initialGoods} setOrderPrice={setOrderPrice} withCountChange={withCountChange} />
             </div>
             <div>
               <CartSidebar price={orderPrice} />
@@ -45,9 +41,7 @@ export default function Cart({ initialGoods, initialPrice, withCountChange }) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({
-  req,
-}) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => {
   let initialGoods = [];
   let initialPrice = 0;
   let withCountChange = false;
@@ -55,8 +49,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   try {
     await checkAuth(req, true);
     const cartRes = await api.getCart();
+    const cart = cartRes.data.data;
 
-    initialGoods = cartRes.data.data.products.map((good) => {
+    initialPrice = cart.order_price / 100;
+    initialGoods = cart.products.map((good) => {
       return {
         quantity: good.quantity,
         price: good.price / 100,
@@ -64,15 +60,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
         product: {
           ...good.product,
           price: good.product.price / 100,
-          list_price: good.product.list_price
-            ? good.product.list_price / 100
-            : null,
+          list_price: good.product.list_price ? good.product.list_price / 100 : null,
         },
       };
     });
-    initialPrice = cartRes.data.data.order_price / 100;
 
-    if (cartRes.data.data.basket_changed) {
+    if (cart.basket_changed) {
       withCountChange = true;
     }
   } catch (error) {

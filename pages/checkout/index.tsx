@@ -24,13 +24,14 @@ import styles from '../../styles/Cart.module.scss';
 import { api } from '../../assets/api';
 
 type Props = {
-  user: IProfile;
-  addresses: IAddressFull[];
-  goods: ICartGood[];
   price: number;
+  weight: number;
+  user: IProfile;
+  goods: ICartGood[];
+  addresses: IAddressFull[];
 };
 
-export default function Checkout({ goods, addresses, price, user }) {
+export default function Checkout({ price, weight, user, addresses, goods }) {
   const { state } = useAuth();
   const formRef = useRef(null);
   const router = useRouter();
@@ -106,6 +107,7 @@ export default function Checkout({ goods, addresses, price, user }) {
               <OrderReceiver ref={formRef} initialUser={user} createOrder={createOrder} />
               <OrderAddress address={values.address} addresses={addresses} setFieldValue={setFieldValue} />
               <OrderDelivery
+                orderWeight={weight}
                 data={values}
                 setFieldValue={setFieldValue}
                 goods={goods}
@@ -138,6 +140,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => 
   let user = null;
   let addresses = [];
   let price = 0;
+  let weight = 0;
 
   try {
     const isAuth = await checkAuth(req, true);
@@ -146,6 +149,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => 
       isAuth ? api.getAddresses() : null,
       isAuth ? api.getProfile() : null,
     ]);
+    const cart = cartRes.data.data;
 
     if (propfileRes) {
       user = propfileRes.data.data;
@@ -153,8 +157,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => 
     if (addressesRes) {
       addresses = addressesRes.data.data;
     }
-    goods = cartRes.data.data.products;
-    price = cartRes.data.data.order_price / 100;
+    goods = cart.products;
+    price = cart.order_price / 100;
+    weight = cart.order_weight / 1000;
 
     if (goods.length <= 0) {
       throw new Error();
@@ -175,6 +180,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => 
       addresses,
       goods,
       price,
+      weight,
     },
   };
 };
