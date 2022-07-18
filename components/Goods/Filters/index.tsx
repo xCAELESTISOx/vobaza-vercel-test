@@ -16,6 +16,7 @@ type Props = {
   filters: IFilter[];
   baseFilters: IFilter[];
   setIsLoading?: (value: boolean) => void;
+  isLoading: boolean;
 };
 
 const getSortVariants = () => {
@@ -24,7 +25,7 @@ const getSortVariants = () => {
   });
 };
 
-const GoodsFilters: FC<Props> = ({ filters, baseFilters, setIsLoading }) => {
+const GoodsFilters: FC<Props> = ({ filters, baseFilters, setIsLoading, isLoading }) => {
   const router = useRouter();
   const { page, id, sort, text, city, ...activeFilters } = router.query;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -276,9 +277,18 @@ const GoodsFilters: FC<Props> = ({ filters, baseFilters, setIsLoading }) => {
         <div className={styles.filtersBlock} style={{ zIndex: 14 }}>
           <div className={styles.filters}>
             {Object.values(currentFilters).map((filter: IFilterFront) => (
-              <GoodsFilterItemActive key={filter.id} filter={filter} removeFilter={removeFilter} />
+              <GoodsFilterItemActive
+                key={filter.id}
+                filter={filter}
+                removeFilter={removeFilter}
+                isLoading={isLoading}
+              />
             ))}
-            <button className={`${styles.remove} ${styles.filtersButton}`} onClick={removeAllFilters}>
+            <button
+              className={`${styles.remove} ${styles.filtersButton}`}
+              onClick={removeAllFilters}
+              style={{ pointerEvents: isLoading ? 'none' : 'auto' }}
+            >
               Очистить все
             </button>
           </div>

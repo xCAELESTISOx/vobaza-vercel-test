@@ -95,7 +95,12 @@ const GoodsBlock: FC<Props> = ({ filters, baseFilters, isExpress, withoutExpress
             </div>
           )}
           <div className={styles.filtersBlock}>
-            <GoodsFilters filters={filters} baseFilters={baseFilters} setIsLoading={setIsLoading} />
+            <GoodsFilters
+              filters={filters}
+              baseFilters={baseFilters}
+              setIsLoading={setIsLoading}
+              isLoading={isLoading}
+            />
           </div>
         </>
       )}

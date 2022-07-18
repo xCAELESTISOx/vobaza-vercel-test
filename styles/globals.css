@@ -8,7 +8,7 @@
   --container-size: 1345px;
 }
 html {
-  overflow: hidden;
+  height: 100%;
 }
 
 html,
@@ -105,7 +105,7 @@ button {
   list-style-type: inherit;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 1640px) {
   .container {
     padding: 0 16px;
   }

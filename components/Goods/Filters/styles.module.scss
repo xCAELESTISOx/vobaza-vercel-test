@@ -31,7 +31,7 @@
   background-color: #fff;
   white-space: nowrap;
   transition: background-color 0.4s, border-color 0.4s;
-  cursor: pointer;
+  cursor: default;
   @media screen and (max-width: 767px) {
     display: none;
   }
@@ -41,10 +41,18 @@
     background-color: #fafafa;
   }
 
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    padding: 0;
+  }
+
   svg {
     width: 14px;
     height: 14px;
-    margin-left: 8px;
+    color: var(--primary-color, #af1ebe);
   }
 
   &.active {

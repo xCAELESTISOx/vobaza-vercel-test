@@ -24,7 +24,9 @@ const GoodsFilterItemNumeric: FC<Props> = ({ filter, currentFilters, full = fals
 
   const onClick = (e) => {
     e.preventDefault();
+
     if (
+      !currentFilters ||
       filter.meta.min === filter.meta.max ||
       (!currentFilters[filter.id] && filterValues[0] === filter.meta.min && filterValues[1] === filter.meta.max)
     )
