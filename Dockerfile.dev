@@ -1,0 +1,17 @@
+FROM node:16-alpine3.12
+
+ARG MAIN_HOST="vobaza.dev.immelman.ru"
+ARG SUBS_DELIMITER="."
+ARG SCHEME="https"
+
+ENV NEXT_PUBLIC_BASE_URL=${SCHEME}://api${SUBS_DELIMITER}${MAIN_HOST}
+
+WORKDIR /app
+COPY . /app/
+
+EXPOSE 3000
+
+RUN npm config set '@nebo-team:registry' https://node.bit.dev \
+    && yarn install
+
+CMD ["yarn", "dev"]
