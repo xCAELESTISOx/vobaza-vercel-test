@@ -18,15 +18,25 @@ import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
 import { InputRadio } from '@nebo-team/vobaza.ui.inputs.input-radio';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 
+const BASIC_FLOOR_ERROR = 'Укажите этаж';
+const EXCEEDING_FLOOR_ERROR = 'Номер этажа должен быть не более 100';
+
 const validationSchema = yup.object({
   address: yup.string().required('Обязательное поле'),
   flat: yup.string(),
   entrance: yup.string(),
   floor: yup
     .number()
-    .typeError('Обязательное поле')
-    .min(1, 'Этаж не может быть ниже первого')
-    .required('Обязательное поле'),
+    .typeError(BASIC_FLOOR_ERROR)
+    .min(1, BASIC_FLOOR_ERROR)
+    .required(BASIC_FLOOR_ERROR)
+    .test('exceeded-floor-value', EXCEEDING_FLOOR_ERROR, (value) => {
+      if (value > 100) {
+        return false;
+      }
+
+      return true;
+    }),
   intercom: yup.string(),
 });
 
@@ -136,6 +146,12 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
       setFieldValue('address', router.query.city || state.city || cookieCity);
     }
   }, [state.city]);
+
+  useEffect(() => {
+    if (errors?.floor === EXCEEDING_FLOOR_ERROR) {
+      setFieldValue('floor', 1);
+    }
+  }, [errors?.floor]);
 
   return (
     <form className={`${styles.addressForm} ${inline ? styles.inline : ''}`} onSubmit={handleSubmit}>

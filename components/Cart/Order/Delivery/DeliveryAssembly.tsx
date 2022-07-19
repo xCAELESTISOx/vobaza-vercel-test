@@ -154,18 +154,27 @@ const DeliveryAssembly = ({ address, assemblyPrice, goods, setFieldValue, setAss
                     onChange={(val) => onAssemblyProductChange(val, index)}
                   />
                   <div className={styles.orderAssemblyProductContent}>
-                    {item?.main_image?.variants ? (
-                      <Image src={item.main_image.variants.small.url} height="48" width="48" alt={item.name} />
-                    ) : (
-                      <Image
-                        src={PlaceholderImage}
-                        height="48"
-                        width="48"
-                        objectFit="contain"
-                        alt={item.name}
-                        unoptimized
-                      />
-                    )}
+                    <div style={{ maxWidth: '48px', maxHeight: '48px' }}>
+                      {item?.main_image?.variants ? (
+                        <Image
+                          src={item.main_image.variants.small.url}
+                          objectFit="contain"
+                          height="100%"
+                          width="100%"
+                          alt={item.name}
+                        />
+                      ) : (
+                        <Image
+                          src={PlaceholderImage}
+                          objectFit="contain"
+                          height="100%"
+                          width="100%"
+                          alt={item.name}
+                          unoptimized
+                        />
+                      )}
+                    </div>
+
                     <h4 className={styles.orderAssemblyProductName}>{item.name}</h4>
                   </div>
                 </div>
