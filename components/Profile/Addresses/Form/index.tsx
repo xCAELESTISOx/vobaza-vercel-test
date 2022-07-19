@@ -29,14 +29,8 @@ const validationSchema = yup.object({
     .number()
     .typeError(BASIC_FLOOR_ERROR)
     .min(1, BASIC_FLOOR_ERROR)
-    .required(BASIC_FLOOR_ERROR)
-    .test('exceeded-floor-value', EXCEEDING_FLOOR_ERROR, (value) => {
-      if (value > 100) {
-        return false;
-      }
-
-      return true;
-    }),
+    .max(100, EXCEEDING_FLOOR_ERROR)
+    .required(BASIC_FLOOR_ERROR),
   intercom: yup.string(),
 });
 
@@ -146,12 +140,6 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
       setFieldValue('address', router.query.city || state.city || cookieCity);
     }
   }, [state.city]);
-
-  useEffect(() => {
-    if (errors?.floor === EXCEEDING_FLOOR_ERROR) {
-      setFieldValue('floor', 1);
-    }
-  }, [errors?.floor]);
 
   return (
     <form className={`${styles.addressForm} ${inline ? styles.inline : ''}`} onSubmit={handleSubmit}>
