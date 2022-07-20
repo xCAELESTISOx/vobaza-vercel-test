@@ -2,6 +2,7 @@ import React from 'react';
 
 import type { ICartGood } from 'components/Cart/ListItem';
 import type { ILocalOrder } from 'src/models/IOrder';
+import type { IAssemblyPrice } from 'src/models/IDelivery';
 
 import DeliveryAssembly from './DeliveryAssembly';
 import DeliveryLift from './DeliveryLift';
@@ -10,11 +11,11 @@ import styles from './styles.module.scss';
 
 type Props = {
   liftPrice: number;
-  assemblyPrice: number;
+  assemblyPrice: IAssemblyPrice;
   goods: ICartGood[];
   address: ILocalOrder['address'];
   lift: ILocalOrder['lift'] | null;
-  setAssemblyPrice: (value: number | null) => void;
+  setAssemblyPrice: (value: IAssemblyPrice) => void;
   setFieldValue: (name: string, value: any) => void;
 };
 

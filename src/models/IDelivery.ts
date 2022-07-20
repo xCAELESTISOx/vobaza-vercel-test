@@ -1,0 +1,1 @@
+export type IAssemblyPrice = number | null | string;

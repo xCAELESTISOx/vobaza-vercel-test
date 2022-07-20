@@ -7,6 +7,7 @@ import useDebounce from 'src/hooks/useDebounce';
 import { getImageVariantProps } from 'assets/utils/images';
 import type { ICartGood } from '../../ListItem';
 import type { IDeliveryVariants, ILocalOrder } from '../../../../src/models/IOrder';
+import type { IAssemblyPrice } from 'src/models/IDelivery';
 
 import DeliveryLiftingAssembly from './DeliveryLiftingAssembly';
 import OrderDeliveryDrawer from './Drawer';
@@ -23,11 +24,11 @@ import { api } from 'assets/api';
 type Props = {
   liftPrice: number;
   orderWeight?: number;
-  assemblyPrice: number;
+  assemblyPrice: IAssemblyPrice;
   data: ILocalOrder;
   goods: ICartGood[];
   setLiftPrice: (value: number) => void;
-  setAssemblyPrice: (assemblyPrice: number) => void;
+  setAssemblyPrice: (assemblyPrice: IAssemblyPrice) => void;
   setFieldValue: (name: string, value: any) => void;
 };
 

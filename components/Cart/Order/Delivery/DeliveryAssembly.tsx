@@ -4,6 +4,7 @@ import Image from 'next/image';
 import type { ITarget } from 'components/UI/RadioTabsGroup';
 import type { ICartGood } from 'components/Cart/ListItem';
 import type { IOrderAddress } from 'src/models/IOrder';
+import type { IAssemblyPrice } from 'src/models/IDelivery';
 import useDebounce from 'src/hooks/useDebounce';
 
 import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
@@ -14,6 +15,8 @@ import PlaceholderImage from 'assets/images/placeholder_small.png';
 
 import styles from './styles.module.scss';
 import { api } from 'assets/api';
+
+const ASSEMBLY_PRICE_ERROR = 'Временно невозможно посчитать стоимость сборки';
 
 const tabsVariants = [
   { code: 'FULL', value: 'Весь заказ' },
@@ -38,11 +41,11 @@ const filterProducts = (goods: ICartGood[]) => {
 };
 
 type Props = {
-  assemblyPrice: number;
+  assemblyPrice: IAssemblyPrice;
   goods: ICartGood[];
   address: IOrderAddress;
   setFieldValue: (name: string, value: any) => void;
-  setAssemblyPrice: (value: number | null) => void;
+  setAssemblyPrice: (value: IAssemblyPrice) => void;
 };
 
 const DeliveryAssembly = ({ address, assemblyPrice, goods, setFieldValue, setAssemblyPrice }: Props) => {
@@ -60,8 +63,8 @@ const DeliveryAssembly = ({ address, assemblyPrice, goods, setFieldValue, setAss
       return res.data?.data?.price / 100 || 0;
     } catch (error) {
       console.log(error);
+      return ASSEMBLY_PRICE_ERROR;
     }
-    return 0;
   };
 
   const checkAssemblyPrice = async () => {
@@ -126,7 +129,11 @@ const DeliveryAssembly = ({ address, assemblyPrice, goods, setFieldValue, setAss
       <Toggle isActive={isAssembly} onClick={toggleIsAssembly}>
         <div className={styles.orderDeliverySubblockToggle}>
           Сборка{' '}
-          {assemblyPrice !== null && isAssembly ? (
+          {assemblyPrice === ASSEMBLY_PRICE_ERROR ? (
+            <>
+              &nbsp;<span style={{ fontSize: '14px', fontWeight: 400, color: 'red' }}>{assemblyPrice}</span>
+            </>
+          ) : assemblyPrice !== null && isAssembly ? (
             <>
               –&nbsp;<span>{assemblyPrice} ₽</span>
             </>
