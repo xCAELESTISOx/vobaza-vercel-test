@@ -3,7 +3,7 @@ import Calendar from 'react-calendar';
 
 import type { CalendarProps } from 'react-calendar';
 import { useClickOutside } from '@nebo-team/vobaza.ui.filter-select/dist/filter-select';
-import useToggle from 'src/hooks/useToggle';
+import { useToggle } from 'src/hooks/useToggle';
 
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text';
 

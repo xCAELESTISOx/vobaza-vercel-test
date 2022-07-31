@@ -1,7 +1,7 @@
 export interface IFilter {
   id: number;
   name: string;
-  value_type : "NUMBER" | "PRICE";
+  value_type: 'NUMBER' | 'PRICE';
   visibility_type: 'MAIN' | 'ADDITIONAL';
   type: 'NUMERIC_RANGE' | 'LISTED';
   meta: {
@@ -14,7 +14,12 @@ export interface IFilter {
 export interface IFilterFront {
   id: number;
   name: string;
-  value_type? : "NUMBER" | "PRICE";
+  tag_slug?: string;
+  value_type?: 'NUMBER' | 'PRICE';
   type: 'NUMERIC_RANGE' | 'LISTED';
   values: any[];
+}
+
+export interface ITagFitlerFront extends Omit<IFilterFront, 'name'> {
+  name?: string;
 }

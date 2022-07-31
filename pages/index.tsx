@@ -2,8 +2,8 @@ import type { GetServerSideProps } from 'next';
 
 import { api } from '../assets/api';
 import styles from '../styles/Home.module.scss';
-import normalizeGoods from '../assets/utils/normalizeGoods';
-import normalizeCollections from '../assets/utils/normalizeCollections';
+import normalizeGoods from '../assets/utils/normalizers/normalizeGoods';
+import normalizeCollections from '../assets/utils/normalizers/normalizeCollections';
 import type { Banner } from '../src/models/IBanner';
 import { IGoodCard } from '../src/models/IGood';
 import { ICategory } from '../src/models/ICategory';

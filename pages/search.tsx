@@ -3,10 +3,10 @@ import { GetServerSideProps } from 'next';
 import { api } from '../assets/api';
 import { IGoodCard } from '../src/models/IGood';
 import { num2str } from '../assets/utils';
-import normalizeGoods from '../assets/utils/normalizeGoods';
+import normalizeGoods from '../assets/utils/normalizers/normalizeGoods';
 
 import Breadcrumbs from '../components/Layout/Breadcrumbs';
-import GoodsBlock from '../components/Goods/Block';
+import GoodsBlock from '../components/Goods/GoodsBlock';
 
 import styles from '../styles/Home.module.scss';
 
@@ -69,7 +69,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     goods = normalizeGoods(goodsRes.data.data);
     meta = goodsRes.data.meta;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return {
       redirect: {
         destination: '/',

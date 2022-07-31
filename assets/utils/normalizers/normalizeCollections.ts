@@ -1,4 +1,4 @@
-import { ICollection, CollectionSize } from './../../src/models/ICollection';
+import { ICollection, CollectionSize } from '../../../src/models/ICollection';
 
 const CollectionSizeTable = {
   0: CollectionSize.SMALL,

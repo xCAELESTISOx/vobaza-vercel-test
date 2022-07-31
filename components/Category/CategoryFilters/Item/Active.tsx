@@ -9,7 +9,7 @@ import styles from '../styles.module.scss';
 
 type Props = {
   filter: IFilterFront;
-  removeFilter: (id: number, value?: string) => void;
+  removeFilter: (filter : IFilterFront, value?: string) => void;
   isLoading: boolean;
 };
 
@@ -30,7 +30,7 @@ const GoodsFilterItemActive: FC<Props> = ({ filter, removeFilter, isLoading }) =
           <button
             className="filter-close-btn"
             type="button"
-            onClick={() => removeFilter(filter.id)}
+            onClick={() => removeFilter(filter)}
             style={blockClickStyle}
           >
             <Icon name="Cross" />
@@ -43,7 +43,7 @@ const GoodsFilterItemActive: FC<Props> = ({ filter, removeFilter, isLoading }) =
             <button
               className="filter-close-btn"
               type="button"
-              onClick={() => removeFilter(filter.id, value)}
+              onClick={() => removeFilter(filter, value)}
               style={blockClickStyle}
             >
               <Icon name="Cross" />

@@ -1,17 +1,24 @@
+import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
-import { api } from '../../assets/api';
-import { ICategory } from '../../src/models/ICategory';
-import { IGoodCard } from '../../src/models/IGood';
-import { IFilter } from '../../src/models/IFilter';
-import normalizeGoods from '../../assets/utils/normalizeGoods';
+import type { ICategoryTag } from 'src/models/ICategoryTag';
+import type { ICategory } from '../../src/models/ICategory';
+import type { IGoodCard } from '../../src/models/IGood';
+import type { IFilter, IFilterFront } from '../../src/models/IFilter';
+import normalizeGoods from '../../assets/utils/normalizers/normalizeGoods';
+import { getTagsByUrl } from 'assets/utils/Category/getTagsByUrl';
+import { getFiltersFromQuery } from 'assets/utils/Category/filters/getFiltersFromQuery';
+import { getFiltersFromTags } from 'assets/utils/Category/filters/getFiltersFromTags';
 
 import Breadcrumbs, { BreadcrumbType } from '../../components/Layout/Breadcrumbs';
-import GoodsBlock from '../../components/Goods/Block';
-import CategoryHead from 'components/Goods/CategoryHead';
+import GoodsBlock from '../../components/Goods/GoodsBlock';
+import CategoryHead from 'components/Category/CategoryHead';
 
 import styles from '../../styles/Home.module.scss';
+import { api } from '../../assets/api';
+
+import { mockCategoryTags } from 'assets/mockData/mockCategoryTags';
 
 const tmpSeoText = {
   __html: `<div class="ty-wysiwyg-content vb-category-description"><p class="text-justify">В интернет-магазине «ВоБаза» представлен большой каталог диванов с фото и ценами. Удобный фильтр по категориям создает возможность расширенного выбора товаров по всевозможным характеристикам мягкой мебели. Здесь вы сможете подобрать подходящую модель для спальни, гостиной, кабинета или офиса по стоимости от 15990 руб. и купить понравившийся диван с доставкой в день заказа, продукция всегда в наличии.&nbsp;
@@ -29,51 +36,106 @@ const tmpSeoText = {
 <p class="text-justify">Мы предлагаем исключительно качественную мягкую мебель, получившую много положительных отзывов и высокие оценки покупателей. Стоимость продукции всегда обоснована и не включает в себя лишние наценки, поскольку мы работаем напрямую с производителями. Каждый клиент «ВоБаза» может приобрести любую мягкую мебель с гарантией от 1 года.</p></div>`,
 };
 
-const convertFilters = (filters: IFilter[]) => {
+const convertFiltersIfPrice = (filters: IFilter[]) => {
   return filters.map((filter) =>
     filter.value_type === 'PRICE'
       ? {
           ...filter,
           meta: {
-            min: +(filter.meta.min / 100).toFixed(0),
-            max: +(filter.meta.max / 100).toFixed(0),
+            min: +(filter.meta.min / 100).toFixed(),
+            max: +(filter.meta.max / 100).toFixed(),
           },
         }
       : filter
   );
 };
 
+const getParamsFromQuery = (
+  params: { [key: string]: number | string | string[] | boolean },
+  activeFilters: { [key: string]: string | string[] }
+) => {
+  const newParams = { ...params };
+  if (activeFilters && Object.keys(activeFilters).length) {
+    newParams['filter[include_variants]'] = true;
+  }
+  Object.entries(activeFilters).forEach((filter, index) => {
+    newParams[`filter[filters][${index}][id]`] = filter[0];
+    const filterValue = filter[1].toString().split('%-%');
+    if (filterValue.length === 1) {
+      const values = filterValue[0].split(',');
+      values.forEach((value, valueIndex) => {
+        newParams[`filter[filters][${index}][values][${valueIndex}]`] = value;
+      });
+    } else if (filterValue.length === 2) {
+      newParams[`filter[filters][${index}][min]`] = filterValue[0];
+      newParams[`filter[filters][${index}][max]`] = filterValue[1];
+    }
+  });
+
+  return newParams;
+};
+
 interface Props {
-  isExpress: boolean;
   category: ICategory;
   filters: IFilter[];
-  baseFilters: IFilter[];
   goods: IGoodCard[];
+  tags: ICategoryTag[];
+  baseFilters: IFilter[];
+  breadcrumbs: BreadcrumbType[];
+  currentTags: ICategoryTag[];
+  currentFilters: { [key: number]: IFilterFront };
   meta: {
     list: {
       count: number;
       pages_count: number;
     };
   };
-  breadcrumbs: BreadcrumbType[];
 }
 
-const limit = 40;
+const LIMIT = 40;
 
-export default function Catalog({ category, filters, baseFilters, isExpress, goods, meta, breadcrumbs }: Props) {
+export default function Catalog({
+  category,
+  filters,
+  goods,
+  tags,
+  currentFilters,
+  currentTags,
+  baseFilters,
+  breadcrumbs,
+  meta,
+}: Props) {
+  const router = useRouter();
+
+  const isExpress = router.asPath.indexOf('/ekspress-dostavka') !== -1;
+
+  const currentTag = currentTags[currentTags.length - 1] || null;
+
   return (
     <>
       <Head>
-        {category.seo_title && <title>{category.seo_title}</title>}
-        {category.keywords && <meta name="keywords" content={category.keywords} />}
-        {category.seo_description && <meta name="description" content={category.seo_description} />}
+        {category.seo_title && <title>{currentTag?.page_title || category.seo_title}</title>}
+        {category.keywords && <meta name="keywords" content={currentTag?.keywords || category.keywords} />}
+        {category.seo_description && (
+          <meta name="description" content={currentTag?.description || category.seo_description} />
+        )}
       </Head>
       <div className={styles.homePage}>
         <Breadcrumbs breadcrumbs={breadcrumbs} />
         <section>
           <div className="container">
-            <CategoryHead category={category} isExpress={isExpress} />
-            <GoodsBlock isExpress={isExpress} filters={filters} baseFilters={baseFilters} goods={goods} meta={meta} />
+            <CategoryHead category={category} currentTag={currentTag} isExpress={isExpress} />
+            <GoodsBlock
+              categorySlug={category.slug}
+              currentFilters={currentFilters}
+              isExpress={isExpress}
+              filters={filters}
+              tags={tags}
+              baseFilters={baseFilters}
+              goods={goods}
+              meta={meta}
+              currentTags={currentTags}
+            />
             <div className="seoText" dangerouslySetInnerHTML={tmpSeoText}></div>
           </div>
         </section>
@@ -82,62 +144,68 @@ export default function Catalog({ category, filters, baseFilters, isExpress, goo
   );
 }
 
+// TODO: Буквально весь этот кошмар необходимо переработать
 export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUrl, query }) => {
   let goods = null;
   let meta = null;
-  let category = null;
-  let filters = null;
-  let baseFilters = null;
-  let breadcrumbs = [];
+  let category: ICategory | null = null;
+  let filters: IFilter[] = [];
+  let baseFilters: IFilter[] = null;
+  let currentFilters: { [key: number]: IFilterFront } | null = null;
+  let currentTags: ICategoryTag[] = [];
+  let breadcrumbs: BreadcrumbType[] = [];
+  let tags: ICategoryTag[] = [];
 
   const { page, id, sort, city, ...activeFilters } = query;
+  const activeQueryFilters = { ...activeFilters };
 
   const isExpress = resolvedUrl.indexOf('/ekspress-dostavka') !== -1;
-  const splitUrl = resolvedUrl.split('?')[0].replace('/ekspress-dostavka', '').split('_');
-  const splitedUrl = resolvedUrl.split('?')[0].replace('/ekspress-dostavka', '').split('/');
-
-  const categoryId = Number(splitUrl[splitUrl.length - 1]);
-  // const slug = query.id[0];
 
   try {
-    // TODO: Удалить проверку и categoryId после добавления динамического меню
-    const categoryRes = isNaN(categoryId)
-      ? await api.getCategoryBySlug(splitedUrl[splitedUrl.length - 1])
-      : await api.getCategory(categoryId);
+    const categoryRes = await api.getCategoryByPath(resolvedUrl.split('?')[0].replace('/ekspress-dostavka', ''));
+    // const categoryRes = await api.getCategoryByPath('/divany/pryamye_divany');
     category = categoryRes.data.data;
 
-    const params = {
-      limit,
-      offset: page ? (Number(page) - 1) * limit : 0,
+    // Убрать запрос, когда в getCategoryByPath добавят параметры для получения предков
+    const res = await api.getCategory(category.id);
+    const categoryAncestors = res.data.data.ancestors;
+
+    // 1. Получить все доступные для категории теги
+    const { data: tagsData } = await api.getCategoryTags(category.id);
+    tags = tagsData.data;
+    // 2. Получить по урлу массив всех активных тегов и уровень активных тегов
+
+    const { currentTags: appliedTags } = getTagsByUrl(resolvedUrl, tags, [
+      ...categoryAncestors.map((i) => i.slug),
+      category.slug,
+    ]);
+
+    // Получить
+    const tagFilters = appliedTags.map(({ filter }) => filter);
+    tagFilters.forEach((filter) => {
+      let value: string | string[] = filter.values as string[];
+      if (filter.type === 'NUMERIC_RANGE') {
+        let multiplier = filter.value_type === 'PRICE' ? 100 : 1;
+        value = filter.values.map((i) => i * multiplier).join('%-%');
+      }
+      activeQueryFilters[filter.id] = value;
+    });
+    currentTags = appliedTags;
+
+    const initialParams = {
+      limit: LIMIT,
+      offset: page ? (Number(page) - 1) * LIMIT : 0,
       format: 'PUBLIC_LIST',
-      // TODO: Удалить проверку и categoryId после добавления динамического меню
-      'filter[category_id]': isNaN(categoryId) ? category.id : categoryId,
+      'filter[category_id]': category.id,
       sort: sort || undefined,
       'filter[label]': isExpress ? 'EXPRESS-DELIVERY' : undefined,
     };
-
-    if (activeFilters && Object.keys(activeFilters).length) {
-      params['filter[include_variants]'] = true;
-    }
-    Object.entries(activeFilters).forEach((filter, index) => {
-      params[`filter[filters][${index}][id]`] = filter[0];
-      const filterValue = filter[1].toString().split('%-%');
-      if (filterValue.length === 1) {
-        const values = filterValue[0].split(',');
-        values.forEach((value, valueIndex) => {
-          params[`filter[filters][${index}][values][${valueIndex}]`] = value;
-        });
-      } else if (filterValue.length === 2) {
-        params[`filter[filters][${index}][min]`] = filterValue[0];
-        params[`filter[filters][${index}][max]`] = filterValue[1];
-      }
-    });
+    const params = getParamsFromQuery(initialParams, activeQueryFilters);
 
     const [goodsRes, filtersRes, baseFiltersRes] = await Promise.all([
       api.getGoods(params),
-      // TODO: Удалить проверку и categoryId после добавления динамического меню
-      api.getCategoryFilters(isNaN(categoryId) ? category.id : categoryId, params),
-      api.getCategoryFilters(isNaN(categoryId) ? category.id : categoryId),
+      api.getCategoryFilters(category.id, params),
+      api.getCategoryFilters(category.id),
     ]);
 
     goods = normalizeGoods(goodsRes.data.data);
@@ -145,8 +213,17 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
     filters = filtersRes.data.data;
     baseFilters = baseFiltersRes.data.data;
 
-    filters = convertFilters(filters);
-    baseFilters = convertFilters(baseFilters);
+    filters = convertFiltersIfPrice(filters);
+    baseFilters = convertFiltersIfPrice(baseFilters);
+
+    if (Object.keys(activeQueryFilters).length && filters.length > 0) {
+      currentFilters = getFiltersFromQuery(activeQueryFilters, filters);
+    }
+
+    // 4. Получить из активных тегов все фильтры, которые должны быть применены
+    const tagsFilters = getFiltersFromTags(currentTags, filters);
+    currentFilters = { ...currentFilters, ...tagsFilters };
+    // 5. Добавить теги в breadcrumps
 
     // Breadcrumbs
     if (isExpress) {
@@ -161,20 +238,32 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
       });
     }
 
-    if (category.ancestors && category.ancestors.length > 0) {
-      category.ancestors.forEach((ancestor) => {
+    let href = '';
+
+    if (categoryAncestors?.length > 0) {
+      categoryAncestors.forEach((ancestor) => {
+        href += '/' + ancestor.slug;
         breadcrumbs.push({
           title: ancestor.name,
-          href: `/${ancestor.slug}${isExpress ? '/ekspress-dostavka' : ''}`,
+          href: href + (isExpress ? '/ekspress-dostavka' : ''),
         });
       });
     }
+    href += '/' + category.slug;
     breadcrumbs.push({
       title: category.name,
-      href: `/${category.slug}${isExpress ? '/ekspress-dostavka' : ''}`,
+      href: href + (isExpress ? '/ekspress-dostavka' : ''),
+    });
+    currentTags.forEach((tag) => {
+      href += '/' + tag.slug;
+
+      breadcrumbs.push({
+        title: tag.name,
+        href: href + (isExpress ? '/ekspress-dostavka' : ''),
+      });
     });
   } catch (error) {
-    console.error(error);
+    console.error(error || error);
     return {
       redirect: {
         destination: '/',
@@ -188,10 +277,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
       category,
       filters,
       baseFilters,
-      isExpress,
+      currentFilters,
+      currentTags,
       goods,
       meta,
       breadcrumbs,
+      tags,
     },
   };
 };

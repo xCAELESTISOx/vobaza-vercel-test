@@ -15,10 +15,10 @@ type Props = {
   filter: IFilter;
   baseFilter: IFilter;
   currentFilters: { [key: number]: IFilterFront };
-  addFilters: (filters: IFilterFront[]) => void;
+  addFilter: (filter: IFilterFront) => void;
 };
 
-const GoodsFilterItemNumeric: FC<Props> = ({ filter, currentFilters, full = false, addFilters }) => {
+const GoodsFilterItemNumeric: FC<Props> = ({ filter, currentFilters, full = false, addFilter }) => {
   const [values, setValues] = useState<[number, number]>([filter.meta.min || 0, filter.meta.max || 100]);
   const [filterValues, setFilterValues] = useState<[number, number]>([filter.meta.min || 0, filter.meta.max || 100]);
 
@@ -31,32 +31,31 @@ const GoodsFilterItemNumeric: FC<Props> = ({ filter, currentFilters, full = fals
       (!currentFilters[filter.id] && filterValues[0] === filter.meta.min && filterValues[1] === filter.meta.max)
     )
       return;
-    addFilters([
-      {
-        id: filter.id,
-        name: filter.name,
-        value_type: filter.value_type,
-        type: filter.type,
-        values: filterValues,
-      },
-    ]);
+    addFilter({
+      id: filter.id,
+      name: filter.name,
+      value_type: filter.value_type,
+      type: filter.type,
+      values: filterValues,
+    });
   };
 
   const onButtonClick = (newValues: [number, number]) => {
-    addFilters([
-      {
-        id: filter.id,
-        name: filter.name,
-        value_type: filter.value_type,
-        type: filter.type,
-        values: newValues,
-      },
-    ]);
+    addFilter({
+      id: filter.id,
+      name: filter.name,
+      value_type: filter.value_type,
+      type: filter.type,
+      values: newValues,
+    });
   };
 
   useEffect(() => {
     if (currentFilters && currentFilters[filter.id]) {
-      setValues(currentFilters[filter.id].values as [number, number]);
+      const newValues = currentFilters[filter.id].values as [number, number];
+      newValues[0] = Math.max(currentFilters[filter.id].values[0], filter.meta.min);
+      newValues[1] = Math.min(currentFilters[filter.id].values[1], filter.meta.max);
+      setValues(newValues);
     } else {
       setValues([filter.meta.min || 0, filter.meta.max || 100]);
     }
@@ -94,7 +93,7 @@ const GoodsFilterItemNumeric: FC<Props> = ({ filter, currentFilters, full = fals
   );
 };
 
-const GoodsFilterItemListed: FC<Props> = ({ filter, baseFilter, full = false, currentFilters, addFilters }) => {
+const GoodsFilterItemListed: FC<Props> = ({ filter, baseFilter, full = false, currentFilters, addFilter }) => {
   const [isTouched, setIsTouched] = useState(false);
   const [values, setValues] = useState<IFilterSelectVariant[]>(
     baseFilter.meta.items
@@ -143,14 +142,12 @@ const GoodsFilterItemListed: FC<Props> = ({ filter, baseFilter, full = false, cu
         newValues.push(item.code);
       });
 
-    addFilters([
-      {
-        id: filter.id,
-        name: filter.name,
-        type: filter.type,
-        values: newValues,
-      },
-    ]);
+    addFilter({
+      id: filter.id,
+      name: filter.name,
+      type: filter.type,
+      values: newValues,
+    });
   };
 
   const changeValues = (val) => {

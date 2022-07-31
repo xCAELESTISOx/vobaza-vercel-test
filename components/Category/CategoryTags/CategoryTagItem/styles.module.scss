@@ -1,0 +1,26 @@
+.tag {
+  padding: 8px 12px;
+  background-color: #ebebeb;
+  margin-right: 10px;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  white-space: nowrap;
+
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+
+  &:hover {
+    background-color: #d9d9d9;
+  }
+
+  &.active {
+    pointer-events: none;
+    background: #efd2f2;
+    color: var(--primary-color);
+    &:hover {
+      background: #efd2f2;
+    }
+  }
+}

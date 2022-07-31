@@ -2,15 +2,13 @@ import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 
 import { api } from '../../assets/api';
-import normalizeGoods from '../../assets/utils/normalizeGoods';
+import normalizeGoods from '../../assets/utils/normalizers/normalizeGoods';
 import { IGoodCard } from '../../src/models/IGood';
 import { ICategory } from '../../src/models/ICategory';
 
-import Breadcrumbs, {
-  BreadcrumbType,
-} from '../../components/Layout/Breadcrumbs';
+import Breadcrumbs, { BreadcrumbType } from '../../components/Layout/Breadcrumbs';
 import CatalogList from '../../components/Catalog/List';
-import GoodsBlock from '../../components/Goods/Block';
+import GoodsBlock from '../../components/Goods/GoodsBlock';
 
 import styles from '../../styles/Home.module.scss';
 
@@ -30,7 +28,6 @@ const breadcrumbsExpress: BreadcrumbType[] = [
 const limit = 40;
 
 interface Props {
-  isExpress: boolean;
   categories: ICategory[];
   goods: IGoodCard[];
   meta: {
@@ -41,9 +38,11 @@ interface Props {
   };
 }
 
-export default function Catalog({ isExpress, categories, goods, meta }) {
+export default function Catalog({ categories, goods, meta }) {
   const router = useRouter();
   const { page } = router.query as { [key: string]: string };
+
+  const isExpress = router.asPath.indexOf('/ekspress-dostavka') !== -1;
 
   return (
     <div className={styles.homePage}>
@@ -51,28 +50,17 @@ export default function Catalog({ isExpress, categories, goods, meta }) {
       <section className={styles.bannersBlock}>
         <div className="container">
           <h1 className={styles.sectionTitle}>
-            {isExpress ? 'Экспресс-доставка' : 'Каталог мебели'}{' '}
-            {page && ` – страница ${page}`}
+            {isExpress ? 'Экспресс-доставка' : 'Каталог мебели'} {page && ` – страница ${page}`}
           </h1>
-          {categories && categories.length > 0 && (
-            <CatalogList list={categories} />
-          )}
-          <GoodsBlock
-            filters={[]}
-            isExpress={isExpress}
-            goods={goods}
-            meta={meta}
-          />
+          {categories && categories.length > 0 && <CatalogList list={categories} />}
+          <GoodsBlock isExpress={isExpress} goods={goods} meta={meta} />
         </div>
       </section>
     </div>
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({
-  query,
-  resolvedUrl,
-}) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ query, resolvedUrl }) => {
   let goods = null;
   let meta = null;
   let categories = null;
@@ -89,16 +77,13 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       'filter[label]': isExpress ? 'EXPRESS-DELIVERY' : undefined,
     };
 
-    const [goodsRes, categoryRes] = await Promise.all([
-      api.getGoods(params),
-      api.getRootCategories(),
-    ]);
+    const [goodsRes, categoryRes] = await Promise.all([api.getGoods(params), api.getRootCategories()]);
 
     goods = normalizeGoods(goodsRes.data.data);
     meta = goodsRes.data.meta;
     categories = categoryRes.data.data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return {
       redirect: {
         destination: '/',

@@ -4,7 +4,7 @@ import { GetServerSideProps } from 'next';
 import styles from '../../styles/Profile.module.scss';
 import { api } from '../../assets/api';
 import checkAuth from '../../assets/api/auth';
-import normalizeGoods from '../../assets/utils/normalizeGoods';
+import normalizeGoods from '../../assets/utils/normalizers/normalizeGoods';
 
 import ProfileSidebar from '../../components/Profile/Sidebar';
 import ProfileEmptyField from '../../components/Profile/EmptyField';

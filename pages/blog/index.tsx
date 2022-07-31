@@ -1,12 +1,10 @@
-import { useRouter } from 'next/router';
-
-import styles from '../../styles/Blog.module.scss';
+import { useAdvancedRouter } from 'assets/utils/useAdvancedRouter';
 
 import { Pagination } from '@nebo-team/vobaza.ui.pagination/dist';
-import Breadcrumbs, {
-  BreadcrumbType,
-} from '../../components/Layout/Breadcrumbs';
+import Breadcrumbs, { BreadcrumbType } from '../../components/Layout/Breadcrumbs';
 import BlogList from '../../components/Blog';
+
+import styles from '../../styles/Blog.module.scss';
 
 const breadcrumbs: BreadcrumbType[] = [
   {
@@ -16,26 +14,8 @@ const breadcrumbs: BreadcrumbType[] = [
 ];
 
 export default function Blog() {
-  const router = useRouter();
+  const { router, replaceRouterQuery } = useAdvancedRouter();
   const { page } = router.query as { [key: string]: string };
-
-  const replaceRouterQuery = (
-    updateQuery: { [key: string]: string | number },
-    exclude: Array<string> = []
-  ) => {
-    const prevQuery = { ...router.query };
-
-    if (exclude) {
-      exclude.forEach((el) => delete prevQuery[el]);
-    }
-
-    router.replace({
-      query: {
-        ...prevQuery,
-        ...updateQuery,
-      },
-    });
-  };
 
   const onChangePagination = (value: number) => {
     replaceRouterQuery({ page: value });
@@ -48,12 +28,7 @@ export default function Blog() {
         <h1 className={styles.sectionTitle}>Блог</h1>
         <BlogList />
         <div className={styles.blogPagination}>
-          <Pagination
-            variation="secondary"
-            pageCount={1}
-            activePage={+page || 1}
-            onChange={onChangePagination}
-          />
+          <Pagination variation="secondary" pageCount={1} activePage={+page || 1} onChange={onChangePagination} />
         </div>
       </div>
     </div>

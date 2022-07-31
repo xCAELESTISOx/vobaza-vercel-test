@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import Image from 'next/image';
 
-import useToggle from 'src/hooks/useToggle';
+import { useToggle } from 'src/hooks/useToggle';
 import { num2str } from '../../../../assets/utils';
 import useDebounce from 'src/hooks/useDebounce';
 import { getImageVariantProps } from 'assets/utils/images';
@@ -42,10 +42,8 @@ const OrderDelivery: FC<Props> = ({
   setFieldValue,
   setAssemblyPrice,
 }) => {
-  const [isDrawerOpen, toggleDrawer] = useToggle(false);
-
-  // Подъем и сборка
   const [deliveryVariants, setDeliveryVariants] = useState<IDeliveryVariants | null>(null);
+  const [isDrawerOpen, toggleDrawer] = useToggle(false);
 
   const { delivery, lift, address } = data;
 
@@ -64,7 +62,7 @@ const OrderDelivery: FC<Props> = ({
 
       return res.data?.data?.price / 100 || 0;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     return 0;
@@ -98,7 +96,8 @@ const OrderDelivery: FC<Props> = ({
   }, [lift, address.floor]);
 
   const goodsCount = goods.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0);
-  const timeSlots = deliveryVariants?.time_slots?.map(({ from, to }) => ({ value: `${from}-${to}` })) || [];
+  const timeSlots =
+    deliveryVariants?.time_slots?.map(({ from, to }) => ({ code: `${from}-${to}`, value: `${from}-${to}` })) || [];
   const minDate = delivery?.min_date
     ? deliveryVariants?.types.find(({ name }) => name === delivery.name).min_date
     : undefined || undefined;

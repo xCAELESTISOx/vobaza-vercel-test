@@ -3,7 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import { ICategory } from 'src/models/ICategory';
+import type { ICategory } from 'src/models/ICategory';
+import type { ICategoryTag } from 'src/models/ICategoryTag';
 
 import tmpBannerImg1 from 'src/tmp/bannerFilter.jpg';
 import tmpBannerImg2 from 'src/tmp/bannerFilterMob.jpg';
@@ -16,10 +17,11 @@ import styles from './styles.module.scss';
 
 type Props = {
   isExpress: boolean;
+  currentTag: ICategoryTag;
   category: ICategory;
 };
 
-const CategoryHead: FC<Props> = ({ isExpress, category }) => {
+const CategoryHead: FC<Props> = ({ isExpress, currentTag, category }) => {
   const router = useRouter();
   const { page } = router.query as any;
 
@@ -36,11 +38,9 @@ const CategoryHead: FC<Props> = ({ isExpress, category }) => {
         </Link>
       </div>
       <h1 className={styles.sectionTitle}>
-        {category.name} {page && page !== '1' && ` – страница ${page}`}
+        {currentTag?.title || category.name} {page && page !== '1' && ` – страница ${page}`}
       </h1>
-      {category.children && category.children.length > 0 && (
-        <CatalogList list={category.children} />
-      )}
+      {category.children && category.children.length > 0 && <CatalogList list={category.children} />}
       <div className={styles.bannerBlock}>
         <div className={!isExpress ? styles.displayNone : ''}>
           <Image src={expressBanner} priority alt="Banner" />

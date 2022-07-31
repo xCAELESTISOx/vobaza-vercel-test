@@ -16,112 +16,112 @@ const rootMenu = [
     menu: [
       {
         title: 'Диваны',
-        href: '/divany_1',
+        href: '/divany',
         children: [
           [
             {
               title: 'Прямые диваны',
-              href: '/divany_1/pryamye_divany_2',
+              href: '/divany/pryamye_divany',
             },
             {
               title: 'Угловые диваны',
-              href: '/divany_1/uglovye_divany_3',
+              href: '/divany/uglovye_divany',
             },
             {
               title: 'Диваны-кровати',
-              href: '/divany_1/divany_krovati_4',
+              href: '/divany/divany_krovati',
             },
             {
               title: 'Модульные диваны',
-              href: '/divany_1/modulnye_divany_5',
+              href: '/divany/modulnye_divany',
             },
           ],
           [
             {
               title: 'Софы',
-              href: '/divany_1/sofy_6',
+              href: '/divany/sofy_6',
             },
             {
               title: 'Кухонные диваны',
-              href: '/divany_1/kuxonnye_divany_7',
+              href: '/divany/kuxonnye_divany_7',
             },
             {
               title: 'Кушетки',
-              href: '/divany_1/kusetki_8',
+              href: '/divany/kusetki_8',
             },
             {
               title: 'Садовые диваны',
-              href: '/divany_1/sadovye_divany_9',
+              href: '/divany/sadovye_divany_9',
             },
           ],
           [
             {
               title: 'Детские диваны',
-              href: '/divany_1/detskie_divany_10',
+              href: '/divany/detskie_divany_10',
             },
             {
               title: 'Наборы мягкой мебели',
-              href: '/divany_1/nabory_myagkoi_mebeli_11',
+              href: '/divany/nabory_myagkoi_mebeli_11',
             },
           ],
         ],
       },
       {
         title: 'Кресла  ',
-        href: '/kresla_18',
+        href: '/kresla',
         children: [
           [
             {
               title: 'Кресла-качалки',
-              href: '/kresla_18/kresla_kacalki_19',
+              href: '/kresla/kresla_kacalki_19',
             },
             {
               title: 'Кресла-кровати',
-              href: '/kresla_18/kresla_krovati_20',
+              href: '/kresla/kresla_krovati_20',
             },
             {
               title: 'Кресла-реклайнеры',
-              href: '/kresla_18/kresla_reklainery_21',
+              href: '/kresla/kresla_reklainery_21',
             },
             {
               title: 'Офисные кресла',
-              href: '/kresla_18/ofisnye_kresla_22',
+              href: '/kresla/ofisnye_kresla_22',
             },
           ],
           [
             {
               title: 'Кресла руководителя',
-              href: '/kresla_18/kresla_rukovoditelya_23',
+              href: '/kresla/kresla_rukovoditelya_23',
             },
             {
               title: 'Игровые кресла',
-              href: '/kresla_18/igrovye_kresla_24',
+              href: '/kresla/igrovye_kresla_24',
             },
             {
               title: 'Кресла-мешки',
-              href: '/kresla_18/kresla_meski_25',
+              href: '/kresla/kresla_meski_25',
             },
             {
               title: 'Детские кресла',
-              href: '/kresla_18/detskie_kresla_26',
+              href: '/kresla/detskie_kresla_26',
             },
           ],
           [
             {
               title: 'Компьютерные кресла',
-              href: '/kresla_18/kompyuternye_kresla_27',
+              href: '/kresla/kompyuternye_kresla_27',
             },
             {
               title: 'Садовые кресла',
-              href: '/kresla_18/sadovye_kresla_28',
+              href: '/kresla/sadovye_kresla_28',
             },
             {
               title: 'Подвесные кресла',
-              href: '/kresla_18/podvesnye_kresla_29',
+              href: '/kresla/podvesnye_kresla_29',
             },
             {
               title: 'Мягкие кресла',
-              href: '/kresla_18/myagkie_kresla_30',
+              href: '/kresla/myagkie_kresla_30',
             },
           ],
         ],
@@ -482,22 +482,11 @@ const MainHeader: FC<Props> = ({ categories }) => {
   };
 
   return (
-    <div
-      className={`${styles.subHeaderContainer} container`}
-      onMouseLeave={closeMenu}
-    >
-      {currentMenu && (
-        <HeaderMenu
-          rootMenu={currentMenu}
-          withRoot={withRoot}
-          closeMenu={closeMenu}
-        />
-      )}
+    <div className={`${styles.subHeaderContainer} container`} onMouseLeave={closeMenu}>
+      {currentMenu && <HeaderMenu rootMenu={currentMenu} withRoot={withRoot} closeMenu={closeMenu} />}
       <nav className={styles.subHeader}>
         <button
-          className={`${styles.headerCategory} ${styles.headerCategoryAll} ${
-            withRoot ? styles.active : ''
-          }`}
+          className={`${styles.headerCategory} ${styles.headerCategoryAll} ${withRoot ? styles.active : ''}`}
           onMouseEnter={openMenuAll}
         >
           <Icon name="MenuBurger" /> Каталог
@@ -506,8 +495,7 @@ const MainHeader: FC<Props> = ({ categories }) => {
           <Link href={category.href} key={category.title}>
             <a
               className={`${styles.headerCategory} ${
-                (currentMenu && currentMenu.title === category.title) ||
-                router.asPath.includes(category.href)
+                (currentMenu && currentMenu.title === category.title) || router.asPath.includes(category.href)
                   ? styles.active
                   : ''
               }`}

@@ -1,3 +1,4 @@
+import { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 import type { Image } from '../../src/models/IImage';
 import { ElevatorType, IAddressFull } from './IAddress';
 
@@ -6,9 +7,7 @@ export interface ILocalOrderDelivery {
   price: number;
   tag: EOrderDeliveryType;
   date?: Date | null;
-  time?: {
-    value: string;
-  };
+  time?: Variant<string>;
   min_date: string;
 }
 export enum EOrderDeliveryType {

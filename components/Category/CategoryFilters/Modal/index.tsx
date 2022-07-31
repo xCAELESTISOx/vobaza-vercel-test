@@ -1,12 +1,12 @@
 import { FC, useEffect } from 'react';
 
-import styles from './styles.module.scss';
-import { IFilter, IFilterFront } from '../../../../src/models/IFilter';
+import type { IFilter, IFilterFront } from '../../../../src/models/IFilter';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import Accordeon from '../../../UI/Accordeon';
 import GoodsFilterItem from '../Item';
+import styles from './styles.module.scss';
 
 type Props = {
   isOpen: boolean;
@@ -14,7 +14,7 @@ type Props = {
   baseFilters: IFilter[];
   currentFilters: { [key: number]: IFilterFront };
   close: () => void;
-  addFilters: (filters: IFilterFront[]) => void;
+  addFilter: (filters: IFilterFront) => void;
   removeAllFilters: () => void;
 };
 
@@ -24,7 +24,7 @@ const FiltersModal: FC<Props> = ({
   baseFilters,
   currentFilters,
   removeAllFilters,
-  addFilters,
+  addFilter,
   close,
 }) => {
   const menuClickHandler = (e) => {
@@ -66,7 +66,7 @@ const FiltersModal: FC<Props> = ({
                 filter={filter}
                 baseFilter={baseFilters.find((item) => item.id === filter.id)}
                 currentFilters={currentFilters}
-                addFilters={addFilters}
+                addFilter={addFilter}
                 full
               />
             </Accordeon>
