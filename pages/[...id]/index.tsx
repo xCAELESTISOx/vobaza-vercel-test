@@ -172,7 +172,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
 
     // 1. Получить все доступные для категории теги
     const { data: tagsData } = await api.getCategoryTags(category.id);
-    tags = tagsData.data;
+    tags = !tagsData.data.length && resolvedUrl.includes('/pryamye_divany') ? mockCategoryTags : tagsData.data;
     // 2. Получить по урлу массив всех активных тегов и уровень активных тегов
 
     const { currentTags: appliedTags } = getTagsByUrl(resolvedUrl, tags, [

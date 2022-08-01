@@ -3,10 +3,9 @@ import { IFilter, IFilterFront } from 'src/models/IFilter';
 
 export const getFiltersFromTags = (tags: ICategoryTag[], filters: IFilter[]): { [key: number]: IFilterFront } => {
   const newFilters = {};
-  console.log(tags);
   tags.forEach(({ filter: tagFilter, slug }) => {
     const matchingFilter = filters.find((filter) => filter.id === tagFilter.id);
-    
+
     const newFilterValue: IFilterFront = {
       ...tagFilter,
       name: matchingFilter.name,
