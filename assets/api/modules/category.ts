@@ -25,6 +25,6 @@ export const CategoriesAPI = {
     return axios.get(`v1/categories/${categoryId}/tags`);
   },
   getCategoryByPath(path: string) {
-    return axios.get('/v1/categories/byPath', { params: { path } });
+    return axios.get('/v1/categories/byPath', { params: { path, include: 'ancestors' } });
   },
 };

@@ -1,17 +1,38 @@
 import { useEffect, useRef, useState } from 'react';
 
 import type { Dispatch, FC, SetStateAction } from 'react';
-import type { IFilter, IFilterFront } from '../../../src/models/IFilter';
+import type { IFilter, IFilterFront, ITagFitlerFront } from '../../../src/models/IFilter';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 import type { ICategoryTag } from 'src/models/ICategoryTag';
 import { GoodsSortTypes } from 'src/models/IGood';
 import { useAdvancedRouter } from 'assets/utils/useAdvancedRouter';
-import { getQueryFromFilters } from 'assets/utils/Category/filters/getQueryFromFilters';
 import { useToggle } from 'src/hooks/useToggle';
 
 import CategoryCurrentFilters from './CategoryCurrentFilters';
 import CategoryFiltersList from './CategoryFiltersList';
 import FiltersModal from './Modal';
+
+const getQueryFromFilters = (filters: (IFilterFront | ITagFitlerFront)[]) => {
+  let queryFilters: { [key: string]: string | string[] } = {};
+  /** ID фильтра на случай, если при редактировании будет выбрано 0 вариантов */
+  let excludeFilterId: number | null = null;
+
+  filters.forEach((filter) => {
+    if (filter.values && filter.values.length) {
+      if (filter.type === 'NUMERIC_RANGE') {
+        const multiplier = filter.value_type === 'PRICE' ? 100 : 1;
+        const newValues = filter.values.map((i) => i * multiplier);
+        queryFilters[filter.id] = `${newValues[0]}%-%${newValues[1]}`;
+      } else {
+        queryFilters[filter.id] = filter.values;
+      }
+    } else {
+      excludeFilterId = filter.id;
+    }
+  });
+
+  return { queryFilters, excludeFilterId };
+};
 
 type Props = {
   categorySlug?: string;
@@ -61,10 +82,7 @@ const CategoryFilters: FC<Props> = ({
     let href = router.asPath.split('?')[0];
     const query = { ...router.query };
     const { queryFilters, excludeFilterId } = getQueryFromFilters([filter]);
-    delete query['page'];
-    delete query['city'];
-    delete query['id'];
-    delete query[excludeFilterId];
+    ['page', 'city', 'id', excludeFilterId].forEach((item) => delete query[item]);
 
     if (currentFilters[filter.id]?.tag_slug) {
       currentTags.forEach((tag, index) => {
@@ -82,8 +100,6 @@ const CategoryFilters: FC<Props> = ({
 
   // Удаляет фильтр целиком, либо одно из значений фильтра
   const removeFilter = ({ id, tag_slug }: IFilterFront, value?: string) => {
-    const newFilters = { ...currentFilters };
-
     if (tag_slug) {
       let href = router.asPath;
 
@@ -99,19 +115,7 @@ const CategoryFilters: FC<Props> = ({
       router.push(href, undefined, { scroll: false });
     } else {
       let newValues = null;
-      if (value) {
-        newValues = newFilters[id].values.filter((item) => item !== value);
-        if (newValues.length > 0) {
-          newFilters[id] = {
-            ...newFilters[id],
-            values: newValues,
-          };
-        } else {
-          delete newFilters[id];
-        }
-      } else {
-        delete newFilters[id];
-      }
+      if (value) newValues = currentFilters[id].values.filter((item) => item !== value);
 
       if (newValues && newValues.length > 0) {
         replaceRouterQuery({ [id]: newValues }, ['page']);

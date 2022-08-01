@@ -74,7 +74,7 @@ const CategoryFiltersList = ({
           className={styles.sortItem}
           variation="secondary"
           variants={sortVariants}
-          onChange={(val) => setSort(val as Variant<string>)}
+          onChange={setSort}
           selected={currentSort}
           isRightSide
         />
