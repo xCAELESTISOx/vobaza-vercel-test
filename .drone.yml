@@ -178,6 +178,26 @@ steps:
       - "docker service update -q --with-registry-auth --image nebo-registry.ossbuild.ru/nebo/vobaza-frontend:${DRONE_BRANCH} ${DRONE_BRANCH}_frontend"
 
 ---
+kind: pipeline
+name: mirror
+trigger:
+  event: [push, tag]
+  branch: [master, develop]
+clone:
+  disable: true
+steps:
+  - name: mirror
+    image: osshelp/drone-git-mirror
+    settings:
+      target_repo: "git@git.dc-vbz.ru:mnikulin/vb-market-frontend.git"
+      ssh_key: {from_secret: git-mirror-private-key}
+
+---
+kind: secret
+name: git-mirror-private-key
+get: {path: vobaza/data/git_mirror_keys, name: mnikulin_key }
+
+---
 kind: secret
 name: MAIN_HOST_BY_BRANCH
 get: {path: "vobaza/data/${DRONE_BRANCH}", name: MAIN_HOST}
