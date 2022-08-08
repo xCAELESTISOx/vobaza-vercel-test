@@ -1,10 +1,10 @@
 .categoryTags {
   display: flex;
-  padding: 24px 0;
+  padding: 24px 0 14px;
   margin-bottom: 40px;
   border-top: 1px solid #f0f0f0;
   border-bottom: 1px solid #f0f0f0;
-  overflow-x: scroll;
+  flex-wrap: wrap;
 
   &::-webkit-scrollbar {
     display: none;
