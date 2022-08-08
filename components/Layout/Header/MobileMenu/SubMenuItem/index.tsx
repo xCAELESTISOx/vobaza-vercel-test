@@ -1,22 +1,26 @@
 import React, { FC, useRef, useState } from 'react';
 import Link from 'next/link';
 
-import styles from './styles.module.scss';
+import type { IMenuItem } from 'src/models/IMenu';
+import { getLinkFromMenuItem } from 'assets/utils/getLinkFromMenuItem';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import MenuIcon from '../../Icons/MenuIcon';
 
+import styles from './styles.module.scss';
+
 type Props = {
-  item?: any;
+  item?: IMenuItem;
 };
 
 const HeaderMobileSubMenuItem: FC<Props> = ({ item }) => {
-  const refPanel = useRef(null);
-  const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const refPanel = useRef(null);
 
   const clickHandler = () => {
-    if (isLoading) return;
+    if (isLoading || !refPanel.current) return;
     setIsLoading(true);
     if (isOpen) {
       refPanel.current.style.height = refPanel.current.scrollHeight + 'px';
@@ -40,25 +44,22 @@ const HeaderMobileSubMenuItem: FC<Props> = ({ item }) => {
   return (
     <div className={styles.subMenuItem}>
       <div className={styles.subMenuHeader} onClick={clickHandler}>
-        <Link href={item.href}>
+        <Link href={getLinkFromMenuItem(item)}>
           <a className={styles.subMenuLink}>
             <MenuIcon name={item.icon} className={styles.subMenuImage} />
-            {item.title}
+            {item.name}
           </a>
         </Link>
         {item.children && (
-          <Icon
-            name="SmallArrowUp"
-            className={`${styles.subMenuArrow} ${isOpen ? styles.active : ''}`}
-          />
+          <Icon name="SmallArrowUp" className={`${styles.subMenuArrow} ${isOpen ? styles.active : ''}`} />
         )}
       </div>
-      {item.children && (
+      {item.children?.length && (
         <div className={styles.subMenuList} ref={refPanel}>
           {item.children.map((menuItem) => (
-            <div key={menuItem.title} className={styles.subMenuListItem}>
-              <Link href={menuItem.href}>
-                <a>{menuItem.title}</a>
+            <div key={menuItem.id} className={styles.subMenuListItem}>
+              <Link href={getLinkFromMenuItem(menuItem)}>
+                <a>{menuItem.name}</a>
               </Link>
             </div>
           ))}

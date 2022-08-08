@@ -1,28 +1,28 @@
 import React, { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 
-import styles from './styles.module.scss';
+import type { IMenuItem } from 'src/models/IMenu';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import Search from '../Search';
 import CitySelect from '../CitySelect';
 import HeaderMobileSubMenuItem from './SubMenuItem';
 
+import styles from './styles.module.scss';
+
 type Props = {
-  rootMenu?: any;
+  menu?: IMenuItem[];
   isOpen?: boolean;
   close: () => void;
 };
 
-const HeaderMobileMenu: FC<Props> = ({ rootMenu, isOpen, close }) => {
-  const [currentMenuItem, setCurrentMenuItem] = useState(null);
+export const HeaderMobileMenu: FC<Props> = ({ menu, isOpen, close }) => {
+  const [currentMenuItem, setCurrentMenuItem] = useState<IMenuItem | null>(null);
 
-  const menuClickHandler = (items) => {
-    setCurrentMenuItem(items);
-  };
   const resetMenuItem = () => {
     setCurrentMenuItem(null);
   };
+
   const closeHandler = () => {
     resetMenuItem();
     close();
@@ -37,16 +37,11 @@ const HeaderMobileMenu: FC<Props> = ({ rootMenu, isOpen, close }) => {
   }, [isOpen]);
 
   return (
-    <div
-      className={`${styles.headerMobileMenu} ${isOpen ? styles.active : ''}`}
-    >
+    <div className={`${styles.headerMobileMenu} ${isOpen ? styles.active : ''}`}>
       <div className={`${styles.headerMobileMenuHeader}`}>
         {currentMenuItem && (
           <>
-            <button
-              className={styles.headerMobileMenuClose}
-              onClick={resetMenuItem}
-            >
+            <button className={styles.headerMobileMenuClose} onClick={resetMenuItem}>
               <Icon name="ArrowLeft" />
             </button>
             <div className={styles.headerMobileMenuTitle}>Диваны и кресла</div>
@@ -72,15 +67,12 @@ const HeaderMobileMenu: FC<Props> = ({ rootMenu, isOpen, close }) => {
         <>
           <div className={styles.headerMobileMenuSubBlock}>
             <div className={styles.headerMobileMenuSubTitle}>
-              <Link href={currentMenuItem.href}>
+              <Link href={currentMenuItem.link || '/'}>
                 <a>Все товары раздела</a>
               </Link>
             </div>
-            {currentMenuItem.menu && currentMenuItem.menu.map((menu) => (
-              <HeaderMobileSubMenuItem
-                key={menu.title}
-                item={menu}
-              ></HeaderMobileSubMenuItem>
+            {currentMenuItem?.children?.map((child) => (
+              <HeaderMobileSubMenuItem key={child.id} item={child} />
             ))}
           </div>
         </>
@@ -93,20 +85,18 @@ const HeaderMobileMenu: FC<Props> = ({ rootMenu, isOpen, close }) => {
             <CitySelect withoutFetch />
           </div>
           <div className={styles.headerMobileMenuBlock}>
-            {rootMenu.map((item) => (
-              <div key={item.title} className={styles.headerMobileMenuList}>
-                <div className={styles.headerMobileMenuListTitle}>
-                  {item.title}
-                </div>
+            {menu?.map((item) => (
+              <div key={item.id} className={styles.headerMobileMenuList}>
+                <div className={styles.headerMobileMenuListTitle}>{item.name}</div>
                 <div className={styles.headerMobileMenuContent}>
-                  {item.menu.map((menuItem) => (
+                  {item.children?.map((menuItem) => (
                     <div
-                      key={menuItem.title}
+                      key={menuItem.id}
                       className={styles.headerMobileMenuItem}
-                      onClick={() => menuClickHandler(menuItem)}
+                      onClick={() => setCurrentMenuItem(menuItem)}
                     >
                       <Icon name="Catalog" />
-                      {menuItem.title}
+                      {menuItem.name}
                       <Icon name="SmallArrowUp" />
                     </div>
                   ))}
@@ -119,5 +109,3 @@ const HeaderMobileMenu: FC<Props> = ({ rootMenu, isOpen, close }) => {
     </div>
   );
 };
-
-export default HeaderMobileMenu;

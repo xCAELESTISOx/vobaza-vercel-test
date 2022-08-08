@@ -31,31 +31,15 @@ const initialValues = {
 };
 
 const validationSchema = yup.object({
-  name: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
+  name: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
   score: yup.number().required(),
-  positive: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
-  negative: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
-  comment: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
+  positive: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
+  negative: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
+  comment: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
   files: yup.array(),
 });
 
-const CreateReviewModal: FC<CreateReviewModal> = ({
-  active,
-  onClose = () => {},
-  productInfo = {},
-}) => {
+const CreateReviewModal: FC<CreateReviewModal> = ({ active, onClose = () => {}, productInfo = {} }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const createReview = () => {
@@ -67,19 +51,11 @@ const CreateReviewModal: FC<CreateReviewModal> = ({
         onClose();
       }, 2000);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
-  const {
-    values,
-    setFieldValue,
-    validateField,
-    errors,
-    handleSubmit,
-    setErrors,
-    resetForm,
-  } = useFormik({
+  const { values, setFieldValue, validateField, errors, resetForm } = useFormik({
     initialValues,
     validationSchema,
     validateOnBlur: false,
@@ -112,25 +88,14 @@ const CreateReviewModal: FC<CreateReviewModal> = ({
                   {productImageURL ? (
                     <img src={productImageURL || ''} alt="" />
                   ) : (
-                    <Image
-                      src={PlaceholderImage}
-                      objectFit="contain"
-                      unoptimized
-                      alt=""
-                    />
+                    <Image src={PlaceholderImage} objectFit="contain" unoptimized alt="" />
                   )}
                 </div>
               </div>
               <div className={styles.reviewModalProductInfo}>
-                <div className={styles.reviewModalProductCode}>
-                  Артикул: {productInfo.articleNumber}
-                </div>
-                <div className={styles.reviewModalProductTitle}>
-                  {productInfo.title}
-                </div>
-                <div className={styles.reviewModalProductPrice}>
-                  {toNumberWithSpaces(productInfo.price)}&nbsp;₽
-                </div>
+                <div className={styles.reviewModalProductCode}>Артикул: {productInfo.articleNumber}</div>
+                <div className={styles.reviewModalProductTitle}>{productInfo.title}</div>
+                <div className={styles.reviewModalProductPrice}>{toNumberWithSpaces(productInfo.price)}&nbsp;₽</div>
               </div>
             </div>
 
@@ -201,16 +166,10 @@ const CreateReviewModal: FC<CreateReviewModal> = ({
               </div>
 
               <div className={styles.reviewModalField}>
-                <UploadPhotos
-                  onChange={(e) => handleChangeCustomField('files', e)}
-                />
+                <UploadPhotos onChange={(e) => handleChangeCustomField('files', e)} />
               </div>
 
-              <Button
-                text="Оставить отзыв"
-                type="submit"
-                disabled={isLoading}
-              />
+              <Button text="Оставить отзыв" type="submit" disabled={isLoading} />
             </form>
           </div>
         </Modal>

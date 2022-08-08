@@ -1,33 +1,42 @@
 import React, { FC, useEffect, useState } from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
+import Link from 'next/link';
 
-import { useAuth } from '../../../../src/context/auth';
-import { useGoods } from '../../../../src/context/goods';
+import { useAuth } from 'src/context/auth';
+import { useGoods } from 'src/context/goods';
+import type { IMenuItem } from 'src/models/IMenu';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
+import { HeaderMobileMenu } from '../MobileMenu';
 import Search from '../Search';
-import HeaderMobileMenu from '../MobileMenu';
 import CitySelect from '../CitySelect';
 
 import styles from './styles.module.scss';
 
 type Props = {
-  mobileCategories: any[];
+  mobileMenu?: IMenuItem[];
   openPhoneCallModal: () => void;
 };
 
-const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
+export const HeaderBody: FC<Props> = ({ mobileMenu, openPhoneCallModal }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { state, dispatch } = useAuth();
+  const router = useRouter();
+
   const useGoodsObj = useGoods();
   const { favoriteIds, compareIds, cartSize, activeMobCatalog } = useGoodsObj.state;
+
+  const { state, dispatch } = useAuth();
 
   const openAuthModal = () => {
     dispatch({ type: 'toggleModal' });
   };
-  const toggleMenu = () => {
-    useGoodsObj.dispatch({ type: 'toogleMobCatalog', payload: !activeMobCatalog });
+  const toggleMenu = (value?: any) => {
+    if (value === undefined) {
+      useGoodsObj.dispatch({ type: 'toogleMobCatalog', payload: !activeMobCatalog });
+    } else {
+      useGoodsObj.dispatch({ type: 'toogleMobCatalog', payload: value });
+    }
   };
 
   useEffect(() => {
@@ -38,9 +47,13 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
     }
   }, [state.isLoggedIn]);
 
+  useEffect(() => {
+    toggleMenu(false);
+  }, [router.asPath]);
+
   return (
-    <div className="container">
-      <HeaderMobileMenu isOpen={activeMobCatalog} rootMenu={mobileCategories} close={toggleMenu} />
+    <div className={styles.headerContainer}>
+      <HeaderMobileMenu isOpen={activeMobCatalog} menu={mobileMenu} close={toggleMenu} />
       <div className={`${styles.mainHeader}`}>
         <div className={styles.mainHeaderMobile}>
           <button className={styles.burgerMenu} onClick={toggleMenu}>
@@ -116,5 +129,3 @@ const MainHeader: FC<Props> = ({ mobileCategories, openPhoneCallModal }) => {
     </div>
   );
 };
-
-export default MainHeader;

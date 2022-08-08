@@ -30,7 +30,7 @@ const OrderDeliveryDrawer: FC<Props> = ({ address, setFieldValue, setDeliveryVar
       }
       onClose();
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -73,7 +73,7 @@ const OrderDeliveryDrawer: FC<Props> = ({ address, setFieldValue, setDeliveryVar
 
         setVariants(variantsArr);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
     if (address) {

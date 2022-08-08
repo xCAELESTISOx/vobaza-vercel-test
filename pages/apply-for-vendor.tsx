@@ -38,33 +38,15 @@ const initialValues = {
 } as Address;
 
 const validationSchema = yup.object({
-  address: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
-  categ: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255'),
-  name: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
+  address: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
+  categ: yup.string().max(255, 'Количество символов в поле должно быть не больше 255'),
+  name: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
   inn: yup
     .string()
-    .test(
-      'len',
-      'Поле ИНН должно содержать 10 или 12 цифр',
-      (val: any) => val.length === 10 || val.length === 12
-    )
+    .test('len', 'Поле ИНН должно содержать 10 или 12 цифр', (val: any) => val.length === 10 || val.length === 12)
     .required('Обязательное поле'),
-  fio: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
-  phone: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
+  fio: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
+  phone: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
   email: yup
     .string()
     .email('Не валидный email')
@@ -82,18 +64,11 @@ export default function Partnership() {
         setIsLoading(false);
       }, 2000);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
-  const {
-    values,
-    setFieldValue,
-    validateField,
-    errors,
-    handleSubmit,
-    setErrors,
-  } = useFormik<Address>({
+  const { values, setFieldValue, validateField, errors } = useFormik<Address>({
     initialValues,
     validationSchema,
     validateOnBlur: false,
@@ -116,9 +91,7 @@ export default function Partnership() {
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <div className={`${styles.staticPage} container`}>
         <div className={styles.staticPageContent}>
-          <h1 className={styles.staticPageTitle}>
-            Оставить заявку на&nbsp;партнерство
-          </h1>
+          <h1 className={styles.staticPageTitle}>Оставить заявку на&nbsp;партнерство</h1>
           <div className={styles.staticPageInfo}>
             <InputText
               label="Города присутствия (через запятую)"
@@ -193,12 +166,9 @@ export default function Partnership() {
             <div className={styles.staticPageText}>
               Нажимая &laquo;Отправить&raquo; вы&nbsp;соглашаетесь с&nbsp;
               <Link href="/">
-                <a className={`${styles.staticPageText} ${styles.link}`}>
-                  договором оферты
-                </a>
+                <a className={`${styles.staticPageText} ${styles.link}`}>договором оферты</a>
               </Link>{' '}
-              и&nbsp;подтверждаете своё согласие на&nbsp;обработку персональных
-              данных
+              и&nbsp;подтверждаете своё согласие на&nbsp;обработку персональных данных
             </div>
             <div>
               <Button style={{ marginLeft: 'auto' }} text="Отправить" />

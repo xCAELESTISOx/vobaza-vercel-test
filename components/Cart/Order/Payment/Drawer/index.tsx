@@ -22,7 +22,7 @@ const OrderPaymentDrawer: FC<Props> = ({ isOpen = false, onClose }) => {
         onClose();
       }, 2000);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 

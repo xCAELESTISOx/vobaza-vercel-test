@@ -69,7 +69,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => 
       withCountChange = true;
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return {
       props: {
         initialGoods,

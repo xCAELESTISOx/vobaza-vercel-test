@@ -1,16 +1,17 @@
-.headerMenu {
+.collapsingMenu {
   position: absolute;
   left: 0;
   top: 40px;
   display: flex;
   flex-direction: column;
   padding-top: 40px;
-  padding-bottom: 40px;
+  padding-bottom: 16px;
   width: 100vw;
   border: none;
   box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1);
   background: white;
   z-index: 100;
+  min-height: 140px;
 
   @media screen and (max-width: 1140px) {
     padding-top: 16px;
@@ -51,7 +52,7 @@
   border-radius: 8px;
   overflow-y: auto;
 
-  +.subMenu {
+  + .subMenu {
     padding-left: 16px;
   }
 }
@@ -75,7 +76,8 @@
   display: flex;
   align-items: center;
   padding: 12px 20px;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 500;
   line-height: 20px;
   border-radius: 8px;
   transition: color 0.2s, background-color 0.2s;
@@ -86,28 +88,8 @@
     background-color: #ededed;
   }
 
-  svg {
-    margin-right: 10px;
-  }
-}
-
-.subMenuRoot {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 60px;
-  width: 100%;
-}
-
-.subMenuRootTitle {
-  display: block;
-  margin-bottom: 40px;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 24px;
-  transition: color 0.15s;
-
-  &:hover {
-    color: var(--primary-color, #af1ebe);
+  span {
+    margin-left: 12px;
   }
 }
 
@@ -117,35 +99,65 @@
   gap: 40px;
 
   .subMenuItem {
-    +.subMenuItem {
+    + .subMenuItem {
       margin-top: 16px;
     }
   }
 }
 
-.subMenu {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 32px;
-  width: 100%;
-}
-
-.subMenuBlock {
+.collapsingMenuBody {
   display: flex;
+  width: 100%;
+  flex-wrap: wrap;
   flex-direction: column;
+  align-content: flex-start;
+  max-height: 380px;
+
+  &.big {
+    max-height: 480px;
+  }
 }
 
-.subMenuItem {
-  max-width: max-content;
+.collapsingMenuBlock {
+  margin-right: 60px;
+  margin-bottom: 12px;
+  min-width: 200px;
+}
+
+.collapsingMenuBlockTitle {
+  display: block;
+  margin-bottom: 8px;
+  transition: color 0.15s;
+
+  font-weight: 600;
   font-size: 16px;
   line-height: 24px;
+  white-space: nowrap;
+}
+
+a.collapsingMenuBlockTitle:hover {
+  color: var(--primary-color, #af1ebe);
+}
+
+.collapsingMenuBlockItems {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.collapsingMenuBlockItem {
+  max-width: max-content;
   transition: color 0.15s;
+  margin-bottom: 8px;
+
+  font-size: 14px;
+  line-height: 20px;
 
   &:hover {
     color: var(--primary-color, #af1ebe);
   }
 
-  +.subMenuItem {
+  + .subMenuItem {
     margin-top: 24px;
   }
 }
@@ -162,7 +174,7 @@
 }
 
 .headerMenuBottomItem {
-  +.headerMenuBottomItem {
+  + .headerMenuBottomItem {
     margin-left: 32px;
   }
 }

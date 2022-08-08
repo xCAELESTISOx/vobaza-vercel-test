@@ -30,18 +30,9 @@ const initialValues = {
 } as Address;
 
 const validationSchema = yup.object({
-  name: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
-  theme: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
-  message: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
+  name: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
+  theme: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
+  message: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
   email: yup
     .string()
     .email('Не валидный email')
@@ -59,18 +50,11 @@ export default function ContactForm() {
         setIsLoading(false);
       }, 2000);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
-  const {
-    values,
-    setFieldValue,
-    validateField,
-    errors,
-    handleSubmit,
-    setErrors,
-  } = useFormik<Address>({
+  const { values, setFieldValue, validateField, errors } = useFormik<Address>({
     initialValues,
     validationSchema,
     validateOnBlur: false,

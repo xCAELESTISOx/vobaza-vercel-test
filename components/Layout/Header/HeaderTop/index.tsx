@@ -26,7 +26,7 @@ const routes = [
   },
 ];
 
-const SmallHeader: FC = () => {
+export const HeaderTop: FC = () => {
   return (
     <div className={styles.smallHeader}>
       <div className="container">
@@ -41,5 +41,3 @@ const SmallHeader: FC = () => {
     </div>
   );
 };
-
-export default SmallHeader;

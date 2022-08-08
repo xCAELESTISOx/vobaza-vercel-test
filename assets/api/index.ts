@@ -1,10 +1,15 @@
 import cookies from 'js-cookie';
 
+import type { IMenuItem } from 'src/models/IMenu';
+
 import { axios, setToken, setTokenWithGuest } from './axios';
 import { CategoriesAPI } from './modules/category';
 import { ordersAPI } from './modules/orders';
 
 export const api = {
+  getMenu(type: 'TOP' | 'LEFT_SIDE' | 'MOBILE') {
+    return axios.get<{ data: IMenuItem[] }>('/v1/menus', { params: { type } });
+  },
   //Auth
   getRegisterCode(data: object) {
     setTokenWithGuest();

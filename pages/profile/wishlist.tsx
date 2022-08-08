@@ -73,7 +73,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 
     initialGoods = normalizeGoods(favoritesRes.data.data);
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 
   return {

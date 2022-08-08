@@ -81,7 +81,7 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
 
       router.push(`/checkout/complete?order_id=${res.data.data.number}`);
     } catch (error) {
-      console.log(error);
+      console.error(error);
 
       if (error.response.data.errors) {
         throw error;

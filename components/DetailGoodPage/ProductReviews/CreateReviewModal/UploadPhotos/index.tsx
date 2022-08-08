@@ -73,7 +73,7 @@ const UploadPhotos = ({ onChange }) => {
       newSelected.splice(index, 1);
       setSelectedFiles(newSelected);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 

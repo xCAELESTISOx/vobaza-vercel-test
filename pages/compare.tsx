@@ -66,7 +66,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       attributes = compareRes.data.data.attributes;
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return {
       redirect: {
         destination: '/',

@@ -62,7 +62,7 @@ const DeliveryAssembly = ({ address, assemblyPrice, goods, setFieldValue, setAss
 
       return res.data?.data?.price / 100 || 0;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return ASSEMBLY_PRICE_ERROR;
     }
   };

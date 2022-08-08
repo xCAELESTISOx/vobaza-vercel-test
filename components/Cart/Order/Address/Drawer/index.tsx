@@ -17,7 +17,7 @@ const OrderAddressDrawer: FC<Props> = ({ isOpen = false, setOuterFieldValue, onC
       setOuterFieldValue('address', values);
       onClose();
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
   return (

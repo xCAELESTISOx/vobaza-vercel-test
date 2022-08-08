@@ -27,7 +27,7 @@ const ProductCompare: FC<Props> = ({ id }) => {
         try {
           await api.removeFromAuthCompareList(id);
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       }
       dispatch({ type: 'removeCompare', payload: id });
@@ -36,7 +36,7 @@ const ProductCompare: FC<Props> = ({ id }) => {
         try {
           await api.addToAuthCompareList(id);
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       }
       dispatch({ type: 'addCompare', payload: id });
@@ -53,14 +53,8 @@ const ProductCompare: FC<Props> = ({ id }) => {
   }, [compareIds, id]);
 
   return (
-    <button
-      className={`${styles.leftMenuActionBtn} ${
-        currentCompare ? styles.active : ''
-      }`}
-      onClick={toggleCompare}
-    >
-      <Icon name="Compare" />{' '}
-      <span>{currentCompare ? 'В сравнении' : 'Сравнить'}</span>
+    <button className={`${styles.leftMenuActionBtn} ${currentCompare ? styles.active : ''}`} onClick={toggleCompare}>
+      <Icon name="Compare" /> <span>{currentCompare ? 'В сравнении' : 'Сравнить'}</span>
     </button>
   );
 };

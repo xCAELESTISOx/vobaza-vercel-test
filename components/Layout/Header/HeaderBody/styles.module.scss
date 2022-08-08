@@ -1,8 +1,12 @@
 .mainHeader {
   display: flex;
   align-items: center;
-  padding-top: 24px;
-  padding-bottom: 20px;
+  padding: 24px 20px 20px;
+  position: relative;
+  margin: 0 auto;
+  margin-bottom: 8px;
+  max-width: 1640px;
+  min-width: 280px;
 
   @media screen and (max-width: 1223px) {
     justify-content: space-between;
@@ -95,6 +99,7 @@
 
   @media screen and (max-width: 1080px) {
     display: block;
+    padding: 0 16px;
   }
 }
 

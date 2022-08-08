@@ -24,8 +24,7 @@ const CompareList: FC<Props> = ({ initialGoods, initialAttributes }) => {
   const [goods, setGoods] = useState(initialGoods);
   const [attributes, setAttributes] = useState(initialAttributes);
   const [currentAttributes, setCurrentAttributes] = useState(initialAttributes);
-  const [differentAttributesId, setDifferentAttributesId] =
-    useState<number[]>(null);
+  const [differentAttributesId, setDifferentAttributesId] = useState<number[]>(null);
   const [tab, setTab] = useState('ALL');
   const [removedAttributes, setRemovedAttributes] = useState([]);
   const { dispatch } = useGoods();
@@ -42,7 +41,7 @@ const CompareList: FC<Props> = ({ initialGoods, initialAttributes }) => {
       try {
         api.removeAuthCompareList();
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
     dispatch({ type: 'setCompare', payload: [] });
@@ -58,7 +57,7 @@ const CompareList: FC<Props> = ({ initialGoods, initialAttributes }) => {
       try {
         await api.removeFromAuthCompareList(deletedGood.id);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
     dispatch({ type: 'removeCompare', payload: deletedGood.id });
@@ -68,19 +67,11 @@ const CompareList: FC<Props> = ({ initialGoods, initialAttributes }) => {
   const setCurrentAttributesHandler = () => {
     switch (tab) {
       case 'SAME': {
-        setCurrentAttributes(
-          attributes.filter(
-            (attribute) => !differentAttributesId.includes(+attribute.id)
-          )
-        );
+        setCurrentAttributes(attributes.filter((attribute) => !differentAttributesId.includes(+attribute.id)));
         break;
       }
       case 'DIFFERENT': {
-        setCurrentAttributes(
-          attributes.filter((attribute) =>
-            differentAttributesId.includes(+attribute.id)
-          )
-        );
+        setCurrentAttributes(attributes.filter((attribute) => differentAttributesId.includes(+attribute.id)));
         break;
       }
       default: {
@@ -99,23 +90,17 @@ const CompareList: FC<Props> = ({ initialGoods, initialAttributes }) => {
             if (value) {
               if (attribute.data_type === 'COLOR') {
                 if (
-                  value[0].code !==
-                    good.attributes_value[attribute.id][0].code ||
-                  value[0].value !==
-                    good.attributes_value[attribute.id][0].value
+                  value[0].code !== good.attributes_value[attribute.id][0].code ||
+                  value[0].value !== good.attributes_value[attribute.id][0].value
                 ) {
                   return true;
                 }
               } else if (attribute.data_type === 'MANY_FROM_MANY') {
-                if (
-                  value.length !== good.attributes_value[attribute.id].length
-                ) {
+                if (value.length !== good.attributes_value[attribute.id].length) {
                   return true;
                 } else {
                   for (let key in value) {
-                    if (
-                      value[key] !== good.attributes_value[attribute.id][key]
-                    ) {
+                    if (value[key] !== good.attributes_value[attribute.id][key]) {
                       return true;
                     }
                   }
@@ -145,16 +130,10 @@ const CompareList: FC<Props> = ({ initialGoods, initialAttributes }) => {
     setRemovedAttributes([...removedAttributes, value]);
   };
   const addAttribute = (values) => {
-    setRemovedAttributes(
-      removedAttributes.filter((feature) => !values.includes(feature))
-    );
+    setRemovedAttributes(removedAttributes.filter((feature) => !values.includes(feature)));
   };
   const checkRemovedAttributes = () => {
-    setRemovedAttributes(
-      removedAttributes.filter((attribute) =>
-        attributes.find((item) => attribute.id === item.id)
-      )
-    );
+    setRemovedAttributes(removedAttributes.filter((attribute) => attributes.find((item) => attribute.id === item.id)));
   };
 
   useEffect(() => {
@@ -194,27 +173,21 @@ const CompareList: FC<Props> = ({ initialGoods, initialAttributes }) => {
             <div className={styles.compareListContent}>
               <div className={styles.compareListMenu}>
                 <button
-                  className={`${styles.compareListMenuItem} ${
-                    tab === 'ALL' && styles.active
-                  }`}
+                  className={`${styles.compareListMenuItem} ${tab === 'ALL' && styles.active}`}
                   data-tab="ALL"
                   onClick={setTabHandler}
                 >
                   Все характеристики
                 </button>
                 <button
-                  className={`${styles.compareListMenuItem} ${
-                    tab === 'SAME' && styles.active
-                  }`}
+                  className={`${styles.compareListMenuItem} ${tab === 'SAME' && styles.active}`}
                   data-tab="SAME"
                   onClick={setTabHandler}
                 >
                   Только похожие
                 </button>
                 <button
-                  className={`${styles.compareListMenuItem} ${
-                    tab === 'DIFFERENT' && styles.active
-                  }`}
+                  className={`${styles.compareListMenuItem} ${tab === 'DIFFERENT' && styles.active}`}
                   data-tab="DIFFERENT"
                   onClick={setTabHandler}
                 >
@@ -241,19 +214,11 @@ const CompareList: FC<Props> = ({ initialGoods, initialAttributes }) => {
       <div className={styles.compareButtons}>
         <Button text="Продолжить покупки" onClick={goShopping} size="big" />
         {!!goods && goods.length > 0 && (
-          <Button
-            variation="ternary"
-            text="Очистить список"
-            onClick={clearList}
-            size="big"
-          />
+          <Button variation="ternary" text="Очистить список" onClick={clearList} size="big" />
         )}
       </div>
       {removedAttributes.length > 0 && (
-        <CompareListRemoveFeatures
-          addAttribute={addAttribute}
-          removedAttributes={removedAttributes}
-        />
+        <CompareListRemoveFeatures addAttribute={addAttribute} removedAttributes={removedAttributes} />
       )}
     </>
   );

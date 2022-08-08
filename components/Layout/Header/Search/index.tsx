@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, SyntheticEvent, useState } from 'react';
 
 import styles from './styles.module.scss';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
@@ -8,8 +8,8 @@ const Search: FC = () => {
   const router = useRouter();
   const [value, setValue] = useState('');
 
-  const setValueHandler = (e) => {
-    setValue(e.target.value);
+  const setValueHandler = (e: SyntheticEvent<HTMLInputElement>) => {
+    setValue(e.currentTarget.value);
   };
   const onSubmit = (e) => {
     e.preventDefault();

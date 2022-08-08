@@ -15,11 +15,7 @@ type Props = {
   setOrderPrice: (price: number) => void;
 };
 
-const CartList: FC<Props> = ({
-  initialGoods,
-  withCountChange = false,
-  setOrderPrice,
-}) => {
+const CartList: FC<Props> = ({ initialGoods, withCountChange = false, setOrderPrice }) => {
   const [goods, setGoods] = useState(initialGoods);
   const [isCountChangeModal, setIsCountChangeModal] = useState(withCountChange);
   const router = useRouter();
@@ -38,16 +34,14 @@ const CartList: FC<Props> = ({
         quantity: quantity,
         include: 'prices',
       });
-      setGoods((prevArray) =>
-        prevArray.filter((good) => good.product.id !== id)
-      );
+      setGoods((prevArray) => prevArray.filter((good) => good.product.id !== id));
       dispatch({
         type: 'changeCartSize',
         payload: res.data.data.changed_quantity,
       });
       setOrderPrice(res.data.data.order_price / 100);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   const changeItem = async (id: number, quantity: number) => {
@@ -108,11 +102,7 @@ const CartList: FC<Props> = ({
           </div>
           {goods.map((good) => (
             <div key={good.product.id} className={styles.cartListItemBlock}>
-              <CartListItem
-                good={good}
-                deleteItem={deleteItem}
-                changeItem={changeItem}
-              />
+              <CartListItem good={good} deleteItem={deleteItem} changeItem={changeItem} />
             </div>
           ))}
         </div>

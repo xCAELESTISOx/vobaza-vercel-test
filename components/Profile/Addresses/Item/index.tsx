@@ -23,7 +23,7 @@ const ProfileAddress: FC<Props> = ({ address, onDelete, onToggleDefault }) => {
       await api.deleteAddress(address.id);
       onDelete(address.id);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setIsloading(false);
     }
@@ -38,7 +38,7 @@ const ProfileAddress: FC<Props> = ({ address, onDelete, onToggleDefault }) => {
       await api.setDefaultAddress(address.id);
       onToggleDefault(address.id);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setIsloading(false);
     }

@@ -94,7 +94,7 @@ const OrderReceiver: FC<Props> = forwardRef(({ initialUser, createOrder }, ref) 
           }
         }
       });
-      console.log(newErrors);
+      console.error(newErrors);
 
       setErrors(newErrors);
       setIsLoading(false);

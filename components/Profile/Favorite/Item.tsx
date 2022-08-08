@@ -43,7 +43,7 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
       onDelete(good.id);
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
+      console.error(error);
     }
   };
   const addToCartHandler = () => {
