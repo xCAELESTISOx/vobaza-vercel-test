@@ -153,18 +153,15 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
     ]);
 
     const goods: IGoodCard[] = normalizeGoods(goodsRes.data.data);
-    const filters: IFilter[] = convertFiltersIfPrice(filtersRes.data.data);
+    let filters: IFilter[] = convertFiltersIfPrice(filtersRes.data.data);
     const baseFilters: IFilter[] = convertFiltersIfPrice(baseFiltersRes.data.data);
     const meta = goodsRes.data.meta;
 
-    // Получение всех активных тегов
-    if (Object.keys(activeQueryFilters).length && filters.length > 0) {
-      currentFilters = getFiltersFromQuery(activeQueryFilters, filters);
+    if (Object.keys(activeFilters).length && filters.length > 0) {
+      currentFilters = getFiltersFromQuery(activeFilters, filters);
     }
-    const tagsFilters = getFiltersFromTags(currentTags, filters);
-    currentFilters = { ...currentFilters, ...tagsFilters };
 
-    // Добавление категорий и тегов в breadcrumps
+    filters = filters.filter((filter) => !currentTags.find((tag) => tag.filter.id === filter.id));
 
     return {
       props: {

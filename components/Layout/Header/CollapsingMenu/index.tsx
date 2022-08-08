@@ -19,8 +19,6 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
   const [allProducts, setAllProducts] = useState(false);
 
   const menuTabHover = (e, parentId) => {
-    console.log(parentId);
-
     e.preventDefault();
     e.stopPropagation();
     setAllProducts(false);

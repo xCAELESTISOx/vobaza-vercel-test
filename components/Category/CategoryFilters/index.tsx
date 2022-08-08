@@ -84,7 +84,7 @@ const CategoryFilters: FC<Props> = ({
     const { queryFilters, excludeFilterId } = getQueryFromFilters([filter]);
     ['page', 'city', 'id', excludeFilterId].forEach((item) => delete query[item]);
 
-    if (currentFilters[filter.id]?.tag_slug) {
+    if (currentFilters && currentFilters[filter.id]?.tag_slug) {
       currentTags.forEach((tag, index) => {
         if (tag.slug === currentFilters[filter.id].tag_slug) {
           let excludingTags = currentTags.splice(index);
