@@ -1,12 +1,13 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 import type { IMenuItem } from 'src/models/IMenu';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import Search from '../Search';
 import CitySelect from '../CitySelect';
-import HeaderMobileSubMenuItem from './SubMenuItem';
+import { MobileMenuBlock } from './MobileMenuBlock';
 
 import styles from './styles.module.scss';
 
@@ -66,13 +67,15 @@ export const HeaderMobileMenu: FC<Props> = ({ menu, isOpen, close }) => {
       {currentMenuItem ? (
         <>
           <div className={styles.headerMobileMenuSubBlock}>
-            <div className={styles.headerMobileMenuSubTitle}>
-              <Link href={currentMenuItem.link || '/'}>
-                <a>Все товары раздела</a>
-              </Link>
-            </div>
+            {currentMenuItem.link && (
+              <div className={styles.headerMobileMenuSubTitle}>
+                <Link href={currentMenuItem.link || '/'}>
+                  <a>Все товары раздела</a>
+                </Link>
+              </div>
+            )}
             {currentMenuItem?.children?.map((child) => (
-              <HeaderMobileSubMenuItem key={child.id} item={child} />
+              <MobileMenuBlock key={child.id} item={child} />
             ))}
           </div>
         </>
@@ -86,26 +89,34 @@ export const HeaderMobileMenu: FC<Props> = ({ menu, isOpen, close }) => {
           </div>
           <div className={styles.headerMobileMenuBlock}>
             {menu?.map((item) => (
-              <div key={item.id} className={styles.headerMobileMenuList}>
-                <div className={styles.headerMobileMenuListTitle}>{item.name}</div>
-                <div className={styles.headerMobileMenuContent}>
-                  {item.children?.map((menuItem) => (
-                    <div
-                      key={menuItem.id}
-                      className={styles.headerMobileMenuItem}
-                      onClick={() => setCurrentMenuItem(menuItem)}
-                    >
-                      <Icon name="Catalog" />
-                      {menuItem.name}
-                      <Icon name="SmallArrowUp" />
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <MobileMenuGroup key={item.id} item={item} setCurrentMenuItem={setCurrentMenuItem} />
             ))}
           </div>
         </>
       )}
+    </div>
+  );
+};
+
+const MobileMenuGroup = ({
+  item,
+  setCurrentMenuItem,
+}: {
+  item: IMenuItem;
+  setCurrentMenuItem: Dispatch<SetStateAction<IMenuItem>>;
+}) => {
+  return (
+    <div key={item.id} className={styles.headerMobileMenuList}>
+      <div className={styles.headerMobileMenuListTitle}>{item.name}</div>
+      <div className={styles.headerMobileMenuContent}>
+        {item.children?.map((menuItem) => (
+          <div key={menuItem.id} className={styles.headerMobileMenuItem} onClick={() => setCurrentMenuItem(menuItem)}>
+            {menuItem.icon && <Image src={menuItem.icon} width={28} height={28} alt="" />}
+            <span>{menuItem.name}</span>
+            <Icon name="SmallArrowUp" />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

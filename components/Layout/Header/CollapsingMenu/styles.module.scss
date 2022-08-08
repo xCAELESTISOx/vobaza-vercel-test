@@ -46,7 +46,6 @@
   flex-direction: column;
   width: 34%;
   margin-right: 40px;
-  padding-bottom: 14px;
   max-width: 274px;
   background-color: #f5f5f5;
   border-radius: 8px;
@@ -75,9 +74,9 @@
 .rootMenuLink {
   display: flex;
   align-items: center;
-  padding: 12px 20px;
+  padding: 8px 20px;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 20px;
   border-radius: 8px;
   transition: color 0.2s, background-color 0.2s;

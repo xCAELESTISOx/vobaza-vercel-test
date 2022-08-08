@@ -1,11 +1,11 @@
 import React, { FC, useRef, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import type { IMenuItem } from 'src/models/IMenu';
 import { getLinkFromMenuItem } from 'assets/utils/getLinkFromMenuItem';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
-import MenuIcon from '../../Icons/MenuIcon';
 
 import styles from './styles.module.scss';
 
@@ -13,7 +13,7 @@ type Props = {
   item?: IMenuItem;
 };
 
-const HeaderMobileSubMenuItem: FC<Props> = ({ item }) => {
+export const MobileMenuBlock: FC<Props> = ({ item }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -46,8 +46,8 @@ const HeaderMobileSubMenuItem: FC<Props> = ({ item }) => {
       <div className={styles.subMenuHeader} onClick={clickHandler}>
         <Link href={getLinkFromMenuItem(item)}>
           <a className={styles.subMenuLink}>
-            <MenuIcon name={item.icon} className={styles.subMenuImage} />
-            {item.name}
+            {item.icon && <Image src={item.icon} width={24} height={24} alt="" />}
+            <span>{item.name}</span>
           </a>
         </Link>
         {item.children && (
@@ -68,5 +68,3 @@ const HeaderMobileSubMenuItem: FC<Props> = ({ item }) => {
     </div>
   );
 };
-
-export default HeaderMobileSubMenuItem;

@@ -49,9 +49,11 @@ export const HeaderMenu: FC<Props> = ({ mainMenu, sideMenu }) => {
         >
           <Icon name="MenuBurger" /> Каталог
         </button>
-        {mainMenu?.map((item, index) => (
-          <HeaderMenuItem key={item.id} index={index} item={item} openFullMenu={openFullMenu} />
-        ))}
+        <div className={styles.headerMenuItemsWrapper}>
+          {mainMenu?.map((item, index) => (
+            <HeaderMenuItem key={item.id} index={index} item={item} openFullMenu={openFullMenu} />
+          ))}
+        </div>
       </nav>
     </div>
   );

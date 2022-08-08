@@ -18,12 +18,16 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
 
   const [allProducts, setAllProducts] = useState(false);
 
-  const menuTabHover = (e) => {
+  const menuTabHover = (e, parentId) => {
+    console.log(parentId);
+
     e.preventDefault();
     e.stopPropagation();
     setAllProducts(false);
     if (e.target.dataset.id) {
-      setCurrentMenuItem((menu as IMenuItem[]).find((item) => item.id === +e.target.dataset.id));
+      const currentGroup = (menu as IMenuItem[]).find(({ id }) => id === parentId);
+      const newCurrentItem = currentGroup.children.find((item) => item.id === +e.target.dataset.id);
+      setCurrentMenuItem(newCurrentItem || menu[0]);
     } else {
       setCurrentMenuItem(menu[0]);
     }
@@ -38,32 +42,28 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
       <div className={styles.headerMenuContent}>
         {withRoot && (
           <div className={styles.rootMenu}>
-            {(menu as IMenuItem[]).map((item) => (
-              // <div key={item.id} className={`${true ? styles.rootMenuItemDivided : ''} `}>
-              <div key={item.id}>
-                <Link href={item.link || ''}>
-                  <a
-                    data-id={item.id}
-                    onMouseEnter={menuTabHover}
-                    onClick={closeMenu}
-                    className={`${styles.rootMenuLink}
-                  ${!allProducts && currentMenuItem.id === item.id ? styles.active : ''}`}
-                  >
-                    {item.icon && (
-                      <Image className={styles.rootMenuItemIcon} src={item.icon} alt="" width={32} height={32} />
-                    )}
-                    <span>{item.name}</span>
-                  </a>
-                </Link>
+            {(menu as IMenuItem[]).map((group, index) => (
+              <div key={group.id} className={`${index > 0 ? styles.rootMenuItemDivided : ''} `}>
+                {group.children?.map((item) => (
+                  <div key={item.id}>
+                    <Link href={item.link || ''}>
+                      <a
+                        data-id={item.id}
+                        onMouseEnter={(e) => menuTabHover(e, group.id)}
+                        onClick={closeMenu}
+                        className={`${styles.rootMenuLink}
+                      ${!allProducts && currentMenuItem.id === item.id ? styles.active : ''}`}
+                      >
+                        {item.icon && (
+                          <Image className={styles.rootMenuItemIcon} src={item.icon} alt="" width={32} height={32} />
+                        )}
+                        <span>{item.name}</span>
+                      </a>
+                    </Link>
+                  </div>
+                ))}
               </div>
             ))}
-            <div className={styles.rootMenuItemDivided}>
-              <Link href="/katalog">
-                <a className={`${styles.rootMenuLink}`} onMouseEnter={() => setAllProducts(true)}>
-                  Все товары
-                </a>
-              </Link>
-            </div>
           </div>
         )}
         {!!currentMenuItem.children?.length && (

@@ -123,14 +123,10 @@
   transition: color 0.15s;
   cursor: pointer;
 
-  &:hover {
-    color: var(--primary-color, #af1ebe);
+  span {
+    margin-left: 12px;
   }
 
-  svg:first-child {
-    margin-right: 16px;
-    color: var(--primary-color, #af1ebe);
-  }
   svg:last-child {
     margin-left: auto;
     margin-right: 8px;
@@ -138,4 +134,7 @@
     width: 18px;
     transform: rotate(90deg);
   }
+}
+a.headerMobileMenuItem:hover {
+  color: var(--primary-color, #af1ebe);
 }

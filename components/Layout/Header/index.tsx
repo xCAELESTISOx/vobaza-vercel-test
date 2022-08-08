@@ -43,7 +43,7 @@ const Header: FC<Props> = ({ openPhoneCallModal }) => {
       const newMenus = {
         main: topMenuRes.data.data,
         side: sideMenuRes.data.data,
-        mobile: [{ id: 1, name: 'Все товары', children: mobileMenuRes.data.data, item_type: 'NORMAL' }],
+        mobile: mobileMenuRes.data.data,
       };
 
       setMenus(newMenus as any);

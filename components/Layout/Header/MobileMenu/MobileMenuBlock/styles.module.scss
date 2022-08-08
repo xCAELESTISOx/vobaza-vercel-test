@@ -15,6 +15,10 @@
   &:hover {
     color: var(--primary-color, #af1ebe);
   }
+
+  span {
+    margin-left: 16px;
+  }
 }
 .subMenuImage {
   width: 32px;
