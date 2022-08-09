@@ -18,10 +18,10 @@ type Props = {
   withoutExpress?: boolean;
   categorySlug?: string;
   isExpress?: boolean;
-  goods: IGoodCard[];
-  filters?: IFilter[];
-  tags?: ICategoryTag[];
   baseFilters?: IFilter[];
+  tags?: ICategoryTag[];
+  filters?: IFilter[];
+  goods: IGoodCard[];
   currentFilters?: { [key: number]: IFilterFront };
   meta: {
     list: {
@@ -32,15 +32,15 @@ type Props = {
   currentTags?: ICategoryTag[];
 };
 
-const GoodsBlock: FC<Props> = ({
-  categorySlug,
-  filters,
-  baseFilters,
-  currentFilters,
-  isExpress,
-  tags,
+export const GoodsBlock: FC<Props> = ({
   withoutExpress,
+  categorySlug,
+  isExpress,
+  baseFilters,
+  tags,
+  filters,
   goods,
+  currentFilters,
   meta,
   currentTags,
 }) => {
@@ -143,5 +143,3 @@ const GoodsBlock: FC<Props> = ({
     </div>
   );
 };
-
-export default GoodsBlock;

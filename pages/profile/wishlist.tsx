@@ -8,9 +8,7 @@ import normalizeGoods from '../../assets/utils/normalizers/normalizeGoods';
 
 import ProfileSidebar from '../../components/Profile/Sidebar';
 import ProfileEmptyField from '../../components/Profile/EmptyField';
-import ProfileFavoriteItem, {
-  FavoriteGood,
-} from '../../components/Profile/Favorite/Item';
+import ProfileFavoriteItem, { FavoriteGood } from '../../components/Profile/Favorite/Item';
 import CartModal from '../../components/Goods/Modals/Cart/Cart';
 
 interface Props {
@@ -44,11 +42,7 @@ export default function Home({ initialGoods }: Props) {
               {goods && goods.length > 0 ? (
                 <div>
                   {goods.map((good) => (
-                    <ProfileFavoriteItem
-                      key={good.name}
-                      good={good}
-                      onDelete={onDelete}
-                    />
+                    <ProfileFavoriteItem key={good.name} good={good} onDelete={onDelete} />
                   ))}
                 </div>
               ) : (
@@ -62,9 +56,7 @@ export default function Home({ initialGoods }: Props) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({
-  req,
-}) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => {
   let initialGoods = null;
 
   try {

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
-import { GetServerSideProps } from 'next';
 import Head from 'next/head';
+import type { GetServerSideProps } from 'next';
 
 import type { ICategoryTag } from 'src/models/ICategoryTag';
 import type { ICategory } from '../../src/models/ICategory';
@@ -8,19 +8,16 @@ import type { IGoodCard } from '../../src/models/IGood';
 import type { IFilter, IFilterFront } from '../../src/models/IFilter';
 import normalizeGoods from '../../assets/utils/normalizers/normalizeGoods';
 import { getFiltersFromQuery } from 'assets/utils/Category/filters/getFiltersFromQuery';
-import { getFiltersFromTags } from 'assets/utils/Category/filters/getFiltersFromTags';
 import { getCategoryBreadcrumps } from 'assets/utils/Category/getCategoryBreadcrumps';
 import { getParamsFromQuery } from 'assets/utils/Category/getParamsFromQuery';
 import { getTagsByUrl } from 'assets/utils/Category/getTagsByUrl';
 
 import Breadcrumbs from '../../components/Layout/Breadcrumbs';
-import GoodsBlock from '../../components/Goods/GoodsBlock';
+import { GoodsBlock } from '../../components/Goods/GoodsBlock';
 import CategoryHead from 'components/Category/CategoryHead';
 
 import styles from '../../styles/Home.module.scss';
 import { api } from '../../assets/api';
-
-import { mockCategoryTags } from 'assets/mockData/mockCategoryTags';
 
 const convertFiltersIfPrice = (filters: IFilter[]) => {
   return filters.map((filter) =>
@@ -116,11 +113,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
 
   try {
     const categoryRes = await api.getCategoryByPath(resolvedUrl.split('?')[0].replace('/ekspress-dostavka', ''));
-    const category: ICategory = categoryRes.data.data;
+    let category: ICategory = categoryRes.data.data;
 
     const { data: tagsData } = await api.getCategoryTags(category.id);
-    // const tags: ICategoryTag[] = tagsData;
-    const tags: ICategoryTag[] = resolvedUrl.includes('/pryamye_divany') ? mockCategoryTags : tagsData.data;
+    const tags: ICategoryTag[] = tagsData.data;
 
     // Получить по урлу массив всех активных тегов и уровень активных тегов
     const appliedTags = getTagsByUrl(resolvedUrl, tags, [...category.ancestors.map((i) => i.slug), category.slug]);

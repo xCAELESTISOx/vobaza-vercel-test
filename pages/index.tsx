@@ -28,9 +28,7 @@ interface Props {
   collections: ICollection[];
 }
 
-export default function Home(props: Props) {
-  const { banners, hits, newGoods, popularCategories, collections } = props;
-
+export default function Home({ banners, hits, newGoods, popularCategories, collections }: Props) {
   return (
     <div className={styles.homePage}>
       <CartModal />
@@ -90,21 +88,15 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
   let collections = null;
 
   try {
-    const [
-      sliderBannersRes,
-      miniatureBannersRes,
-      hitsRes,
-      newGoodsRes,
-      popularCategoriesRes,
-      collectionsRes,
-    ] = await Promise.all([
-      api.getBanners({ type: 'SLIDER' }),
-      api.getBanners({ type: 'MINIATURE', limit: 3 }),
-      api.getHits(),
-      api.getNewGoods(),
-      api.getPopularCategories(),
-      api.getCollections(),
-    ]);
+    const [sliderBannersRes, miniatureBannersRes, hitsRes, newGoodsRes, popularCategoriesRes, collectionsRes] =
+      await Promise.all([
+        api.getBanners({ type: 'SLIDER' }),
+        api.getBanners({ type: 'MINIATURE', limit: 3 }),
+        api.getHits(),
+        api.getNewGoods(),
+        api.getPopularCategories(),
+        api.getCollections(),
+      ]);
 
     banners.slider = sliderBannersRes.data.data;
     banners.miniature = miniatureBannersRes.data.data;

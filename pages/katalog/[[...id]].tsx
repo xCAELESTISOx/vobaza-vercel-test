@@ -1,16 +1,16 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 
-import { api } from '../../assets/api';
 import normalizeGoods from '../../assets/utils/normalizers/normalizeGoods';
-import { IGoodCard } from '../../src/models/IGood';
-import { ICategory } from '../../src/models/ICategory';
+import type { IGoodCard } from '../../src/models/IGood';
+import type { ICategory } from '../../src/models/ICategory';
 
 import Breadcrumbs, { BreadcrumbType } from '../../components/Layout/Breadcrumbs';
 import CatalogList from '../../components/Catalog/List';
-import GoodsBlock from '../../components/Goods/GoodsBlock';
+import { GoodsBlock } from '../../components/Goods/GoodsBlock';
 
 import styles from '../../styles/Home.module.scss';
+import { api } from '../../assets/api';
 
 const breadcrumbs: BreadcrumbType[] = [
   {
@@ -74,7 +74,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query, res
       offset: page ? (Number(page) - 1) * limit : 0,
       format: 'PUBLIC_LIST',
       sort: sort || undefined,
-      'filter[label]': isExpress ? 'EXPRESS-DELIVERY' : undefined,
+      ...(isExpress && { 'filter[label]': 'EXPRESS-DELIVERY' }),
     };
 
     const [goodsRes, categoryRes] = await Promise.all([api.getGoods(params), api.getRootCategories()]);

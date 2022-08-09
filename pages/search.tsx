@@ -1,14 +1,14 @@
 import { GetServerSideProps } from 'next';
 
-import { api } from '../assets/api';
 import { IGoodCard } from '../src/models/IGood';
 import { num2str } from '../assets/utils';
 import normalizeGoods from '../assets/utils/normalizers/normalizeGoods';
 
 import Breadcrumbs from '../components/Layout/Breadcrumbs';
-import GoodsBlock from '../components/Goods/GoodsBlock';
+import { GoodsBlock } from '../components/Goods/GoodsBlock';
 
 import styles from '../styles/Home.module.scss';
+import { api } from '../assets/api';
 
 let breadcrumbs = [
   {
@@ -35,8 +35,7 @@ export default function Catalog({ goods, meta }) {
         <div className="container">
           <h1 className={styles.sectionTitle}>Результаты поиска</h1>
           <div className={styles.sectionSubTitle}>
-            {num2str(meta.list.count, ['Найден', 'Найдено', 'Найдено'])}{' '}
-            {meta.list.count}{' '}
+            {num2str(meta.list.count, ['Найден', 'Найдено', 'Найдено'])} {meta.list.count}{' '}
             {num2str(meta.list.count, ['товар', 'товара', 'товаров'])}
           </div>
           <GoodsBlock filters={[]} withoutExpress goods={goods} meta={meta} />
@@ -46,9 +45,7 @@ export default function Catalog({ goods, meta }) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({
-  query,
-}) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) => {
   let goods = null;
   let meta = null;
 
