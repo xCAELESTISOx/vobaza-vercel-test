@@ -1,12 +1,14 @@
 import { GetServerSideProps } from 'next';
 
-import styles from '../../../styles/Profile.module.scss';
-import { api } from '../../../assets/api';
-import checkAuth from '../../../assets/api/auth';
-import { IOrderItemFull } from '../../../src/models/IOrder';
+import type { IOrderItemFull } from 'src/models/IOrder';
 
 import ProfileSidebar from '../../../components/Profile/Sidebar';
 import ProfileOrder from '../../../components/Profile/Order';
+
+import checkAuth from '../../../assets/api/auth';
+import { api } from '../../../assets/api';
+
+import styles from '../../../styles/Profile.module.scss';
 
 type Props = {
   order: IOrderItemFull;
@@ -32,10 +34,7 @@ export default function ProfileOrderInfo({ order }) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({
-  req,
-  query,
-}) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req, query }) => {
   let order = null;
 
   try {

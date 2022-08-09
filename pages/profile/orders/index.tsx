@@ -1,13 +1,15 @@
 import { GetServerSideProps } from 'next';
 
-import styles from '../../../styles/Profile.module.scss';
-import { api } from '../../../assets/api';
-import checkAuth from '../../../assets/api/auth';
-import { IOrderItem } from '../../../src/models/IOrder';
+import type { IOrderItem } from '../../../src/models/IOrder';
 
 import ProfileSidebar from '../../../components/Profile/Sidebar';
 import ProfileEmptyField from '../../../components/Profile/EmptyField';
 import ProfileOrderItem from '../../../components/Profile/Order/Item';
+
+import checkAuth from '../../../assets/api/auth';
+import { api } from '../../../assets/api';
+
+import styles from '../../../styles/Profile.module.scss';
 
 type Props = {
   orders: IOrderItem[];
@@ -43,9 +45,7 @@ export default function ProfileOrders({ orders }) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({
-  req,
-}) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => {
   let orders = [];
 
   try {

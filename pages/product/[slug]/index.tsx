@@ -310,7 +310,7 @@ export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({ q
         breadcrumbs,
       },
     };
-  } catch (err) { }
+  } catch (err) {}
 
   return {
     redirect: {

@@ -5,8 +5,7 @@ import Image from 'next/image';
 import { num2str } from '../../../assets/utils';
 import { formatOrderDate, formatOrderTimeInterval } from 'assets/utils/formatters';
 import { getImageVariantProps } from 'assets/utils/images';
-import { EOrderDeliveryType, orderDeliveryTypeDictionary } from '../../../src/models/IOrder';
-import type { IOrderItemFull } from '../../../src/models/IOrder';
+import { EOrderDeliveryType, IOrderItemFull, orderDeliveryTypeDictionary } from '../../../src/models/IOrder';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
@@ -23,6 +22,7 @@ const ProfileOrder: FC<Props> = ({ order }) => {
     (previousValue, currentValue) => previousValue + currentValue.quantity,
     0
   );
+
   return (
     <>
       <div className={styles.orderTop}>
@@ -47,11 +47,9 @@ const ProfileOrder: FC<Props> = ({ order }) => {
         <div className={styles.orderUser}>
           <div className={styles.orderUserTitle}>Получатель</div>
           <div className={styles.orderUserInfo}>
-            <div>
-              {order.customer.name} {order.customer.surname}
-            </div>
+            <div>{order.recipient.name || order.customer.name + ' ' + order.customer.surname}</div>
             {order.customer.email && <div>{order.customer.email}</div>}
-            <div>{order.customer.phone}</div>
+            <div>{order.recipient.phone || order.customer.phone}</div>
           </div>
         </div>
         <div className={styles.orderBlock}>
@@ -100,20 +98,21 @@ const ProfileOrder: FC<Props> = ({ order }) => {
                 <div className={styles.orderDeliveryTitle}>Способ получения </div>
                 <div className={styles.orderDeliveryItem}>
                   <Icon name="Car" />
-                  {orderDeliveryTypeDictionary[order.delivery.type]}
+                  {orderDeliveryTypeDictionary[order.obtaining?.delivery?.type]}
                 </div>
                 <div className={styles.orderDeliveryItem}>
                   <Icon name="Geoposition" />
-                  {order.delivery.address.address}
+                  {order.obtaining?.delivery?.address?.address}
                 </div>
               </div>
-              {order.delivery.type !== EOrderDeliveryType.none &&
-                (order.delivery.date || order.delivery.time_interval) && (
+              {order.obtaining?.delivery.type !== EOrderDeliveryType.none &&
+                order.obtaining?.delivery?.time_interval &&
+                order.order_date && (
                   <div>
                     <div className={styles.orderDeliveryTitle}>Дата и время доставки</div>
                     <div className={styles.orderDeliveryItem}>
-                      {formatOrderDate(order.delivery.date as string, false, true)}{' '}
-                      {formatOrderTimeInterval(order.delivery.time_interval)}
+                      {formatOrderDate(order.order_date as string, false, true)}{' '}
+                      {formatOrderTimeInterval(order.obtaining.delivery.time_interval)}
                     </div>
                   </div>
                 )}

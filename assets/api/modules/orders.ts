@@ -29,7 +29,7 @@ export const ordersAPI = {
   },
   async getOrder(id) {
     await setToken();
-    return axios.get(`/customer/v1/orders/${id}`);
+    return axios.get(`/customer/v2/orders/${id}`);
   },
   // One click order
   async makeOneClickOrder(data: { phone: string; name?: string }) {

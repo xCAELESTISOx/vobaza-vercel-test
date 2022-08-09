@@ -1,6 +1,7 @@
-import { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 import type { Image } from '../../src/models/IImage';
 import { ElevatorType, IAddressFull } from './IAddress';
+
+import { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 
 export interface ILocalOrderDelivery {
   name: string;
@@ -115,25 +116,64 @@ export interface IOrderItem {
   }[];
   delivery: IOrderDelivery;
 }
+export interface IFullOrderDelivery {
+  address: {
+    address: string,
+    flat: string | number,
+    entrance: string | number,
+    floor: number,
+    intercom: string | number,
+    elevator: ElevatorType
+  },
+  status: string,
+  type: string
+  time_interval: {
+    from: string
+    to: string
+  }
+}
+
+export enum OrderStatusType {
+  NEW = "NEW",
+  CONFIRMED="CONFIRMED",
+  NOT_RESERVED="NOT_RESERVED",
+  RESERVED= "RESERVED",
+  ASSEMBLED="ASSEMBLED",
+  PICKED="PICKED",
+  DELIVERED="DELIVERED",
+  CANCELLED="CANCELLED",
+  IN_PROBLEM="IN_PROBLEM",
+  COMPLETED="COMPLETED"
+}
+
 export interface IOrderItemFull {
   id: number | string;
-  number: string;
-  order_date: string;
-  price: number;
-  status: 'NEW';
-  customer: IOrderCustomer;
+  number: string,
+  order_date: string,
+  customer: IOrderCustomer,
+  price: number,
+  status: keyof typeof OrderStatusType,
   payment: {
-    status: 'NOT_PAID';
-    type: 'ON_DELIVERY';
-  };
-  delivery: IOrderDelivery;
+    status: string,
+    type: string,
+    method: string
+  },
+  obtaining: {
+    obtaining_type: string,
+    delivery: IFullOrderDelivery
+  },
   products: {
-    name: string;
-    sku: string;
-    quantity: number;
-    item_price: number;
-    item_list_price: number;
-    price: number;
-    image: Image;
-  }[];
+    name: string,
+    sku: string,
+    quantity: number,
+    item_price: number,
+    price: number,
+    item_list_price: number,
+    image: Image
+  }[],
+  item_list_price: number,
+  recipient: {
+    name: string,
+    phone: string
+  }
 }
