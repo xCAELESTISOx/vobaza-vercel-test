@@ -1,0 +1,23 @@
+---
+stages:
+  - deploy_prod
+  - rollback
+
+deploy_prod:
+  stage: deploy_prod
+  tags: [ front ]
+  only:
+    - develop
+  script:
+    - pm2 deploy production
+  when: manual
+
+rollback:
+  stage: deploy_prod
+  tags: [ front ]
+  only:
+    - develop
+  when: manual
+  script:
+    - pm2 deploy production revert 1
+...
