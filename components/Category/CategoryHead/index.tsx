@@ -40,7 +40,7 @@ const CategoryHead: FC<Props> = ({ isExpress, currentTag, category }) => {
       <h1 className={styles.sectionTitle}>
         {currentTag?.title || category.name} {page && page !== '1' && ` – страница ${page}`}
       </h1>
-      {category.children && category.children.length > 0 && <CatalogList list={category.children} />}
+      {category.children?.length > 0 && <CatalogList list={category.children} />}
       <div className={styles.bannerBlock}>
         <div className={!isExpress ? styles.displayNone : ''}>
           <Image src={expressBanner} priority alt="Banner" />

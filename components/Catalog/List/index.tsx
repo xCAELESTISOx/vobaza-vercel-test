@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -14,18 +14,34 @@ type Props = {
 };
 
 const getHref = (category: ICategory) => {
-  let href = '/';
-  if (category.ancestors && category.ancestors.length > 0) {
-    href += `${category.ancestors[0]?.slug}/`;
-  }
-  href += `${category.slug}`;
+  let href = '';
+  category.ancestors?.forEach((ancestor) => {
+    href += `/${ancestor.slug}`;
+  });
+  href += `/${category.slug}`;
   return href;
 };
 
+// Анцесторы приходят в обратном порядке, поэтому нам нужно их реверсить
+const normalizeCategories = (categories: ICategory[]) => {
+  const newCategories = categories.map((category) => {
+    const newAncestors = category.ancestors.slice().reverse();
+    return { ...category, ancestors: newAncestors };
+  });
+
+  return newCategories;
+};
+
 const CatalogList: FC<Props> = ({ list }) => {
+  const [categoryiesList, setCategoryiesList] = useState(normalizeCategories(list));
+
+  useEffect(() => {
+    setCategoryiesList(normalizeCategories(list));
+  }, [list]);
+
   return (
     <nav className={styles.catalog}>
-      {list.map((category) => (
+      {categoryiesList.map((category) => (
         <Link key={category.id} href={getHref(category)}>
           <a className={styles.category}>
             <div className={styles.categoryImage}>
@@ -36,12 +52,7 @@ const CatalogList: FC<Props> = ({ list }) => {
                   alt={category.name}
                 />
               ) : (
-                <Image
-                  src={PlaceholderImage}
-                  objectFit="contain"
-                  alt={category.name}
-                  unoptimized
-                />
+                <Image src={PlaceholderImage} objectFit="contain" alt={category.name} unoptimized />
               )}
             </div>
             <div className={styles.categoryTitle}>{category.name}</div>

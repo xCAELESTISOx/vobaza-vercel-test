@@ -113,7 +113,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
 
   try {
     const categoryRes = await api.getCategoryByPath(resolvedUrl.split('?')[0].replace('/ekspress-dostavka', ''));
-    let category: ICategory = categoryRes.data.data;
+    const category: ICategory = categoryRes.data.data;
 
     const { data: tagsData } = await api.getCategoryTags(category.id);
     const tags: ICategoryTag[] = tagsData.data;

@@ -99,7 +99,7 @@ export const CollapsingMenuItem = ({ menuBlock, closeMenu }: ICollapsingMenuItem
       {!!items?.length && (
         <div className={styles.collapsingMenuBlockItems}>
           {items.map((item) => (
-            <Link key={item.name} href={getLinkFromMenuItem(item)}>
+            <Link key={item.id} href={getLinkFromMenuItem(item)}>
               <a className={styles.collapsingMenuBlockItem} onClick={closeMenu}>
                 {item.name}
               </a>
