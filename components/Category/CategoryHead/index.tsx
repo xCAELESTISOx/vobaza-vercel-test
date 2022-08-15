@@ -38,7 +38,7 @@ const CategoryHead: FC<Props> = ({ isExpress, currentTag, category }) => {
         </Link>
       </div>
       <h1 className={styles.sectionTitle}>
-        {currentTag?.title || category.name} {page && page !== '1' && ` – страница ${page}`}
+        {currentTag?.page_title || category.name} {page && page !== '1' && ` – страница ${page}`}
       </h1>
       {category.children?.length > 0 && <CatalogList list={category.children} />}
       <div className={styles.bannerBlock}>

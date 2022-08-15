@@ -70,7 +70,7 @@ export default function Catalog({
   return (
     <>
       <Head>
-        {category.seo_title && <title>{currentTag?.page_title || category.seo_title}</title>}
+        {category.seo_title && <title>{currentTag?.title || category.seo_title}</title>}
         {category.keywords && <meta name="keywords" content={currentTag?.keywords || category.keywords} />}
         {category.seo_description && (
           <meta name="description" content={currentTag?.description || category.seo_description} />
