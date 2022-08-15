@@ -44,7 +44,7 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
               <div key={group.id} className={`${index > 0 ? styles.rootMenuItemDivided : ''} `}>
                 {group.children?.map((item) => (
                   <div key={item.id}>
-                    <Link href={item.link || ''}>
+                    <Link href={getLinkFromMenuItem(item)}>
                       <a
                         data-id={item.id}
                         onMouseEnter={(e) => menuTabHover(e, group.id)}

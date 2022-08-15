@@ -104,7 +104,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
     newGoods = normalizeGoods(newGoodsRes.data.data);
     popularCategories = popularCategoriesRes.data.data;
     collections = normalizeCollections(collectionsRes.data.data);
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 
   return {
     props: {
