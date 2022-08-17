@@ -1,13 +1,11 @@
 import type { GetServerSideProps } from 'next';
 
-import { api } from '../assets/api';
-import styles from '../styles/Home.module.scss';
 import normalizeGoods from '../assets/utils/normalizers/normalizeGoods';
 import normalizeCollections from '../assets/utils/normalizers/normalizeCollections';
 import type { Banner } from '../src/models/IBanner';
-import { IGoodCard } from '../src/models/IGood';
-import { ICategory } from '../src/models/ICategory';
-import { ICollection } from '../src/models/ICollection';
+import type { IGoodCard } from '../src/models/IGood';
+import type { ICategory } from '../src/models/ICategory';
+import type { ICollection } from '../src/models/ICollection';
 
 import Banners from '../components/MainPage/Banners';
 import PopularCategories from '../components/MainPage/CategoriesList';
@@ -16,6 +14,9 @@ import Blog from '../components/MainPage/Blog';
 import GoodsList from '../components/Goods/List';
 import GoodsSwiper from '../components/Goods/Swiper';
 import CartModal from '../components/Goods/Modals/Cart/Cart';
+
+import { api } from '../assets/api';
+import styles from '../styles/Home.module.scss';
 
 interface Props {
   banners: {

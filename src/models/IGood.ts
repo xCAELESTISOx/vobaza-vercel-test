@@ -1,9 +1,8 @@
-import { Image } from './IImage';
+import type { Image } from './IImage';
 import type { IDictionaryItem } from './IDictionary';
-
-import { CategoryStatus } from './ICategory';
-import { AttributeDataType, IAttribute, IAttributes } from './IAttributes';
-import { Variant } from 'components/UI/SelectTabs';
+import type { CategoryStatus } from './ICategory';
+import type { AttributeDataType, IAttribute, IAttributes } from './IAttributes';
+import type { Variant } from 'components/UI/SelectTabs';
 
 export enum GoodStatus {
   ACTIVE = 'ACTIVE',
@@ -86,31 +85,20 @@ export interface IVariantProduct {
   main_image?: Image;
 }
 
-export interface IVariansValue {
+export interface IVariantsValue {
   is_current: boolean;
   value: number | string;
   product: IVariantProduct;
 }
 
-export interface IVariansValueView {
+export interface IVariantsValueFront {
   is_current: boolean;
   value: Variant;
   product: IVariantProduct;
 }
 
-export interface IGoodVariantsObject {
-  variant_products: IVariantProduct[];
-  variants: {
-    attribute: {
-      data_type: AttributeDataType;
-      id: number | string;
-      name: string;
-    };
-    values: IVariansValue[];
-  }[];
-}
 
-export interface IGoodVariantsObjectView {
+export interface IGoodVariantsFront {
   variant_products: IVariantProduct[];
   variants: {
     attribute: {
@@ -118,7 +106,7 @@ export interface IGoodVariantsObjectView {
       id: number | string;
       name: string;
     };
-    values: IVariansValueView[];
+    values: IVariantsValueFront[];
   }[];
 }
 
@@ -166,7 +154,7 @@ export interface IGood {
         id: number | string;
         name: string;
       };
-      values: IVariansValue[];
+      values: IVariantsValue[];
     }[];
   };
 
@@ -186,8 +174,8 @@ export interface IGood {
   documents?: IGoodDocument[];
   set: IGoodCard[];
 }
-export interface IGoodView extends Omit<IGood, 'variants'> {
-  variants: IGoodVariantsObjectView;
+export interface IGoodFront extends Omit<IGood, 'variants'> {
+  variants: IGoodVariantsFront;
 };
 
 export interface IGoodCompare {

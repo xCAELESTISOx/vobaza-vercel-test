@@ -1,5 +1,5 @@
 import type { Variant } from 'components/UI/SelectTabs';
-import type { IGood, IGoodCard, IGoodVariantsObject, IVariansValue } from '../../../src/models/IGood';
+import type { IGood, IGoodCard, IVariantsValue } from '../../../src/models/IGood';
 
 export default function normalizeGoods(goods: IGood[] | IGoodCard[]) {
   return goods.map((good) => ({
@@ -9,8 +9,8 @@ export default function normalizeGoods(goods: IGood[] | IGoodCard[]) {
   }));
 }
 
-export const normalizeProductVariants = (productVariantsObj: IGoodVariantsObject) => {
-  const convertVariantValue = (v: IVariansValue): Variant => {
+export const normalizeProductVariants = (productVariantsObj: IGood['variants']) => {
+  const convertVariantValue = (v: IVariantsValue): Variant => {
     let code = '';
     let text = '';
     if (typeof v.value === 'boolean') {

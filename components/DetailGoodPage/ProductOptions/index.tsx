@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import type { IGoodView, IVariansValueView, IVariantProduct } from 'src/models/IGood';
+import type { IGoodFront, IVariantsValueFront, IVariantProduct } from 'src/models/IGood';
 import type { Variant as SelectVariant } from '@nebo-team/vobaza.ui.inputs.input-select/dist/input-select';
 import type { Variant as TabsVariant } from 'components/UI/SelectTabs';
 
@@ -10,7 +10,7 @@ import { SelectTabs } from 'components/UI/SelectTabs';
 import styles from './styles.module.scss';
 
 type Props = {
-  variants: IGoodView['variants'];
+  variants: IGoodFront['variants'];
   selectedOptions: { [key: string]: string | number }[];
   handelSelectOption: (id: string | number, value: SelectVariant | TabsVariant) => void;
 };
@@ -26,7 +26,7 @@ export const ProductOptions = ({ variants, selectedOptions, handelSelectOption }
 
   const options = variants.variants.map((option) => {
     // Сортировка по возрастанию/в алфавитном порядке
-    const sortedValues = option.values.sort((a: IVariansValueView, b: IVariansValueView) => {
+    const sortedValues = option.values.sort((a: IVariantsValueFront, b: IVariantsValueFront) => {
       if (a.value.code < b.value.code) return -1;
       if (a.value.code > b.value.code) return 1;
       return 0;

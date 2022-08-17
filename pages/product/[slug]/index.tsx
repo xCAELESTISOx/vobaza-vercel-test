@@ -7,7 +7,7 @@ import { useCart } from '../../../src/hooks/useCart';
 import { useGoods } from 'src/context/goods';
 import { mockProduct } from '../../../src/mock/detailProductPage';
 import { useFavorite } from '../../../src/hooks/useFavorite';
-import { prepareProductAttributes } from 'assets/utils/Category/product';
+import { normalizeProductVariants } from 'assets/utils/normalizers/normalizeGoods';
 import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
 import type { IGood } from 'src/models/IGood';
 import type { Variant as SelectVariant } from '@nebo-team/vobaza.ui.inputs.input-select/dist/input-select';
@@ -34,9 +34,7 @@ import { ProductOptions } from 'components/DetailGoodPage/ProductOptions';
 import GoodsList from 'components/Goods/List';
 
 import { api } from '../../../assets/api';
-
 import styles from './styles.module.scss';
-import { normalizeProductVariants } from 'assets/utils/normalizers/normalizeGoods';
 
 interface DetailGoodPage {
   product: IGood;
@@ -126,8 +124,6 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
 
     setSelectedOptions(options);
   }, [product.variants]);
-
-  const attributes = prepareProductAttributes(product.attributes);
 
   return (
     <>
@@ -249,13 +245,11 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                   </div>
                 )}
 
-                {(!!attributes.additional?.length || !!attributes.main?.length) && (
-                  <div className={styles.productAccordionBlock}>
-                    <ProductInfoAccordion title="Характеристики и размеры" autoDuration>
-                      <ProductAttributes attributes={attributes} />
-                    </ProductInfoAccordion>
-                  </div>
-                )}
+                <div className={styles.productAccordionBlock}>
+                  <ProductInfoAccordion title="Характеристики и размеры" autoDuration>
+                    <ProductAttributes attributes={product.attributes} />
+                  </ProductInfoAccordion>
+                </div>
               </div>
             </div>
 
