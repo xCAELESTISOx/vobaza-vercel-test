@@ -3,6 +3,7 @@ import type { IDictionaryItem } from './IDictionary';
 
 import { CategoryStatus } from './ICategory';
 import { AttributeDataType, IAttribute, IAttributes } from './IAttributes';
+import { Variant } from 'components/UI/SelectTabs';
 
 export enum GoodStatus {
   ACTIVE = 'ACTIVE',
@@ -85,6 +86,42 @@ export interface IVariantProduct {
   main_image?: Image;
 }
 
+export interface IVariansValue {
+  is_current: boolean;
+  value: number | string;
+  product: IVariantProduct;
+}
+
+export interface IVariansValueView {
+  is_current: boolean;
+  value: Variant;
+  product: IVariantProduct;
+}
+
+export interface IGoodVariantsObject {
+  variant_products: IVariantProduct[];
+  variants: {
+    attribute: {
+      data_type: AttributeDataType;
+      id: number | string;
+      name: string;
+    };
+    values: IVariansValue[];
+  }[];
+}
+
+export interface IGoodVariantsObjectView {
+  variant_products: IVariantProduct[];
+  variants: {
+    attribute: {
+      data_type: AttributeDataType;
+      id: number | string;
+      name: string;
+    };
+    values: IVariansValueView[];
+  }[];
+}
+
 export interface IGood {
   id: number;
   barcode: string;
@@ -129,13 +166,10 @@ export interface IGood {
         id: number | string;
         name: string;
       };
-      values: {
-        is_current: boolean;
-        value: number | string;
-        product: IVariantProduct;
-      }[];
+      values: IVariansValue[];
     }[];
   };
+
 
   warehouse: {
     id: number;
@@ -152,6 +186,9 @@ export interface IGood {
   documents?: IGoodDocument[];
   set: IGoodCard[];
 }
+export interface IGoodView extends Omit<IGood, 'variants'> {
+  variants: IGoodVariantsObjectView;
+};
 
 export interface IGoodCompare {
   id: number;

@@ -1,4 +1,5 @@
-import { IGood, IGoodCard } from '../../../src/models/IGood';
+import type { Variant } from 'components/UI/SelectTabs';
+import type { IGood, IGoodCard, IGoodVariantsObject, IVariansValue } from '../../../src/models/IGood';
 
 export default function normalizeGoods(goods: IGood[] | IGoodCard[]) {
   return goods.map((good) => ({
@@ -7,3 +8,29 @@ export default function normalizeGoods(goods: IGood[] | IGoodCard[]) {
     list_price: good.list_price ? good.list_price / 100 : null,
   }));
 }
+
+export const normalizeProductVariants = (productVariantsObj: IGoodVariantsObject) => {
+  const convertVariantValue = (v: IVariansValue): Variant => {
+    let code = '';
+    let text = '';
+    if (typeof v.value === 'boolean') {
+      code = v.value === true ? 'YES' : 'NO';
+      text = v.value === true ? 'Да' : 'Нет';
+    } else {
+      code = v.value.toString();
+      text = v.value.toString();
+    }
+    return { code, text };
+  };
+
+  const variantsList = productVariantsObj.variants.map((variant) => {
+    const values = variant.values.map((valueItem) => {
+      const value = convertVariantValue(valueItem);
+      return { ...valueItem, value };
+    });
+
+    return { ...variant, values };
+  });
+
+  return { ...productVariantsObj, variants: variantsList };
+};

@@ -36,6 +36,7 @@ import GoodsList from 'components/Goods/List';
 import { api } from '../../../assets/api';
 
 import styles from './styles.module.scss';
+import { normalizeProductVariants } from 'assets/utils/normalizers/normalizeGoods';
 
 interface DetailGoodPage {
   product: IGood;
@@ -82,6 +83,8 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
   const { addToCart } = useCart(product);
   const { dispatch } = useGoods();
 
+  const productVariantsView = normalizeProductVariants(product.variants);
+
   const addToCartHandler = () => {
     addToCart();
   };
@@ -106,8 +109,18 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
       product.variants.variants.forEach((t) => {
         const currentOption = t.values.find((v) => v.is_current);
         options[t.attribute.id] = {
-          code: currentOption.value.toString(),
-          value: currentOption.value.toString(),
+          code:
+            typeof currentOption.value === 'boolean'
+              ? currentOption.value
+                ? 'YES'
+                : 'NO'
+              : currentOption.value.toString(),
+          value:
+            typeof currentOption.value === 'boolean'
+              ? currentOption.value
+                ? 'YES'
+                : 'NO'
+              : currentOption.value.toString(),
         };
       });
 
@@ -184,7 +197,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                       <ProductVariants id={product.id} items={product.variants.variant_products} />
                     </div>
                     <ProductOptions
-                      variants={product.variants}
+                      variants={productVariantsView}
                       selectedOptions={selectedOptions}
                       handelSelectOption={handelSelectOption}
                     />
