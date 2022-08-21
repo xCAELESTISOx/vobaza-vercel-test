@@ -6,7 +6,7 @@ export function useAdvancedRouter() {
   const replaceRouterQuery = (
     updateQuery: { [key: string | number]: string | number },
     exclude: (number | string)[] = [],
-    scroll: boolean = false
+    scroll = false
   ) => {
     const prevQuery = { ...router.query };
 

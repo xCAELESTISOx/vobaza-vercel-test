@@ -22,11 +22,7 @@ const renderItem = (data_type: keyof typeof AttributeDataType, value) => {
       return value
         ? value.map((item) => (
             <div key={item}>
-              <span
-                className={`${styles.compareListTableCheckbox} ${
-                  value ? styles.active : ''
-                }`}
-              >
+              <span className={`${styles.compareListTableCheckbox} ${value ? styles.active : ''}`}>
                 <Icon name="Checkmark" />
               </span>
               {item}
@@ -36,26 +32,21 @@ const renderItem = (data_type: keyof typeof AttributeDataType, value) => {
     case 'COLOR':
       return value ? value[0].value : '—';
     case 'DATE':
-      const date = new Date(value);
-      return value
-        ? `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
-        : '—';
+      () => {
+        const date = new Date(value);
+        return value ? `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}` : '—';
+      };
+      break;
     default:
       return value || '—';
   }
 };
 
-const CompareListTable: FC<Props> = ({
-  attributes,
-  goods,
-  removedAttributes,
-  removeAttribute,
-}) => {
+const CompareListTable: FC<Props> = ({ attributes, goods, removedAttributes, removeAttribute }) => {
   return (
     <div className={styles.compareListTable}>
       {attributes.map((attribute) => {
-        if (removedAttributes.find((item) => item.id === attribute.id))
-          return null;
+        if (removedAttributes.find((item) => item.id === attribute.id)) return null;
         else
           return (
             <div key={attribute.id} className={styles.compareListTableRow}>
@@ -73,10 +64,7 @@ const CompareListTable: FC<Props> = ({
               {goods.map((item) => (
                 <div key={item.id} className={styles.compareListTableItem}>
                   <div className={styles.compareListTableValue}>
-                    {renderItem(
-                      attribute.data_type,
-                      item.attributes_value[attribute.id]
-                    )}
+                    {renderItem(attribute.data_type, item.attributes_value[attribute.id])}
                   </div>
                 </div>
               ))}

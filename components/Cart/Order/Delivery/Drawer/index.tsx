@@ -38,10 +38,9 @@ const OrderDeliveryDrawer: FC<Props> = ({ address, setFieldValue, setDeliveryVar
     async function getDeliveryPrice() {
       try {
         const res = await api.getDeliveryTypes(address);
-        const { types, time_slots } = res.data?.data;
+        const { types, time_slots } = res.data.data;
 
         const variantsArr = [];
-
         if (types) {
           if (types.normal) {
             const newItem: ILocalOrderDelivery = {

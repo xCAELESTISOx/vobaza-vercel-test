@@ -4,10 +4,10 @@ import PlaceholderImage from 'assets/images/placeholder.png';
 
 const getImageVariantByFieldname = (image: Image, fieldname: string) => {
   try {
-    const imageVariant = image.variants[fieldname];
-
-    return imageVariant;
-  } catch (error) {}
+    return image.variants[fieldname];
+  } catch (err) {
+    console.error(err);
+  }
 
   return null;
 };

@@ -2,17 +2,17 @@ import { FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 
-import { IGoodCompare } from 'src/models/IGood';
-import { IAttributeCompare } from 'src/models/IAttributes';
+import type { IGoodCompare } from 'src/models/IGood';
+import type { IAttributeCompare } from 'src/models/IAttributes';
 import { useGoods } from 'src/context/goods';
-import { api } from 'assets/api';
-
-import styles from './styles.module.scss';
 
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
-import CompareListItem from './Item';
-import CompareListTable from './Table';
 import CompareListRemoveFeatures from './RemovedFeatures';
+import CompareListTable from './Table';
+import CompareListItem from './Item';
+
+import styles from './styles.module.scss';
+import { api } from 'assets/api';
 
 type Props = {
   initialGoods: IGoodCompare[];
@@ -99,7 +99,7 @@ const CompareList: FC<Props> = ({ initialGoods, initialAttributes }) => {
                 if (value.length !== good.attributes_value[attribute.id].length) {
                   return true;
                 } else {
-                  for (let key in value) {
+                  for (const key in value) {
                     if (value[key] !== good.attributes_value[attribute.id][key]) {
                       return true;
                     }

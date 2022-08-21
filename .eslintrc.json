@@ -1,8 +1,23 @@
 {
-  "extends": "next/core-web-vitals",
+  "extends": ["next/core-web-vitals", "eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "root": true,
+
   "rules": {
     "react-hooks/exhaustive-deps": "off",
+    "react/display-name": "off",
     "@next/next/no-img-element": "off",
-    "no-console": ["warn", { "allow": ["warn", "error"] }]
+    "no-console": ["error", { "allow": ["warn", "error", "debug"] }],
+    "no-extra-boolean-cast": "off",
+    "no-useless-catch": "off",
+    "no-empty-function": "off",
+
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }],
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-extra-semi": "off"
   }
 }

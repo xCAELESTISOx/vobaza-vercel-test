@@ -8,18 +8,11 @@ import { useCollapse } from '../../../src/hooks/useCollapse';
 type Props = {
   children: ReactNode;
   title: string;
-  className?: any;
   duration?: number;
   autoDuration?: boolean;
 };
 
-const ProductInfoAccordion: FC<Props> = ({
-  children,
-  title,
-  className,
-  duration = 200,
-  autoDuration = false,
-}) => {
+const ProductInfoAccordion: FC<Props> = ({ children, title, duration = 200, autoDuration = false }) => {
   const refPanel = useRef(null);
   const [isOpen, toggleOpen] = useCollapse(refPanel, {
     duration,
@@ -28,10 +21,7 @@ const ProductInfoAccordion: FC<Props> = ({
 
   return (
     <div className={styles.accordionBlock}>
-      <div
-        className={isOpen ? styles.accordionActive : styles.accordion}
-        onClick={toggleOpen as any}
-      >
+      <div className={isOpen ? styles.accordionActive : styles.accordion} onClick={toggleOpen as any}>
         <div className={styles.accordionTitle}>{title}</div>
         <div className={styles.accordionArrow}>
           <Icon name="SmallArrowDown" />

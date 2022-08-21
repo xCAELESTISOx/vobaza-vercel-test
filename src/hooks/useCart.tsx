@@ -6,13 +6,11 @@ import { useGoods } from '../context/goods';
 import { IGood, IGoodCard, IGoodCompare } from '../models/IGood';
 import { FavoriteGood } from '../../components/Profile/Favorite/Item';
 
-export const useCart = (
-  good: IGoodCard | FavoriteGood | IGood | IGoodCompare
-) => {
+export const useCart = (good: IGoodCard | FavoriteGood | IGood | IGoodCompare) => {
   const [isLoading, setIsLoading] = useState(false);
   const { dispatch } = useGoods();
 
-  const addToCart = async (quantity: number = 1) => {
+  const addToCart = async (quantity = 1) => {
     if (isLoading) return;
     setIsLoading(true);
     try {

@@ -10,6 +10,8 @@ import { useFavorite } from '../../../src/hooks/useFavorite';
 import { prepareProductAttributes } from 'assets/utils/Category/product';
 import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
 import type { IGood } from 'src/models/IGood';
+import type { Variant as SelectVariant } from '@nebo-team/vobaza.ui.inputs.input-select/dist/input-select';
+import type { Variant as TabsVariant } from 'components/UI/SelectTabs';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
@@ -84,9 +86,9 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
     addToCart();
   };
 
-  const [selectedOptions, setSelectedOptions] = useState<any>({});
+  const [selectedOptions, setSelectedOptions] = useState<any | null>(null);
 
-  const handelSelectOption = (name, value) => {
+  const handelSelectOption = (name: string, value: SelectVariant | TabsVariant) => {
     const options = { ...selectedOptions };
 
     options[name] = value;
@@ -217,7 +219,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
 
                     <ProductDelivery
                       className={styles.productInfoBlock}
-                      pickup={mockProduct.pickup}
+                      // pickup={mockProduct.pickup}
                       delivery={mockProduct.delivery}
                     />
 
@@ -288,7 +290,7 @@ const getProductSlug = (slug: string): string | null => {
 
 export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({ query }) => {
   const slug = getProductSlug(query.slug as string);
-  let breadcrumbs = [
+  const breadcrumbs = [
     {
       title: 'Каталог мебели',
       href: '/katalog',
@@ -316,7 +318,9 @@ export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({ q
         breadcrumbs,
       },
     };
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
 
   return {
     redirect: {

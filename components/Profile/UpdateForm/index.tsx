@@ -12,20 +12,10 @@ import { api } from '../../../assets/api';
 import { IError } from '../../../src/models/IError';
 
 const validationSchema = yup.object({
-  name: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
-  surname: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255'),
-  phone: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255'),
-  email: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .email('Не валидный email'),
+  name: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
+  surname: yup.string().max(255, 'Количество символов в поле должно быть не больше 255'),
+  phone: yup.string().max(255, 'Количество символов в поле должно быть не больше 255'),
+  email: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').email('Не валидный email'),
 });
 
 type Props = {
@@ -55,24 +45,14 @@ const ProfileUpdateForm: FC<Props> = ({ initialUser }) => {
       errs.forEach((err: IError) => {
         err.source && err.source !== ''
           ? (backErrors[err.source] = err.title)
-          : (backErrors.name = err.title
-              ? err.title
-              : 'Непредвиденная ошибка, попробуйте ещё раз');
+          : (backErrors.name = err.title ? err.title : 'Непредвиденная ошибка, попробуйте ещё раз');
       });
       setErrors(backErrors);
       setIsLoading(false);
     }
   };
 
-  const {
-    values,
-    setFieldValue,
-    validateField,
-    errors,
-    handleSubmit,
-    setErrors,
-    resetForm,
-  } = useFormik<IProfile>({
+  const { values, setFieldValue, validateField, errors, handleSubmit, setErrors, resetForm } = useFormik<IProfile>({
     initialValues: {
       name: initialUser.name || '',
       surname: initialUser.surname || '',
@@ -85,7 +65,7 @@ const ProfileUpdateForm: FC<Props> = ({ initialUser }) => {
     onSubmit: setAddressHandler,
   });
 
-  const resetFormHandler = async (e: any) => {
+  const resetFormHandler = async () => {
     resetForm();
     setIsChanged(false);
   };
@@ -156,12 +136,7 @@ const ProfileUpdateForm: FC<Props> = ({ initialUser }) => {
         </div>
       </div>
       <div className={styles.profileFormButtons}>
-        <Button
-          text="Сохранить"
-          size="big"
-          type="submit"
-          disabled={isLoading || !isChanged}
-        />
+        <Button text="Сохранить" size="big" type="submit" disabled={isLoading || !isChanged} />
         <Button
           className={styles.profileFormButtonCancel}
           text="Отменить"

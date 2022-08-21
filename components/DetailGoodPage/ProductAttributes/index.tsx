@@ -37,7 +37,9 @@ const renderDateValue = (value: any) => {
   try {
     const formatDate = new Date(value).toLocaleDateString();
     return formatDate;
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
 
   return null;
 };

@@ -6,21 +6,17 @@ import styles from './styles.module.scss';
 
 interface ProductDelivery {
   className?: string;
-  pickup?: any;
+  // pickup?: any;
   delivery?: any;
 }
 
 interface ProductDeliveryItem {
   children: ReactNode;
   title?: string;
-  link?: string;
+  // link?: string;
 }
 
-const ProductDeliveryItem: FC<ProductDeliveryItem> = ({
-  title,
-  link,
-  children,
-}) => {
+const ProductDeliveryItem: FC<ProductDeliveryItem> = ({ title, children }) => {
   return (
     <div className={styles.productDeliveryItem}>
       <Link href="#">
@@ -31,9 +27,7 @@ const ProductDeliveryItem: FC<ProductDeliveryItem> = ({
   );
 };
 
-const ProductDelivery: FC<ProductDelivery> = (props) => {
-  const { className = '', pickup, delivery } = props;
-
+const ProductDelivery: FC<ProductDelivery> = ({ className = '', delivery }) => {
   return (
     <div className={className || ''}>
       <h3 className={styles.productDeliveryTitle}>Доставит ВоБаза</h3>

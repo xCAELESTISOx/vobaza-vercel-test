@@ -8,10 +8,8 @@ import SuccessModal from './SuccessModal';
 
 import styles from './styles.module.scss';
 
-export function checkEmail(value) {
-  const patternEmail = new RegExp(
-    /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/
-  );
+export function checkEmail(value: string) {
+  const patternEmail = new RegExp(/^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/);
   return patternEmail.test(value);
 }
 
@@ -38,7 +36,9 @@ const Subscription: FC = () => {
 
       const activeElement = document.activeElement as HTMLInputElement;
       if (activeElement && activeElement.blur) activeElement.blur();
-    } catch (error) {}
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleChange = (e: any) => {
@@ -61,15 +61,12 @@ const Subscription: FC = () => {
         <div className={`${styles.subscriptionContainer} container`}>
           <div className={styles.subscriptionContent}>
             <div className={styles.subscriptionTitle}>
-              Подпишитесь на&nbsp;рассылку и&nbsp;будьте в&nbsp;курсе наших
-              новинок и&nbsp;акций!
+              Подпишитесь на&nbsp;рассылку и&nbsp;будьте в&nbsp;курсе наших новинок и&nbsp;акций!
             </div>
             <div className={styles.subscriptionText}>
               Подтверждаю согласие на&nbsp;рассылку и&nbsp;
               <Link href="/politika-obrabotki-dannyh">
-                <a className={styles.subscriptionLink}>
-                  обработку персональных данных
-                </a>
+                <a className={styles.subscriptionLink}>обработку персональных данных</a>
               </Link>
             </div>
           </div>

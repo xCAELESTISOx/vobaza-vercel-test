@@ -11,7 +11,7 @@ import { normalizeOrder } from 'assets/utils/normalizers/normalizeOrder';
 import { EOrderDeliveryType, ILocalOrder } from '../../src/models/IOrder';
 import type { ICartGood } from '../../components/Cart/ListItem';
 import type { IProfile } from '../../components/Profile/Data';
-import type { IAddress, IAddressFull } from 'src/models/IAddress';
+import type { IAddressFull } from 'src/models/IAddress';
 import type { IReceiver } from '../../components/Cart/Order/Receiver';
 
 import CartSidebar from '../../components/Cart/Sidebar';
@@ -165,7 +165,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => 
       throw new Error();
     }
   } catch (error) {
-    console.dir(error.response?.data);
+    console.debug(error.response?.data);
     return {
       redirect: {
         destination: '/cart',

@@ -10,7 +10,7 @@ import { GoodsBlock } from '../components/Goods/GoodsBlock';
 import styles from '../styles/Home.module.scss';
 import { api } from '../assets/api';
 
-let breadcrumbs = [
+const breadcrumbs = [
   {
     title: 'Результаты поиска',
     href: '/search',

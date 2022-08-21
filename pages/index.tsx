@@ -78,7 +78,7 @@ export default function Home({ banners, hits, newGoods, popularCategories, colle
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async () => {
-  let banners = {
+  const banners = {
     slider: [],
     miniature: [],
   };

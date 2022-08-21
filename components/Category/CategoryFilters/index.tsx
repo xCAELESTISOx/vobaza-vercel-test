@@ -13,7 +13,7 @@ import CategoryFiltersList from './CategoryFiltersList';
 import FiltersModal from './Modal';
 
 const getQueryFromFilters = (filters: (IFilterFront | ITagFitlerFront)[]) => {
-  let queryFilters: { [key: string]: string | string[] } = {};
+  const queryFilters: { [key: string]: string | string[] } = {};
   /** ID фильтра на случай, если при редактировании будет выбрано 0 вариантов */
   let excludeFilterId: number | null = null;
 
@@ -87,7 +87,7 @@ const CategoryFilters: FC<Props> = ({
     if (currentFilters && currentFilters[filter.id]?.tag_slug) {
       currentTags.forEach((tag, index) => {
         if (tag.slug === currentFilters[filter.id].tag_slug) {
-          let excludingTags = currentTags.splice(index);
+          const excludingTags = currentTags.splice(index);
           excludingTags.forEach(({ slug }) => {
             href = href.replace('/' + slug, '');
           });
@@ -105,7 +105,7 @@ const CategoryFilters: FC<Props> = ({
 
       currentTags.forEach((tag, index) => {
         if (tag.slug === tag_slug) {
-          let excludingTags = currentTags.splice(index);
+          const excludingTags = currentTags.splice(index);
           excludingTags.forEach(({ slug }) => {
             href = href.replace('/' + slug, '');
           });

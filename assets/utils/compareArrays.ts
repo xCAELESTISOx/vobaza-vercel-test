@@ -3,7 +3,7 @@ export const compareArrays = (array1: any[], array2: any[], keyField?: string | 
 
   if (array1.length !== array2.length) return false;
 
-  for (var i = 0, l = array1.length; i < l; i++) {
+  for (let i = 0, l = array1.length; i < l; i++) {
     if (array1[i][keyField] != array2[i][keyField]) return false;
     if (array1[i] instanceof Array && array2[i] instanceof Array) {
       if (!array1[i].equals(array2[i])) return false;

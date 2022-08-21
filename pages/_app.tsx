@@ -7,7 +7,6 @@ import '../styles/Lightbox.css';
 import 'swiper/scss';
 
 import Layout from '../components/Layout';
-import { api } from 'assets/api';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

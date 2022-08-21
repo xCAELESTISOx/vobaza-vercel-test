@@ -8,7 +8,7 @@ export const getTagsByUrl = (url: string, tags: ICategoryTag[], categoriesSlugs:
   tagsSlugs = tagsSlugs.split('/').filter((i) => i);
 
   let childrenTags: ICategoryTag[] = tags;
-  let currentTags: ICategoryTag[] = [];
+  const currentTags: ICategoryTag[] = [];
   let currentTagsLevel: ICategoryTag[] = tags;
 
   // Пробегаемся по дереву тегов и ищем нужный

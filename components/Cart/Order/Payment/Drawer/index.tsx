@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 import styles from './styles.module.scss';
 import Drawer from '../../../../../src/hoc/withDrawer';
@@ -12,13 +12,13 @@ type Props = {
 };
 
 const OrderPaymentDrawer: FC<Props> = ({ isOpen = false, onClose }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
   const setPaymentHandler = () => {
     try {
-      setIsLoading(true);
+      // setIsLoading(true);
       setTimeout(() => {
-        setIsLoading(false);
+        // setIsLoading(false);
         onClose();
       }, 2000);
     } catch (e) {

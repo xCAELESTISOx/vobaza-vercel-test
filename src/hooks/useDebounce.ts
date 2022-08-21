@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-export default function useDebounce(func: Function, delay: number) {
+export default function useDebounce(func: (...args: any[]) => any, delay: number) {
   const ref = useRef<NodeJS.Timer | null>(null);
 
   return (...args: any) => {
