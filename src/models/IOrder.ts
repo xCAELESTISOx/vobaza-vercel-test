@@ -35,10 +35,12 @@ export interface IOrderCustomer {
   email?: string;
 }
 
+export interface ITimeInterval { from: string; to: string };
+
 export interface IOrderDelivery {
   type: EOrderDeliveryType;
   date?: Date | string | null;
-  time_interval?: { from: string; to: string };
+  time_interval?: ITimeInterval;
   address: IOrderAddress;
 }
 
@@ -56,7 +58,7 @@ interface IDeliveryType {
 }
 
 export interface IDeliveryVariants {
-  time_slots?: { from: string; to: string }[];
+  time_slots?: ITimeInterval[];
   types?: IDeliveryType[];
 }
 
@@ -104,11 +106,8 @@ export interface IFullOrderDelivery {
     elevator: ElevatorType
   },
   status: string,
-  type: string
-  time_interval: {
-    from: string
-    to: string
-  }
+  type: string,
+  time_interval: ITimeInterval
 }
 
 export enum OrderStatusType {

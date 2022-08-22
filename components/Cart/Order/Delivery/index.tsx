@@ -6,12 +6,13 @@ import { num2str } from '../../../../assets/utils';
 import useDebounce from 'src/hooks/useDebounce';
 import { getImageVariantProps } from 'assets/utils/images';
 import type { ICartGood } from '../../ListItem';
-import { EOrderDeliveryType, IDeliveryVariants, ILocalOrder } from '../../../../src/models/IOrder';
+import type { IDeliveryVariants, ILocalOrder, ILocalOrderDelivery, ITimeInterval } from '../../../../src/models/IOrder';
 import type { IAssemblyPrice } from 'src/models/IDelivery';
+import { EOrderDeliveryType } from '../../../../src/models/IOrder';
 
 import DeliveryLiftingAssembly from './DeliveryLiftingAssembly';
 import OrderDeliveryDrawer from './Drawer';
-import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select/dist';
+import { InputSelect, Variant } from '@nebo-team/vobaza.ui.inputs.input-select/dist';
 import { InputCalendar } from 'components/UI/InputCalendar';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
@@ -33,11 +34,17 @@ type Props = {
 };
 
 const selfDeliveryTimeSlots = [
-  { code: '09:00-12:00', value: '09:00-12:00' },
-  { code: '12:00-15:00', value: '12:00-15:00' },
-  { code: '15:00-18:00', value: '15:00-18:00' },
-  { code: '18:00-21:00', value: '18:00-21:00' },
+  { code: '09:00-14:00', value: '09:00-14:00' },
+  { code: '12:00-17:00', value: '12:00-17:00' },
+  { code: '15:00-20:00', value: '15:00-20:00' },
+  { code: '18:00-23:00', value: '18:00-23:00' },
 ];
+
+const convertTimeslots = (timeSlots: ITimeInterval[]): Variant[] =>
+  timeSlots?.map(({ from, to }) => ({ code: `${from}-${to}`, value: `${from}-${to}` })) || [];
+
+const findMinDate = (delivery: ILocalOrderDelivery, deliveryVariants: IDeliveryVariants): Date =>
+  deliveryVariants?.types.find(({ name }) => name === delivery.name).min_date;
 
 const OrderDelivery: FC<Props> = ({
   liftPrice,
@@ -104,15 +111,11 @@ const OrderDelivery: FC<Props> = ({
 
   const isSelfDelivery = delivery?.tag === EOrderDeliveryType.self;
 
+  const deliveryTimeSlots = convertTimeslots(deliveryVariants?.time_slots);
+
   const goodsCount = goods.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0);
-  const timeSlots = isSelfDelivery
-    ? selfDeliveryTimeSlots
-    : deliveryVariants?.time_slots?.map(({ from, to }) => ({ code: `${from}-${to}`, value: `${from}-${to}` })) || [];
-  const minDate = isSelfDelivery
-    ? delivery?.min_date
-    : delivery?.min_date
-    ? deliveryVariants?.types.find(({ name }) => name === delivery.name).min_date || undefined
-    : undefined;
+  const timeSlots = isSelfDelivery ? selfDeliveryTimeSlots : deliveryTimeSlots;
+  const minDate = isSelfDelivery ? delivery?.min_date : !!delivery?.min_date && findMinDate(delivery, deliveryVariants);
 
   return (
     <div className={styles.orderDelivery}>
