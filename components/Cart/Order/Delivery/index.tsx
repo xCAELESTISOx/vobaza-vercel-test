@@ -6,7 +6,7 @@ import { num2str } from '../../../../assets/utils';
 import useDebounce from 'src/hooks/useDebounce';
 import { getImageVariantProps } from 'assets/utils/images';
 import type { ICartGood } from '../../ListItem';
-import type { IDeliveryVariants, ILocalOrder } from '../../../../src/models/IOrder';
+import { EOrderDeliveryType, IDeliveryVariants, ILocalOrder } from '../../../../src/models/IOrder';
 import type { IAssemblyPrice } from 'src/models/IDelivery';
 
 import DeliveryLiftingAssembly from './DeliveryLiftingAssembly';
@@ -18,8 +18,8 @@ import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 
-import styles from './styles.module.scss';
 import { api } from 'assets/api';
+import styles from './styles.module.scss';
 
 type Props = {
   liftPrice: number;
@@ -31,6 +31,13 @@ type Props = {
   setAssemblyPrice: (assemblyPrice: IAssemblyPrice) => void;
   setFieldValue: (name: string, value: any) => void;
 };
+
+const selfDeliveryTimeSlots = [
+  { code: '09:00-12:00', value: '09:00-12:00' },
+  { code: '12:00-15:00', value: '12:00-15:00' },
+  { code: '15:00-18:00', value: '15:00-18:00' },
+  { code: '18:00-21:00', value: '18:00-21:00' },
+];
 
 const OrderDelivery: FC<Props> = ({
   liftPrice,
@@ -95,12 +102,17 @@ const OrderDelivery: FC<Props> = ({
     debouncedCheckLiftPrice();
   }, [lift, address.floor]);
 
+  const isSelfDelivery = delivery?.tag === EOrderDeliveryType.self;
+
   const goodsCount = goods.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0);
-  const timeSlots =
-    deliveryVariants?.time_slots?.map(({ from, to }) => ({ code: `${from}-${to}`, value: `${from}-${to}` })) || [];
-  const minDate = delivery?.min_date
-    ? deliveryVariants?.types.find(({ name }) => name === delivery.name).min_date
-    : undefined || undefined;
+  const timeSlots = isSelfDelivery
+    ? selfDeliveryTimeSlots
+    : deliveryVariants?.time_slots?.map(({ from, to }) => ({ code: `${from}-${to}`, value: `${from}-${to}` })) || [];
+  const minDate = isSelfDelivery
+    ? delivery?.min_date
+    : delivery?.min_date
+    ? deliveryVariants?.types.find(({ name }) => name === delivery.name).min_date || undefined
+    : undefined;
 
   return (
     <div className={styles.orderDelivery}>
@@ -113,7 +125,7 @@ const OrderDelivery: FC<Props> = ({
       />
       <div className={styles.cartContent}>
         <div className={styles.cartHeader}>
-          <h2 className={styles.cartTitle}>Доставка ВоБаза</h2>
+          <h2 className={styles.cartTitle}>{isSelfDelivery ? 'Самовывоз' : 'Доставка ВоБаза'}</h2>
           <div className={styles.cartHeaderButtons}>
             <button className={styles.cartHeaderButton} onClick={toggleChangeDeliveryDrawer}>
               Изменить
@@ -161,15 +173,17 @@ const OrderDelivery: FC<Props> = ({
                 />
               </div>
             </div>
-            <DeliveryLiftingAssembly
-              address={data.address}
-              setFieldValue={setFieldValue}
-              assemblyPrice={assemblyPrice}
-              liftPrice={liftPrice}
-              goods={goods}
-              lift={lift}
-              setAssemblyPrice={setAssemblyPrice}
-            />
+            {!isSelfDelivery && (
+              <DeliveryLiftingAssembly
+                address={data.address}
+                setFieldValue={setFieldValue}
+                assemblyPrice={assemblyPrice}
+                liftPrice={liftPrice}
+                goods={goods}
+                lift={lift}
+                setAssemblyPrice={setAssemblyPrice}
+              />
+            )}
           </>
         )}
         <div className={styles.orderDeliveryItems}>

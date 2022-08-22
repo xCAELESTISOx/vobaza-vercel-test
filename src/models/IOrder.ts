@@ -1,7 +1,7 @@
 import type { Image } from '../../src/models/IImage';
 import { ElevatorType, IAddressFull } from './IAddress';
 
-import { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
+import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 
 export interface ILocalOrderDelivery {
   name: string;
@@ -15,6 +15,7 @@ export enum EOrderDeliveryType {
   none = 'NONE',
   normal = 'NORMAL',
   express = 'EXPRESS',
+  self = 'SELF'
 }
 
 export const orderDeliveryTypeDictionary = {
@@ -59,29 +60,6 @@ export interface IDeliveryVariants {
   types?: IDeliveryType[];
 }
 
-export interface ICreateOrder {
-  customer: IOrderCustomer;
-  delivery: IOrderDelivery;
-  recipient?: {
-    name: string;
-    phone: string;
-  };
-  assembly?: {
-    product_ids: number[];
-  };
-  lift?: {
-    full_order?: boolean;
-  };
-}
-export interface ICreateAuthOrder extends Omit<ICreateOrder, 'lift' | 'delivery'> {
-  delivery: IAuthOrderDelivery;
-  /** Если lift Не передается, значит услуга подъёма на этаж не требуется */
-  lift?: {
-    elevator: ElevatorType;
-    floor: number;
-    full_order?: boolean;
-  };
-}
 
 export interface ILocalOrder {
   delivery: ILocalOrderDelivery | null;
@@ -176,4 +154,30 @@ export interface IOrderItemFull {
     name: string,
     phone: string
   }
+}
+
+export interface ICreateOrder {
+  customer: IOrderCustomer;
+  
+  obtaining: {
+    obtaining_type: "DELIVERY" | "SELF_DELIVERY",
+    delivery?: IOrderDelivery;
+  }
+  recipient?: {
+    name: string;
+    phone: string;
+  };
+  assembly?: {
+    product_ids: number[];
+  };
+}
+
+export interface ICreateAuthOrder extends Omit<ICreateOrder, 'lift' | 'delivery'> {
+  delivery: IAuthOrderDelivery;
+  /** Если lift Не передается, значит услуга подъёма на этаж не требуется */
+  lift?: {
+    elevator: ElevatorType;
+    floor: number;
+    full_order?: boolean;
+  };
 }

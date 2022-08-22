@@ -1,10 +1,11 @@
 import { FC } from 'react';
 import Link from 'next/link';
 
-import styles from './styles.module.scss';
+import { toNumberWithSpaces } from '../../../assets/utils/formatters';
 
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
-import { toNumberWithSpaces } from '../../../assets/utils/formatters';
+
+import styles from './styles.module.scss';
 
 type Props = {
   price?: number;
@@ -30,9 +31,7 @@ const CartSidebar: FC<Props> = ({
         <div className={styles.cartSidebarOrderItem}>
           <span className={styles.cartSidebarOrderTitle}>Товары: </span>
           <span className={styles.cartSidebarOrderDecorator} />
-          <span className={styles.cartSidebarOrderPrice}>
-            {toNumberWithSpaces(price)} ₽
-          </span>
+          <span className={styles.cartSidebarOrderPrice}>{toNumberWithSpaces(price)} ₽</span>
         </div>
         {isOrder && (
           <>
@@ -44,41 +43,25 @@ const CartSidebar: FC<Props> = ({
               </span>
             </div>
             <div className={styles.cartSidebarOrderItem}>
-              <span className={styles.cartSidebarOrderTitle}>
-                Подъем на этаж:{' '}
-              </span>
+              <span className={styles.cartSidebarOrderTitle}>Подъем на этаж: </span>
               <span className={styles.cartSidebarOrderDecorator} />
-              <span className={styles.cartSidebarOrderPrice}>
-                {toNumberWithSpaces(liftPrice)} ₽
-              </span>
+              <span className={styles.cartSidebarOrderPrice}>{toNumberWithSpaces(liftPrice)} ₽</span>
             </div>
             <div className={styles.cartSidebarOrderItem}>
               <span className={styles.cartSidebarOrderTitle}>Сборка: </span>
               <span className={styles.cartSidebarOrderDecorator} />
-              <span className={styles.cartSidebarOrderPrice}>
-                {toNumberWithSpaces(assemblyPrice)} ₽
-              </span>
+              <span className={styles.cartSidebarOrderPrice}>{toNumberWithSpaces(assemblyPrice)} ₽</span>
             </div>
           </>
         )}
       </div>
       <div className={styles.cartSidebarTotal}>
-        <span className={styles.cartSidebarTotalTitle}>
-          {isOrder ? 'Итого:' : 'Сумма заказа:'}
-        </span>
-        {toNumberWithSpaces(
-          price + liftPrice + assemblyPrice + (delivery ? delivery.price : 0)
-        )}{' '}
-        ₽
+        <span className={styles.cartSidebarTotalTitle}>{isOrder ? 'Итого:' : 'Сумма заказа:'}</span>
+        {toNumberWithSpaces(price + liftPrice + assemblyPrice + (delivery ? delivery.price : 0))} ₽
       </div>
       {isOrder && (
         <div className={styles.cartSidebarButton}>
-          <Button
-            onClick={onButtonClick}
-            text="Оформить заказ"
-            size="big"
-            isFullScreen
-          />
+          <Button onClick={onButtonClick} text="Оформить заказ" size="big" isFullScreen />
         </div>
       )}
       {!isOrder && !!price && (
@@ -104,9 +87,8 @@ const CartSidebar: FC<Props> = ({
           </Link>
         </p>
         <p>
-          Нажимая {isOrder ? '«Оформить заказ»' : '«Перейти к оформлению»'} вы
-          соглашаетесь с договором оферты и подтверждаете своё согласие на
-          обработку персональных данных{' '}
+          Нажимая {isOrder ? '«Оформить заказ»' : '«Перейти к оформлению»'} вы соглашаетесь с договором оферты и
+          подтверждаете своё согласие на обработку персональных данных{' '}
         </p>
       </div>
     </div>

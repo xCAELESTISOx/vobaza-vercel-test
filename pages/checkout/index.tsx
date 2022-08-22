@@ -69,9 +69,9 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
     const userId = values.address?.id;
 
     try {
-      const data = normalizeOrder(values, token, customer, userId);
-
+      const data = normalizeOrder(values, token, customer, userId, goods);
       let res = null;
+
       if (token) {
         res = await api.createAuthOrder(data);
       } else {

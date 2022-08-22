@@ -6,8 +6,8 @@ import { EOrderDeliveryType } from '../../../../../src/models/IOrder';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import Drawer from 'src/hoc/withDrawer';
 
-import styles from './styles.module.scss';
 import { api } from 'assets/api';
+import styles from './styles.module.scss';
 
 type Props = {
   address: string;
@@ -15,6 +15,18 @@ type Props = {
   setDeliveryVariants: (variants: IDeliveryVariants) => void;
   isOpen: boolean;
   onClose: () => void;
+};
+
+const getTommorrow = () => {
+  const nowDate = new Date();
+  const nextDate = new Date(
+    nowDate.getFullYear(),
+    nowDate.getMonth(),
+    nowDate.getDate() + 1,
+    -nowDate.getTimezoneOffset() / 60
+  );
+
+  return nextDate.toISOString().slice(0, 10);
 };
 
 const OrderDeliveryDrawer: FC<Props> = ({ address, setFieldValue, setDeliveryVariants, isOpen = false, onClose }) => {
@@ -83,6 +95,14 @@ const OrderDeliveryDrawer: FC<Props> = ({ address, setFieldValue, setDeliveryVar
     }
   }, [address]);
 
+  const selfDeliveryItem: ILocalOrderDelivery = {
+    name: 'Самовывоз',
+    price: 0,
+    tag: EOrderDeliveryType.self,
+    date: null,
+    min_date: getTommorrow(),
+  };
+
   return (
     <Drawer
       title="Способ получения"
@@ -116,6 +136,20 @@ const OrderDeliveryDrawer: FC<Props> = ({ address, setFieldValue, setDeliveryVar
         >
           <Icon className={styles.deliveryDrawerCardIcon} name="Checkmark" />
           <div className={styles.deliveryDrawerCardType}>Оформить заказ с менеджером</div>
+          <div className={styles.deliveryDrawerCardPrice}>Бесплатно</div>
+        </div>
+
+        {/* Самовывоз */}
+        <div
+          className={`${styles.deliveryDrawerCard} ${
+            currentVariant && currentVariant.tag === selfDeliveryItem.tag ? styles.active : ''
+          }`}
+          onClick={() => {
+            setCurrentVariant(selfDeliveryItem);
+          }}
+        >
+          <Icon className={styles.deliveryDrawerCardIcon} name="Checkmark" />
+          <div className={styles.deliveryDrawerCardType}>{selfDeliveryItem.name}</div>
           <div className={styles.deliveryDrawerCardPrice}>Бесплатно</div>
         </div>
       </div>

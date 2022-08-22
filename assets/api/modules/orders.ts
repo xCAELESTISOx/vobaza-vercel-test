@@ -1,14 +1,15 @@
-import type { ICreateAuthOrder, ICreateOrder } from 'src/models/IOrder';
 import { axios, setToken, setTokenWithGuest } from '../axios';
+
+import type { ICreateAuthOrder, ICreateOrder } from 'src/models/IOrder';
 
 export const ordersAPI = {
   async createOrder(data: ICreateOrder) {
     await setTokenWithGuest();
-    return axios.post(`/v1/checkout`, data);
+    return axios.post(`/v2/checkout`, data);
   },
   async createAuthOrder(data: ICreateAuthOrder) {
     await setToken();
-    return axios.post(`/customer/v1/checkout`, data);
+    return axios.post(`/customer/v2/checkout`, data);
   },
   async getAssemblyPrice(address: string, product_ids: number[]) {
     return axios.get(`/v1/checkout/assembly`, { params: { address, product_ids } });

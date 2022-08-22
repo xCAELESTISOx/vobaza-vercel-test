@@ -1,29 +1,9 @@
-import { EOrderDeliveryType } from 'src/models/IOrder';
+import { EOrderDeliveryType, ILocalOrderDelivery } from 'src/models/IOrder';
 import type { ILocalOrder } from 'src/models/IOrder';
 import type { IReceiver } from 'components/Cart/Order/Receiver';
+import { ICartGood } from 'components/Cart/ListItem';
 
-export const normalizeOrder = (data: ILocalOrder, token: string, customer: IReceiver, userAddressId?: number) => {
-  const { delivery, lift, address, assembly } = data;
-
-  const newData = {
-    delivery: {
-      type: delivery ? delivery.tag : EOrderDeliveryType.none,
-    },
-    ...(!token && { customer }),
-    ...(customer.recipient && { recipient: customer.recipient }),
-    ...(lift && { lift: { ...lift, floor: address.floor } }),
-  } as any;
-
-  if (token) {
-    newData.delivery.address_id = userAddressId;
-  } else {
-    newData.delivery.address = {
-      ...address,
-      ...(address.floor && { floor: address.floor }),
-      ...(lift && lift.elevator && { elevator: lift.elevator }),
-    };
-  }
-
+const convertDeliveryDate = (delivery: ILocalOrderDelivery) => {
   if (delivery && delivery.date) {
     const { date } = delivery;
 
@@ -33,13 +13,16 @@ export const normalizeOrder = (data: ILocalOrder, token: string, customer: IRece
       const year = date.getFullYear();
 
       const newDate = year + '-' + (month <= 9 ? '0' + month : month) + '-' + (day <= 9 ? '0' + day : day);
-
-      newData.delivery.date = newDate;
+      return newDate;
     } else {
-      newData.delivery.date = undefined;
+      return undefined;
     }
   }
 
+  return undefined;
+};
+
+const convertDeliveryTime = (delivery: ILocalOrderDelivery) => {
   if (delivery && delivery.time) {
     const splitedTimeSlot = delivery.time.value.split('-');
     const newTimeSlot = {
@@ -47,12 +30,76 @@ export const normalizeOrder = (data: ILocalOrder, token: string, customer: IRece
       to: splitedTimeSlot[1],
     };
 
-    newData.delivery.time_interval = newTimeSlot;
+    return newTimeSlot;
   }
+};
 
-  if (assembly && (assembly.product_ids?.length || assembly.full_order)) {
-    newData.assembly = assembly;
-  }
+export const normalizeOrder = (
+  data: ILocalOrder,
+  token: string,
+  customer: IReceiver,
+  userAddressId?: number,
+  goods?: ICartGood[]
+) => {
+  const { delivery, assembly } = data;
+
+  const address = data.address;
+  const lift = data.lift;
+
+  const isSelfDelivery = delivery?.tag === EOrderDeliveryType.self;
+
+  const assemblyProductIds =
+    !isSelfDelivery && assembly?.full_order
+      ? goods.map((item) => {
+          return item.product.id;
+        })
+      : [];
+
+  const deliveryDate = convertDeliveryDate(delivery);
+  const time = convertDeliveryTime(delivery);
+
+  const newData = {
+    obtaining: {
+      obtaining_type: isSelfDelivery ? 'SELF_DELIVERY' : 'DELIVERY',
+      ...(!isSelfDelivery && {
+        delivery: {
+          type: delivery ? delivery?.tag : EOrderDeliveryType.none,
+          ...(lift && { lift: { full_order: true } }),
+          date: deliveryDate,
+          time_interval: time,
+          ...(token
+            ? {
+                address_id: userAddressId,
+                ...(lift && {
+                  lift: {
+                    ...(lift && lift?.elevator && { elevator: lift?.elevator }),
+                    ...(address.floor && { floor: address.floor }),
+                  },
+                }),
+              }
+            : {
+                address: {
+                  ...address,
+                  ...(address.floor && { floor: address.floor }),
+                  ...(lift && lift?.elevator && { elevator: lift?.elevator }),
+                },
+              }),
+        },
+      }),
+
+      ...(isSelfDelivery && {
+        self_delivery: {
+          date: deliveryDate,
+          time_interval: time,
+          ...(token && { address_id: userAddressId }),
+        },
+      }),
+
+      ...(!!assembly && !!assemblyProductIds.length && !!assembly?.full_order && { assembly: assemblyProductIds }),
+    },
+    ...(!token && { customer }),
+    ...(customer.recipient && { recipient: customer.recipient }),
+  } as any;
 
   return newData;
 };
