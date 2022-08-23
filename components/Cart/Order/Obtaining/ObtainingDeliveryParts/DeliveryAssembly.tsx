@@ -13,7 +13,7 @@ import Toggle from 'components/UI/Toggle';
 
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 
-import styles from './styles.module.scss';
+import styles from './../styles.module.scss';
 import { api } from 'assets/api';
 
 const ASSEMBLY_PRICE_ERROR = 'Временно невозможно посчитать стоимость сборки';

@@ -17,7 +17,7 @@ import type { IReceiver } from '../../components/Cart/Order/Receiver';
 import CartSidebar from '../../components/Cart/Sidebar';
 import OrderReceiver from '../../components/Cart/Order/Receiver';
 import OrderAddress from '../../components/Cart/Order/Address';
-import OrderDelivery from '../../components/Cart/Order/Delivery';
+import OrderObtaining from '../../components/Cart/Order/Obtaining';
 import OrderPayment from '../../components/Cart/Order/Payment';
 
 import styles from '../../styles/Cart.module.scss';
@@ -106,7 +106,7 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
             <div className={styles.cartContentBlock}>
               <OrderReceiver ref={formRef} initialUser={user} createOrder={createOrder} />
               <OrderAddress address={values.address} addresses={addresses} setFieldValue={setFieldValue} />
-              <OrderDelivery
+              <OrderObtaining
                 orderWeight={weight}
                 data={values}
                 setFieldValue={setFieldValue}

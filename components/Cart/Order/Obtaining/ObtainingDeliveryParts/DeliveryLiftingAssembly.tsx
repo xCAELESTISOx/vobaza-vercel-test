@@ -7,7 +7,7 @@ import type { IAssemblyPrice } from 'src/models/IDelivery';
 import DeliveryAssembly from './DeliveryAssembly';
 import DeliveryLift from './DeliveryLift';
 
-import styles from './styles.module.scss';
+import styles from './../styles.module.scss';
 
 type Props = {
   liftPrice: number;

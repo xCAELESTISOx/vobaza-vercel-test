@@ -8,7 +8,7 @@ import { InputRadio } from '@nebo-team/vobaza.ui.inputs.input-radio/dist/input-r
 import ItemCounter from 'components/UI/ItemCounter';
 import Toggle from 'components/UI/Toggle';
 
-import styles from './styles.module.scss';
+import styles from './../styles.module.scss';
 
 type Props = {
   liftPrice: number;

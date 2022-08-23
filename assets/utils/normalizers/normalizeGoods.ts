@@ -23,7 +23,7 @@ export const normalizeProductVariants = (productVariantsObj: IGood['variants']) 
     return { code, text };
   };
 
-  const variantsList = productVariantsObj.variants.map((variant) => {
+  const variantsList = productVariantsObj.variants?.map((variant) => {
     const values = variant.values.map((valueItem) => {
       const value = convertVariantValue(valueItem);
       return { ...valueItem, value };

@@ -1,23 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
-import Image from 'next/image';
 
 import { useToggle } from 'src/hooks/useToggle';
 import { num2str } from '../../../../assets/utils';
 import useDebounce from 'src/hooks/useDebounce';
-import { getImageVariantProps } from 'assets/utils/images';
 import type { ICartGood } from '../../ListItem';
 import type { IDeliveryVariants, ILocalOrder, ILocalOrderDelivery, ITimeInterval } from '../../../../src/models/IOrder';
 import type { IAssemblyPrice } from 'src/models/IDelivery';
+import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select/dist';
 import { EOrderDeliveryType } from '../../../../src/models/IOrder';
 
-import DeliveryLiftingAssembly from './DeliveryLiftingAssembly';
 import OrderDeliveryDrawer from './Drawer';
-import { InputSelect, Variant } from '@nebo-team/vobaza.ui.inputs.input-select/dist';
-import { InputCalendar } from 'components/UI/InputCalendar';
-import { Button } from '@nebo-team/vobaza.ui.button/dist';
+import { ObtainingDelivery } from './ObtainingDelivery';
+import { ObtainingSelfDelivery } from './ObtainingSelfDelivery';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
-
-import PlaceholderImage from 'assets/images/placeholder_small.png';
 
 import { api } from 'assets/api';
 import styles from './styles.module.scss';
@@ -33,20 +28,13 @@ type Props = {
   setFieldValue: (name: string, value: any) => void;
 };
 
-const selfDeliveryTimeSlots = [
-  { code: '09:00-14:00', value: '09:00-14:00' },
-  { code: '12:00-17:00', value: '12:00-17:00' },
-  { code: '15:00-20:00', value: '15:00-20:00' },
-  { code: '18:00-23:00', value: '18:00-23:00' },
-];
-
 const convertTimeslots = (timeSlots: ITimeInterval[]): Variant[] =>
   timeSlots?.map(({ from, to }) => ({ code: `${from}-${to}`, value: `${from}-${to}` })) || [];
 
 const findMinDate = (delivery: ILocalOrderDelivery, deliveryVariants: IDeliveryVariants): Date =>
   deliveryVariants?.types.find(({ name }) => name === delivery.name).min_date;
 
-const OrderDelivery: FC<Props> = ({
+const OrderObtaining: FC<Props> = ({
   liftPrice,
   orderWeight,
   assemblyPrice,
@@ -61,7 +49,7 @@ const OrderDelivery: FC<Props> = ({
 
   const { delivery, lift, address } = data;
 
-  const setTime = (time) => {
+  const setTime = (time: Variant) => {
     setFieldValue('delivery.time', time);
   };
   const toggleChangeDeliveryDrawer = () => {
@@ -114,7 +102,6 @@ const OrderDelivery: FC<Props> = ({
   const deliveryTimeSlots = convertTimeslots(deliveryVariants?.time_slots);
 
   const goodsCount = goods.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0);
-  const timeSlots = isSelfDelivery ? selfDeliveryTimeSlots : deliveryTimeSlots;
   const minDate = isSelfDelivery ? delivery?.min_date : !!delivery?.min_date && findMinDate(delivery, deliveryVariants);
 
   return (
@@ -126,9 +113,10 @@ const OrderDelivery: FC<Props> = ({
         onClose={toggleChangeDeliveryDrawer}
         isOpen={isDrawerOpen}
       />
+
       <div className={styles.cartContent}>
         <div className={styles.cartHeader}>
-          <h2 className={styles.cartTitle}>{isSelfDelivery ? 'Самовывоз' : 'Доставка ВоБаза'}</h2>
+          <h2 className={styles.cartTitle}>{isSelfDelivery ? 'Самовывоз' : 'Доставка Вобаза'}</h2>
           <div className={styles.cartHeaderButtons}>
             <button className={styles.cartHeaderButton} onClick={toggleChangeDeliveryDrawer}>
               Изменить
@@ -151,74 +139,32 @@ const OrderDelivery: FC<Props> = ({
             </div>
           )}
         </div>
-        {delivery && (
-          <>
-            <div className={styles.orderDeliveryInputs}>
-              <div className={styles.orderDeliveryInput}>
-                <InputCalendar
-                  label="Дата доставки"
-                  name="date"
-                  value={delivery.date ? new Date(delivery.date) : undefined}
-                  calendarOptions={{
-                    minDate: minDate ? new Date(minDate) : undefined,
-                  }}
-                  onChange={onDateSelect}
-                />
-              </div>
-              <div className={styles.orderDeliveryInput}>
-                <InputSelect
-                  name="time"
-                  label="Время доставки"
-                  currentValue={delivery.time}
-                  variants={timeSlots}
-                  onChange={setTime}
-                  keyField="value"
-                />
-              </div>
-            </div>
-            {!isSelfDelivery && (
-              <DeliveryLiftingAssembly
-                address={data.address}
-                setFieldValue={setFieldValue}
-                assemblyPrice={assemblyPrice}
-                liftPrice={liftPrice}
-                goods={goods}
-                lift={lift}
-                setAssemblyPrice={setAssemblyPrice}
-              />
-            )}
-          </>
-        )}
-        <div className={styles.orderDeliveryItems}>
-          {goods.map(({ product }) => (
-            <div key={product.id} className={styles.orderDeliveryItem}>
-              {product.main_image ? (
-                <Image
-                  {...getImageVariantProps(product.main_image.variants, 'small')}
-                  objectFit="contain"
-                  alt={product.name}
-                />
-              ) : (
-                <Image src={PlaceholderImage} objectFit="contain" alt={product.name} unoptimized />
-              )}
-            </div>
-          ))}
-        </div>
-        <div className={styles.cartButton}>
-          <Button
-            text="Изменить"
-            color="#fafafa"
-            isFullScreen
-            style={{
-              color: '#af1ebe',
-              backgroundColor: ' #f2f2f2',
-              border: '1px solid #f2f2f2',
-              fontWeight: 500,
-            }}
+
+        {isSelfDelivery ? (
+          <ObtainingSelfDelivery
+            minDate={minDate}
+            onDateSelect={onDateSelect}
+            setTime={setTime}
+            delivery={data.delivery}
+            goods={goods}
           />
-        </div>
+        ) : (
+          <ObtainingDelivery
+            minDate={minDate}
+            onDateSelect={onDateSelect}
+            timeSlots={deliveryTimeSlots}
+            setTime={setTime}
+            order={data}
+            setFieldValue={setFieldValue}
+            assemblyPrice={assemblyPrice}
+            liftPrice={liftPrice}
+            goods={goods}
+            setAssemblyPrice={setAssemblyPrice}
+          />
+        )}
       </div>
     </div>
   );
 };
-export default OrderDelivery;
+
+export default OrderObtaining;

@@ -8,7 +8,6 @@ import ProfileOrderItem from '../../../components/Profile/Order/Item';
 
 import checkAuth from '../../../assets/api/auth';
 import { api } from '../../../assets/api';
-
 import styles from '../../../styles/Profile.module.scss';
 
 type Props = {
