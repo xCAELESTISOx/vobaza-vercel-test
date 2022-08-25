@@ -1,5 +1,5 @@
 import type { Image } from '../../src/models/IImage';
-import { ElevatorType, IAddressFull } from './IAddress';
+import type { ElevatorType, IAddressFull } from './IAddress';
 
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 
@@ -17,17 +17,9 @@ export enum EOrderDeliveryType {
   express = 'EXPRESS',
   self = 'SELF'
 }
-
-export const orderDeliveryTypeDictionary = {
-  [EOrderDeliveryType.none]: 'Оформить заказ с менеджером',
-  [EOrderDeliveryType.normal]: 'Доставка',
-  [EOrderDeliveryType.express]: 'Экспресс-доставка ',
-};
-
 export interface IOrderAddress extends Omit<IAddressFull, 'id' | 'is_default'> {
   id?: number;
 }
-
 export interface IOrderCustomer {
   name: string;
   surname?: string;
@@ -83,18 +75,24 @@ export interface ILocalOrder {
     full_order?: boolean;
   };
 }
-
-export interface IOrderItem {
+export interface IOrder {
   id: number | string;
   number: string;
   order_date: string;
   price: number;
-  status: 'NEW';
+  status: keyof typeof OrderStatusType;
   products_images: {
     product_id: number;
     image: Image;
   }[];
-  delivery: IOrderDelivery;
+  obtaining: {
+    obtaining_type: 'DELIVERY' | 'SELF_DELIVERY'
+    delivery?: IOrderDelivery;
+    self_delivery?: {
+      date: string,
+      time_interval: ITimeInterval
+    }
+  }
 }
 export interface IFullOrderDelivery {
   address: {
@@ -106,23 +104,36 @@ export interface IFullOrderDelivery {
     elevator: ElevatorType
   },
   status: string,
-  type: string,
-  time_interval: ITimeInterval
+  type: string
+  time_interval: ITimeInterval,
+  date?: string
 }
 
 export enum OrderStatusType {
-  NEW = "NEW",
-  CONFIRMED="CONFIRMED",
-  NOT_RESERVED="NOT_RESERVED",
-  RESERVED= "RESERVED",
-  ASSEMBLED="ASSEMBLED",
-  PICKED="PICKED",
-  DELIVERED="DELIVERED",
-  CANCELLED="CANCELLED",
-  IN_PROBLEM="IN_PROBLEM",
-  COMPLETED="COMPLETED"
+  NEW = 'NEW',
+  CONFIRMED = 'CONFIRMED',
+  NOT_RESERVED = 'NOT_RESERVED',
+  PARTLY_RESERVED = 'PARTLY_RESERVED',
+  RESERVED = 'RESERVED',
+  ASSEMBLED = 'ASSEMBLED',
+  PICKED = 'PICKED',
+  DELIVERED = 'DELIVERED',
+  CANCELLED = 'CANCELLED',
+  IN_PROBLEM = 'IN_PROBLEM',
+  COMPLETED = 'COMPLETED',
 }
 
+export enum EOrderPaymentStatus {
+  NOT_PAID = 'NOT_PAID',
+  PAID = 'PAID',
+  PARTIALLY_PAID = 'PARTIALLY_PAID'
+}
+
+export enum EOrderPaymentMethod {
+  CARD = 'CARD',
+  CASH = 'CASH',
+  BANK_WIRE = 'BANK_WIRE'
+}
 export interface IOrderItemFull {
   id: number | string;
   number: string,
@@ -136,8 +147,12 @@ export interface IOrderItemFull {
     method: string
   },
   obtaining: {
-    obtaining_type: string,
-    delivery: IFullOrderDelivery
+    obtaining_type: 'DELIVERY' | 'SELF_DELIVERY',
+    delivery?: IFullOrderDelivery,
+    self_delivery?: {
+      date: string,
+      time_interval: ITimeInterval
+    }
   },
   products: {
     name: string,

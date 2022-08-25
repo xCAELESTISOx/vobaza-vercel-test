@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 
-import type { IOrderItem } from '../../../src/models/IOrder';
+import type { IOrder } from '../../../src/models/IOrder';
 
 import ProfileSidebar from '../../../components/Profile/Sidebar';
 import ProfileEmptyField from '../../../components/Profile/EmptyField';
@@ -10,11 +10,11 @@ import checkAuth from '../../../assets/api/auth';
 import { api } from '../../../assets/api';
 import styles from '../../../styles/Profile.module.scss';
 
-type Props = {
-  orders: IOrderItem[];
+type IProps = {
+  orders: IOrder[];
 };
 
-export default function ProfileOrders({ orders }) {
+export default function ProfileOrders({ orders }: IProps) {
   return (
     <div>
       <div className="container">
@@ -44,14 +44,14 @@ export default function ProfileOrders({ orders }) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => {
+export const getServerSideProps: GetServerSideProps<IProps> = async ({ req }) => {
   let orders = [];
 
   try {
     await checkAuth(req);
     const ordersRes = await api.getOrders();
 
-    orders = ordersRes.data.data.map((order: IOrderItem) => {
+    orders = ordersRes.data.data.map((order: IOrder) => {
       return {
         ...order,
         price: order.price / 100,

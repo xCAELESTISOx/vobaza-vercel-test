@@ -22,11 +22,11 @@ export const ordersAPI = {
   },
   async getOrders() {
     await setToken();
-    return axios.get(`/customer/v1/orders`);
+    return axios.get(`/customer/v2/orders`);
   },
   async getLastOrder() {
     await setToken();
-    return axios.get(`/customer/v1/orders`, { params: { limit: 1 } });
+    return axios.get(`/customer/v2/orders`, { params: { limit: 1 } });
   },
   async getOrder(id) {
     await setToken();

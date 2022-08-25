@@ -2,10 +2,20 @@ import { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+import {
+  labelColorsDictionary,
+  orderDeliveryTypeDictionary,
+  orderPaymentMethodDictionary,
+  orderPaymentStatusDictionary,
+  orderStatusDictionary,
+} from 'assets/dictionaries/order';
 import { num2str } from '../../../assets/utils';
-import { formatOrderDate, formatOrderTimeInterval } from 'assets/utils/formatters';
+import { formatOrderDate } from 'assets/utils/formatters';
 import { getImageVariantProps } from 'assets/utils/images';
-import { EOrderDeliveryType, IOrderItemFull, orderDeliveryTypeDictionary } from '../../../src/models/IOrder';
+import { EOrderDeliveryType } from '../../../src/models/IOrder';
+import type { IOrderItemFull } from '../../../src/models/IOrder';
+
+import ProfileOrderDateTime from './Item/ProfileOrderDateTime';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
@@ -23,6 +33,11 @@ const ProfileOrder: FC<Props> = ({ order }) => {
     0
   );
 
+  const deliveryTitle = order.obtaining?.obtaining_type === 'SELF_DELIVERY' ? 'Самовывоз' : 'Доставка ВоБаза';
+  const obtainingTimeInterval =
+    order.obtaining?.delivery?.time_interval || order.obtaining?.self_delivery?.time_interval;
+  const obtainingDate = order.obtaining?.delivery?.date || order.obtaining?.self_delivery?.date;
+
   return (
     <>
       <div className={styles.orderTop}>
@@ -31,7 +46,6 @@ const ProfileOrder: FC<Props> = ({ order }) => {
             <Icon name="ArrowLeft" /> Назад
           </a>
         </Link>
-        <div className={styles.orderStatus}>не оплачен</div>
       </div>
       <div className={styles.order}>
         <div className={styles.orderHeader}>
@@ -42,7 +56,7 @@ const ProfileOrder: FC<Props> = ({ order }) => {
               <div>{Intl.NumberFormat('ru-RU').format(order.price)} ₽</div>
             </div>
           </div>
-          <div className={styles.orderStatus}>не оплачен</div>
+          <div className={styles.orderStatus}>{orderPaymentStatusDictionary[order.payment.status]}</div>
         </div>
         <div className={styles.orderUser}>
           <div className={styles.orderUserTitle}>Получатель</div>
@@ -54,9 +68,13 @@ const ProfileOrder: FC<Props> = ({ order }) => {
         </div>
         <div className={styles.orderBlock}>
           <div className={styles.orderBlockHeader}>
-            <div className={styles.orderBlockHeaderTitle}>Доставка ВоБаза</div>
+            <div className={styles.orderBlockHeaderTitle}>{deliveryTitle}</div>
             <div className={styles.orderBlockHeaderStatus}>
-              открыт <span className={`${styles.orderBlockHeaderStatusDot} ${styles.orange}`}></span>
+              {orderStatusDictionary[order.status]}{' '}
+              <span
+                className={`${styles.orderBlockHeaderStatusDot} ${styles.orange}`}
+                style={{ background: labelColorsDictionary[order.status] }}
+              ></span>
             </div>
           </div>
           <div className={styles.orderDetail}>
@@ -94,33 +112,32 @@ const ProfileOrder: FC<Props> = ({ order }) => {
           </div>
           <div>
             <div className={styles.orderDelivery}>
-              <div>
-                <div className={styles.orderDeliveryTitle}>Способ получения </div>
-                <div className={styles.orderDeliveryItem}>
-                  <Icon name="Car" />
-                  {orderDeliveryTypeDictionary[order.obtaining?.delivery?.type]}
-                </div>
-                <div className={styles.orderDeliveryItem}>
-                  <Icon name="Geoposition" />
-                  {order.obtaining?.delivery?.address?.address}
-                </div>
-              </div>
-              {order.obtaining?.delivery.type !== EOrderDeliveryType.none &&
-                order.obtaining?.delivery?.time_interval &&
-                order.order_date && (
-                  <div>
-                    <div className={styles.orderDeliveryTitle}>Дата и время доставки</div>
-                    <div className={styles.orderDeliveryItem}>
-                      {formatOrderDate(order.order_date as string, false, true)}{' '}
-                      {formatOrderTimeInterval(order.obtaining.delivery.time_interval)}
-                    </div>
+              {order.obtaining?.obtaining_type === 'DELIVERY' && (
+                <div>
+                  <div className={styles.orderDeliveryTitle}>Способ получения </div>
+                  <div className={styles.orderDeliveryItem}>
+                    <Icon name="Car" />
+                    {orderDeliveryTypeDictionary[order.obtaining.delivery?.type]}
                   </div>
+                  <div className={styles.orderDeliveryItem}>
+                    <Icon name="Geoposition" />
+                    {order.obtaining.delivery?.address?.address}
+                  </div>
+                </div>
+              )}
+              {order.obtaining?.delivery?.type !== EOrderDeliveryType.none &&
+                (obtainingDate || obtainingTimeInterval) && (
+                  <ProfileOrderDateTime
+                    date={obtainingDate}
+                    timeInterval={obtainingTimeInterval}
+                    isSelfDelivery={order.obtaining?.obtaining_type === 'SELF_DELIVERY'}
+                  />
                 )}
             </div>
           </div>
         </div>
         <div className={styles.orderBlock}>
-          <div className={styles.orderBlockFooterTitle}>Оплата наличными </div>
+          <div className={styles.orderBlockFooterTitle}>{orderPaymentMethodDictionary[order.payment.method]}</div>
           <div className={styles.orderBlockFooterValue}>
             <div className={styles.orderBlockFooterValueTitle}>Товары</div>
             <div>{Intl.NumberFormat('ru-RU').format(order.price)} ₽</div>

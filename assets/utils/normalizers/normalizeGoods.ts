@@ -30,7 +30,7 @@ export const normalizeProductVariants = (productVariantsObj: IGood['variants']) 
     });
 
     return { ...variant, values };
-  });
+  }) || null;
 
   return { ...productVariantsObj, variants: variantsList };
 };

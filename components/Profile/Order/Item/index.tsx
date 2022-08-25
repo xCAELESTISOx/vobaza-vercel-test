@@ -2,23 +2,26 @@ import { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { formatOrderDate, formatOrderTimeInterval } from 'assets/utils/formatters';
+import { labelColorsDictionary, orderStatusDictionary } from 'assets/dictionaries/order';
+import { formatOrderDate } from 'assets/utils/formatters';
 import { getImageVariantProps } from 'assets/utils/images';
 import { EOrderDeliveryType } from '../../../../src/models/IOrder';
-import type { IOrderItem } from '../../../../src/models/IOrder';
+import type { IOrder } from '../../../../src/models/IOrder';
+
+import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
+import ProfileOrderDateTime from './ProfileOrderDateTime';
 
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 
-import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
-
 import styles from './styles.module.scss';
 
-type Props = {
-  order: IOrderItem;
+type IProps = {
+  order: IOrder;
   isLast?: boolean;
 };
 
-const ProfileOrderItem: FC<Props> = ({ order, isLast }) => {
+const ProfileOrderItem: FC<IProps> = ({ order, isLast }) => {
+  const deliveryTitle = order.obtaining.obtaining_type === 'SELF_DELIVERY' ? 'Самовывоз' : 'Доставка ВоБаза';
   return (
     <div className={styles.orderItem}>
       <div className={styles.orderItemHeader}>
@@ -41,10 +44,13 @@ const ProfileOrderItem: FC<Props> = ({ order, isLast }) => {
         <div className={styles.orderItemDeliveryBlock}>
           {!isLast && (
             <div className={styles.orderItemDeliveryHeader}>
-              <div className={styles.orderItemDeliveryTitle}>Доставка ВоБаза</div>
+              <div className={styles.orderItemDeliveryTitle}>{deliveryTitle}</div>
               <div className={styles.orderItemDeliveryStatus}>
-                открыт
-                <div className={`${styles.orderItemDeliveryDot} ${styles.orange}`}></div>
+                {orderStatusDictionary[order.status]}
+                <div
+                  className={`${styles.orderItemDeliveryDot} ${styles.orange}`}
+                  style={{ background: labelColorsDictionary[order.status] }}
+                ></div>
               </div>
             </div>
           )}
@@ -61,17 +67,13 @@ const ProfileOrderItem: FC<Props> = ({ order, isLast }) => {
               </div>
             ))}
           </div>
-          {order.delivery.type !== EOrderDeliveryType.none &&
-            !isLast &&
-            (order.delivery.date || order.delivery.time_interval) && (
-              <div className={styles.orderItemDeliveryDate}>
-                <div>Дата и время доставки</div>
-                <div className={styles.orderItemDeliveryDateItem}>
-                  {formatOrderDate(order.delivery.date as string, false, true)}{' '}
-                  {formatOrderTimeInterval(order.delivery.time_interval)}
-                </div>
-              </div>
-            )}
+          {order.obtaining?.delivery?.type !== EOrderDeliveryType.none && !isLast && (
+            <ProfileOrderDateTime
+              date={order.obtaining?.delivery?.date || order.obtaining?.self_delivery?.date}
+              timeInterval={order.obtaining?.delivery?.time_interval || order.obtaining?.self_delivery?.time_interval}
+              isSelfDelivery={order.obtaining?.obtaining_type === 'SELF_DELIVERY'}
+            />
+          )}
 
           {isLast && (
             <Link href={`/profile/orders/${order.id}`}>
