@@ -15,16 +15,14 @@ const convertDeliveryDate = (delivery: ILocalOrderDelivery): string => {
   return undefined;
 };
 
-const convertDeliveryTime = (delivery: ILocalOrderDelivery): ITimeInterval => {
-  if (delivery && delivery.time) {
-    const splitedTimeSlot = delivery.time.value.split('-');
-    const newTimeSlot = {
-      from: splitedTimeSlot[0],
-      to: splitedTimeSlot[1],
-    };
+const convertDeliveryTime = (delivery: ILocalOrderDelivery): ITimeInterval | null => {
+  if (!delivery.time.code) return undefined;
 
-    return newTimeSlot;
-  }
+  const splitedTimeSlot = delivery.time.value.split('-');
+  return {
+    from: splitedTimeSlot[0],
+    to: splitedTimeSlot[1],
+  };
 };
 
 export const normalizeOrder = (

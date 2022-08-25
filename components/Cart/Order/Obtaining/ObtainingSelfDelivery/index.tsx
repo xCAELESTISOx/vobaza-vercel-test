@@ -10,7 +10,8 @@ import { Button } from '@nebo-team/vobaza.ui.button';
 import styles from './../styles.module.scss';
 import DeliveryItems from '../ObtainingDeliveryParts/DeliveryItems';
 
-const selfDeliveryTimeSlots: Variant<string | number>[] = [
+const selfDeliveryTimeSlots: Variant<string>[] = [
+  { code: null, value: 'Нет' },
   { code: '09:00-14:00', value: '09:00-14:00' },
   { code: '12:00-17:00', value: '12:00-17:00' },
   { code: '15:00-20:00', value: '15:00-20:00' },
