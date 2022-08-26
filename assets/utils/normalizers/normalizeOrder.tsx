@@ -16,7 +16,7 @@ const convertDeliveryDate = (delivery: ILocalOrderDelivery): string => {
 };
 
 const convertDeliveryTime = (delivery: ILocalOrderDelivery): ITimeInterval | null => {
-  if (!delivery.time.code) return undefined;
+  if (!delivery?.time?.code) return undefined;
 
   const splitedTimeSlot = delivery.time.value.split('-');
   return {
