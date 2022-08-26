@@ -3,13 +3,7 @@ import React, { FC } from 'react';
 import { Tab } from './Tab';
 
 import styles from './styles.module.scss';
-
-export type Variant = {
-  code?: string;
-  id?: string;
-  text: string;
-  onClick?: () => void;
-};
+import { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 
 type SelectTabs = {
   label: string;
@@ -30,11 +24,11 @@ const SelectTabs: FC<SelectTabs> = ({ label = '', value = null, variants = [], k
       <div className={styles.label}>{label}</div>
       <div className={styles.itemList}>
         {variants.map((tab) => {
-          const isActive = value && (tab[keyField] === value[keyField] || tab.text === value.text);
+          const isActive = value && (tab[keyField] === value[keyField] || tab.value === value.value);
 
           return (
-            <div key={tab[keyField] || tab.text} className={styles.item}>
-              <Tab active={isActive} text={tab.text} onClick={() => handleClickTab(tab)} />
+            <div key={tab[keyField] || tab.value} className={styles.item}>
+              <Tab active={isActive} text={tab.value} onClick={() => handleClickTab(tab)} />
             </div>
           );
         })}

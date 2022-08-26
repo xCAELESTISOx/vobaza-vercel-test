@@ -1,8 +1,7 @@
 import { useRouter } from 'next/router';
 
-import type { IGoodFront, IVariantsValueFront, IVariantProduct } from 'src/models/IGood';
-import type { Variant as SelectVariant } from '@nebo-team/vobaza.ui.inputs.input-select/dist/input-select';
-import type { Variant as TabsVariant } from 'components/UI/SelectTabs';
+import type { IVariantsValueFront, IVariantProduct, IGoodVariantsFront } from 'src/models/IGood';
+import type { Variant as SelectVariant, Variant } from '@nebo-team/vobaza.ui.inputs.input-select/dist/input-select';
 
 import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select/dist/input-select';
 import { SelectTabs } from 'components/UI/SelectTabs';
@@ -10,9 +9,9 @@ import { SelectTabs } from 'components/UI/SelectTabs';
 import styles from './styles.module.scss';
 
 type Props = {
-  variants: IGoodFront['variants'];
-  selectedOptions: { [key: string]: string | number }[];
-  handelSelectOption: (id: string | number, value: SelectVariant | TabsVariant) => void;
+  variants: IGoodVariantsFront;
+  selectedOptions: Record<number, Variant>;
+  handelSelectOption: (id: string | number, value: Variant) => void;
 };
 
 export const ProductOptions = ({ variants, selectedOptions, handelSelectOption }: Props) => {
@@ -33,45 +32,37 @@ export const ProductOptions = ({ variants, selectedOptions, handelSelectOption }
     });
 
     // Опции для селектов
-    const selectValues = sortedValues.map((v) => {
+    const values = sortedValues.map((v) => {
       const code = v.value.code;
-      const value = v.value.text;
+      const value = v.value.value;
 
       return { code, value, onClick: () => onOptionClick(v.product) };
     });
 
-    // Опции для табов
-    const tabsValues = sortedValues.map((v) => {
-      const code = v.value.code;
-      const text = v.value.text;
-
-      return { code, text, onClick: () => onOptionClick(v.product) };
-    });
-
-    return { ...option, selectValues, tabsValues };
+    return { ...option, values };
   });
 
   if (!options) return <div />;
 
   return (
     <div className={styles.productOptions}>
-      {options.map(({ attribute, selectValues, tabsValues }) => {
+      {options.map(({ attribute, values }) => {
         return (
           <div className={styles.productOption} key={attribute.id + attribute.name}>
-            {selectValues.length > 1 &&
-              (selectValues.length > 5 ? (
+            {values.length > 1 &&
+              (values.length > 5 ? (
                 <InputSelect
                   name={attribute.id.toString()}
                   label={attribute.name}
                   currentValue={selectedOptions[attribute.id]}
-                  variants={selectValues}
+                  variants={values}
                   onChange={(value) => handelSelectOption(attribute.id, value as SelectVariant)}
                 />
               ) : (
                 <SelectTabs
                   label={attribute.name}
                   value={selectedOptions[attribute.id]}
-                  variants={tabsValues}
+                  variants={values}
                   onChange={(value) => handelSelectOption(attribute.id, value)}
                 />
               ))}

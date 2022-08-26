@@ -24,7 +24,6 @@ export enum AttributeDataType {
   ONE_FROM_MANY = 'ONE_FROM_MANY',
 }
 
-
 export interface IAttributeRelatedCategory {
   id: number;
   name: string;
@@ -61,4 +60,15 @@ export interface IAttributes {
     category: IAttributeRelatedCategory;
     attributes: IAttributeItem[];
   }>;
+}
+
+export interface IAttributeColor {
+  id: number;
+  active: boolean;
+  code: string;
+  created_at: string;
+  data: string | null;
+  dictionary_id: number;
+  updated_at: string;
+  value: string;
 }

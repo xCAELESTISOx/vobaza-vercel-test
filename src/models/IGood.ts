@@ -1,8 +1,8 @@
 import type { Image } from './IImage';
 import type { IDictionaryItem } from './IDictionary';
 import type { CategoryStatus } from './ICategory';
-import type { AttributeDataType, IAttribute, IAttributes } from './IAttributes';
-import type { Variant } from 'components/UI/SelectTabs';
+import type { AttributeDataType, IAttribute, IAttributeColor, IAttributes } from './IAttributes';
+import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 
 export enum GoodStatus {
   ACTIVE = 'ACTIVE',
@@ -87,7 +87,7 @@ export interface IVariantProduct {
 
 export interface IVariantsValue {
   is_current: boolean;
-  value: number | string;
+  value: boolean | number | string | string[] | IAttributeColor[];
   product: IVariantProduct;
 }
 
@@ -96,7 +96,6 @@ export interface IVariantsValueFront {
   value: Variant;
   product: IVariantProduct;
 }
-
 
 export interface IGoodVariantsFront {
   variant_products: IVariantProduct[];
@@ -158,7 +157,6 @@ export interface IGood {
     }[];
   };
 
-
   warehouse: {
     id: number;
     name: string;
@@ -176,7 +174,7 @@ export interface IGood {
 }
 export interface IGoodFront extends Omit<IGood, 'variants'> {
   variants: IGoodVariantsFront;
-};
+}
 
 export interface IGoodCompare {
   id: number;

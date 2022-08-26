@@ -22,15 +22,12 @@ interface VariantProps {
 const Variant: FC<VariantProps> = ({ item, active = false }) => {
   return (
     <Link href={`/product/${item.slug}-${item.sku}`}>
-      <div
-        className={`${styles.variant} ${active ? styles.variantActive : ''}`}
-        title={item.slug}
-      >
+      <div className={`${styles.variant} ${active ? styles.variantActive : ''}`} title={item.slug}>
         <div className={styles.variantImg}>
           <Image
             width={48}
             height={48}
-            src={item.main_image?.variants.small.url || PlaceholderImage}
+            src={item.main_image?.variants?.small?.url || PlaceholderImage}
             alt={item.slug}
           />
         </div>
@@ -65,10 +62,7 @@ const ProductVariants: FC<ProductVariantsProps> = ({ id, items = [] }) => {
       </div>
 
       {isOverLimit && (
-        <button
-          className={styles.variantsToggleBtn}
-          onClick={toggleOpen as any}
-        >
+        <button className={styles.variantsToggleBtn} onClick={toggleOpen as any}>
           {!isOpen ? (
             <>
               +{items.length - ITEMS_PER_ROW}

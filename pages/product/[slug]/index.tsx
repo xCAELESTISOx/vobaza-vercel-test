@@ -10,8 +10,7 @@ import { useFavorite } from '../../../src/hooks/useFavorite';
 import { normalizeProductVariants } from 'assets/utils/normalizers/normalizeGoods';
 import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
 import type { IGood } from 'src/models/IGood';
-import type { Variant as SelectVariant } from '@nebo-team/vobaza.ui.inputs.input-select/dist/input-select';
-import type { Variant as TabsVariant } from 'components/UI/SelectTabs';
+import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select/dist/input-select';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
@@ -87,9 +86,9 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
     addToCart();
   };
 
-  const [selectedOptions, setSelectedOptions] = useState<any | null>(null);
+  const [selectedOptions, setSelectedOptions] = useState<Record<number, Variant> | null>(null);
 
-  const handelSelectOption = (name: string, value: SelectVariant | TabsVariant) => {
+  const handelSelectOption = (name: string, value: Variant) => {
     const options = { ...selectedOptions };
 
     options[name] = value;
@@ -102,8 +101,8 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
   };
 
   useEffect(() => {
-    const options = {};
-    if (product.variants && product.variants.variants)
+    let options = {};
+    if (product.variants && product.variants.variants) {
       product.variants.variants.forEach((t) => {
         const currentOption = t.values.find((v) => v.is_current);
         options[t.attribute.id] = {
@@ -121,6 +120,9 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
               : currentOption.value.toString(),
         };
       });
+    } else {
+      options = null;
+    }
 
     setSelectedOptions(options);
   }, [product.variants]);
@@ -187,7 +189,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                   </div>
                 </div>
 
-                {product.variants.variant_products?.length > 1 && (
+                {selectedOptions && (
                   <div className={styles.productOptionList}>
                     <div className={styles.productOption}>
                       <ProductVariants id={product.id} items={product.variants.variant_products} />
