@@ -41,7 +41,7 @@ const CardProductVariants = ({ good, setCurrentImage }: Props) => {
           </Link>
         ))}
       {good.variant_products && good.variant_products.length > 4 && (
-        <Link href="/">
+        <Link href={`/product/${good.slug}-${good.sku}`}>
           <a>
             <div className={styles.cardVariant}>+{good.variant_products.length - 4}</div>
           </a>
