@@ -73,6 +73,10 @@ const normalizeProductInfo = (product) => {
     const newFieldnameValue = computedFields[fieldname](product);
     product[fieldname] = newFieldnameValue;
   }
+
+  product.similar_products = product.similar_products.map((item) => {
+    return { ...item, price: getPrice(item.price) };
+  });
 };
 
 const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
