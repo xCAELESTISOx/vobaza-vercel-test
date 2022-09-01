@@ -18,6 +18,7 @@ type Props = {
 const CartList: FC<Props> = ({ initialGoods, withCountChange = false, setOrderPrice }) => {
   const [goods, setGoods] = useState(initialGoods);
   const [isCountChangeModal, setIsCountChangeModal] = useState(withCountChange);
+  const [errorTitle, setErrorTitle] = useState('');
   const router = useRouter();
   const { dispatch } = useGoods();
 
@@ -26,6 +27,7 @@ const CartList: FC<Props> = ({ initialGoods, withCountChange = false, setOrderPr
   };
   const closeModal = () => {
     setIsCountChangeModal(false);
+    setErrorTitle('');
   };
 
   const deleteItem = async (id: number, quantity: number) => {
@@ -82,6 +84,7 @@ const CartList: FC<Props> = ({ initialGoods, withCountChange = false, setOrderPr
       return res.data.data.changed_quantity;
     } catch (error) {
       if (error.response.data.errors[0].code === '1') {
+        setErrorTitle(error.response.data.errors[0].title);
         setIsCountChangeModal(true);
         throw new Error();
       }
@@ -94,7 +97,9 @@ const CartList: FC<Props> = ({ initialGoods, withCountChange = false, setOrderPr
 
   return (
     <div className={styles.cartList}>
-      {isCountChangeModal && <CartItemChangeModal onClose={closeModal} />}
+      {isCountChangeModal && (
+        <CartItemChangeModal onClose={closeModal} description={errorTitle} title="Количество товара ограничено" />
+      )}
       {goods && goods.length > 0 ? (
         <div className={`${styles.cartContent} ${styles.small}`}>
           <div className={styles.cartHeader}>

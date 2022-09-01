@@ -1,15 +1,62 @@
 import React, { FC, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 
 import { useGoods } from '../../../src/context/goods';
 import { useAuth } from '../../../src/context/auth';
 import type { IMenuItem } from 'src/models/IMenu';
+import type { ICartGood } from 'components/Cart/ListItem';
 
 import { HeaderTop } from './HeaderTop';
 import { HeaderBody } from './HeaderBody';
 import { HeaderMenu } from './HeaderMenu';
 
 import { api } from 'assets/api';
+import checkAuth from 'assets/api/auth';
+
+const getCartData = async () => {
+  let initialGoods: ICartGood[] = [];
+  let initialPrice = 0;
+  let withCountChange = false;
+
+  try {
+    await checkAuth({ cookies: { token: Cookies.get('token') } }, true);
+    const cartRes = await api.getCart();
+
+    const cart = cartRes.data.data;
+
+    initialPrice = cart.order_price / 100;
+    initialGoods = cart.products.map((good) => {
+      return {
+        quantity: good.quantity,
+        price: good.price / 100,
+        list_price: good.list_price / 100,
+        product: {
+          ...good.product,
+          price: good.product.price / 100,
+          list_price: good.product.list_price ? good.product.list_price / 100 : null,
+        },
+      };
+    });
+
+    if (cart.basket_changed) {
+      withCountChange = true;
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      initialGoods,
+      initialPrice,
+      withCountChange,
+    };
+  }
+
+  return {
+    initialGoods,
+    initialPrice,
+    withCountChange,
+  };
+};
 
 type Props = {
   openPhoneCallModal: () => void;
@@ -21,6 +68,7 @@ const Header: FC<Props> = ({ openPhoneCallModal }) => {
   const { dispatch } = useGoods();
   const { state } = useAuth();
   const { isLoggedIn } = state;
+  const router = useRouter();
 
   const setCompareFromCookie = () => {
     const ids = Cookies.get('compareIds');
@@ -84,6 +132,21 @@ const Header: FC<Props> = ({ openPhoneCallModal }) => {
     getGlobalInfo();
     getMenus();
   }, [isLoggedIn]);
+
+  const setCartData = async () => {
+    const cartData = await getCartData();
+
+    const newCartSize = cartData.initialGoods.reduce((acc, item) => acc + item.quantity, 0);
+
+    dispatch({
+      type: 'setCartSize',
+      payload: newCartSize,
+    });
+  };
+
+  useEffect(() => {
+    if (router.asPath !== '/cart') setCartData();
+  }, [router.asPath]);
 
   return (
     <header>

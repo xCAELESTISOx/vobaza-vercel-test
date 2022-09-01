@@ -4,11 +4,13 @@ import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import Cookies from 'js-cookie';
 
+import { useToggle } from 'src/hooks/useToggle';
 import { useAuth } from 'src/context/auth';
 import checkAuth from '../../assets/api/auth';
 import { useGoods } from '../../src/context/goods';
 import { normalizeOrder } from 'assets/utils/normalizers/normalizeOrder';
-import { EOrderDeliveryType, ILocalOrder } from '../../src/models/IOrder';
+import { EOrderDeliveryType } from '../../src/models/IOrder';
+import type { ILocalOrder } from '../../src/models/IOrder';
 import type { ICartGood } from '../../components/Cart/ListItem';
 import type { IProfile } from '../../components/Profile/Data';
 import type { IAddressFull } from 'src/models/IAddress';
@@ -19,9 +21,10 @@ import OrderReceiver from '../../components/Cart/Order/Receiver';
 import OrderAddress from '../../components/Cart/Order/Address';
 import OrderObtaining from '../../components/Cart/Order/Obtaining';
 import OrderPayment from '../../components/Cart/Order/Payment';
+import CartItemChangeModal from 'components/Cart/Modal/CartItemChangeModal';
 
-import styles from '../../styles/Cart.module.scss';
 import { api } from '../../assets/api';
+import styles from '../../styles/Cart.module.scss';
 
 type Props = {
   price: number;
@@ -35,6 +38,7 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
   const { state } = useAuth();
   const formRef = useRef(null);
   const router = useRouter();
+  const [isErrorModalOpen, toggleErrorModal] = useToggle(false);
   const { dispatch } = useGoods();
 
   const initialValues: ILocalOrder = {
@@ -81,9 +85,10 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
 
       router.push(`/checkout/complete?order_id=${res.data.data.number}`);
     } catch (error) {
-      console.error(error);
-
       if (error.response.data.errors) {
+        if (error.response.data.errors[0].code === 'empty_basket') {
+          toggleErrorModal();
+        }
         throw error;
       }
     }
@@ -100,6 +105,13 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
   return (
     <div>
       <div className="container">
+        {isErrorModalOpen && (
+          <CartItemChangeModal
+            title="Данный товар закончился"
+            description="Товар более не доступен, выберите другой"
+            onClose={toggleErrorModal}
+          />
+        )}
         <div className={styles.cartContainer}>
           <h2 className={styles.cartTitle}>Оформление заказа</h2>
           <div className={styles.cartContent}>

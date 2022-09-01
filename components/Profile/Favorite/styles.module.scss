@@ -131,3 +131,10 @@
     margin-top: 0;
   }
 }
+
+.notAavailable {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--error, #e73030);
+  font-weight: 500;
+}

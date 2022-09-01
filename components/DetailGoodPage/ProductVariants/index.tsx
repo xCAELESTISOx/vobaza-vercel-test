@@ -1,4 +1,6 @@
 import React, { FC, useRef } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 
 import { useCollapse } from '../../../src/hooks/useCollapse';
 import { useMatchMedia } from '../../../src/hooks/useMatchMedia';
@@ -9,11 +11,8 @@ import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 
 import styles from './styles.module.scss';
-import Link from 'next/link';
-import Image from 'next/image';
 
 // TODO: Next-image
-
 interface VariantProps {
   item: IVariantProduct;
   active: boolean;

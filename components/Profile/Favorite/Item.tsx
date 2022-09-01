@@ -2,18 +2,19 @@ import { FC, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+import type { Image as IImage } from '../../../src/models/IImage';
+import { getImageVariantProps } from 'assets/utils/images';
 import { toNumberWithSpaces } from '../../../assets/utils/formatters';
-
-import styles from './styles.module.scss';
-import { api } from '../../../assets/api';
 import { useGoods } from '../../../src/context/goods';
 import { useCart } from '../../../src/hooks/useCart';
-import { Image as IImage } from '../../../src/models/IImage';
-import PlaceholderImage from 'assets/images/placeholder_small.png';
-import { getImageVariantProps } from 'assets/utils/images';
 
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
+
+import PlaceholderImage from 'assets/images/placeholder_small.png';
+
+import { api } from '../../../assets/api';
+import styles from './styles.module.scss';
 
 export type FavoriteGood = {
   id: number;
@@ -23,6 +24,7 @@ export type FavoriteGood = {
   price: number;
   list_price?: number;
   main_image?: IImage;
+  is_available: boolean;
 };
 
 type Props = {
@@ -55,18 +57,9 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
       <Link href={`/product/${good.slug}-${good.sku}`}>
         <a className={styles.profileFavoriteItemImage}>
           {good.main_image ? (
-            <Image
-              {...getImageVariantProps(good.main_image.variants, 'small')}
-              objectFit="contain"
-              alt={good.name}
-            />
+            <Image {...getImageVariantProps(good.main_image.variants, 'small')} objectFit="contain" alt={good.name} />
           ) : (
-            <Image
-              src={PlaceholderImage}
-              objectFit="contain"
-              alt=""
-              unoptimized
-            />
+            <Image src={PlaceholderImage} objectFit="contain" alt="" unoptimized />
           )}
         </a>
       </Link>
@@ -77,32 +70,25 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
           </Link>
           {/* <div className={styles.profileFavoriteItemInfo}>{item.info}</div> */}
         </div>
-        <Icon
-          className={styles.profileFavoriteItemDelete}
-          name="Trash"
-          onClick={removeFromFavorite}
-        />
+        <Icon className={styles.profileFavoriteItemDelete} name="Trash" onClick={removeFromFavorite} />
       </div>
       <div className={styles.profileFavoriteItemRight}>
         <div className={styles.profileFavoriteItemPricesBlock}>
           <div className={styles.profileFavoriteItemPrices}>
             {good.list_price && (
-              <div className={styles.profileFavoriteItemPriceOld}>
-                {toNumberWithSpaces(good.list_price)} ₽
-              </div>
+              <div className={styles.profileFavoriteItemPriceOld}>{toNumberWithSpaces(good.list_price)} ₽</div>
             )}
-            <div className={styles.profileFavoriteItemPrice}>
-              {toNumberWithSpaces(good.price)} ₽
-            </div>
+            <div className={styles.profileFavoriteItemPrice}>{toNumberWithSpaces(good.price)} ₽</div>
           </div>
-          <Icon
-            className={styles.profileFavoriteItemDelete}
-            name="Trash"
-            onClick={removeFromFavorite}
-          />
+          <Icon className={styles.profileFavoriteItemDelete} name="Trash" onClick={removeFromFavorite} />
         </div>
+
         <div className={styles.profileFavoriteItemCart}>
-          <Button text="В корзину" onClick={addToCartHandler} />
+          {good.is_available ? (
+            <Button text="В корзину" onClick={addToCartHandler} />
+          ) : (
+            <div className={styles.notAavailable}>Нет в наличии</div>
+          )}
         </div>
       </div>
     </div>
