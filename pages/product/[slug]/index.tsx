@@ -79,6 +79,16 @@ const normalizeProductInfo = (product) => {
   });
 };
 
+const normalizeProductAttributes = (productAttributes) => {
+  const additional = productAttributes.additional.filter((attrItem) => {
+    const newItemAttrs = attrItem.attributes.filter((item) => !!item.value);
+
+    return newItemAttrs.length > 0;
+  });
+
+  return { ...productAttributes, additional };
+};
+
 const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
   const { currentFavorite, toggleFavorite } = useFavorite(product);
   const { addToCart } = useCart(product);
@@ -251,11 +261,13 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                   </div>
                 )}
 
-                <div className={styles.productAccordionBlock}>
-                  <ProductInfoAccordion title="Характеристики и размеры" autoDuration>
-                    <ProductAttributes attributes={product.attributes} />
-                  </ProductInfoAccordion>
-                </div>
+                {(!!product.attributes.additional?.length || !!product.attributes.main?.length) && (
+                  <div className={styles.productAccordionBlock}>
+                    <ProductInfoAccordion title="Характеристики и размеры" autoDuration>
+                      <ProductAttributes attributes={product.attributes} />
+                    </ProductInfoAccordion>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -312,12 +324,14 @@ export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({ q
 
   try {
     const productRes = await api.getGoodBySlug(slug);
-    const product = productRes.data.data;
+    let product = productRes.data.data;
 
     const attributesRes = await api.getGoodAttributes(product.id);
     normalizeProductInfo(product);
 
-    product.attributes = attributesRes.data.data;
+    const attributes = normalizeProductAttributes(attributesRes.data.data);
+
+    product = { ...product, attributes };
 
     breadcrumbs.push({
       title: product.main_category.name,
