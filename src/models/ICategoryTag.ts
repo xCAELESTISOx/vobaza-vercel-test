@@ -10,4 +10,6 @@ export interface ICategoryTag {
   page_title?: string;
   filter: ITagFitlerFront;
   tags?: ICategoryTag[];
+  type: 'FILTER' | 'REDIRECT';
+  redirect_url?: string
 }

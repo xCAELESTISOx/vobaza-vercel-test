@@ -1,6 +1,7 @@
 import React from 'react';
 
 import type { ICategoryTag } from 'src/models/ICategoryTag';
+import { useAdvancedRouter } from 'assets/utils/useAdvancedRouter';
 
 import styles from './styles.module.scss';
 
@@ -11,8 +12,9 @@ type Props = {
 };
 
 export const CategoryTagItem = ({ isActive, tag, onClick }: Props) => {
+  const { router } = useAdvancedRouter();
   const onClickHandler = () => {
-    onClick(tag.id);
+    tag.type === 'REDIRECT' ? router.push(tag.redirect_url || '/') : onClick(tag.id);
   };
 
   return (

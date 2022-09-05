@@ -23,6 +23,7 @@ export const mockCategoryTags: ICategoryTag[] = [
           type: 'NUMERIC_RANGE',
           values: [100, 200],
         },
+        type: 'FILTER',
       },
       {
         id: 3,
@@ -34,8 +35,11 @@ export const mockCategoryTags: ICategoryTag[] = [
           type: 'NUMERIC_RANGE',
           values: [1, 100],
         },
+        type: 'FILTER',
       },
+
     ],
+    type: 'FILTER',
   },
   {
     id: 4,
@@ -47,5 +51,8 @@ export const mockCategoryTags: ICategoryTag[] = [
       type: 'LISTED',
       values: ['Серый'],
     },
+    type: 'FILTER',
   },
+
+
 ];
