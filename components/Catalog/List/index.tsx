@@ -10,56 +10,32 @@ import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 
 import styles from './styles.module.scss';
+import { useRouter } from 'next/router';
 
 type Props = {
   list: ICategory[];
 };
 
-const getHref = (category: ICategory) => {
-  const newAncestors = category.ancestors?.reduce(
-    (acc, ancestor, i) => {
-      if (ancestor.parent_id) {
-        const index = acc.findIndex((item) => item.id === ancestor.parent_id);
-
-        const newAcc = [...acc];
-
-        if (index > -1 && !newAcc[i].slug.includes(newAcc[index].slug + '/')) {
-          newAcc[i].slug = newAcc[index].slug + '/' + newAcc[i].slug + '/' + category.slug;
-        }
-
-        return newAcc;
-      } else {
-        return acc;
-      }
-    },
-    [...category.ancestors]
-  );
-
-  if (!newAncestors) {
-    return category.slug;
-  } else {
-    return newAncestors?.length > 1
-      ? newAncestors.filter((item) => item.parent_id)[0].slug
-      : newAncestors[0].slug + '/' + category.slug;
-  }
-};
-
-const normalizeCategories = (categories: ICategory[]) => {
-  const newCategories = categories.map((item) => ({ ...item, slug: `/${getHref(item)}` }));
-  return newCategories;
+const getHref = (routerPath: string, category: ICategory) => {
+  const index = routerPath.indexOf('?');
+  if (!category.ancestors?.length) return '/' + category.slug;
+  const path = index > -1 ? routerPath.slice(0, index) : routerPath;
+  return path + '/' + category.slug;
 };
 
 const CatalogList: FC<Props> = ({ list }) => {
-  const [categoryiesList, setCategoryiesList] = useState(normalizeCategories(list));
+  const [categoryiesList, setCategoryiesList] = useState(list);
 
   useEffect(() => {
-    setCategoryiesList(normalizeCategories(list));
+    setCategoryiesList(list);
   }, [list]);
+
+  const router = useRouter();
 
   return (
     <nav className={styles.catalog}>
       {categoryiesList.map((category) => (
-        <Link key={category.id} href={category.slug}>
+        <Link key={category.id} href={getHref(router.asPath, category)}>
           <a className={styles.category}>
             <div className={styles.categoryImage}>
               {category.image ? (
