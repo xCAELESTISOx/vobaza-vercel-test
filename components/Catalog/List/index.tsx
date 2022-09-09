@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import type { ICategory } from '../../../src/models/ICategory';
 import { getImageVariantProps } from 'assets/utils/images';
@@ -10,7 +11,6 @@ import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 
 import styles from './styles.module.scss';
-import { useRouter } from 'next/router';
 
 type Props = {
   list: ICategory[];
