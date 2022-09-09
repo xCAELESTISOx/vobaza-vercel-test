@@ -1,14 +1,15 @@
 import React from 'react';
 
-import { ILocalOrderDelivery } from 'src/models/IOrder';
+import type { ILocalOrderDelivery } from 'src/models/IOrder';
 import type { ICartGood } from 'components/Cart/ListItem';
+import { normalizeTimeSlots } from 'assets/utils/normalizers/normalizeTimeSlots';
 
 import { InputCalendar } from 'components/UI/InputCalendar';
+import DeliveryItems from '../ObtainingDeliveryParts/DeliveryItems';
 import { InputSelect, Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 import { Button } from '@nebo-team/vobaza.ui.button';
 
 import styles from './../styles.module.scss';
-import DeliveryItems from '../ObtainingDeliveryParts/DeliveryItems';
 
 const selfDeliveryTimeSlots: Variant<string>[] = [
   { code: null, value: 'Нет' },
@@ -28,6 +29,7 @@ interface IProps {
 }
 
 export const ObtainingSelfDelivery = ({ minDate, onDateSelect, setTime, delivery, goods }: IProps) => {
+  const normalizedTimeSlots = normalizeTimeSlots(selfDeliveryTimeSlots);
   return (
     <>
       {delivery && (
@@ -49,7 +51,7 @@ export const ObtainingSelfDelivery = ({ minDate, onDateSelect, setTime, delivery
                 name="time"
                 label="Время самовывоза"
                 currentValue={delivery.time}
-                variants={selfDeliveryTimeSlots}
+                variants={normalizedTimeSlots}
                 onChange={setTime}
                 keyField="value"
               />
