@@ -17,7 +17,8 @@ type Props = {
 };
 
 const getHref = (routerPath: string, category: ICategory) => {
-  const index = routerPath.indexOf('?');
+  const index = routerPath.split('').findIndex((item) => item === '?');
+
   if (!category.ancestors?.length) return '/' + category.slug;
   const path = index > -1 ? routerPath.slice(0, index) : routerPath;
   return path + '/' + category.slug;
@@ -25,12 +26,11 @@ const getHref = (routerPath: string, category: ICategory) => {
 
 const CatalogList: FC<Props> = ({ list }) => {
   const [categoryiesList, setCategoryiesList] = useState(list);
+  const router = useRouter();
 
   useEffect(() => {
     setCategoryiesList(list);
   }, [list]);
-
-  const router = useRouter();
 
   return (
     <nav className={styles.catalog}>
