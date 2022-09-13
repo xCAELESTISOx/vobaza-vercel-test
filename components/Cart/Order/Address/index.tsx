@@ -54,18 +54,8 @@ const OrderAddress: FC<Props> = ({ address, addresses, setFieldValue }) => {
           <Icon name="Geoposition" />
           <span>{address.address}</span>
         </div>
-        <div className={styles.cartButton}>
-          <Button
-            text="Изменить"
-            color="#fafafa"
-            isFullScreen
-            style={{
-              color: '#af1ebe',
-              backgroundColor: ' #f2f2f2',
-              border: '1px solid #f2f2f2',
-              fontWeight: 500,
-            }}
-          />
+        <div className={styles.cartButtonWrapper}>
+          <Button className={styles.cartButton} text="Изменить" color="#fafafa" isFullScreen />
         </div>
       </div>
     </div>

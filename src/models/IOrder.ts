@@ -15,7 +15,7 @@ export enum EOrderDeliveryType {
   none = 'NONE',
   normal = 'NORMAL',
   express = 'EXPRESS',
-  self = 'SELF'
+  self = 'SELF',
 }
 export interface IOrderAddress extends Omit<IAddressFull, 'id' | 'is_default'> {
   id?: number;
@@ -27,7 +27,10 @@ export interface IOrderCustomer {
   email?: string;
 }
 
-export interface ITimeInterval { from: string; to: string };
+export interface ITimeInterval {
+  from: string;
+  to: string;
+}
 
 export interface IOrderDelivery {
   type: EOrderDeliveryType;
@@ -54,9 +57,12 @@ export interface IDeliveryVariants {
   types?: IDeliveryType[];
 }
 
-
 export interface ILocalOrder {
   delivery: ILocalOrderDelivery | null;
+  self_delivery?: {
+    date: string;
+    time_interval: ITimeInterval;
+  };
   address: IOrderAddress;
   // customer: IReceiver;
   recipient?: {
@@ -68,7 +74,7 @@ export interface ILocalOrder {
     product_ids?: number[];
     /** Используется, если нет product_ids */
     full_order?: boolean;
-  };
+  } | null;
   /** Если lift Не передается, значит услуга подъёма на этаж не требуется */
   lift?: {
     elevator: ElevatorType;
@@ -86,27 +92,27 @@ export interface IOrder {
     image: Image;
   }[];
   obtaining: {
-    obtaining_type: 'DELIVERY' | 'SELF_DELIVERY'
+    obtaining_type: 'DELIVERY' | 'SELF_DELIVERY';
     delivery?: IOrderDelivery;
     self_delivery?: {
-      date: string,
-      time_interval: ITimeInterval
-    }
-  }
+      date: string;
+      time_interval: ITimeInterval;
+    };
+  };
 }
 export interface IFullOrderDelivery {
   address: {
-    address: string,
-    flat: string | number,
-    entrance: string | number,
-    floor: number,
-    intercom: string | number,
-    elevator: ElevatorType
-  },
-  status: string,
-  type: string
-  time_interval: ITimeInterval,
-  date?: string
+    address: string;
+    flat: string | number;
+    entrance: string | number;
+    floor: number;
+    intercom: string | number;
+    elevator: ElevatorType;
+  };
+  status: string;
+  type: string;
+  time_interval: ITimeInterval;
+  date?: string;
 }
 
 export enum OrderStatusType {
@@ -126,57 +132,57 @@ export enum OrderStatusType {
 export enum EOrderPaymentStatus {
   NOT_PAID = 'NOT_PAID',
   PAID = 'PAID',
-  PARTIALLY_PAID = 'PARTIALLY_PAID'
+  PARTIALLY_PAID = 'PARTIALLY_PAID',
 }
 
 export enum EOrderPaymentMethod {
   CARD = 'CARD',
   CASH = 'CASH',
-  BANK_WIRE = 'BANK_WIRE'
+  BANK_WIRE = 'BANK_WIRE',
 }
 export interface IOrderItemFull {
   id: number | string;
-  number: string,
-  order_date: string,
-  customer: IOrderCustomer,
-  price: number,
-  status: keyof typeof OrderStatusType,
+  number: string;
+  order_date: string;
+  customer: IOrderCustomer;
+  price: number;
+  status: keyof typeof OrderStatusType;
   payment: {
-    status: string,
-    type: string,
-    method: string
-  },
+    status: string;
+    type: string;
+    method: string;
+  };
   obtaining: {
-    obtaining_type: 'DELIVERY' | 'SELF_DELIVERY',
-    delivery?: IFullOrderDelivery,
+    obtaining_type: 'DELIVERY' | 'SELF_DELIVERY';
+    delivery?: IFullOrderDelivery;
     self_delivery?: {
-      date: string,
-      time_interval: ITimeInterval
-    }
-  },
+      date: string;
+      time_interval: ITimeInterval;
+    };
+  };
   products: {
-    name: string,
-    sku: string,
-    quantity: number,
-    item_price: number,
-    price: number,
-    item_list_price: number,
-    image: Image
-  }[],
-  item_list_price: number,
+    name: string;
+    sku: string;
+    quantity: number;
+    item_price: number;
+    price: number;
+    item_list_price: number;
+    image: Image;
+  }[];
+  item_list_price: number;
   recipient: {
-    name: string,
-    phone: string
-  }
+    name: string;
+    phone: string;
+  };
 }
 
 export interface ICreateOrder {
   customer: IOrderCustomer;
-  
+
   obtaining: {
-    obtaining_type: "DELIVERY" | "SELF_DELIVERY",
+    obtaining_type: 'DELIVERY' | 'SELF_DELIVERY';
     delivery?: IOrderDelivery;
-  }
+  };
   recipient?: {
     name: string;
     phone: string;

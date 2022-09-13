@@ -15,18 +15,12 @@ const OrderPayment: FC = () => {
 
   return (
     <div className={styles.orderPayment}>
-      <OrderPaymentDrawer
-        onClose={toggleChangePaymentDrawer}
-        isOpen={isDrawer}
-      />
+      <OrderPaymentDrawer onClose={toggleChangePaymentDrawer} isOpen={isDrawer} />
       <div className={styles.cartContent}>
         <div className={styles.cartHeader}>
           <h2 className={styles.cartTitle}>Способ оплаты</h2>
           <div className={styles.cartHeaderButtons}>
-            <button
-              className={styles.cartHeaderButton}
-              onClick={toggleChangePaymentDrawer}
-            >
+            <button className={styles.cartHeaderButton} onClick={toggleChangePaymentDrawer}>
               Изменить
             </button>
           </div>
@@ -35,18 +29,8 @@ const OrderPayment: FC = () => {
           <Icon name="Wallet" />
           <span>При получении</span>
         </div>
-        <div className={styles.cartButton}>
-          <Button
-            text="Изменить"
-            color="#fafafa"
-            isFullScreen
-            style={{
-              color: '#af1ebe',
-              backgroundColor: ' #f2f2f2',
-              border: '1px solid #f2f2f2',
-              fontWeight: 500,
-            }}
-          />
+        <div className={styles.cartButtonWrapper}>
+          <Button className={styles.cartButton} text="Изменить" color="#fafafa" isFullScreen />
         </div>
       </div>
     </div>

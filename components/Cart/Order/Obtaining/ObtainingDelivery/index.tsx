@@ -9,8 +9,9 @@ import { normalizeTimeSlots } from 'assets/utils/normalizers/normalizeTimeSlots'
 import { InputCalendar } from 'components/UI/InputCalendar';
 import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select';
 import { Button } from '@nebo-team/vobaza.ui.button';
-import DeliveryLiftingAssembly from '../ObtainingDeliveryParts/DeliveryLiftingAssembly';
+import DeliveryAssembly from '../ObtainingDeliveryParts/DeliveryAssembly';
 import DeliveryItems from '../ObtainingDeliveryParts/DeliveryItems';
+import DeliveryLift from '../ObtainingDeliveryParts/DeliveryLift';
 
 import styles from './../styles.module.scss';
 
@@ -71,30 +72,22 @@ export const ObtainingDelivery = ({
             </div>
           </div>
 
-          <DeliveryLiftingAssembly
-            address={address}
-            setFieldValue={setFieldValue}
-            assemblyPrice={assemblyPrice}
-            liftPrice={liftPrice}
-            goods={goods}
-            lift={lift}
-            setAssemblyPrice={setAssemblyPrice}
-          />
+          <div className={styles.orderDeliverySubblock}>
+            <h2 className={styles.orderDeliverySubblockTitle}>Подъем и сборка</h2>
+            <DeliveryLift address={address} liftPrice={liftPrice} lift={lift} setFieldValue={setFieldValue} />
+            <DeliveryAssembly
+              goods={goods}
+              assemblyPrice={assemblyPrice}
+              address={address}
+              setAssemblyPrice={setAssemblyPrice}
+              setFieldValue={setFieldValue}
+            />
+          </div>
         </>
       )}
       <DeliveryItems goods={goods} />
-      <div className={styles.cartButton}>
-        <Button
-          text="Изменить"
-          color="#fafafa"
-          isFullScreen
-          style={{
-            color: '#af1ebe',
-            backgroundColor: ' #f2f2f2',
-            border: '1px solid #f2f2f2',
-            fontWeight: 500,
-          }}
-        />
+      <div className={styles.cartButtonWrapper}>
+        <Button className={styles.cartButton} text="Изменить" color="#fafafa" isFullScreen />
       </div>
     </>
   );

@@ -73,7 +73,8 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
     const userId = values.address?.id;
 
     try {
-      const data = normalizeOrder(values, token, customer, userId, goods);
+      const data = normalizeOrder(values, token, customer, userId);
+
       let res = null;
 
       if (token) {
@@ -163,12 +164,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => 
     ]);
     const cart = cartRes.data.data;
 
-    if (propfileRes) {
-      user = propfileRes.data.data;
-    }
-    if (addressesRes) {
-      addresses = addressesRes.data.data;
-    }
+    if (propfileRes) user = propfileRes.data.data;
+    if (addressesRes) addresses = addressesRes.data.data;
+
     goods = cart.products;
     price = cart.order_price / 100;
     weight = cart.order_weight / 1000;

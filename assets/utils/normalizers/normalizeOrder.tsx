@@ -1,11 +1,10 @@
-import { EOrderDeliveryType, ILocalOrderDelivery, ITimeInterval } from 'src/models/IOrder';
+import { EOrderDeliveryType } from 'src/models/IOrder';
+import type { ILocalOrderDelivery, IOrderAddress, ITimeInterval } from 'src/models/IOrder';
 import type { ILocalOrder } from 'src/models/IOrder';
 import type { IReceiver } from 'components/Cart/Order/Receiver';
-import type { ICartGood } from 'components/Cart/ListItem';
 
-const convertDeliveryDate = (delivery: ILocalOrderDelivery): string => {
-  if (delivery && delivery.date) {
-    const { date } = delivery;
+const convertDeliveryDate = (date?: ILocalOrderDelivery['date']): string => {
+  if (date) {
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
@@ -15,31 +14,46 @@ const convertDeliveryDate = (delivery: ILocalOrderDelivery): string => {
   return undefined;
 };
 
-const convertDeliveryTime = (delivery: ILocalOrderDelivery): ITimeInterval | null => {
-  if (!delivery?.time?.code) return undefined;
+const convertDeliveryTime = (time?: ILocalOrderDelivery['time']): ITimeInterval | null => {
+  if (!time?.code) return undefined;
 
-  const splitedTimeSlot = delivery.time.value.split('-');
+  const splitedTimeSlot = time.value.split('-');
   return {
     from: splitedTimeSlot[0],
     to: splitedTimeSlot[1],
   };
 };
 
-export const normalizeOrder = (
-  data: ILocalOrder,
-  token: string,
-  customer: IReceiver,
-  userAddressId?: number,
-  goods?: ICartGood[]
-) => {
+const normalizeAddressAndLift = (address: IOrderAddress, lift: ILocalOrder['lift'], authorized: boolean) => {
+  if (authorized) {
+    return {
+      ...(lift && {
+        lift: {
+          ...(lift && lift?.elevator && { elevator: lift?.elevator }),
+          ...(address.floor && { floor: address.floor }),
+        },
+      }),
+    };
+  }
+
+  return {
+    address: {
+      ...address,
+      ...(address.floor && { floor: address.floor }),
+      ...(lift && lift?.elevator && { elevator: lift?.elevator }),
+    },
+  };
+};
+
+export const normalizeOrder = (data: ILocalOrder, token: string, customer: IReceiver, userAddressId?: number) => {
   const { delivery, assembly, address, lift } = data;
 
+  const isAssembly = Boolean(assembly?.product_ids?.length || assembly?.full_order);
   const isSelfDelivery = delivery?.tag === EOrderDeliveryType.self;
 
-  const assemblyProductIds = !isSelfDelivery && assembly?.full_order ? goods.map((item) => item.product.id) : [];
-
-  const deliveryDate = convertDeliveryDate(delivery);
-  const time = convertDeliveryTime(delivery);
+  const newAddressAndLift = normalizeAddressAndLift(address, lift, Boolean(token));
+  const newTime = convertDeliveryTime(delivery?.time);
+  const newDate = convertDeliveryDate(delivery?.date);
 
   const newData = {
     obtaining: {
@@ -49,39 +63,23 @@ export const normalizeOrder = (
             delivery: {
               type: delivery ? delivery?.tag : EOrderDeliveryType.none,
               ...(lift && { lift: { full_order: true } }),
-              date: deliveryDate,
-              time_interval: time,
-              ...(token
-                ? {
-                    address_id: userAddressId,
-                    ...(lift && {
-                      lift: {
-                        ...(lift && lift?.elevator && { elevator: lift?.elevator }),
-                        ...(address.floor && { floor: address.floor }),
-                      },
-                    }),
-                  }
-                : {
-                    address: {
-                      ...address,
-                      ...(address.floor && { floor: address.floor }),
-                      ...(lift && lift?.elevator && { elevator: lift?.elevator }),
-                    },
-                  }),
+              date: newDate,
+              time_interval: newTime,
+              address_id: userAddressId,
+              ...newAddressAndLift,
             },
           }
         : {
             self_delivery: {
-              date: deliveryDate,
-              time_interval: time,
-              ...(token && { address_id: userAddressId }),
+              date: newDate,
+              time_interval: newTime,
+              address_id: userAddressId,
             },
           }),
-
-      ...(!!assembly && !!assemblyProductIds.length && !!assembly?.full_order && { assembly: assemblyProductIds }),
     },
     ...(!token && { customer }),
     ...(customer.recipient && { recipient: customer.recipient }),
+    ...(isAssembly && { assembly }),
   } as any;
 
   return newData;

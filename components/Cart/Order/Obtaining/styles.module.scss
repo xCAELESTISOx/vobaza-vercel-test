@@ -1,4 +1,5 @@
-@import '../../styles.module.scss';
+@import "~styles/variables.global.scss";
+@import "./../../styles.module.scss";
 
 .orderDeliveryText {
   align-items: center;
@@ -19,7 +20,7 @@
   align-items: center;
   margin-left: 4px;
   line-height: 24px;
-  color: #808080;
+  color: $grey-50;
   white-space: nowrap;
   margin-bottom: 8px;
 
@@ -134,12 +135,12 @@
   }
 
   &:hover {
-    color: #af1ebe;
+    color: $logo-color;
     background: rgba(175, 30, 190, 0.1);
   }
   &.active {
     font-weight: 400;
-    color: #af1ebe;
+    color: $logo-color;
     background: #f3ddf5;
   }
 
@@ -178,7 +179,7 @@
 .orderDeliveryTableItemImage {
   min-width: 40px;
   min-height: 40px;
-  background-color: #808080;
+  background-color: $grey-50;
 }
 .orderDeliveryTableItemText {
   margin-left: 20px;
