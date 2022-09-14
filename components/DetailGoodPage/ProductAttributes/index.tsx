@@ -96,7 +96,12 @@ const AttributesBlock: FC<AttributesBlock> = (props) => {
   return (
     <div className={styles.attributesBlock}>
       <div className={styles.attributesBlockTitle}>{title}</div>
-      <div>{attributes && attributes.map((item) => <AttributeItem key={item.attribute.id} data={item} />)}</div>
+      <div>
+        {attributes &&
+          attributes.map((item) => {
+            return item.value ? <AttributeItem key={item.attribute.id} data={item} /> : null;
+          })}
+      </div>
     </div>
   );
 };
