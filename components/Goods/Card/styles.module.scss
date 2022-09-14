@@ -17,6 +17,10 @@
   margin: -24px;
   padding: 24px;
 
+  @media screen and (max-width: 1024px) {
+    margin: -20px;
+  }
+
   @media screen and (min-width: 768px) {
     &:hover {
       position: absolute;
@@ -91,10 +95,12 @@
 .cardImage {
   position: relative;
   text-align: center;
-  max-height: 260px;
+  max-height: 278px;
+  max-width: 278px;
   overflow: hidden;
   display: flex;
   align-items: center;
+  justify-content: center;
 
   img {
     border-radius: 8px;

@@ -104,6 +104,8 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
                       'medium'
                     )}
                     {...displayImageSize}
+                    height={278}
+                    width={278}
                     objectFit="contain"
                     alt={good.name}
                   />
