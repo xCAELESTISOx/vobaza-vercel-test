@@ -242,6 +242,8 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                 <GoodsList goods={product.set} />
               </div>
             )}
+          </div>
+          <div className="container container--for-cards">
             {product.similar_products && product.similar_products.length > 0 && (
               <div className={styles.productBlockList}>
                 <h2 className={styles.productBlockTitle}>Похожие товары </h2>

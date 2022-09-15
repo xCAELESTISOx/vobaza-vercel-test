@@ -79,7 +79,7 @@ export default function Catalog({
       <div className={styles.homePage}>
         <Breadcrumbs breadcrumbs={breadcrumbs} />
         <section>
-          <div className="container">
+          <div className="container container--for-cards">
             <CategoryHead category={category} currentTag={currentTag} isExpress={isExpress} />
             <GoodsBlock
               categorySlug={category.slug}
