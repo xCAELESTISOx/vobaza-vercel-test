@@ -15,6 +15,7 @@ import {
 import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
 import type { IGood } from 'src/models/IGood';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select/dist/input-select';
+import type { IAttributeColor } from 'src/models/IAttributes';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
@@ -39,6 +40,9 @@ import GoodsList from 'components/Goods/List';
 import { api } from '../../../assets/api';
 import styles from './styles.module.scss';
 
+const booleanVariantToText = (value: string | number | boolean | string[] | IAttributeColor[]) => {
+  return typeof value === 'boolean' ? (value ? 'YES' : 'NO') : value.toString();
+};
 interface DetailGoodPage {
   product: IGood;
   breadcrumbs: BreadcrumbType[];
@@ -46,6 +50,7 @@ interface DetailGoodPage {
 
 const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
   const { currentFavorite, toggleFavorite } = useFavorite(product);
+  const [selectedOptions, setSelectedOptions] = useState<Record<number, Variant> | null>(null);
   const { addToCart } = useCart(product);
   const { dispatch } = useGoods();
 
@@ -54,8 +59,6 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
   const addToCartHandler = () => {
     addToCart();
   };
-
-  const [selectedOptions, setSelectedOptions] = useState<Record<number, Variant> | null>(null);
 
   const handelSelectOption = (name: string, value: Variant) => {
     const options = { ...selectedOptions };
@@ -75,18 +78,8 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
       product.variants.variants.forEach((t) => {
         const currentOption = t.values.find((v) => v.is_current);
         options[t.attribute.id] = {
-          code:
-            typeof currentOption.value === 'boolean'
-              ? currentOption.value
-                ? 'YES'
-                : 'NO'
-              : currentOption.value.toString(),
-          value:
-            typeof currentOption.value === 'boolean'
-              ? currentOption.value
-                ? 'YES'
-                : 'NO'
-              : currentOption.value.toString(),
+          code: booleanVariantToText(currentOption.value),
+          value: booleanVariantToText(currentOption.value),
         };
       });
     } else {
