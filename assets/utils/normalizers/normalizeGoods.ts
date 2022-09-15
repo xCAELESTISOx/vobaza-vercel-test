@@ -1,20 +1,16 @@
 import type { IGood, IGoodCard, IGoodVariantsFront, IVariantsValue } from '../../../src/models/IGood';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
-import { AttributeDataType, IAttributeColor } from 'src/models/IAttributes';
+import type { IAttributeColor } from 'src/models/IAttributes';
+import { AttributeDataType } from 'src/models/IAttributes';
 
-export default function normalizeGoods(goods: IGood[] | IGoodCard[]) {
-  return goods.map((good) => ({
-    ...good,
-    price: good.price / 100,
-    list_price: good.list_price ? good.list_price / 100 : null,
-  }));
-}
+const getPrice = (price: number) => {
+  return price / 100;
+};
 
 export const normalizeProductVariants = (productVariantsObj: IGood['variants']): IGoodVariantsFront => {
   const convertVariantValue = (val: IVariantsValue['value'], dataType: AttributeDataType): Variant => {
     let code = '';
     let value = '';
-    // console.log(v);
 
     switch (dataType) {
       case AttributeDataType.BOOLEAN:
@@ -55,3 +51,60 @@ export const normalizeProductVariants = (productVariantsObj: IGood['variants']):
 
   return { ...productVariantsObj, variants: variantsList };
 };
+
+export const normalizeProductInfo = (productObject) => {
+  const newProduct = { ...productObject };
+  const normalizeProductRules = {
+    price: getPrice,
+    list_price: getPrice,
+    labels: (labels) => labels.filter((l) => l.active).map((l) => l.code),
+  };
+
+  const computedFields = {
+    creditMinimalPayment: (product) => {
+      return Math.round(product.price / 12);
+    },
+    loyaltyBonus: (product) => {
+      return Math.ceil(product.price * 0.1);
+    },
+    inStonk: (product) => {
+      return product.quantity > 0;
+    },
+  };
+
+  for (const fieldname in normalizeProductRules) {
+    const normalizer = normalizeProductRules[fieldname];
+
+    if (!!newProduct[fieldname] || newProduct[fieldname] === 0)
+      newProduct[fieldname] = normalizer(newProduct[fieldname]);
+  }
+
+  for (const fieldname in computedFields) {
+    const newFieldnameValue = computedFields[fieldname](newProduct);
+    newProduct[fieldname] = newFieldnameValue;
+  }
+
+  newProduct.similar_products = newProduct.similar_products.map((item) => {
+    return { ...item, price: getPrice(item.price), list_price: getPrice(item.list_price) };
+  });
+
+  return newProduct;
+};
+
+export const normalizeProductAttributes = (productAttributes) => {
+  const additional = productAttributes.additional.filter((attrItem) => {
+    const newItemAttrs = attrItem.attributes.filter((item) => !!item.value);
+
+    return newItemAttrs.length > 0;
+  });
+
+  return { ...productAttributes, additional };
+};
+
+export default function normalizeGoods(goods: IGood[] | IGoodCard[]) {
+  return goods.map((good) => ({
+    ...good,
+    price:  getPrice(good.price),
+    list_price: good.list_price ? getPrice(good.list_price) : null,
+  }));
+}

@@ -7,7 +7,11 @@ import { useCart } from '../../../src/hooks/useCart';
 import { useGoods } from 'src/context/goods';
 import { mockProduct } from '../../../src/mock/detailProductPage';
 import { useFavorite } from '../../../src/hooks/useFavorite';
-import { normalizeProductVariants } from 'assets/utils/normalizers/normalizeGoods';
+import {
+  normalizeProductAttributes,
+  normalizeProductInfo,
+  normalizeProductVariants,
+} from 'assets/utils/normalizers/normalizeGoods';
 import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
 import type { IGood } from 'src/models/IGood';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select/dist/input-select';
@@ -39,55 +43,6 @@ interface DetailGoodPage {
   product: IGood;
   breadcrumbs: BreadcrumbType[];
 }
-
-const getPrice = (price: number) => {
-  return price / 100;
-};
-
-const normalizeProductInfo = (product) => {
-  const normalizeProductRules = {
-    price: getPrice,
-    list_price: getPrice,
-    labels: (labels) => labels.filter((l) => l.active).map((l) => l.code),
-  };
-
-  const computedFields = {
-    creditMinimalPayment: (product) => {
-      return Math.round(product.price / 12);
-    },
-    loyaltyBonus: (product) => {
-      return Math.ceil(product.price * 0.1);
-    },
-    inStonk: (product) => {
-      return product.quantity > 0;
-    },
-  };
-
-  for (const fieldname in normalizeProductRules) {
-    const normalizer = normalizeProductRules[fieldname];
-
-    if (!!product[fieldname] || product[fieldname] === 0) product[fieldname] = normalizer(product[fieldname]);
-  }
-
-  for (const fieldname in computedFields) {
-    const newFieldnameValue = computedFields[fieldname](product);
-    product[fieldname] = newFieldnameValue;
-  }
-
-  product.similar_products = product.similar_products.map((item) => {
-    return { ...item, price: getPrice(item.price) };
-  });
-};
-
-const normalizeProductAttributes = (productAttributes) => {
-  const additional = productAttributes.additional.filter((attrItem) => {
-    const newItemAttrs = attrItem.attributes.filter((item) => !!item.value);
-
-    return newItemAttrs.length > 0;
-  });
-
-  return { ...productAttributes, additional };
-};
 
 const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
   const { currentFavorite, toggleFavorite } = useFavorite(product);
@@ -324,10 +279,10 @@ export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({ q
 
   try {
     const productRes = await api.getGoodBySlug(slug);
-    let product = productRes.data.data;
+
+    let product = normalizeProductInfo(productRes.data.data);
 
     const attributesRes = await api.getGoodAttributes(product.id);
-    normalizeProductInfo(product);
 
     const attributes = normalizeProductAttributes(attributesRes.data.data);
 
