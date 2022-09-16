@@ -64,7 +64,7 @@ export const normalizeOrder = (data: ILocalOrder, token: string, customer: IRece
         ? {
             delivery: {
               type: delivery ? delivery?.tag : EOrderDeliveryType.none,
-              lift,
+              ...(lift && { lift: { full_order: true } }),
               date: newDate,
               time_interval: newTime,
               address_id: userAddressId,
