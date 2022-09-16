@@ -252,7 +252,7 @@ const OrderReceiver: FC<Props> = forwardRef(({ initialUser, createOrder }, ref) 
               <InputPhone
                 label="Номер телефона получателя"
                 name="recipient.phone"
-                value={values.recipient?.phone || ''}
+                value={values.recipient?.phone || '+7'}
                 onChange={handleOtherPhoneChange}
                 onBlur={handleBlur}
                 error={errors?.recipient?.phone || ''}
