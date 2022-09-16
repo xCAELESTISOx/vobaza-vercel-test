@@ -32,22 +32,13 @@ const CategoriesList: FC<Props> = ({ categories }) => {
                 <div className={styles.categoryImage}>
                   {category.image ? (
                     <Image
-                      {...getImageVariantProps(
-                        category.image.variants,
-                        'small'
-                      )}
+                      {...getImageVariantProps(category.image.variants, 'small')}
                       objectFit="contain"
                       alt={category.name}
                       width="100%"
                     />
                   ) : (
-                    <Image
-                      src={PlaceholderImage}
-                      objectFit="contain"
-                      alt=""
-                      unoptimized
-                      width="100%"
-                    />
+                    <Image src={PlaceholderImage} objectFit="contain" alt="" unoptimized width="100%" />
                   )}
                 </div>
                 <div className={styles.categoryTitle}>{category.name}</div>

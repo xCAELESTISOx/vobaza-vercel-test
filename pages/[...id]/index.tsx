@@ -76,7 +76,7 @@ export default function Catalog({
           <meta name="description" content={currentTag?.description || category.seo_description} />
         )}
       </Head>
-      <div className={styles.homePage}>
+      <div className={styles.page}>
         <Breadcrumbs breadcrumbs={breadcrumbs} />
         <section>
           <div className="container container--for-cards">

@@ -19,6 +19,7 @@
 
   @media screen and (max-width: 1024px) {
     margin: -20px;
+    padding: 20px;
   }
 
   @media screen and (min-width: 768px) {
@@ -188,6 +189,8 @@
   display: flex;
   flex-wrap: wrap;
   margin-top: 8px;
+  max-height: 52px;
+  min-height: 52px;
 
   @media screen and (max-width: 767px) {
     margin-top: 0;
@@ -197,6 +200,7 @@
   font-size: 18px;
   font-weight: 700;
   white-space: nowrap;
+  margin-right: 8px;
 
   @media screen and (max-width: 979px) {
     font-size: 13px;
@@ -204,9 +208,7 @@
   }
 }
 .cardPriceOld {
-  display: flex;
-  align-items: center;
-  margin: 0 8px;
+  margin-right: 8px;
   color: #b3b3b3;
   font-weight: 500;
   text-decoration: line-through;

@@ -96,7 +96,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
         {product.seo.title && <title>{product.seo.title}</title>}
       </Head>
       <SimpleReactLightbox>
-        <div className={styles.homePage}>
+        <div className={styles.page}>
           <CartModal />
           <OneClick />
           <Breadcrumbs breadcrumbs={breadcrumbs} />

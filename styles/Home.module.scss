@@ -1,7 +1,7 @@
-.homePage > section + section {
+.page > section + section {
   margin-top: 80px;
 }
-.homePage > .bannersBlock + section {
+.page > .bannersBlock + section {
   margin-top: 80px;
 }
 .sectionTitle {
@@ -27,7 +27,7 @@
 }
 
 @media screen and (max-width: 1024px) {
-  .homePage > section + section {
+  .page > section + section {
     margin-top: 40px;
   }
   .sectionTitle {
@@ -44,4 +44,9 @@
   .blogBlock {
     display: none;
   }
+}
+
+.homePage {
+  composes: page;
+  overflow-x: hidden;
 }

@@ -29,7 +29,7 @@ interface Props {
 
 export default function Catalog({ goods, meta }) {
   return (
-    <div className={styles.homePage}>
+    <div className={styles.page}>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <section>
         <div className="container">

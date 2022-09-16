@@ -45,7 +45,7 @@ export default function Catalog({ categories, goods, meta }) {
   const isExpress = router.asPath.indexOf('/ekspress-dostavka') !== -1;
 
   return (
-    <div className={styles.homePage}>
+    <div className={styles.page}>
       <Breadcrumbs breadcrumbs={isExpress ? breadcrumbsExpress : breadcrumbs} />
       <section className={styles.bannersBlock}>
         <div className="container">

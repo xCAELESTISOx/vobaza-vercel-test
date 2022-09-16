@@ -66,16 +66,10 @@ const GoodsSwiper: FC<Props> = ({ goods }) => {
               <GoodsCard good={good} isFixedHeight={false} />
             </SwiperSlide>
           ))}
-          <div
-            ref={prevRef}
-            className={`${styles.swiperNavButton} custom-swiper__prev`}
-          >
+          <div ref={prevRef} className={`${styles.swiperNavButton} custom-swiper__prev`}>
             <Icon name="ArrowLeft" />
           </div>
-          <div
-            ref={nextRef}
-            className={`${styles.swiperNavButton} ${styles.swiperNavButtonNext} custom-swiper__next`}
-          >
+          <div ref={nextRef} className={`${styles.swiperNavButton} ${styles.swiperNavButtonNext} custom-swiper__next`}>
             <Icon name="ArrowRight" />
           </div>
         </Swiper>
