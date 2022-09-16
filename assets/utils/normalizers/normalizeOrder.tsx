@@ -31,6 +31,7 @@ const normalizeAddressAndLift = (address: IOrderAddress, lift: ILocalOrder['lift
         lift: {
           ...(lift && lift?.elevator && { elevator: lift?.elevator }),
           ...(address.floor && { floor: address.floor }),
+          ...(lift.full_order && { full_order: lift.full_order }),
         },
       }),
     };
@@ -41,6 +42,7 @@ const normalizeAddressAndLift = (address: IOrderAddress, lift: ILocalOrder['lift
       ...address,
       ...(address.floor && { floor: address.floor }),
       ...(lift && lift?.elevator && { elevator: lift?.elevator }),
+      ...(lift.full_order && { full_order: lift.full_order }),
     },
   };
 };
@@ -62,7 +64,7 @@ export const normalizeOrder = (data: ILocalOrder, token: string, customer: IRece
         ? {
             delivery: {
               type: delivery ? delivery?.tag : EOrderDeliveryType.none,
-              ...(lift && { lift: { full_order: true } }),
+              lift,
               date: newDate,
               time_interval: newTime,
               address_id: userAddressId,
