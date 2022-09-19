@@ -174,6 +174,7 @@ export interface IOrderItemFull {
     name: string;
     phone: string;
   };
+  order_weight?: number;
 }
 
 export interface ICreateOrder {

@@ -82,7 +82,7 @@ const ProfileOrder: FC<Props> = ({ order }) => {
             <span>
               {productQuantity} {num2str(productQuantity, ['товар', 'товара', 'товаров'])}
             </span>
-            <span> ・ 166 кг</span>
+            {order.order_weight && <span> ・ {order.order_weight / 1000} кг</span>}
           </div>
           <div className={styles.orderItems}>
             {order.products.map((product) => (
