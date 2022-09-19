@@ -17,6 +17,11 @@ import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { api } from 'assets/api';
 import styles from './styles.module.scss';
 
+const getMinDate = (): Date => {
+  const today = new Date();
+  return new Date(today.getTime() + 24 * 3600000);
+};
+
 type Props = {
   liftPrice: number;
   orderWeight?: number;
@@ -104,6 +109,11 @@ const OrderObtaining: FC<Props> = ({
   const goodsCount = goods.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0);
   const minDate = isSelfDelivery ? delivery?.min_date : !!delivery?.min_date && findMinDate(delivery, deliveryVariants);
 
+  const today = new Date();
+
+  const isExpressToday =
+    delivery && delivery?.tag === EOrderDeliveryType.express && today.getHours() + today.getMinutes() / 60 <= 17;
+
   return (
     <div className={styles.orderDelivery}>
       <OrderDeliveryDrawer
@@ -150,7 +160,7 @@ const OrderObtaining: FC<Props> = ({
           />
         ) : (
           <ObtainingDelivery
-            minDate={minDate}
+            minDate={isExpressToday ? minDate : getMinDate()}
             onDateSelect={onDateSelect}
             timeSlots={deliveryTimeSlots}
             setTime={setTime}

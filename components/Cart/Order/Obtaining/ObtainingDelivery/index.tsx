@@ -42,7 +42,9 @@ export const ObtainingDelivery = ({
 }: IProps) => {
   const { delivery, lift, address } = order;
 
-  const newTimeSlots = normalizeTimeSlots(timeSlots, 1);
+  const deliveryDate = delivery?.date ? new Date(delivery.date) : undefined;
+
+  const newTimeSlots = normalizeTimeSlots(timeSlots, deliveryDate);
 
   return (
     <>
@@ -53,7 +55,7 @@ export const ObtainingDelivery = ({
               <InputCalendar
                 label="Дата доставки"
                 name="date"
-                value={delivery.date ? new Date(delivery.date) : undefined}
+                value={deliveryDate}
                 calendarOptions={{
                   minDate: minDate ? new Date(minDate) : undefined,
                 }}
