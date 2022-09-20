@@ -15,6 +15,7 @@ type Props = {
   setDeliveryVariants: (variants: IDeliveryVariants) => void;
   isOpen: boolean;
   onClose: () => void;
+  deliveryTag: EOrderDeliveryType | null;
 };
 
 const getTommorrow = () => {
@@ -29,11 +30,23 @@ const getTommorrow = () => {
   return nextDate.toISOString().slice(0, 10);
 };
 
-const OrderDeliveryDrawer: FC<Props> = ({ address, setFieldValue, setDeliveryVariants, isOpen = false, onClose }) => {
+const OrderDeliveryDrawer: FC<Props> = ({
+  address,
+  setFieldValue,
+  setDeliveryVariants,
+  isOpen = false,
+  onClose,
+  deliveryTag,
+}) => {
   const [variants, setVariants] = useState<ILocalOrderDelivery[]>([]);
   const [currentVariant, setCurrentVariant] = useState<ILocalOrderDelivery>(null);
 
   const setDeliveryHandler = () => {
+    if (deliveryTag === currentVariant?.tag) {
+      onClose();
+      return;
+    }
+
     try {
       if (currentVariant) {
         setFieldValue('delivery', currentVariant);

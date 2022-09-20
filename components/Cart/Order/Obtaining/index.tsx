@@ -122,6 +122,7 @@ const OrderObtaining: FC<Props> = ({
         setDeliveryVariants={setDeliveryVariants}
         onClose={toggleChangeDeliveryDrawer}
         isOpen={isDrawerOpen}
+        deliveryTag={delivery?.tag || null}
       />
 
       <div className={styles.cartContent}>
