@@ -43,8 +43,7 @@ const OrderDeliveryDrawer: FC<Props> = ({
 
   const setDeliveryHandler = () => {
     if (deliveryTag === currentVariant?.tag) {
-      onClose();
-      return;
+      return onClose();
     }
 
     try {
