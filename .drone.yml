@@ -180,18 +180,37 @@ steps:
 ---
 kind: pipeline
 name: mirror
+
+depends_on: [test]
 trigger:
   event: [push, tag]
-  branch: [master, develop]
+  ref:
+    - "refs/tags/v[0-9]*.[0-9]*.[0-9]*"
+    - "refs/heads/master"
+    - "refs/heads/develop"
+
 clone:
   disable: true
+
 steps:
-  - name: mirror
+  - name: mirror/branch
     image: osshelp/drone-git-mirror
     settings:
       target_repo: "git@git.dc-vbz.ru:mnikulin/vb-market-frontend.git"
       ssh_key: {from_secret: git-mirror-private-key}
       ignore_errors: true
+    when:
+      event: [push]
+      branch: [master, develop]
+  - name: mirror/tag
+    image: osshelp/drone-git-mirror
+    settings:
+      target_repo: "git@git.dc-vbz.ru:mnikulin/vb-market-frontend.git"
+      ssh_key: {from_secret: git-mirror-private-key}
+      ignore_errors: true
+    when:
+      event: [tag]
+      ref: ["refs/tags/v[0-9]*.[0-9]*.[0-9]*"]
 
 ---
 kind: secret
