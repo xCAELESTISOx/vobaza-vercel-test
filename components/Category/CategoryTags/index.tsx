@@ -38,10 +38,16 @@ export const CategoryTags = ({ categorySlug, tags, setIsLoading }: Props) => {
       if (currentTag?.tags.length) {
         newURL += '/' + tag.slug;
       } else {
-        if (currentTag) newURL = newURL.replace(currentTag.slug, tag.slug);
-        else newURL += '/' + tag.slug;
+        if (currentTag) {
+          newURL = newURL.replace(currentTag.slug, tag.slug);
+        } else {
+          newURL += '/' + tag.slug;
+        }
       }
-      if (router.asPath.includes('/ekspress-dostavka')) newURL += '/ekspress-dostavka';
+
+      if (router.asPath.includes('/ekspress-dostavka')) {
+        newURL += '/ekspress-dostavka';
+      }
 
       router.push(
         {

@@ -125,10 +125,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
 
     tagFilters.forEach((filter) => {
       let value: string | string[] = filter.values as string[];
+
       if (filter.type === 'NUMERIC_RANGE') {
-        const multiplier = filter.value_type === 'PRICE' ? 100 : 1;
-        value = filter.values.map((i) => i * multiplier).join('%-%');
+        value = `${filter.min}%-%${filter.max}`;
       }
+
       activeQueryFilters[filter.id] = value;
     });
 

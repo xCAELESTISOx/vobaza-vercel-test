@@ -1,3 +1,5 @@
+import { AttributeDataType } from './IAttributes';
+
 export interface IFilter {
   id: number;
   name: string;
@@ -20,6 +22,10 @@ export interface IFilterFront {
   values: any[];
 }
 
-export interface ITagFitlerFront extends Omit<IFilterFront, 'name'> {
+export interface ITagFitlerFront extends Omit<IFilterFront, 'name' | 'values'> {
+  data_type: AttributeDataType;
+  values?: string[];
+  min?: number;
+  max?: number;
   name?: string;
 }
