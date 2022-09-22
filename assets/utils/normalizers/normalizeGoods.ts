@@ -52,6 +52,7 @@ export const normalizeProductVariants = (productVariantsObj: IGood['variants']):
   return { ...productVariantsObj, variants: variantsList };
 };
 
+
 export const normalizeProductInfo = (productObject) => {
   const newProduct = { ...productObject };
   const normalizeProductRules = {

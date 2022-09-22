@@ -27,11 +27,7 @@ const Breadcrumbs: FC<Props> = ({ breadcrumbs }) => {
               <Icon name="SmallArrowRight" />
             </div>
             <Link key={'title' + breadcrumb.title} href={breadcrumb.href}>
-              <a
-                className={`${styles.breadcrumb} ${
-                  breadcrumb.clickableLast ? styles.clickable : ''
-                }`}
-              >
+              <a className={`${styles.breadcrumb} ${breadcrumb.clickableLast ? styles.clickable : ''}`}>
                 {breadcrumb.title}
               </a>
             </Link>

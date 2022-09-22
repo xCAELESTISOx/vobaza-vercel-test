@@ -12,6 +12,7 @@ import {
   normalizeProductInfo,
   normalizeProductVariants,
 } from 'assets/utils/normalizers/normalizeGoods';
+import { getProductBreadcrumbs } from 'assets/utils/Category/getCategoryBreadcrumps';
 import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
 import type { IGood } from 'src/models/IGood';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select/dist/input-select';
@@ -265,12 +266,6 @@ const getProductSlug = (slug: string): string | null => {
 
 export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({ query }) => {
   const slug = getProductSlug(query.slug as string);
-  const breadcrumbs = [
-    {
-      title: 'Каталог мебели',
-      href: '/katalog',
-    },
-  ] as BreadcrumbType[];
 
   try {
     const productRes = await api.getGoodBySlug(slug);
@@ -283,11 +278,10 @@ export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({ q
 
     product = { ...product, attributes };
 
-    breadcrumbs.push({
-      title: product.main_category.name,
-      href: `/${product.main_category.slug}`,
-      clickableLast: true,
-    });
+    const category = await api.getCategoryBySlug(product.main_category.slug);
+    const { ancestors } = category.data.data;
+
+    const breadcrumbs = getProductBreadcrumbs(ancestors, product.main_category);
 
     return {
       props: {
