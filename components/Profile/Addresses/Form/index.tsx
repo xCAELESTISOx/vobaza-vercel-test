@@ -46,6 +46,7 @@ type Props = {
 
 const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title, buttonText, onSubmit }) => {
   const [addreses, setAddreses] = useState([]);
+  const isAddressDefault = initialValues.is_default;
 
   const suggestRef = useRef(null);
   const router = useRouter();
@@ -255,6 +256,7 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
               initialValue={values.is_default}
               onChange={handleCheckChange}
               isError={!!errors.is_default}
+              disabled={isAddressDefault}
             />
           </div>
         </>
