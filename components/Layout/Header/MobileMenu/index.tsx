@@ -45,7 +45,7 @@ export const HeaderMobileMenu: FC<Props> = ({ menu, isOpen, close }) => {
             <button className={styles.headerMobileMenuClose} onClick={resetMenuItem}>
               <Icon name="ArrowLeft" />
             </button>
-            <div className={styles.headerMobileMenuTitle}>Диваны и кресла</div>
+            <div className={styles.headerMobileMenuTitle}>{currentMenuItem.name}</div>
           </>
         )}
         <button className={styles.headerMobileMenuClose} onClick={closeHandler}>
