@@ -63,7 +63,6 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
     validateOnBlur: false,
     onSubmit: () => {},
   });
-
   const submitHandler = () => {
     formRef.current.submitForm();
   };

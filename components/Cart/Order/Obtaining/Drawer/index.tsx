@@ -41,6 +41,14 @@ const OrderDeliveryDrawer: FC<Props> = ({
   const [variants, setVariants] = useState<ILocalOrderDelivery[]>([]);
   const [currentVariant, setCurrentVariant] = useState<ILocalOrderDelivery>(null);
 
+  const selfDeliveryItem: ILocalOrderDelivery = {
+    name: 'Самовывоз',
+    price: 0,
+    tag: EOrderDeliveryType.self,
+    date: null,
+    min_date: getTommorrow(),
+  };
+
   const setDeliveryHandler = () => {
     if (deliveryTag === currentVariant?.tag) {
       return onClose();
@@ -56,6 +64,29 @@ const OrderDeliveryDrawer: FC<Props> = ({
     } catch (e) {
       console.error(e);
     }
+  };
+
+  const onClickClose = () => {
+    const activeVariant = variants.find((variant) => deliveryTag === variant.tag);
+    const activeSelfDelivery = deliveryTag === EOrderDeliveryType.self ? selfDeliveryItem : activeVariant;
+    const oldCurrentVariant = deliveryTag ? activeSelfDelivery : null;
+
+    setCurrentVariant(oldCurrentVariant);
+    onClose();
+  };
+
+  const styleOrderDelivery = (orderDelivery: ILocalOrderDelivery) => {
+    if (!currentVariant) return null;
+
+    if (deliveryTag === orderDelivery.tag && deliveryTag === currentVariant.tag) {
+      return styles.active;
+    }
+
+    if (currentVariant && currentVariant.tag === orderDelivery.tag) {
+      return styles.active;
+    }
+
+    return '';
   };
 
   useEffect(() => {
@@ -107,30 +138,20 @@ const OrderDeliveryDrawer: FC<Props> = ({
     }
   }, [address]);
 
-  const selfDeliveryItem: ILocalOrderDelivery = {
-    name: 'Самовывоз',
-    price: 0,
-    tag: EOrderDeliveryType.self,
-    date: null,
-    min_date: getTommorrow(),
-  };
-
   return (
     <Drawer
       title="Способ получения"
       buttonText="Подтвердить"
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={onClickClose}
       onButtonClick={setDeliveryHandler}
     >
       <div className={styles.deliveryDrawerCards}>
         {variants.length > 0 &&
-          variants.map((variant: any) => (
+          variants.map((variant: ILocalOrderDelivery) => (
             <div
               key={variant.tag}
-              className={`${styles.deliveryDrawerCard} ${
-                currentVariant && currentVariant.tag === variant.tag ? styles.active : ''
-              }`}
+              className={`${styles.deliveryDrawerCard} ${styleOrderDelivery(variant)}`}
               onClick={() => {
                 setCurrentVariant(variant);
               }}
@@ -153,9 +174,7 @@ const OrderDeliveryDrawer: FC<Props> = ({
 
         {/* Самовывоз */}
         <div
-          className={`${styles.deliveryDrawerCard} ${
-            currentVariant && currentVariant.tag === selfDeliveryItem.tag ? styles.active : ''
-          }`}
+          className={`${styles.deliveryDrawerCard} ${styleOrderDelivery(selfDeliveryItem)}`}
           onClick={() => {
             setCurrentVariant(selfDeliveryItem);
           }}
