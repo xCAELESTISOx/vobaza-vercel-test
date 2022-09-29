@@ -31,6 +31,7 @@ interface IProps {
 export const ObtainingSelfDelivery = ({ minDate, onDateSelect, setTime, delivery, goods }: IProps) => {
   const deliveryDate = delivery.date ? new Date(delivery.date) : undefined;
   const normalizedTimeSlots = normalizeTimeSlots(selfDeliveryTimeSlots, deliveryDate);
+
   return (
     <>
       {delivery && (
