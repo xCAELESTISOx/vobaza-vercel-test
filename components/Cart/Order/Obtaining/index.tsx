@@ -16,6 +16,7 @@ import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 import { api } from 'assets/api';
 import styles from './styles.module.scss';
+import { formatDate } from 'assets/utils/normalizers/normalizeTimeSlots';
 
 const getMinDate = (): Date => {
   const today = new Date();
@@ -85,8 +86,13 @@ const OrderObtaining: FC<Props> = ({
   };
   const debouncedCheckLiftPrice = useDebounce(checkLiftPrice, 800);
 
-  const onDateSelect = (val: Date) => {
-    setFieldValue('delivery.date', val);
+  const onDateSelect = (newDate: Date) => {
+    if (!!newDate && formatDate(newDate) === formatDate(delivery!.date)) {
+      return;
+    }
+
+    const date = newDate ? new Date(newDate.getTime() - newDate.getTimezoneOffset() * 60000) : null;
+    setFieldValue('delivery.date', date);
   };
 
   useEffect(() => {
