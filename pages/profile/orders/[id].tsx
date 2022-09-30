@@ -41,7 +41,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, query
     await checkAuth(req);
     const orderRes = await api.getOrder(query.id);
 
-    order = { ...orderRes.data.data, price: orderRes.data.data.price / 100 };
+    order = { ...orderRes.data.data };
   } catch (error: any) {
     return {
       redirect: {

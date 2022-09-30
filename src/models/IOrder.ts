@@ -27,6 +27,12 @@ export interface IOrderCustomer {
   email?: string;
 }
 
+export interface IOrderPrice {
+  price: number;
+  list_price?: number;
+  discount?: number;
+  services_price: number;
+}
 export interface ITimeInterval {
   from: string;
   to: string;
@@ -145,7 +151,7 @@ export interface IOrderItemFull {
   number: string;
   order_date: string;
   customer: IOrderCustomer;
-  price: number;
+  price: IOrderPrice;
   status: keyof typeof OrderStatusType;
   payment: {
     status: string;

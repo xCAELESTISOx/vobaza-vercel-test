@@ -37,6 +37,7 @@ const ProfileOrder: FC<Props> = ({ order }) => {
   const obtainingTimeInterval =
     order.obtaining?.delivery?.time_interval || order.obtaining?.self_delivery?.time_interval;
   const obtainingDate = order.obtaining?.delivery?.date || order.obtaining?.self_delivery?.date;
+  const onlyPriceGoods = (order.price.list_price - order.price.services_price) / 100;
 
   return (
     <>
@@ -53,7 +54,7 @@ const ProfileOrder: FC<Props> = ({ order }) => {
             <h1 className={styles.orderTitle}>Заказ {order.number}</h1>
             <div className={styles.orderInfo}>
               <div>от {formatOrderDate(order.order_date, true)}</div>
-              <div>{Intl.NumberFormat('ru-RU').format(order.price)} ₽</div>
+              <div>{Intl.NumberFormat('ru-RU').format(order.price.price / 100)} ₽</div>
             </div>
           </div>
           <div className={styles.orderStatus}>{orderPaymentStatusDictionary[order.payment.status]}</div>
@@ -61,9 +62,9 @@ const ProfileOrder: FC<Props> = ({ order }) => {
         <div className={styles.orderUser}>
           <div className={styles.orderUserTitle}>Получатель</div>
           <div className={styles.orderUserInfo}>
-            <div>{order.recipient.name || order.customer.name + ' ' + order.customer.surname}</div>
+            <div>{order.recipient?.name || order.customer.name + ' ' + order.customer.surname}</div>
             {order.customer.email && <div>{order.customer.email}</div>}
-            <div>{order.recipient.phone || order.customer.phone}</div>
+            <div>{order.recipient?.phone || order.customer.phone}</div>
           </div>
         </div>
         <div className={styles.orderBlock}>
@@ -140,11 +141,17 @@ const ProfileOrder: FC<Props> = ({ order }) => {
           <div className={styles.orderBlockFooterTitle}>{orderPaymentMethodDictionary[order.payment.method]}</div>
           <div className={styles.orderBlockFooterValue}>
             <div className={styles.orderBlockFooterValueTitle}>Товары</div>
-            <div>{Intl.NumberFormat('ru-RU').format(order.price)} ₽</div>
+            <div>{Intl.NumberFormat('ru-RU').format(onlyPriceGoods)} ₽</div>
+          </div>
+          <div className={styles.orderBlockFooterValue}>
+            <div className={styles.orderBlockFooterValueTitle}>Услуги</div>
+            <div>{Intl.NumberFormat('ru-RU').format(order.price.services_price / 100)} ₽</div>
           </div>
           <div className={styles.orderBlockFooterTotal}>
             <div className={styles.orderBlockFooterValueTitle}>Итого</div>
-            <div className={styles.orderBlockFooterTotalPrice}> {Intl.NumberFormat('ru-RU').format(order.price)} ₽</div>
+            <div className={styles.orderBlockFooterTotalPrice}>
+              {Intl.NumberFormat('ru-RU').format(order.price.price / 100)} ₽
+            </div>
           </div>
         </div>
       </div>
