@@ -157,6 +157,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
         value = `${filter.min}%-%${filter.max}`;
       }
 
+      if (filter.value_type === 'PRICE') {
+        filter.min = filter.min / 100;
+        filter.max = filter.max / 100;
+      }
+
       activeQueryFilters[filter.id] = value;
     });
 
