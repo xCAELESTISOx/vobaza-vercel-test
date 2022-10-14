@@ -62,7 +62,7 @@ export const CategoryTags = ({ categorySlug, tags, setIsLoading }: Props) => {
 
   return (
     <>
-      {!!currentTagsLevel?.length && (
+      {Boolean(currentTagsLevel?.length) && (
         <div className={styles.categoryTags}>
           {currentTagsLevel.map((tag) => (
             <CategoryTagItem key={tag.id} isActive={currentTag?.id === tag.id} tag={tag} onClick={onTagClick} />

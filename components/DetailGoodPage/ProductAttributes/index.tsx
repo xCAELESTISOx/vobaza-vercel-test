@@ -44,15 +44,15 @@ const renderDateValue = (value: any) => {
   return null;
 };
 
-const attributeValueRenderersMap = {
-  [AttributeDataType.STRING]: renderStringValue,
-  [AttributeDataType.INTEGER]: renderStringValue,
-  [AttributeDataType.DECIMAL]: renderStringValue,
-  [AttributeDataType.COLOR]: renderColorValue,
-  [AttributeDataType.DATE]: renderDateValue,
-  [AttributeDataType.BOOLEAN]: renderBooleanValue,
-  [AttributeDataType.MANY_FROM_MANY]: renderArrayValue,
-  [AttributeDataType.ONE_FROM_MANY]: renderStringValue,
+const attributeValueRenderersMap: Record<AttributeDataType, (value: any) => any> = {
+  STRING: renderStringValue,
+  INTEGER: renderStringValue,
+  DECIMAL: renderStringValue,
+  COLOR: renderColorValue,
+  DATE: renderDateValue,
+  BOOLEAN: renderBooleanValue,
+  MANY_FROM_MANY: renderArrayValue,
+  ONE_FROM_MANY: renderStringValue,
 };
 
 interface AttributeItemValue {
@@ -115,7 +115,7 @@ const ProductAttributes: FC<ProductAttributes> = ({ attributes }) => {
 
   return (
     <div className={styles.container}>
-      {!!main.length && <AttributesBlock title="Основные характеристики" attributes={main} />}
+      {Boolean(main.length) && <AttributesBlock title="Основные характеристики" attributes={main} />}
       {additional &&
         additional.map((block) => (
           <AttributesBlock

@@ -13,16 +13,15 @@ export enum AttributeType {
   ADDITIONAL = 'ADDITIONAL',
 }
 
-export enum AttributeDataType {
-  INTEGER = 'INTEGER',
-  DECIMAL = 'DECIMAL',
-  COLOR = 'COLOR',
-  STRING = 'STRING',
-  DATE = 'DATE',
-  BOOLEAN = 'BOOLEAN',
-  MANY_FROM_MANY = 'MANY_FROM_MANY',
-  ONE_FROM_MANY = 'ONE_FROM_MANY',
-}
+export type AttributeDataType =
+  | 'INTEGER'
+  | 'DECIMAL'
+  | 'COLOR'
+  | 'STRING'
+  | 'DATE'
+  | 'BOOLEAN'
+  | 'MANY_FROM_MANY'
+  | 'ONE_FROM_MANY';
 
 export interface IAttributeRelatedCategory {
   id: number;
@@ -35,7 +34,7 @@ export interface IAttribute {
   name: string;
   status: keyof typeof AttributeStatus;
   type: keyof typeof AttributeType;
-  data_type: keyof typeof AttributeDataType;
+  data_type: AttributeDataType;
   required: boolean;
   data_meta?: {
     items: string[] | IDictionaryItem[];
@@ -46,7 +45,7 @@ export interface IAttribute {
 export interface IAttributeCompare {
   id: string | number;
   name: string;
-  data_type: keyof typeof AttributeDataType;
+  data_type: AttributeDataType;
 }
 
 export interface IAttributeItem {

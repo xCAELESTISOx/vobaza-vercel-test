@@ -223,7 +223,7 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
           label="Лифт"
           initialValue={values.elevator !== 'NONE'}
           onChange={handleElevatorChange}
-          isError={!!errors.is_default}
+          isError={Boolean(errors.is_default)}
         />
       </div>
       <div className={styles.addressFormItem}>
@@ -255,7 +255,7 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
               label="Сделать адрес по умолчанию"
               initialValue={values.is_default}
               onChange={handleCheckChange}
-              isError={!!errors.is_default}
+              isError={Boolean(errors.is_default)}
               disabled={isAddressDefault}
             />
           </div>

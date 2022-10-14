@@ -41,7 +41,8 @@ export const HeaderBody: FC<Props> = ({ mobileMenu, openPhoneCallModal }) => {
 
   useEffect(() => {
     if (!state.isLoggedIn) {
-      setIsLoggedIn(!!Cookies.get('token'));
+      const token = Cookies.get('token');
+      setIsLoggedIn(Boolean(token));
     } else {
       setIsLoggedIn(state.isLoggedIn);
     }

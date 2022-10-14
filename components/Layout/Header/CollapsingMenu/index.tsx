@@ -64,7 +64,7 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
             ))}
           </div>
         )}
-        {!!currentMenuItem.children?.length && (
+        {Boolean(currentMenuItem.children?.length) && (
           <div className={`${styles.collapsingMenuBody} ${withRoot ? styles.big : ''}`}>
             {currentMenuItem.children.map((block) => (
               <CollapsingMenuItem key={block.id} menuBlock={block} closeMenu={closeMenu} />
@@ -96,7 +96,7 @@ export const CollapsingMenuItem = ({ menuBlock, closeMenu }: ICollapsingMenuItem
         <div className={styles.collapsingMenuBlockTitle}>{menuBlock.name}</div>
       )}
 
-      {!!items?.length && (
+      {Boolean(items?.length) && (
         <div className={styles.collapsingMenuBlockItems}>
           {items.map((item) => (
             <Link key={item.id} href={getLinkFromMenuItem(item)}>

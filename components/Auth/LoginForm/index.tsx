@@ -52,9 +52,7 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
       errs.forEach((err: IError) => {
         err.source && err.source !== ''
           ? (backErrors[err.source] = err.title)
-          : (backErrors.phone = err.title
-              ? err.title
-              : 'Непредвиденная ошибка, попробуйте ещё раз');
+          : (backErrors.phone = err.title ? err.title : 'Непредвиденная ошибка, попробуйте ещё раз');
       });
       setErrors(backErrors);
       setIsLoading(false);
@@ -72,23 +70,14 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
       const backErrors = {} as any;
 
       errs.forEach((err: IError) => {
-        backErrors.code = err.title
-          ? err.title
-          : 'Непредвиденная ошибка, попробуйте ещё раз';
+        backErrors.code = err.title ? err.title : 'Непредвиденная ошибка, попробуйте ещё раз';
       });
       setErrors(backErrors);
       setIsLoading(false);
     }
   };
 
-  const {
-    values,
-    setFieldValue,
-    validateField,
-    errors,
-    handleSubmit,
-    setErrors,
-  } = useFormik<Login>({
+  const { values, setFieldValue, validateField, errors, handleSubmit, setErrors } = useFormik<Login>({
     initialValues,
     validationSchema,
     validateOnBlur: false,
@@ -111,8 +100,7 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
 
-    if (isCodeTimeout > 0)
-      timeoutId = setTimeout(() => setIsCodeTimeout(isCodeTimeout - 1), 1000);
+    if (isCodeTimeout > 0) timeoutId = setTimeout(() => setIsCodeTimeout(isCodeTimeout - 1), 1000);
 
     return () => {
       timeoutId && clearTimeout(timeoutId);
@@ -149,26 +137,16 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
               <div className={styles.inlineModalItem}>
                 <Button
                   variation={isCodeTimeout ? 'secondary' : 'primary'}
-                  disabled={!!isCodeTimeout}
-                  style={
-                    isCodeTimeout
-                      ? { color: '#212121', fontWeight: 'normal' }
-                      : {}
-                  }
-                  text={
-                    isCodeTimeout
-                      ? `Код придет в течение ${isCodeTimeout} сек`
-                      : 'Получить код'
-                  }
+                  disabled={Boolean(isCodeTimeout)}
+                  style={isCodeTimeout ? { color: '#212121', fontWeight: 'normal' } : {}}
+                  text={isCodeTimeout ? `Код придет в течение ${isCodeTimeout} сек` : 'Получить код'}
                   size="big"
                   isFullScreen={true}
                   type="submit"
                 />
               </div>
             </div>
-            <div
-              className={`${styles.inlineModalItem} ${styles.inlineModalButton}`}
-            >
+            <div className={`${styles.inlineModalItem} ${styles.inlineModalButton}`}>
               <InputText
                 label="Код из смс"
                 name="code"
@@ -182,9 +160,7 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
           </form>
         </div>
         <div className={styles.inlineModalSubContent}>
-          <p className={styles.inlineModalSubContentText}>
-            У вас еще нет аккаунта?
-          </p>
+          <p className={styles.inlineModalSubContentText}>У вас еще нет аккаунта?</p>
           <Button
             text="Зарегистрироваться"
             variation="secondary"

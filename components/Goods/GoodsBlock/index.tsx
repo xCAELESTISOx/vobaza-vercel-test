@@ -22,7 +22,7 @@ type Props = {
   tags?: ICategoryTag[];
   filters?: IFilter[];
   goods: IGoodCard[];
-  currentFilters?: { [key: number]: IFilterFront };
+  currentFilters?: Record<number, IFilterFront>;
   meta: {
     list: {
       count: number;
@@ -44,7 +44,7 @@ export const GoodsBlock: FC<Props> = ({
   meta,
   currentTags,
 }) => {
-  const [isOnlyExpress, setIsOnlyExpress] = useState(!!isExpress);
+  const [isOnlyExpress, setIsOnlyExpress] = useState(Boolean(isExpress));
   const [isLoading, setIsLoading] = useState(true);
 
   const { router } = useAdvancedRouter();
@@ -90,7 +90,7 @@ export const GoodsBlock: FC<Props> = ({
   };
 
   useEffect(() => {
-    setIsOnlyExpress(!!isExpress);
+    setIsOnlyExpress(Boolean(isExpress));
   }, [isExpress]);
 
   useEffect(() => {
@@ -102,7 +102,9 @@ export const GoodsBlock: FC<Props> = ({
       <CartModal />
       {filters && (
         <>
-          {!!tags?.length && <CategoryTags categorySlug={categorySlug} tags={tags} setIsLoading={setIsLoading} />}
+          {Boolean(tags?.length) && (
+            <CategoryTags categorySlug={categorySlug} tags={tags} setIsLoading={setIsLoading} />
+          )}
           {!withoutExpress && (
             <div className={styles.goodsExpress}>
               <Toggle isActive={isOnlyExpress} onClick={toggleIsOnlyExpress}>

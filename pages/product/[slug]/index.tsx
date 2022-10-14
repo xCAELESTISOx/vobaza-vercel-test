@@ -210,7 +210,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                   </div>
                 )}
 
-                {(!!product.attributes.additional?.length || !!product.attributes.main?.length) && (
+                {Boolean(product.attributes.additional?.length || product.attributes.main?.length) && (
                   <div className={styles.productAccordionBlock}>
                     <ProductInfoAccordion title="Характеристики и размеры" autoDuration>
                       <ProductAttributes attributes={product.attributes} />

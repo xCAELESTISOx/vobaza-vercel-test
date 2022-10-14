@@ -9,7 +9,7 @@ import { useGoods } from '../../../src/context/goods';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import ProfileMenu from '../../Profile/Menu';
 
-const BottomTabBar: FC = () => {
+export const MobileBottomMenu: FC = () => {
   const [isProfileMenuOpen, setIsProfileOpen] = useState(false);
   const goodsState = useGoods();
   const { dispatch } = useAuth();
@@ -50,9 +50,7 @@ const BottomTabBar: FC = () => {
           <a className={styles.tab}>
             <div className={styles.tabIcon}>
               <Icon name="Cart" />
-              {cartSize > 0 && (
-                <div className={styles.tabBadge}>{cartSize}</div>
-              )}
+              {cartSize > 0 && <div className={styles.tabBadge}>{cartSize}</div>}
             </div>
             <div className={styles.tabTitle}>Корзина</div>
           </a>
@@ -74,5 +72,3 @@ const BottomTabBar: FC = () => {
     </>
   );
 };
-
-export default BottomTabBar;

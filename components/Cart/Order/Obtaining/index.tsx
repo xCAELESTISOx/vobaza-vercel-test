@@ -87,7 +87,7 @@ const OrderObtaining: FC<Props> = ({
   const debouncedCheckLiftPrice = useDebounce(checkLiftPrice, 800);
 
   const onDateSelect = (newDate: Date) => {
-    if (!!newDate && formatDate(newDate) === formatDate(delivery!.date)) {
+    if (Boolean(newDate) && formatDate(newDate) === formatDate(delivery!.date)) {
       return;
     }
 
@@ -113,7 +113,9 @@ const OrderObtaining: FC<Props> = ({
   const deliveryTimeSlots = convertTimeslots(deliveryVariants?.time_slots);
 
   const goodsCount = goods.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0);
-  const minDate = isSelfDelivery ? delivery?.min_date : !!delivery?.min_date && findMinDate(delivery, deliveryVariants);
+  const minDate = isSelfDelivery
+    ? delivery?.min_date
+    : Boolean(delivery?.min_date) && findMinDate(delivery, deliveryVariants);
 
   const today = new Date();
 
@@ -140,7 +142,7 @@ const OrderObtaining: FC<Props> = ({
             </button>
           </div>
         </div>
-        <div className={`${styles.orderDeliveryText} ${!!delivery ? styles.row : ''}`}>
+        <div className={`${styles.orderDeliveryText} ${Boolean(delivery) ? styles.row : ''}`}>
           <div className={styles.orderDeliveryTextItem}>
             <Icon name="Car" />
             <span>

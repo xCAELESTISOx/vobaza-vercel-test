@@ -14,7 +14,7 @@ type Props = {
   removeAttribute: (id) => void;
 };
 
-const renderItem = (data_type: keyof typeof AttributeDataType, value) => {
+const renderItem = (data_type: AttributeDataType, value) => {
   switch (data_type) {
     case 'BOOLEAN':
       return value ? 'Да' : 'Нет';

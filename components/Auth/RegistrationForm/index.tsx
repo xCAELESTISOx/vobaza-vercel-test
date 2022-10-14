@@ -34,17 +34,9 @@ const initialValues = {
 } as Auth;
 
 const validationSchema = yup.object({
-  name: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
-  surname: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255'),
-  email: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .email('Не валидный email'),
+  name: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
+  surname: yup.string().max(255, 'Количество символов в поле должно быть не больше 255'),
+  email: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').email('Не валидный email'),
   phone: yup.string().required('Обязательное поле'),
   isAgree: yup.bool().oneOf([true]),
   code: yup.string().nullable(),
@@ -109,23 +101,14 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
       const backErrors = {} as any;
 
       errs.forEach((err: IError) => {
-        backErrors.code = err.title
-          ? err.title
-          : 'Непредвиденная ошибка, попробуйте ещё раз';
+        backErrors.code = err.title ? err.title : 'Непредвиденная ошибка, попробуйте ещё раз';
       });
       setErrors(backErrors);
       setIsLoading(false);
     }
   };
 
-  const {
-    values,
-    setFieldValue,
-    validateField,
-    errors,
-    handleSubmit,
-    setErrors,
-  } = useFormik<Auth>({
+  const { values, setFieldValue, validateField, errors, handleSubmit, setErrors } = useFormik<Auth>({
     initialValues,
     validationSchema,
     validateOnBlur: false,
@@ -155,8 +138,7 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
 
-    if (isCodeTimeout > 0)
-      timeoutId = setTimeout(() => setIsCodeTimeout(isCodeTimeout - 1), 1000);
+    if (isCodeTimeout > 0) timeoutId = setTimeout(() => setIsCodeTimeout(isCodeTimeout - 1), 1000);
 
     return () => {
       timeoutId && clearTimeout(timeoutId);
@@ -246,28 +228,17 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
             />
           </div>
 
-          <div
-            className={`${styles.inlineModalText} ${styles.inlineModalButton}`}
-          >
-            Нажмите &laquo;Получить код&raquo; и&nbsp;мы&nbsp;отправим вам смс
-            с&nbsp;кодом подтверждения
+          <div className={`${styles.inlineModalText} ${styles.inlineModalButton}`}>
+            Нажмите &laquo;Получить код&raquo; и&nbsp;мы&nbsp;отправим вам смс с&nbsp;кодом подтверждения
           </div>
 
           <div>
             <div className={styles.inlineModalItem}>
               <Button
                 variation={isCodeTimeout ? 'secondary' : 'primary'}
-                disabled={!!isCodeTimeout || !values.isAgree || isLoading}
-                style={
-                  isCodeTimeout
-                    ? { color: '#212121', fontWeight: 'normal' }
-                    : {}
-                }
-                text={
-                  isCodeTimeout
-                    ? `Код придет в течение ${isCodeTimeout} сек`
-                    : 'Получить код'
-                }
+                disabled={Boolean(isCodeTimeout) || !values.isAgree || isLoading}
+                style={isCodeTimeout ? { color: '#212121', fontWeight: 'normal' } : {}}
+                text={isCodeTimeout ? `Код придет в течение ${isCodeTimeout} сек` : 'Получить код'}
                 size="big"
                 isFullScreen={true}
                 type="submit"
@@ -287,9 +258,7 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
           </div>
         </form>
         <div className={styles.inlineModalSubContent}>
-          <p className={styles.inlineModalSubContentText}>
-            У вас уже есть аккаунт?
-          </p>
+          <p className={styles.inlineModalSubContentText}>У вас уже есть аккаунт?</p>
           <Button
             text="Войти"
             size="big"

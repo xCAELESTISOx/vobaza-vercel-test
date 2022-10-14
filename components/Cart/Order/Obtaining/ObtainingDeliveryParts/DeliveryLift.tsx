@@ -44,7 +44,7 @@ const DeliveryLift = ({ liftPrice, address, lift, setFieldValue }: Props) => {
 
   return (
     <div className={styles.orderDeliverySubblockToggleBlock}>
-      <Toggle isActive={!!lift} onClick={toggleIsElevate}>
+      <Toggle isActive={Boolean(lift)} onClick={toggleIsElevate}>
         <div className={styles.orderDeliverySubblockToggle}>
           Подъем на этаж{' '}
           {liftPrice && lift && address.floor ? (

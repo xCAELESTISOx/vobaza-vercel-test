@@ -40,12 +40,7 @@ const getImagesUrlsFromVariant = (images, fieldname: string): ImageVariant[] => 
 const renderEmptyPlaceholder = (isThumb?: boolean) => {
   return (
     <div className={styles.slideImage}>
-      <Image
-        src={isThumb ? PlaceholderImage : PlaceholderImageFull}
-        objectFit="contain"
-        alt=""
-        unoptimized
-      />
+      <Image src={isThumb ? PlaceholderImage : PlaceholderImageFull} objectFit="contain" alt="" unoptimized />
     </div>
   );
 };
@@ -74,19 +69,9 @@ const ProductImages = ({ images }) => {
 
   const renderMainImages = () => {
     return mainImages.map((img, index) => (
-      <SwiperSlide
-        key={`main-slide-${img.id}`}
-        onClick={handleClickSlide(index)}
-      >
+      <SwiperSlide key={`main-slide-${img.id}`} onClick={handleClickSlide(index)}>
         <div className={styles.slideImage}>
-          <Image
-            src={img.url}
-            width={780}
-            height={550}
-            objectFit="contain"
-            alt=""
-            unoptimized
-          />
+          <Image src={img.url} width={780} height={550} objectFit="contain" alt="" unoptimized />
         </div>
       </SwiperSlide>
     ));
@@ -96,14 +81,7 @@ const ProductImages = ({ images }) => {
     return thumbsImages.map((img) => (
       <SwiperSlide key={`thumb-slide-${img.id}`} className={styles.thumbsSlide}>
         <div className={styles.thumbsSlideImage}>
-          <Image
-            src={img.url}
-            width={img.meta.width}
-            height={img.meta.height}
-            objectFit="contain"
-            alt=""
-            unoptimized
-          />
+          <Image src={img.url} width={img.meta.width} height={img.meta.height} objectFit="contain" alt="" unoptimized />
         </div>
       </SwiperSlide>
     ));
@@ -114,45 +92,41 @@ const ProductImages = ({ images }) => {
   const lightboxViewerButtons = {
     showNextButton: moreOneImage,
     showPrevButton: moreOneImage,
-  }
+  };
 
   return (
     <>
-      <LightboxViewer
-        images={fullImages}
-        onClose={handleLightboxClosed}
-        buttons={lightboxViewerButtons}
-      />
+      <LightboxViewer images={fullImages} onClose={handleLightboxClosed} buttons={lightboxViewerButtons} />
 
       <div className={styles.images}>
-        {
-          mainImages.length > 0 ?
-            <>
-              <div className={styles.mainSwiperWrapper}>
-                <Swiper
-                  className={styles.mainSwiper}
-                  modules={[Navigation, Thumbs, Pagination]}
-                  speed={600}
-                  loop={mainImages.length && mainImages.length > 1}
-                  allowTouchMove
-                  navigation={{
-                    prevEl: '.product-swiper__prev',
-                    nextEl: '.product-swiper__next',
-                  }}
-                  thumbs={{ swiper: thumbsSwiper }}
-                  pagination={{
-                    el: '.product-images-pagination',
-                    type: 'bullets',
-                  }}
-                  onSwiper={setMainSwiper}
-                >
-                  {!!mainImages.length && renderMainImages()}
-                </Swiper>
-              </div>
-            </> : renderEmptyPlaceholder()
-        }
-        {
-          moreOneImage &&
+        {mainImages.length > 0 ? (
+          <>
+            <div className={styles.mainSwiperWrapper}>
+              <Swiper
+                className={styles.mainSwiper}
+                modules={[Navigation, Thumbs, Pagination]}
+                speed={600}
+                loop={mainImages.length && mainImages.length > 1}
+                allowTouchMove
+                navigation={{
+                  prevEl: '.product-swiper__prev',
+                  nextEl: '.product-swiper__next',
+                }}
+                thumbs={{ swiper: thumbsSwiper }}
+                pagination={{
+                  el: '.product-images-pagination',
+                  type: 'bullets',
+                }}
+                onSwiper={setMainSwiper}
+              >
+                {Boolean(mainImages.length) && renderMainImages()}
+              </Swiper>
+            </div>
+          </>
+        ) : (
+          renderEmptyPlaceholder()
+        )}
+        {moreOneImage && (
           <>
             <div className={`${styles.pagination} product-images-pagination`}></div>
             <div className={styles.thumbsSwiper}>
@@ -168,20 +142,18 @@ const ProductImages = ({ images }) => {
                 breakpoints={thumbsBreakpoints}
                 onSwiper={setThumbsSwiper}
               >
-                {!!thumbsImages.length && renderThumbImages()}
+                {Boolean(thumbsImages.length) && renderThumbImages()}
               </Swiper>
 
               <button className={`${styles.thumbsNavButton} product-swiper__prev`}>
                 <Icon name="ArrowLeft" />
               </button>
-              <button
-                className={`${styles.thumbsNavButton} ${styles.thumbsNavButtonNext} product-swiper__next`}
-              >
+              <button className={`${styles.thumbsNavButton} ${styles.thumbsNavButtonNext} product-swiper__next`}>
                 <Icon name="ArrowRight" />
               </button>
             </div>
           </>
-        }
+        )}
       </div>
     </>
   );

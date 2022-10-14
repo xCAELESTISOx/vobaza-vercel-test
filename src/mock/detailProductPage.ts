@@ -1,5 +1,3 @@
-import { AttributeDataType } from 'src/models/IAttributes';
-
 export const mockProduct = {
   // subinfo: 'Коричневый, экокожа, аккордеон',
   in_stock: true,
@@ -132,7 +130,7 @@ export const mockProduct = {
       {
         id: 9,
         slug: 'Вариант 9',
-        sku : 'asd',
+        sku: 'asd',
         main_image: {
           id: 1,
           variants: {
@@ -164,7 +162,7 @@ export const mockProduct = {
         attribute: {
           id: 1,
           name: 'Ширина',
-          data_type: AttributeDataType.INTEGER,
+          data_type: 'INTEGER',
         },
         values: [
           {
@@ -263,8 +261,7 @@ export const mockProduct = {
         content: {
           positive: 'Внешний вид, мягкость.',
           negative: 'Не трансформируется, соответственно, нет ящиков для белья',
-          comment:
-            'Очень понравился его внешний вид, серьезный, статный. Сидеть ну ооочень мягко, поэтому выбрал его.',
+          comment: 'Очень понравился его внешний вид, серьезный, статный. Сидеть ну ооочень мягко, поэтому выбрал его.',
         },
       },
       {
@@ -273,11 +270,9 @@ export const mockProduct = {
         created_at: '2021-05-16T12:12:54.029Z',
         score: 5,
         content: {
-          positive:
-            'Качество. Стоит своих денег. Доставили быстро. Вместительный.',
+          positive: 'Качество. Стоит своих денег. Доставили быстро. Вместительный.',
           negative: '',
-          comment:
-            'Хороший диван, со своими задачами справляется. Качественно сделан, приятный на ощупь.',
+          comment: 'Хороший диван, со своими задачами справляется. Качественно сделан, приятный на ощупь.',
         },
       },
       {

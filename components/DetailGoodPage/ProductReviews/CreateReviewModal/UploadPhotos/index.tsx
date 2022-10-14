@@ -1,10 +1,4 @@
-import React, {
-  FC,
-  useRef,
-  useEffect,
-  useState,
-  ChangeEventHandler,
-} from 'react';
+import React, { FC, useRef, useEffect, useState, ChangeEventHandler } from 'react';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
@@ -17,18 +11,11 @@ interface UploadPhotosFiles {
   onClick: (index) => void;
 }
 
-const UploadPhotosFiles: FC<UploadPhotosFiles> = ({
-  files = [],
-  onClick = () => {},
-}) => {
+const UploadPhotosFiles: FC<UploadPhotosFiles> = ({ files = [], onClick = () => {} }) => {
   return (
     <div className={styles.files}>
       {files.map((file, index) => (
-        <div
-          key={file.name + file.type + index}
-          className={styles.filesItem}
-          onClick={() => onClick(index)}
-        >
+        <div key={file.name + file.type + index} className={styles.filesItem} onClick={() => onClick(index)}>
           <div className={styles.filesItemIcon}>
             <Icon name="Cross" />
           </div>
@@ -53,12 +40,7 @@ const UploadPhotos = ({ onChange }) => {
   const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
     const file = e.target.files[0];
 
-    if (
-      !file ||
-      file.size > 8 * ONE_MB ||
-      (file.type !== 'image/jpeg' && file.type !== 'image/png')
-    )
-      return;
+    if (!file || file.size > 8 * ONE_MB || (file.type !== 'image/jpeg' && file.type !== 'image/png')) return;
 
     setSelectedFiles([...selectedFiles, file]);
   };
@@ -87,14 +69,8 @@ const UploadPhotos = ({ onChange }) => {
         accept="image/png,image/jpeg"
         onChange={handleChangeInput}
       />
-      {!!selectedFiles.length && (
-        <UploadPhotosFiles files={selectedFiles} onClick={deleteFile} />
-      )}
-      <button
-        className={styles.uploadPhotosBtn}
-        type="button"
-        onClick={openSelectFiles}
-      >
+      {Boolean(selectedFiles.length) && <UploadPhotosFiles files={selectedFiles} onClick={deleteFile} />}
+      <button className={styles.uploadPhotosBtn} type="button" onClick={openSelectFiles}>
         <Icon name="SmallPlus" />
         {!selectedFiles.length ? 'Добавить фото' : 'Загрузить еще'}
       </button>

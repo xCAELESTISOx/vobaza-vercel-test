@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 
 export const useMatchMedia = (width) => {
-  const [isMatch, setIsMatch] = useState<boolean>(false);
+  const [isMatch, setIsMatch] = useState(false);
 
   const checkMatches = (e) => {
-    setIsMatch(!!e.matches);
+    setIsMatch(Boolean(e.matches));
   };
 
   useEffect(() => {

@@ -8,14 +8,11 @@ interface Options {
 // Шаг на каждую тысячу пикселей
 const AUTODURATION_STEP = 200;
 
-export const useCollapse = <T extends HTMLElement = HTMLElement>(
-  ref: RefObject<T>,
-  options: Options = {}
-) => {
+export const useCollapse = <T extends HTMLElement = HTMLElement>(ref: RefObject<T>, options: Options = {}) => {
   const { initialVal, duration, autoDuration } = options;
 
-  const [isOpen, setIsOpen] = useState<boolean>(!!initialVal);
-  const [innerDuration, setInnerDuration] = useState<number>(+duration || 200);
+  const [isOpen, setIsOpen] = useState(Boolean(initialVal));
+  const [innerDuration, setInnerDuration] = useState(+duration || 200);
 
   useEffect(() => {
     if (ref.current) {
@@ -41,8 +38,7 @@ export const useCollapse = <T extends HTMLElement = HTMLElement>(
     let timer: NodeJS.Timeout = null;
 
     requestAnimationFrame(() => {
-      if (ref.current)
-        ref.current.style.height = ref.current.scrollHeight + 'px';
+      if (ref.current) ref.current.style.height = ref.current.scrollHeight + 'px';
 
       requestAnimationFrame(() => {
         if (isOpen) {

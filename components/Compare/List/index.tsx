@@ -168,7 +168,7 @@ const CompareList: FC<Props> = ({ initialGoods, initialAttributes }) => {
   return (
     <>
       <div className={styles.compareList}>
-        {!!goods && goods.length > 0 ? (
+        {goods?.length > 0 ? (
           <>
             <div className={styles.compareListContent}>
               <div className={styles.compareListMenu}>
@@ -213,9 +213,7 @@ const CompareList: FC<Props> = ({ initialGoods, initialAttributes }) => {
       </div>
       <div className={styles.compareButtons}>
         <Button text="Продолжить покупки" onClick={goShopping} size="big" />
-        {!!goods && goods.length > 0 && (
-          <Button variation="ternary" text="Очистить список" onClick={clearList} size="big" />
-        )}
+        {Boolean(goods?.length) && <Button variation="ternary" text="Очистить список" onClick={clearList} size="big" />}
       </div>
       {removedAttributes.length > 0 && (
         <CompareListRemoveFeatures addAttribute={addAttribute} removedAttributes={removedAttributes} />

@@ -64,7 +64,7 @@ const CartSidebar: FC<Props> = ({
           <Button onClick={onButtonClick} text="Оформить заказ" size="big" isFullScreen />
         </div>
       )}
-      {!isOrder && !!price && (
+      {!isOrder && Boolean(price) && (
         <Link href="/checkout">
           <a className={styles.cartSidebarButton}>
             <Button text="Перейти к оформлению" size="big" isFullScreen />
