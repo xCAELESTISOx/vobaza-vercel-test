@@ -2,13 +2,13 @@ import React from 'react';
 
 import type { IFilterFront } from 'src/models/IFilter';
 
-import GoodsFilterItemActive from './Item/Active';
+import { ActiveFilterLabel } from './ActiveFilterLabel';
 
 import styles from './styles.module.scss';
 
 type Props = {
   isLoading: boolean;
-  currentFilters: { [key: number]: IFilterFront };
+  currentFilters: Record<number, IFilterFront>;
   removeAllFilters: () => void;
   removeFilter: (filter: IFilterFront, value?: string) => void;
 };
@@ -20,12 +20,7 @@ const CategoryCurrentFilters = ({ isLoading, currentFilters, removeAllFilters, r
         <div className={styles.filtersBlock} style={{ zIndex: 14 }}>
           <div className={styles.filters}>
             {Object.values(currentFilters).map((filter: IFilterFront) => (
-              <GoodsFilterItemActive
-                key={filter.id}
-                filter={filter}
-                removeFilter={removeFilter}
-                isLoading={isLoading}
-              />
+              <ActiveFilterLabel key={filter.id} filter={filter} removeFilter={removeFilter} isLoading={isLoading} />
             ))}
             <button
               className={`${styles.remove} ${styles.filtersButton}`}

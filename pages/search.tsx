@@ -38,7 +38,7 @@ export default function Catalog({ goods, meta }) {
             {num2str(meta.list.count, ['Найден', 'Найдено', 'Найдено'])} {meta.list.count}{' '}
             {num2str(meta.list.count, ['товар', 'товара', 'товаров'])}
           </div>
-          <GoodsBlock filters={[]} withoutExpress goods={goods} meta={meta} />
+          <GoodsBlock withoutExpress goods={goods} meta={meta} />
         </div>
       </section>
     </div>

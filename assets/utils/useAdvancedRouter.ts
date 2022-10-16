@@ -4,7 +4,7 @@ export function useAdvancedRouter() {
   const router = useRouter();
 
   const replaceRouterQuery = (
-    updateQuery: { [key: string | number]: string | number },
+    updateQuery: { [key: string | number]: string[] | number[] | string | number },
     exclude: (number | string)[] = [],
     scroll = false
   ) => {

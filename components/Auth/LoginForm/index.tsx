@@ -106,6 +106,7 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
       timeoutId && clearTimeout(timeoutId);
     };
   }, [isCodeTimeout]);
+
   useEffect(() => {
     values.code.length >= 5 && checkCode();
   }, [values.code]);

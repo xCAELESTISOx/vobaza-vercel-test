@@ -64,7 +64,7 @@ const getNestedSlugAncestors = (index: number, sortedAncestors: ICategory[]): IC
 export const getProductBreadcrumbs = (ancestors: ICategory[], mainCategory: ICategory): BreadcrumbType[] => {
   const sortedAncestors = [...sortAncestors([], ancestors), mainCategory];
 
-  const breadcrumbs =  getNestedSlugAncestors(0, sortedAncestors).map((item) => {
+  const breadcrumbs = getNestedSlugAncestors(0, sortedAncestors).map((item) => {
     return {
       title: item.name,
       href: item.slug,
@@ -76,6 +76,7 @@ export const getProductBreadcrumbs = (ancestors: ICategory[], mainCategory: ICat
     {
       title: 'Каталог мебели',
       href: '/katalog',
-    }, ...breadcrumbs
-  ]
+    },
+    ...breadcrumbs,
+  ];
 };

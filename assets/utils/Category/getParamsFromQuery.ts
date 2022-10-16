@@ -1,8 +1,11 @@
+type GetParamsFromQuery = Record<string, string | number | boolean | string[]>;
+
+/** Получение параметров для GET-запросов товаров и фильтров */
 export const getParamsFromQuery = (
-  params: { [key: string]: number | string | string[] | boolean },
-  activeFilters: { [key: string]: string | string[] }
-) => {
-  const newParams = { ...params };
+  initialParams: Record<string, number | string | string[] | boolean>,
+  activeFilters: Record<string, string | string[]>
+): GetParamsFromQuery => {
+  const newParams = { ...initialParams };
 
   if (activeFilters && Object.keys(activeFilters).length) {
     newParams['filter[include_variants]'] = true;

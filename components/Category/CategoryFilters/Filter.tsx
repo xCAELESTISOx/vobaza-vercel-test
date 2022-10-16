@@ -1,36 +1,36 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState, MouseEvent } from 'react';
 
-import type { IFilter, IFilterFront } from '../../../../src/models/IFilter';
+import type { IFilter, IFilterFront } from 'src/models/IFilter';
 
+import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
 import { IFilterSelectVariant } from '@nebo-team/vobaza.ui.filter-select/dist';
 import { FilterSelect } from '@nebo-team/vobaza.ui.filter-select/dist';
 import { RangeBlock } from '@nebo-team/vobaza.ui.range/dist';
-import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
 
 import styles from './styles.module.scss';
 
 type Props = {
-  ref?: any;
   full?: boolean;
   filter: IFilter;
   baseFilter: IFilter;
-  currentFilters: { [key: number]: IFilterFront };
+  currentFilter?: IFilterFront;
   addFilter: (filter: IFilterFront) => void;
 };
 
-const GoodsFilterItemNumeric: FC<Props> = ({ filter, currentFilters, full = false, addFilter }) => {
+const NumericFilter: FC<Props> = ({ filter, full = false, currentFilter, addFilter }) => {
   const [values, setValues] = useState<[number, number]>([filter.meta.min || 0, filter.meta.max || 100]);
   const [filterValues, setFilterValues] = useState<[number, number]>([filter.meta.min || 0, filter.meta.max || 100]);
 
-  const onClick = (e) => {
+  const onClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     if (
-      !currentFilters ||
+      !currentFilter ||
       filter.meta.min === filter.meta.max ||
-      (!currentFilters[filter.id] && filterValues[0] === filter.meta.min && filterValues[1] === filter.meta.max)
+      (!currentFilter && filterValues[0] === filter.meta.min && filterValues[1] === filter.meta.max)
     )
       return;
+
     addFilter({
       id: filter.id,
       name: filter.name,
@@ -51,15 +51,17 @@ const GoodsFilterItemNumeric: FC<Props> = ({ filter, currentFilters, full = fals
   };
 
   useEffect(() => {
-    if (currentFilters && currentFilters[filter.id]) {
-      const newValues = currentFilters[filter.id].values as [number, number];
-      newValues[0] = Math.max(currentFilters[filter.id].values[0], filter.meta.min);
-      newValues[1] = Math.min(currentFilters[filter.id].values[1], filter.meta.max);
+    if (currentFilter) {
+      const newValues = [...currentFilter.values] as [number, number];
+
+      newValues[0] = Math.max(currentFilter.values[0], filter.meta.min);
+      newValues[1] = Math.min(currentFilter.values[1], filter.meta.max);
+
       setValues(newValues);
     } else {
       setValues([filter.meta.min || 0, filter.meta.max || 100]);
     }
-  }, [currentFilters, filter]);
+  }, [currentFilter, filter]);
 
   return (
     <div className={styles.filter}>
@@ -93,7 +95,7 @@ const GoodsFilterItemNumeric: FC<Props> = ({ filter, currentFilters, full = fals
   );
 };
 
-const GoodsFilterItemListed: FC<Props> = ({ filter, baseFilter, full = false, currentFilters, addFilter }) => {
+const ListedFilter: FC<Props> = ({ filter, baseFilter, full = false, currentFilter, addFilter }) => {
   const [isTouched, setIsTouched] = useState(false);
   const [values, setValues] = useState<IFilterSelectVariant[]>(
     baseFilter.meta.items
@@ -109,8 +111,8 @@ const GoodsFilterItemListed: FC<Props> = ({ filter, baseFilter, full = false, cu
   );
 
   useEffect(() => {
-    if (currentFilters && currentFilters[filter.id]) {
-      const currentValues = currentFilters[filter.id].values;
+    if (currentFilter) {
+      const currentValues = currentFilter.values;
       setValues((prevArray) =>
         prevArray.map((item) => {
           if (currentValues.includes(item.code))
@@ -129,7 +131,7 @@ const GoodsFilterItemListed: FC<Props> = ({ filter, baseFilter, full = false, cu
       );
     }
     setIsTouched(false);
-  }, [currentFilters, filter]);
+  }, [currentFilter, filter]);
 
   const onClick = (e?) => {
     e && e.preventDefault();
@@ -168,8 +170,7 @@ const GoodsFilterItemListed: FC<Props> = ({ filter, baseFilter, full = false, cu
     const filteredBaseFilters = baseFilter.meta.items
       .map((item) => {
         let isActive = false;
-        if (currentFilters && currentFilters[filter.id] && currentFilters[filter.id].values.includes(item))
-          isActive = true;
+        if (currentFilter?.values.includes(item)) isActive = true;
 
         return {
           value: item === 'true' ? 'Да' : item === 'false' ? 'Нет' : item,
@@ -215,13 +216,15 @@ const GoodsFilterItemListed: FC<Props> = ({ filter, baseFilter, full = false, cu
   );
 };
 
-const GoodsFilterItem: FC<Props> = ({ filter, baseFilter, ...props }) => {
+export const Filter: FC<Props> = ({ filter, baseFilter, ...props }) => {
   return (
     <div className={styles.filter}>
-      {filter.type === 'NUMERIC_RANGE' && <GoodsFilterItemNumeric filter={filter} baseFilter={baseFilter} {...props} />}
-      {filter.type === 'LISTED' && <GoodsFilterItemListed filter={filter} baseFilter={baseFilter} {...props} />}
+      {
+        {
+          NUMERIC_RANGE: <NumericFilter filter={filter} baseFilter={baseFilter} {...props} />,
+          LISTED: <ListedFilter filter={filter} baseFilter={baseFilter} {...props} />,
+        }[filter.type]
+      }
     </div>
   );
 };
-
-export default GoodsFilterItem;

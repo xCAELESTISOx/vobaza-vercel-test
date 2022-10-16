@@ -23,7 +23,7 @@ type Props = {
 
 const CategoryHead: FC<Props> = ({ isExpress, currentTag, category }) => {
   const router = useRouter();
-  const { page } = router.query as any;
+  const { page } = router.query;
 
   return (
     <>

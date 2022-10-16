@@ -1,25 +1,25 @@
 import { CSSProperties, FC } from 'react';
 
-import type { IFilterFront } from '../../../../src/models/IFilter';
-import { toNumberWithSpaces } from '../../../../assets/utils/formatters';
+import type { IFilterFront } from 'src/models/IFilter';
+import { toNumberWithSpaces } from 'assets/utils/formatters';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
-import styles from '../styles.module.scss';
+import styles from './styles.module.scss';
 
 type Props = {
   filter: IFilterFront;
-  removeFilter: (filter : IFilterFront, value?: string) => void;
+  removeFilter: (filter: IFilterFront, value?: string) => void;
   isLoading: boolean;
 };
 
 const renderNumericText = (filter: IFilterFront) => {
-  if (filter.name === 'Цена')
+  if (filter.value_type === 'PRICE')
     return `${filter.name}: ${toNumberWithSpaces(filter.values[0])} ₽ - ${toNumberWithSpaces(filter.values[1])} ₽`;
   return `${filter.name}: ${filter.values[0]} - ${filter.values[1]}`;
 };
 
-const GoodsFilterItemActive: FC<Props> = ({ filter, removeFilter, isLoading }) => {
+export const ActiveFilterLabel: FC<Props> = ({ filter, removeFilter, isLoading }) => {
   const blockClickStyle: CSSProperties = { pointerEvents: isLoading ? 'none' : 'auto' };
 
   return (
@@ -54,5 +54,3 @@ const GoodsFilterItemActive: FC<Props> = ({ filter, removeFilter, isLoading }) =
     </>
   );
 };
-
-export default GoodsFilterItemActive;

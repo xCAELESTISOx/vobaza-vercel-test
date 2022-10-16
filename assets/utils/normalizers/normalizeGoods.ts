@@ -100,7 +100,7 @@ export const normalizeProductAttributes = (productAttributes) => {
   return { ...productAttributes, additional };
 };
 
-export default function normalizeGoods(goods: IGood[] | IGoodCard[]) {
+export default function normalizeGoods(goods: IGood[] | IGoodCard[]): IGoodCard[] {
   return goods.map((good) => ({
     ...good,
     price: getPrice(good.price),

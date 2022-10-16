@@ -1,19 +1,28 @@
 import type { ICategoryTag } from 'src/models/ICategoryTag';
 
+type GetTagsByUrl = {
+  currentTags: ICategoryTag[];
+  currentTagsLevel: ICategoryTag[];
+  hasInvalidTags: boolean;
+};
+
 /** Получение текущих тегов по URL`у */
-export const getTagsByUrl = (url: string, tags: ICategoryTag[], categoriesSlugs: string[]) => {
-  // Выкидываем из URL`а все лишнее и получаем только массив слагов категорий и тегов
-  let tagsSlugs: string | string[] = url.replace('/ekspress-dostavka', '').split('?')[0];
-  categoriesSlugs.forEach((slug) => (tagsSlugs = (tagsSlugs as string).replace('/' + slug, '')));
-  tagsSlugs = tagsSlugs.split('/').filter(Boolean);
-  //
+export const getTagsByUrl = (url: string, tags: ICategoryTag[], categoriesSlugs: string[]): GetTagsByUrl => {
+  // Выкидываем из URL`а все лишнее и получаем только слагb категорий и тегов
+  let slugs: string = url.replace('/ekspress-dostavka', '').split('?')[0];
+
+  // Вырезаем слаги категорий, оставляя только слаги тегов
+  categoriesSlugs.forEach((slug) => {
+    slugs = slugs.replace('/' + slug, '');
+  });
+  const tagsSlugs = slugs.split('/').filter(Boolean);
 
   const currentTags: ICategoryTag[] = [];
   let childrenTags: ICategoryTag[] = tags;
   let currentTagsLevel: ICategoryTag[] = tags;
-  // let hasInvalidTags = false;
+  let hasInvalidTags = false;
 
-  // Пробегаемся по дереву тегов и ищем нужный
+  // Пробегаемся по дереву тегов и ищем подходящие
   tagsSlugs.forEach((slug) => {
     const newTag = childrenTags.find((tag) => tag.slug === slug) || null;
 
@@ -23,12 +32,11 @@ export const getTagsByUrl = (url: string, tags: ICategoryTag[], categoriesSlugs:
       if (newTag.tags?.length) {
         currentTagsLevel = newTag.tags;
       }
+    } else {
+      hasInvalidTags = true;
     }
-    // } else {
-    //   hasInvalidTags = true;
-    // }
   });
   //
 
-  return { currentTags, currentTagsLevel };
+  return { currentTags, currentTagsLevel, hasInvalidTags };
 };

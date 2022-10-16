@@ -1,11 +1,12 @@
-import { FC, useEffect } from 'react';
+import React, { FC, MouseEvent, useEffect } from 'react';
 
 import type { IFilter, IFilterFront } from '../../../../src/models/IFilter';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import Accordeon from '../../../UI/Accordeon';
-import GoodsFilterItem from '../Item';
+import { Filter } from '../Filter';
+
 import styles from './styles.module.scss';
 
 type Props = {
@@ -27,7 +28,7 @@ const FiltersModal: FC<Props> = ({
   addFilter,
   close,
 }) => {
-  const menuClickHandler = (e) => {
+  const menuClickHandler = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
 
@@ -38,7 +39,7 @@ const FiltersModal: FC<Props> = ({
 
   const applyAll = () => {
     const filterItems = document.querySelectorAll('.filtersJsButton');
-    filterItems.forEach((item: any) => item.click());
+    filterItems.forEach((item: HTMLElement) => item.click());
     close();
   };
 
@@ -62,10 +63,10 @@ const FiltersModal: FC<Props> = ({
         <div className={styles.filtersBlock}>
           {filters.map((filter) => (
             <Accordeon key={filter.id} title={filter.name} className={styles.filtersAccordeon}>
-              <GoodsFilterItem
+              <Filter
                 filter={filter}
                 baseFilter={baseFilters.find((item) => item.id === filter.id)}
-                currentFilters={currentFilters}
+                currentFilter={currentFilters?.[filter.id]}
                 addFilter={addFilter}
                 full
               />

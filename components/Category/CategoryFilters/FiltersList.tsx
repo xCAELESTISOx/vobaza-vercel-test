@@ -7,7 +7,7 @@ import { GoodsSortTypes } from 'src/models/IGood';
 
 import { FilterSelect } from '@nebo-team/vobaza.ui.filter-select';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
-import GoodsFilterItem from './Item';
+import { Filter } from './Filter';
 
 import styles from './styles.module.scss';
 
@@ -21,7 +21,7 @@ type Props = {
   filters: IFilter[];
   baseFilters: IFilter[];
   currentSort: Variant<string>;
-  currentFilters: { [key: number]: IFilterFront };
+  currentFilters: { [key: number]: IFilterFront } | null;
   toggleMenu: () => void;
   setSort: (value: Variant<string>) => void;
   addFilter: (filters: IFilterFront) => void;
@@ -47,11 +47,11 @@ const CategoryFiltersList = ({
         {filters.map(
           (filter) =>
             filter.visibility_type === 'MAIN' && (
-              <GoodsFilterItem
+              <Filter
                 key={filter.id}
                 filter={filter}
                 baseFilter={baseFilters.find((item) => item.id === filter.id)}
-                currentFilters={currentFilters}
+                currentFilter={currentFilters?.[filter.id]}
                 addFilter={addFilter}
               />
             )

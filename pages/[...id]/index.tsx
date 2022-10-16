@@ -1,16 +1,21 @@
+import { useEffect } from 'react';
+import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import type { GetServerSideProps } from 'next';
 
 import type { ICategoryTag } from 'src/models/ICategoryTag';
 import type { ICategory } from '../../src/models/ICategory';
 import type { IGoodCard } from '../../src/models/IGood';
 import type { IFilter, IFilterFront } from '../../src/models/IFilter';
 import normalizeGoods from '../../assets/utils/normalizers/normalizeGoods';
-import { getFiltersFromQuery } from 'assets/utils/Category/filters/getFiltersFromQuery';
+import { getActiveFiltersFromQuery } from 'assets/utils/Category/filters/getActiveFiltersFromQuery';
 import { getCategoryBreadcrumps } from 'assets/utils/Category/getCategoryBreadcrumps';
 import { getParamsFromQuery } from 'assets/utils/Category/getParamsFromQuery';
 import { getTagsByUrl } from 'assets/utils/Category/getTagsByUrl';
+import { useDispatch } from 'src/hooks/useDispatch';
+
+import { markTagsAsInvalid, resetTags, setCurrentTags, setTags } from 'src/store/tags';
+import { setBaseFilters, setFilters, setCurrentFilters, markFiltersAsInvalid, resetFilters } from 'src/store/filters';
 
 import Breadcrumbs from '../../components/Layout/Breadcrumbs';
 import { GoodsBlock } from '../../components/Goods/GoodsBlock';
@@ -34,13 +39,15 @@ const convertFiltersIfPrice = (filters: IFilter[]) => {
 };
 
 interface Props {
+  hasInvalidFilters: boolean;
+  hasInvalidTags: boolean;
   category: ICategory;
   filters: IFilter[];
   goods: IGoodCard[];
   tags: ICategoryTag[];
   baseFilters: IFilter[];
   currentTags: ICategoryTag[];
-  currentFilters: { [key: number]: IFilterFront };
+  currentFilters: Record<number, IFilterFront>;
   meta: {
     list: {
       count: number;
@@ -52,6 +59,8 @@ interface Props {
 const LIMIT = 40;
 
 export default function Catalog({
+  hasInvalidFilters,
+  hasInvalidTags,
   category,
   filters,
   goods,
@@ -61,11 +70,34 @@ export default function Catalog({
   baseFilters,
   meta,
 }: Props) {
+  const dispatch = useDispatch();
+
   const router = useRouter();
 
-  const isExpress = router.asPath.indexOf('/ekspress-dostavka') !== -1;
+  const isExpress = router.asPath.includes('/ekspress-dostavka');
   const breadcrumbs = getCategoryBreadcrumps([...category.ancestors, category], currentTags, isExpress);
   const currentTag = currentTags[currentTags.length - 1] || null;
+
+  useEffect(() => {
+    dispatch(setBaseFilters(baseFilters));
+    dispatch(setFilters(filters));
+    dispatch(setCurrentFilters(currentFilters));
+    if (hasInvalidFilters) dispatch(markFiltersAsInvalid());
+
+    return () => {
+      dispatch(resetFilters());
+    };
+  }, [filters]);
+
+  useEffect(() => {
+    dispatch(setTags(tags));
+    dispatch(setCurrentTags(currentTags));
+    if (hasInvalidTags) dispatch(markTagsAsInvalid());
+
+    return () => {
+      dispatch(resetTags());
+    };
+  }, [tags]);
 
   return (
     <>
@@ -82,15 +114,11 @@ export default function Catalog({
           <div className="container container--for-cards">
             <CategoryHead category={category} currentTag={currentTag} isExpress={isExpress} />
             <GoodsBlock
+              withFilters={Boolean(filters)}
               categorySlug={category.slug}
-              currentFilters={currentFilters}
               isExpress={isExpress}
-              filters={filters}
-              tags={tags}
-              baseFilters={baseFilters}
               goods={goods}
               meta={meta}
-              currentTags={currentTags}
             />
             {category.description && (
               <div className="seoText" dangerouslySetInnerHTML={{ __html: category.description }} />
@@ -102,10 +130,7 @@ export default function Catalog({
   );
 }
 
-// TODO: Буквально весь этот кошмар необходимо переработать
 export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUrl, query }) => {
-  let currentFilters: { [key: number]: IFilterFront } | null = null;
-
   const { page, id, sort, city, ...activeFilters } = query;
   const activeQueryFilters = { ...activeFilters };
 
@@ -119,10 +144,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
     const tags: ICategoryTag[] = tagsData.data;
 
     // Получить по урлу массив всех активных тегов и уровень активных тегов
-    const appliedTags = getTagsByUrl(resolvedUrl, tags, [...category.ancestors.map((i) => i.slug), category.slug]);
-    const currentTags: ICategoryTag[] = appliedTags?.currentTags || [];
-    const tagFilters = currentTags.map(({ filter }) => filter);
+    const { currentTags, hasInvalidTags } = getTagsByUrl(resolvedUrl, tags, [
+      ...category.ancestors.map((i) => i.slug),
+      category.slug,
+    ]);
 
+    const tagFilters = currentTags.map(({ filter }) => filter);
     tagFilters.forEach((filter) => {
       let value: string | string[] = filter.values as string[];
 
@@ -133,6 +160,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
       activeQueryFilters[filter.id] = value;
     });
 
+    // Формирование параметров для получения товаров и фильтров
     const initialParams = {
       limit: LIMIT,
       offset: page ? (Number(page) - 1) * LIMIT : 0,
@@ -142,6 +170,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
       ...(isExpress && { 'filter[label]': 'EXPRESS-DELIVERY' }),
     };
     const params = getParamsFromQuery(initialParams, activeQueryFilters);
+    //
 
     const [goodsRes, filtersRes, baseFiltersRes] = await Promise.all([
       api.getGoods(params),
@@ -149,16 +178,14 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
       api.getCategoryFilters(category.id),
     ]);
 
-    const goods: IGoodCard[] = normalizeGoods(goodsRes.data.data);
-    let filters: IFilter[] = convertFiltersIfPrice(filtersRes.data.data);
-    const baseFilters: IFilter[] = convertFiltersIfPrice(baseFiltersRes.data.data);
-    const meta = goodsRes.data.meta;
+    const goods = normalizeGoods(goodsRes.data.data);
+    let filters = convertFiltersIfPrice(filtersRes.data.data);
+    const baseFilters = convertFiltersIfPrice(baseFiltersRes.data.data);
+    const { meta } = goodsRes.data;
 
-    if (Object.keys(activeFilters).length && filters.length > 0) {
-      currentFilters = getFiltersFromQuery(activeFilters, filters);
-    }
+    const { activeFilters: currentFilters, hasInvalidFilters } = getActiveFiltersFromQuery(activeFilters, filters);
 
-    filters = filters.filter((filter) => !currentTags.find((tag) => tag.filter.id === filter.id));
+    filters = filters.filter((filter) => !currentTags.some((tag) => tag.filter.id === filter.id));
 
     return {
       props: {
@@ -170,10 +197,13 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
         goods,
         meta,
         tags,
+        hasInvalidTags,
+        hasInvalidFilters,
       },
     };
   } catch (error) {
-    console.error(error);
+    console.error('Error has occured:', error.request?.res, error.response?.data, error.response?.status);
+    // console.error(error);
     return {
       redirect: {
         destination: '/',

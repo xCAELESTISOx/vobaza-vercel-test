@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import type { Dispatch, FC, SetStateAction } from 'react';
-import type { IFilter, IFilterFront, ITagFitlerFront } from '../../../src/models/IFilter';
+import type { IFilterFront, ITagFitlerFront } from '../../../src/models/IFilter';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 import type { ICategoryTag } from 'src/models/ICategoryTag';
 import { GoodsSortTypes } from 'src/models/IGood';
@@ -9,8 +9,9 @@ import { useAdvancedRouter } from 'assets/utils/useAdvancedRouter';
 import { useToggle } from 'src/hooks/useToggle';
 
 import CategoryCurrentFilters from './CategoryCurrentFilters';
-import CategoryFiltersList from './CategoryFiltersList';
+import CategoryFiltersList from './FiltersList';
 import FiltersModal from './Modal';
+import { useSelector } from 'src/hooks/useSelector';
 
 const getQueryFromFilters = (filters: (IFilterFront | ITagFitlerFront)[]) => {
   const queryFilters: { [key: string]: string | string[] } = {};
@@ -37,35 +38,28 @@ const getQueryFromFilters = (filters: (IFilterFront | ITagFitlerFront)[]) => {
 type Props = {
   categorySlug?: string;
   isLoading: boolean;
-  filters: IFilter[];
-  baseFilters: IFilter[];
   currentTags: ICategoryTag[];
-  currentFilters: { [key: number]: IFilterFront };
   setIsLoading?: Dispatch<SetStateAction<boolean>>;
 };
 
-const CategoryFilters: FC<Props> = ({
-  categorySlug,
-  isLoading,
-  filters,
-  baseFilters,
-  currentTags,
-  currentFilters,
-  setIsLoading,
-}) => {
+const CategoryFilters: FC<Props> = ({ categorySlug, isLoading, currentTags, setIsLoading }) => {
   const { router, replaceRouterQuery } = useAdvancedRouter();
   const { page, id, sort, text, city, ...activeFilters } = router.query;
 
+  const baseFilters = useSelector((state) => state.filters.baseFilters);
+  const filters = useSelector((state) => state.filters.filters);
+  const currentFilters = useSelector((state) => state.filters.currentFilters);
+
   const [isMenuOpen, toggleMenu] = useToggle(false);
-  const [currentSort, setCurrentSort] = useState({
+  const [currentSort, setCurrentSort] = useState<Variant<keyof typeof GoodsSortTypes>>({
     code: 'POPULARITY',
-    value: GoodsSortTypes.POPULARITY as string,
+    value: GoodsSortTypes.POPULARITY,
   });
 
   const isInitialized = useRef(false);
 
   //Sort
-  const setSort = (value: Variant<string>) => {
+  const setSort = (value: Variant<keyof typeof GoodsSortTypes>) => {
     setIsLoading(true);
     setCurrentSort(value);
 
@@ -76,6 +70,7 @@ const CategoryFilters: FC<Props> = ({
     }
   };
 
+  /** Добавление фильтра в query параметры урла. Оттуда их достает NEXT и выдает currentFilters */
   const addFilter = (filter: IFilterFront) => {
     setIsLoading(true);
 
@@ -84,6 +79,7 @@ const CategoryFilters: FC<Props> = ({
     const { queryFilters, excludeFilterId } = getQueryFromFilters([filter]);
     ['page', 'city', 'id', excludeFilterId].forEach((item) => delete query[item]);
 
+    // Если фильтр относится к тегам, помимо фильтра включаем соответствующий тег
     if (currentFilters && currentFilters[filter.id]?.tag_slug) {
       currentTags.forEach((tag, index) => {
         if (tag.slug === currentFilters[filter.id].tag_slug) {
@@ -94,8 +90,13 @@ const CategoryFilters: FC<Props> = ({
         }
       });
     }
+    //
 
-    router.push({ pathname: href, query: { ...query, ...queryFilters } }, undefined, { scroll: false });
+    if (currentFilters?.[filter.id]?.tag_slug) {
+      router.push({ pathname: href, query: { ...query, ...queryFilters } }, undefined, { scroll: false });
+    } else {
+      replaceRouterQuery({ ...query, ...queryFilters });
+    }
   };
 
   // Удаляет фильтр целиком, либо одно из значений фильтра
@@ -123,10 +124,10 @@ const CategoryFilters: FC<Props> = ({
         replaceRouterQuery({}, ['page', id]);
       }
     }
-
     setIsLoading(true);
   };
 
+  // Очистка всех фильтровы
   const removeAllFilters = () => {
     setIsLoading(true);
     const excludeFilters = Object.keys(activeFilters);
@@ -134,11 +135,16 @@ const CategoryFilters: FC<Props> = ({
   };
 
   useEffect(() => {
+    // Очистка фильтров при изменении категории
     if (isInitialized.current) removeAllFilters();
   }, [categorySlug]);
 
   useEffect(() => {
     isInitialized.current = true;
+
+    return () => {
+      isInitialized.current = false;
+    };
   }, []);
 
   return (

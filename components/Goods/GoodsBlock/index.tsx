@@ -1,12 +1,13 @@
 import { FC, useEffect, useState } from 'react';
 
-import type { IFilter, IFilterFront } from '../../../src/models/IFilter';
-import type { IGoodCard } from '../../../src/models/IGood';
-import type { ICategoryTag } from 'src/models/ICategoryTag';
+import type { IGoodCard } from 'src/models/IGood';
 import { useAdvancedRouter } from 'assets/utils/useAdvancedRouter';
+
+import { useSelector } from 'src/hooks/useSelector';
 
 import { CategoryTags } from 'components/Category/CategoryTags';
 import { Pagination } from '@nebo-team/vobaza.ui.pagination/dist';
+import { Title } from '@nebo-team/vobaza.ui.title';
 import { CategoryFilters } from '../../Category/CategoryFilters';
 import CartModal from '../Modals/Cart/Cart';
 import GoodsList from '../List/index';
@@ -18,34 +19,30 @@ type Props = {
   withoutExpress?: boolean;
   categorySlug?: string;
   isExpress?: boolean;
-  baseFilters?: IFilter[];
-  tags?: ICategoryTag[];
-  filters?: IFilter[];
   goods: IGoodCard[];
-  currentFilters?: Record<number, IFilterFront>;
+  withFilters?: boolean;
   meta: {
     list: {
       count: number;
       pages_count: number;
     };
   };
-  currentTags?: ICategoryTag[];
 };
 
 export const GoodsBlock: FC<Props> = ({
   withoutExpress,
+  withFilters,
   categorySlug,
-  isExpress,
-  baseFilters,
-  tags,
-  filters,
+  isExpress = false,
   goods,
-  currentFilters,
   meta,
-  currentTags,
 }) => {
-  const [isOnlyExpress, setIsOnlyExpress] = useState(Boolean(isExpress));
+  const [isOnlyExpress, setIsOnlyExpress] = useState(isExpress);
   const [isLoading, setIsLoading] = useState(true);
+
+  const tags = useSelector((state) => state.tags.tags);
+  const currentTags = useSelector((state) => state.tags.currentTags);
+  const hasInvalidTags = useSelector((state) => state.tags.hasInvalidTags);
 
   const { router } = useAdvancedRouter();
   const { page } = router.query;
@@ -90,7 +87,7 @@ export const GoodsBlock: FC<Props> = ({
   };
 
   useEffect(() => {
-    setIsOnlyExpress(Boolean(isExpress));
+    setIsOnlyExpress(isExpress);
   }, [isExpress]);
 
   useEffect(() => {
@@ -100,7 +97,7 @@ export const GoodsBlock: FC<Props> = ({
   return (
     <div className={styles.goodsBlock}>
       <CartModal />
-      {filters && (
+      {withFilters && (
         <>
           {Boolean(tags?.length) && (
             <CategoryTags categorySlug={categorySlug} tags={tags} setIsLoading={setIsLoading} />
@@ -114,16 +111,18 @@ export const GoodsBlock: FC<Props> = ({
           )}
           <div className={styles.filtersBlock}>
             <CategoryFilters
-              currentFilters={currentFilters}
               categorySlug={categorySlug}
-              filters={filters}
               currentTags={currentTags}
-              baseFilters={baseFilters}
               setIsLoading={setIsLoading}
               isLoading={isLoading}
             />
           </div>
         </>
+      )}
+      {hasInvalidTags && (
+        <Title element="h3" style={{ marginTop: 20 }}>
+          При загрузке данных произошла ошибка
+        </Title>
       )}
       {goods.length > 0 ? (
         <div className={`${styles.goodsList} ${isLoading ? styles.busy : ''}`}>

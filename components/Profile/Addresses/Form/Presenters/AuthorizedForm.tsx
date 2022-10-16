@@ -60,13 +60,17 @@ const AuthorizedAddressForm = ({ inline, address, onSubmit }: Props) => {
       const errs = error.response.data.errors;
 
       throw new Error(errs);
-    } finally {
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   return (
-    <ProfileAddressesForm initialValues={address ? address : initialValues} buttonText='Добавить' onSubmit={saveAddress} inline={inline} />
+    <ProfileAddressesForm
+      initialValues={address ? address : initialValues}
+      buttonText="Добавить"
+      onSubmit={saveAddress}
+      inline={inline}
+    />
   );
 };
 
