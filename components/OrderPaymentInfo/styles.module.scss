@@ -1,11 +1,12 @@
 .paymentInfo {
   padding: 115px 0 70px;
   text-align: center;
+  white-space: pre-wrap;
 }
 
 .paymentInfoBtn {
   display: inline-flex;
-  padding-top: 40px;
+  padding-top: 28px;
 }
 
 @media screen and (max-width: 720px) {

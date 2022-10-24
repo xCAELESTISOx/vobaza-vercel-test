@@ -1,4 +1,4 @@
-import { axios, setToken, setTokenWithGuest } from '../axios';
+import { axios, setToken, setTokenWithGuest } from './../axios';
 
 import type { ICreateAuthOrder, ICreateOrder } from 'src/models/IOrder';
 
@@ -39,5 +39,9 @@ export const ordersAPI = {
   },
   async createOneClickOrder(productId: number, data: { name: string; phone: string; email?: string }) {
     return axios.post(`/v1/products/${productId}/oneClickOrder`, data);
+  },
+  async getOrderPaymentResult(payment_system_id: string) {
+    const params = { payment_system_id };
+    return axios.get('v1/orders/payments/result', { params });
   },
 };

@@ -11,13 +11,13 @@ const OrderPaymentInfo = ({ text }: { text: string }) => {
       <div className={stylesPayment.paymentInfo}>
         <h1 className={styles.sectionTitle}>{text}</h1>
         <div className={stylesPayment.paymentInfoBtn}>
-          <Link href="/">
+          <Link href="/" passHref>
             <Button text="Перейти на главную" />
           </Link>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default OrderPaymentInfo
+export default OrderPaymentInfo;

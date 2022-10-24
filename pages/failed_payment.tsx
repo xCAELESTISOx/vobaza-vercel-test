@@ -1,5 +1,5 @@
-import OrderPaymentInfo from "components/OrderPaymentInfo/OrderPaymentInfo";
+import OrderPaymentInfo from 'components/OrderPaymentInfo';
 
 export default function FailedPaymentPage() {
-  return <OrderPaymentInfo text="Ошибка при оплате заказа" />
+  return <OrderPaymentInfo text="Ошибка при оплате заказа" />;
 }
