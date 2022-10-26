@@ -37,9 +37,7 @@ export default function Compare({ goods, attributes }) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({
-  req,
-}) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => {
   let goods = [];
   let attributes = [];
 

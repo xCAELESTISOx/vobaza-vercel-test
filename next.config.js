@@ -8,6 +8,7 @@ module.exports = {
       'vobaza-vobaza-demo-public.s3.us-west-000.backblazeb2.com',
       'cdn.vobaza.ru:9000',
       'cdn.vobaza.ru',
+      'contenttest.vobaza.ru',
     ],
   },
 };
