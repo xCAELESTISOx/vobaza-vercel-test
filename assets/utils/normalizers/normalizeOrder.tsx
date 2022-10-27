@@ -42,7 +42,7 @@ const normalizeAddressAndLift = (address: IOrderAddress, lift: ILocalOrder['lift
       ...address,
       ...(address.floor && { floor: address.floor }),
       ...(lift && lift?.elevator && { elevator: lift?.elevator }),
-      ...(lift.full_order && { full_order: lift.full_order }),
+      ...(lift && lift.full_order && { full_order: lift.full_order }),
     },
   };
 };
@@ -54,12 +54,13 @@ export const normalizeOrder = (data: ILocalOrder, token: string, customer: IRece
   const isSelfDelivery = delivery?.tag === EOrderDeliveryType.self;
 
   const newAddressAndLift = normalizeAddressAndLift(address, lift, Boolean(token));
+
   const newTime = convertDeliveryTime(delivery?.time);
   const newDate = convertDeliveryDate(delivery?.date);
 
   const newData = {
     obtaining: {
-      obtaining_type: isSelfDelivery ? 'SELF_DELIVERY' : 'DELIVERY',
+      obtaining_type: isSelfDelivery ? 'DELIVERY' : 'SELF_DELIVERY',
       ...(!isSelfDelivery
         ? {
             delivery: {
