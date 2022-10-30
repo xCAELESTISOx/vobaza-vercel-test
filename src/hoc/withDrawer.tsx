@@ -35,10 +35,8 @@ export default function Drawer({
   }, [isOpen]);
 
   return (
-    <div
-      className={`${styles.drawer} ${isOpen ? styles.active : ''} ${isFullHeight ? styles.fullHeight : ''}`}
-      onClick={onClose}
-    >
+    <div className={`${styles.drawer} ${isOpen ? styles.active : ''} ${isFullHeight ? styles.fullHeight : ''}`}>
+      <div className={styles.closeHandlerLayer} onMouseDown={onClose} />
       <div className={styles.drawerContent} onClick={drawerClickHandler}>
         <button type="button" className={styles.drawerClose} onClick={onClose}>
           <Icon name="Cross" />
