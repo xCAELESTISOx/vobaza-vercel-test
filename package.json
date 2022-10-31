@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@nebo-team/vobaza.ui.button": "^0.0.29",
+    "@nebo-team/vobaza.ui.button": "^0.0.31",
     "@nebo-team/vobaza.ui.filter-select": "^0.0.51",
     "@nebo-team/vobaza.ui.icon": "^0.0.24",
     "@nebo-team/vobaza.ui.inputs.input-phone": "^0.0.14",

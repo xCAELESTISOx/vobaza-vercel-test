@@ -249,10 +249,10 @@
     "@nebo-team/vobaza.ui.icon" "0.0.20"
     core-js "^3.0.0"
 
-"@nebo-team/vobaza.ui.button@^0.0.29":
-  version "0.0.29"
-  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.button/-/@nebo-team-vobaza.ui.button-0.0.29.tgz#5c9210190223d76421d1e0d854bbb53ce51cd275"
-  integrity sha1-XJIQGQIj12Qh0eDYVLu1POUc0nU=
+"@nebo-team/vobaza.ui.button@^0.0.31":
+  version "0.0.31"
+  resolved "https://node.bit.dev/@nebo-team/vobaza.ui.button/-/@nebo-team-vobaza.ui.button-0.0.31.tgz#0a80003c63f51329aa318bc36d381093cb5a318e"
+  integrity sha1-CoAAPGP1EymqMYvDbTgQk8taMY4=
   dependencies:
     "@nebo-team/vobaza.ui.icon" "0.0.24"
     core-js "^3.0.0"

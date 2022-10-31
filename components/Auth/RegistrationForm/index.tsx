@@ -54,8 +54,8 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
 
   // Form handler
   const registerHandler = async () => {
+    if (isLoading) return;
     try {
-      if (isLoading) return;
       setIsLoading(true);
       await api.getRegisterCode({
         name: values.name,
@@ -87,6 +87,7 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
       setIsLoading(false);
     }
   };
+
   const checkCode = async () => {
     try {
       setErrors({ ...errors, code: undefined });
@@ -115,6 +116,10 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
     validateOnChange: false,
     onSubmit: registerHandler,
   });
+
+  const handleSubmitForm = () => {
+    handleSubmit();
+  };
 
   const handleChange = async (e: any) => {
     await setFieldValue(e.target.name, e.target.value);
@@ -152,7 +157,7 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
   return (
     <>
       <div className={styles.inlineModal}>
-        <form onSubmit={handleSubmit} className={styles.inlineModalContent}>
+        <form className={styles.inlineModalContent}>
           <Title element="h2" className={styles.inlineModalTitle}>
             Регистрация
           </Title>
@@ -241,8 +246,8 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
                 style={isCodeTimeout ? { color: '#212121', fontWeight: 'normal' } : {}}
                 text={isCodeTimeout ? `Код придет в течение ${isCodeTimeout} сек` : 'Получить код'}
                 size="big"
-                isFullScreen={true}
-                type="submit"
+                onClick={handleSubmitForm}
+                isFullScreen
               />
             </div>
           </div>

@@ -65,6 +65,10 @@ const ProfileUpdateForm: FC<Props> = ({ initialUser }) => {
     onSubmit: setAddressHandler,
   });
 
+  const handleSubmitForm = () => {
+    handleSubmit();
+  };
+
   const resetFormHandler = async () => {
     resetForm();
     setIsChanged(false);
@@ -82,7 +86,7 @@ const ProfileUpdateForm: FC<Props> = ({ initialUser }) => {
   };
 
   return (
-    <form className={styles.profileForm} onSubmit={handleSubmit}>
+    <form className={styles.profileForm}>
       <div className={styles.profileFormBlock}>
         <div className={styles.profileFormTitle}>Контактная информация </div>
         <div className={styles.profileFormInputBlock}>
@@ -119,7 +123,7 @@ const ProfileUpdateForm: FC<Props> = ({ initialUser }) => {
               onChange={handlePhoneChange}
               onBlur={handleBlur}
               error={errors?.phone}
-              disabled={true}
+              disabled
             />
           </div>
           <div className={styles.profileFormInput}>
@@ -136,13 +140,13 @@ const ProfileUpdateForm: FC<Props> = ({ initialUser }) => {
         </div>
       </div>
       <div className={styles.profileFormButtons}>
-        <Button text="Сохранить" size="big" type="submit" disabled={isLoading || !isChanged} />
+        <Button text="Сохранить" size="big" onClick={handleSubmitForm} disabled={isLoading || !isChanged} />
         <Button
           className={styles.profileFormButtonCancel}
           text="Отменить"
           size="big"
           color="#f2f2f2"
-          onClick={resetFormHandler as any}
+          onClick={resetFormHandler}
         />
       </div>
     </form>

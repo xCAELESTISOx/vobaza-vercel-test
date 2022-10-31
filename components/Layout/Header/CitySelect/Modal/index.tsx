@@ -77,16 +77,9 @@ const CitySelectModal: FC<Props> = ({ setCity, closeModal }) => {
 
   return (
     <div className={styles.citySelectModal} ref={modalRef}>
-      <Icon
-        name="Cross"
-        className={styles.citySelectModalCross}
-        onClick={closeModal}
-      />
+      <Icon name="Cross" className={styles.citySelectModalCross} onClick={closeModal} />
       <div className={styles.citySelectModalTitle}>Выбор города</div>
-      <form
-        className={styles.citySelectModalSearchContainer}
-        onSubmit={onSubmit}
-      >
+      <form className={styles.citySelectModalSearchContainer}>
         <input
           name="text"
           className={styles.citySelectModalSearch}
@@ -95,11 +88,8 @@ const CitySelectModal: FC<Props> = ({ setCity, closeModal }) => {
           title="Найти город"
           placeholder="Найти город"
         />
-        <button className={styles.citySelectModalSearchButton} type="submit">
-          <Icon
-            className={styles.citySelectModalSearchIcon}
-            name="Magnifier"
-          ></Icon>
+        <button className={styles.citySelectModalSearchButton} onClick={onSubmit}>
+          <Icon className={styles.citySelectModalSearchIcon} name="Magnifier" />
         </button>
         {cities.length > 0 && (
           <div className={styles.citySelectModalSuggest} ref={suggestRef}>
@@ -118,12 +108,7 @@ const CitySelectModal: FC<Props> = ({ setCity, closeModal }) => {
       </form>
       <div className={styles.citySelectModalList}>
         {citiesList.map((cityItem) => (
-          <div
-            className={styles.citySelectModalListItem}
-            data-city-id={cityItem}
-            key={cityItem}
-            onClick={selectCity}
-          >
+          <div className={styles.citySelectModalListItem} data-city-id={cityItem} key={cityItem} onClick={selectCity}>
             {cityItem}
           </div>
         ))}

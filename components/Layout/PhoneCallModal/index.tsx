@@ -23,9 +23,7 @@ const initialValues = {
 } as PhoneCall;
 
 const validationSchema = yup.object({
-  name: yup
-    .string()
-    .max(255, 'Количество символов в поле должно быть не больше 255'),
+  name: yup.string().max(255, 'Количество символов в поле должно быть не больше 255'),
   phone: yup.string().required('Обязательное поле'),
 });
 
@@ -49,31 +47,25 @@ const PhoneCallModal: FC<Props> = ({ isActive, onClose }) => {
       errs.forEach((err: IError) => {
         err.source && err.source !== ''
           ? (backErrors[err.source] = err.title)
-          : (backErrors.phone = err.title
-              ? err.title
-              : 'Непредвиденная ошибка, попробуйте ещё раз');
+          : (backErrors.phone = err.title ? err.title : 'Непредвиденная ошибка, попробуйте ещё раз');
       });
       setErrors(backErrors);
     }
     setIsLoading(false);
   };
 
-  const {
-    values,
-    setFieldValue,
-    handleChange,
-    handleBlur,
-    errors,
-    setErrors,
-    handleSubmit,
-    resetForm,
-  } = useFormik<PhoneCall>({
-    initialValues,
-    validationSchema,
-    validateOnBlur: false,
-    validateOnChange: false,
-    onSubmit: makePhoneCallRequest,
-  });
+  const { values, setFieldValue, handleChange, handleBlur, errors, setErrors, handleSubmit, resetForm } =
+    useFormik<PhoneCall>({
+      initialValues,
+      validationSchema,
+      validateOnBlur: false,
+      validateOnChange: false,
+      onSubmit: makePhoneCallRequest,
+    });
+
+  const handleSubmitForm = () => {
+    handleSubmit();
+  };
 
   const handlePhoneChange = async (value: string) => {
     await setFieldValue('phone', value);
@@ -88,7 +80,7 @@ const PhoneCallModal: FC<Props> = ({ isActive, onClose }) => {
               <Title element="h2" className={styles.inlineModalTitle}>
                 Заказать звонок
               </Title>
-              <form onSubmit={handleSubmit}>
+              <form>
                 <div className={styles.inlineModalItem}>
                   <InputText
                     label="Имя"
@@ -112,7 +104,7 @@ const PhoneCallModal: FC<Props> = ({ isActive, onClose }) => {
                   />
                 </div>
                 <Button
-                  type="submit"
+                  onClick={handleSubmitForm}
                   text="Заказать звонок"
                   size="big"
                   isFullScreen={true}

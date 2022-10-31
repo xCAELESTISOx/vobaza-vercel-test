@@ -53,20 +53,17 @@ const OneClick: FC = () => {
     dispatch({ type: 'closeOneClickModal' });
   };
 
-  const {
-    values,
-    errors,
-    validateField,
-    setFieldValue,
-    handleSubmit,
-    resetForm,
-  } = useFormik<IOneClickOrder>({
+  const { values, errors, validateField, setFieldValue, handleSubmit, resetForm } = useFormik<IOneClickOrder>({
     initialValues,
     validationSchema,
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: createOrder,
   });
+
+  const handleSubmitForm = () => {
+    handleSubmit();
+  };
 
   const onClose = () => {
     dispatch({ type: 'closeOneClickModal' });
@@ -98,10 +95,7 @@ const OneClick: FC = () => {
     return (
       <ModalLayout onClose={onClose} isWide>
         <div className={styles.contentWrapper}>
-          <Title
-            element="h1"
-            className={`${styles.inlineModalTitle} ${styles.wide}`}
-          >
+          <Title element="h1" className={`${styles.inlineModalTitle} ${styles.wide}`}>
             Заказать в 1 клик
           </Title>
           <div className={styles.modalItem}>
@@ -111,30 +105,19 @@ const OneClick: FC = () => {
                   {product.images || product.main_image ? (
                     product.images ? (
                       <Image
-                        {...getImageVariantProps(
-                          product.images[0].variants,
-                          'medium'
-                        )}
+                        {...getImageVariantProps(product.images[0].variants, 'medium')}
                         objectFit="contain"
                         alt={product.name}
                       />
                     ) : (
                       <Image
-                        {...getImageVariantProps(
-                          product.main_image.variants,
-                          'medium'
-                        )}
+                        {...getImageVariantProps(product.main_image.variants, 'medium')}
                         objectFit="contain"
                         alt={product.name}
                       />
                     )
                   ) : (
-                    <Image
-                      src={PlaceholderImage}
-                      objectFit="contain"
-                      alt=""
-                      unoptimized
-                    />
+                    <Image src={PlaceholderImage} objectFit="contain" alt="" unoptimized />
                   )}
                 </div>
               </div>
@@ -156,7 +139,7 @@ const OneClick: FC = () => {
             </div>
           </div>
           <div className={styles.modalItemBlock}>
-            <form className={styles.form} onSubmit={handleSubmit}>
+            <form className={styles.form}>
               <div className={styles.formItemWrapper}>
                 <div className={styles.formItem}>
                   <InputText
@@ -193,16 +176,11 @@ const OneClick: FC = () => {
               <div className={styles.formItemWrapper}>
                 <div className={styles.contentFooter}>
                   <div className={styles.buttonWrapper}>
-                    <Button
-                      size="big"
-                      text="Заказать"
-                      type="submit"
-                      isFullScreen
-                    />
+                    <Button size="big" text="Заказать" onClick={handleSubmitForm} isFullScreen />
                   </div>
                   <div className={styles.textWrapper}>
-                    Нажимая «Заказать», вы соглашаетесь с договором оферты и
-                    подтверждаете своё согласие на обработку персональных данных
+                    Нажимая «Заказать», вы соглашаетесь с договором оферты и подтверждаете своё согласие на обработку
+                    персональных данных
                   </div>
                 </div>
               </div>

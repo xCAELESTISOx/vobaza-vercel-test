@@ -101,7 +101,7 @@ const CreateReviewModal: FC<CreateReviewModal> = ({ active, onClose = () => {}, 
 
             <div className={styles.reviewModalDivider}></div>
 
-            <form className={styles.reviewModalForm} onSubmit={createReview}>
+            <form className={styles.reviewModalForm}>
               <div className={styles.reviewModalField}>
                 <InputText
                   name="name"
@@ -160,8 +160,8 @@ const CreateReviewModal: FC<CreateReviewModal> = ({ active, onClose = () => {}, 
                   onChange={handleChange}
                   error={errors?.comment}
                   onBlur={handleBlur}
-                  required
                   multiline
+                  required
                 />
               </div>
 
@@ -169,7 +169,7 @@ const CreateReviewModal: FC<CreateReviewModal> = ({ active, onClose = () => {}, 
                 <UploadPhotos onChange={(e) => handleChangeCustomField('files', e)} />
               </div>
 
-              <Button text="Оставить отзыв" type="submit" disabled={isLoading} />
+              <Button text="Оставить отзыв" disabled={isLoading} onClick={createReview} />
             </form>
           </div>
         </Modal>

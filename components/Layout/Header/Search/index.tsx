@@ -11,8 +11,7 @@ const Search: FC = () => {
   const setValueHandler = (e: SyntheticEvent<HTMLInputElement>) => {
     setValue(e.currentTarget.value);
   };
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = () => {
     router.push({
       pathname: '/search',
       query: {
@@ -23,7 +22,7 @@ const Search: FC = () => {
   };
 
   return (
-    <form className={styles.searchContainer} onSubmit={onSubmit}>
+    <form className={styles.searchContainer}>
       <input
         name="text"
         className={styles.search}
@@ -32,7 +31,7 @@ const Search: FC = () => {
         title="Найти товар или категорию..."
         placeholder="Найти товар или категорию..."
       />
-      <button className={styles.searchButton} type="submit">
+      <button className={styles.searchButton} onClick={onSubmit}>
         <Icon className={styles.searchIcon} name="Magnifier"></Icon>
       </button>
     </form>

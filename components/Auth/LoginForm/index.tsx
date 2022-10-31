@@ -1,6 +1,7 @@
-import * as yup from 'yup';
+import { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import Cookies from 'js-cookie';
+import * as yup from 'yup';
 
 import { api } from '../../../assets/api';
 import styles from '../../../styles/modules/inline-modal.module.scss';
@@ -8,7 +9,6 @@ import { IError } from '../../../src/models/IError';
 
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import { Title } from '@nebo-team/vobaza.ui.title/dist';
-import { useEffect, useState } from 'react';
 import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone/dist';
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
 
@@ -58,6 +58,7 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
       setIsLoading(false);
     }
   };
+
   const checkCode = async () => {
     try {
       setErrors({ ...errors, code: undefined });
@@ -84,6 +85,10 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
     validateOnChange: false,
     onSubmit: getCodeHandler,
   });
+
+  const handleSubmitForm = () => {
+    handleSubmit();
+  };
 
   const handleCodeChange = async (e: any) => {
     if (e.target.value.length <= 5) {
@@ -118,7 +123,7 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
           <Title element="h2" className={styles.inlineModalTitle}>
             Вход в аккаунт
           </Title>
-          <form onSubmit={handleSubmit}>
+          <form>
             <div className={styles.inlineModalText}>
               Введите ваш телефон и&nbsp;мы&nbsp;отправим вам смс-код для входа
             </div>
@@ -143,7 +148,7 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
                   text={isCodeTimeout ? `Код придет в течение ${isCodeTimeout} сек` : 'Получить код'}
                   size="big"
                   isFullScreen={true}
-                  type="submit"
+                  onClick={handleSubmitForm}
                 />
               </div>
             </div>
