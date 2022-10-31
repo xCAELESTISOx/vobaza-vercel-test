@@ -60,7 +60,7 @@ export const normalizeOrder = (data: ILocalOrder, token: string, customer: IRece
 
   const newData = {
     obtaining: {
-      obtaining_type: isSelfDelivery ? 'DELIVERY' : 'SELF_DELIVERY',
+      obtaining_type: isSelfDelivery ? 'SELF_DELIVERY' : 'DELIVERY',
       ...(!isSelfDelivery
         ? {
             delivery: {
