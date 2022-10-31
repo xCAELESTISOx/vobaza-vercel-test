@@ -48,7 +48,7 @@ const OrderReceiver: FC<Props> = forwardRef(({ initialUser, createOrder }, ref) 
   const validationSchema = yup.object({
     name: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
     surname: yup.string().max(255, 'Количество символов в поле должно быть не больше 255'),
-    phone: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
+    phone: yup.string().matches(phoneRegExp, 'Невалидный номер телефона').required('Обязательное поле'),
     email: yup.string().email('Не валидный email').max(255, 'Количество символов в поле должно быть не больше 255'),
     recipient: yup
       .object({
