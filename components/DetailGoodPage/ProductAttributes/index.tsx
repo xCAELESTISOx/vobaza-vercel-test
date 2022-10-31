@@ -99,7 +99,9 @@ const AttributesBlock: FC<AttributesBlock> = (props) => {
       <div>
         {attributes &&
           attributes.map((item) => {
-            return item.value ? <AttributeItem key={item.attribute.id} data={item} /> : null;
+            return item.attribute.data_type === 'BOOLEAN' || item.value ? (
+              <AttributeItem key={item.attribute.id} data={item} />
+            ) : null;
           })}
       </div>
     </div>
