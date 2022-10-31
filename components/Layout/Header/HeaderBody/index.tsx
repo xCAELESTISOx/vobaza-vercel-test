@@ -23,8 +23,10 @@ export const HeaderBody: FC<Props> = ({ mobileMenu, openPhoneCallModal }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
 
-  const useGoodsObj = useGoods();
-  const { favoriteIds, compareIds, cartSize, activeMobCatalog } = useGoodsObj.state;
+  const token = Cookies.get('token');
+
+  const goodsContext = useGoods();
+  const { favoriteIds, compareIds, cartSize, activeMobCatalog } = goodsContext.state;
 
   const { state, dispatch } = useAuth();
 
@@ -33,20 +35,19 @@ export const HeaderBody: FC<Props> = ({ mobileMenu, openPhoneCallModal }) => {
   };
   const toggleMenu = (value?: any) => {
     if (value === undefined) {
-      useGoodsObj.dispatch({ type: 'toogleMobCatalog', payload: !activeMobCatalog });
+      goodsContext.dispatch({ type: 'toogleMobCatalog', payload: !activeMobCatalog });
     } else {
-      useGoodsObj.dispatch({ type: 'toogleMobCatalog', payload: value });
+      goodsContext.dispatch({ type: 'toogleMobCatalog', payload: value });
     }
   };
 
   useEffect(() => {
     if (!state.isLoggedIn) {
-      const token = Cookies.get('token');
       setIsLoggedIn(Boolean(token));
     } else {
       setIsLoggedIn(state.isLoggedIn);
     }
-  }, [state.isLoggedIn]);
+  }, [state.isLoggedIn, token]);
 
   useEffect(() => {
     toggleMenu(false);
