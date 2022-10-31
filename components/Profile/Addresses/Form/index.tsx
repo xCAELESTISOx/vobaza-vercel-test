@@ -110,6 +110,8 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
     }
   };
 
+  const save = () => handleSubmit();
+
   const handleCheckChange = async (bool: boolean) => {
     await setFieldValue('is_default', bool);
   };
@@ -143,7 +145,7 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
   }, [state.city]);
 
   return (
-    <form className={`${styles.addressForm} ${inline ? styles.inline : ''}`} onSubmit={handleSubmit}>
+    <form className={`${styles.addressForm} ${inline ? styles.inline : ''}`} onSubmit={submitHandler}>
       <div className={styles.addressFormTitle}>{title || 'Редактировать адрес'}</div>
       <div className={styles.addressFormItem}>
         <InputText
@@ -262,7 +264,13 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
         </>
       )}
       <div className={styles.addressFormButtons}>
-        <Button text={buttonText || 'Сохранить'} size={'big'} type="submit" style={inline ? { width: '100%' } : {}} />
+        <Button
+          text={buttonText || 'Сохранить'}
+          size={'big'}
+          type="submit"
+          style={inline ? { width: '100%' } : {}}
+          onClick={save}
+        />
       </div>
     </form>
   );
