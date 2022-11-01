@@ -13,6 +13,13 @@
   color: #b3b3b3;
   font-weight: 400;
 
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #f2f2f2 inset !important;
+  }
+
   &:focus {
     color: #1a1a1a;
   }

@@ -1,4 +1,4 @@
-import React, { FC, SyntheticEvent, useState } from 'react';
+import React, { FC, FormEvent, SyntheticEvent, useState } from 'react';
 
 import styles from './styles.module.scss';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
@@ -11,7 +11,8 @@ const Search: FC = () => {
   const setValueHandler = (e: SyntheticEvent<HTMLInputElement>) => {
     setValue(e.currentTarget.value);
   };
-  const onSubmit = () => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     router.push({
       pathname: '/search',
       query: {
@@ -22,7 +23,7 @@ const Search: FC = () => {
   };
 
   return (
-    <form className={styles.searchContainer}>
+    <form className={styles.searchContainer} onSubmit={onSubmit}>
       <input
         name="text"
         className={styles.search}
@@ -31,7 +32,7 @@ const Search: FC = () => {
         title="Найти товар или категорию..."
         placeholder="Найти товар или категорию..."
       />
-      <button className={styles.searchButton} onClick={onSubmit}>
+      <button className={styles.searchButton} type="submit">
         <Icon className={styles.searchIcon} name="Magnifier"></Icon>
       </button>
     </form>
