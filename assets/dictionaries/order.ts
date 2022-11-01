@@ -1,4 +1,4 @@
-import { EOrderDeliveryType, EOrderPaymentMethod, EOrderPaymentStatus, OrderStatusType } from "src/models/IOrder";
+import { EOrderDeliveryType, EOrderPaymentMethod, OrderPaymentStatus, OrderStatusType } from 'src/models/IOrder';
 
 export const orderDeliveryTypeDictionary = {
   [EOrderDeliveryType.none]: 'Оформить заказ с менеджером',
@@ -34,17 +34,14 @@ export const labelColorsDictionary = {
   [OrderStatusType.IN_PROBLEM]: '#777777',
 };
 
-
-export const orderPaymentStatusDictionary = {
-  [EOrderPaymentStatus.PAID]: 'Оплачен',
-  [EOrderPaymentStatus.PARTIALLY_PAID]: 'Частично оплачен',
-  [EOrderPaymentStatus.NOT_PAID]: 'Не оплачен',
-}
+export const orderPaymentStatusDictionary: Record<OrderPaymentStatus, string> = {
+  PAID: 'Оплачен',
+  PARTIALLY_PAID: 'Частично оплачен',
+  NOT_PAID: 'Не оплачен',
+};
 
 export const orderPaymentMethodDictionary = {
   [EOrderPaymentMethod.CASH]: 'Оплата наличными',
   [EOrderPaymentMethod.CARD]: 'Оплата картой',
   [EOrderPaymentMethod.BANK_WIRE]: 'Оплата через банковский перевод',
-}
-
-
+};

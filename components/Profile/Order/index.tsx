@@ -5,7 +5,6 @@ import Image from 'next/image';
 import {
   labelColorsDictionary,
   orderDeliveryTypeDictionary,
-  orderPaymentMethodDictionary,
   orderPaymentStatusDictionary,
   orderStatusDictionary,
 } from 'assets/dictionaries/order';
@@ -57,7 +56,7 @@ const ProfileOrder: FC<Props> = ({ order }) => {
               <div>{Intl.NumberFormat('ru-RU').format(order.price.price / 100)} ₽</div>
             </div>
           </div>
-          <div className={styles.orderStatus}>{orderPaymentStatusDictionary[order.payment.status]}</div>
+          <div className={styles.orderStatus}>{orderPaymentStatusDictionary[order.payment_status]}</div>
         </div>
         <div className={styles.orderUser}>
           <div className={styles.orderUserTitle}>Получатель</div>
@@ -71,10 +70,10 @@ const ProfileOrder: FC<Props> = ({ order }) => {
           <div className={styles.orderBlockHeader}>
             <div className={styles.orderBlockHeaderTitle}>{deliveryTitle}</div>
             <div className={styles.orderBlockHeaderStatus}>
-              {orderStatusDictionary[order.status]}{' '}
+              {orderStatusDictionary[order.payment_status]}{' '}
               <span
                 className={`${styles.orderBlockHeaderStatusDot} ${styles.orange}`}
-                style={{ background: labelColorsDictionary[order.status] }}
+                style={{ background: labelColorsDictionary[order.payment_status] }}
               ></span>
             </div>
           </div>
@@ -138,7 +137,8 @@ const ProfileOrder: FC<Props> = ({ order }) => {
           </div>
         </div>
         <div className={styles.orderBlock}>
-          <div className={styles.orderBlockFooterTitle}>{orderPaymentMethodDictionary[order.payment.method]}</div>
+          {/* <div className={styles.orderBlockFooterTitle}>{orderPaymentMethodDictionary[order.payment.method]}</div> */}
+          <div className={styles.orderBlockFooterTitle}>Оплата</div>
           <div className={styles.orderBlockFooterValue}>
             <div className={styles.orderBlockFooterValueTitle}>Товары</div>
             <div>{Intl.NumberFormat('ru-RU').format(onlyPriceGoods)} ₽</div>

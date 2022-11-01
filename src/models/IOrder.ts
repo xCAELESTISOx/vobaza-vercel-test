@@ -135,11 +135,7 @@ export enum OrderStatusType {
   COMPLETED = 'COMPLETED',
 }
 
-export enum EOrderPaymentStatus {
-  NOT_PAID = 'NOT_PAID',
-  PAID = 'PAID',
-  PARTIALLY_PAID = 'PARTIALLY_PAID',
-}
+export type OrderPaymentStatus = 'NOT_PAID' | 'PAID' | 'PARTIALLY_PAID';
 
 export enum EOrderPaymentMethod {
   CARD = 'CARD',
@@ -153,11 +149,7 @@ export interface IOrderItemFull {
   customer: IOrderCustomer;
   price: IOrderPrice;
   status: keyof typeof OrderStatusType;
-  payment: {
-    status: string;
-    type: string;
-    method: string;
-  };
+  payment_status: OrderPaymentStatus;
   obtaining: {
     obtaining_type: 'DELIVERY' | 'SELF_DELIVERY';
     delivery?: IFullOrderDelivery;

@@ -61,7 +61,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
       'filter[text]': text || undefined,
       'filter[include_variants]': true,
     };
-    const [goodsRes] = await Promise.all([api.getGoods(params)]);
+    const goodsRes = await api.getGoods(params);
 
     goods = normalizeGoods(goodsRes.data.data);
     meta = goodsRes.data.meta;
