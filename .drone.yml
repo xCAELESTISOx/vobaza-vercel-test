@@ -18,7 +18,7 @@ steps:
       password:
         from_secret: registry_rw_secret
       linter_exclude_regex: '(README.md)'
-      keep_tags: [develop, vobaza_demo]
+      keep_tags: [develop, vobaza_demo, demo]
       build_args: |
         MAIN_HOST
         SUBS_DELIMITER
@@ -99,7 +99,7 @@ steps:
       password:
         from_secret: registry_rw_secret
       linter_exclude_regex: '(README.md)'
-      keep_tags: [develop, vobaza_demo]
+      keep_tags: [develop, vobaza_demo, demo]
       build_args: |
         MAIN_HOST
         SUBS_DELIMITER
