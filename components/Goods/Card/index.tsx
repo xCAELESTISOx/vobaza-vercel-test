@@ -32,29 +32,35 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
   const resetImage = () => {
     setCurrentImage(null);
   };
+
   const addToCartHandler = () => {
+    const categories = good.parent_categories.map(({ name }) => name);
+    (window as any).dataLayer.push({
+      ecommerce: {
+        currencyCode: 'RUB',
+        add: {
+          products: [
+            {
+              id: good.id,
+              name: good.name,
+              price: good.list_price || good.price,
+              brand: good.brand,
+              category: categories.join(', '),
+              quantity: 1,
+            },
+          ],
+        },
+      },
+    });
     addToCart();
   };
 
-  const checkExpress = () => {
-    if (good.labels && good.labels.find((good) => good.code === 'EXPRESS-DELIVERY')?.active) {
-      return true;
-    }
-    return false;
-  };
+  const isExpress = good.labels && good.labels.find((good) => good.code === 'EXPRESS-DELIVERY')?.active;
+
   //Обработка случая когда на строке остается один элемент и при ховере он теряет высоту
   const setCardHeight = () => {
     cardContainerRef.current.style.minHeight = `${cardRef.current.clientHeight}px`;
   };
-  useEffect(() => {
-    if (isFixedHeight) {
-      setCardHeight();
-      window.addEventListener('resize', setCardHeight);
-      return () => {
-        window.removeEventListener('resize', setCardHeight);
-      };
-    }
-  }, []);
 
   const renderFeatureValue = (feature) => {
     if (typeof feature.value === 'object') {
@@ -75,6 +81,16 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
     return feature.value;
   };
 
+  useEffect(() => {
+    if (isFixedHeight) {
+      setCardHeight();
+      window.addEventListener('resize', setCardHeight);
+      return () => {
+        window.removeEventListener('resize', setCardHeight);
+      };
+    }
+  }, []);
+
   const displayImageSize = !currentImage?.main_image && {
     height: good.main_image?.variants.medium?.meta.height || '100%',
     width: good.main_image?.variants.medium?.meta.width || '100%',
@@ -85,7 +101,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
       <div className={styles.cardContainer} ref={cardContainerRef}>
         <div className={styles.card}>
           <div className={styles.cardHeader}>
-            <div className={styles.cardLabel}>{checkExpress() ? 'Экспресс-доставка' : ''}</div>
+            <div className={styles.cardLabel}>{isExpress ? 'Экспресс-доставка' : ''}</div>
             <div className={`${styles.cardIcon} ${currentFavorite ? styles.active : ''}`} onClick={toggleFavorite}>
               <Icon name="Favorite" />
             </div>
@@ -202,7 +218,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
               <div className={styles.cardProvider}>{good.merchant.brand}</div>
             </div>
           </div>
-          {checkExpress() && (
+          {isExpress && (
             <div className={styles.labelMobile}>
               <div className={styles.cardLabel}>Экспресс-доставка</div>
             </div>

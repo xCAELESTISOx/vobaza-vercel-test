@@ -1,4 +1,4 @@
-import type { ICategoryTag } from 'src/models/ICategoryTag';
+import type { ICategoryTag } from 'assets/api/modules/categories';
 
 type GetTagsByUrl = {
   currentTags: ICategoryTag[];

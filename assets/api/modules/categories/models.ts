@@ -1,4 +1,4 @@
-import { ITagFitlerFront } from './IFilter';
+import { ITagFitlerFront } from 'src/models/IFilter';
 
 export interface ICategoryTag {
   id: number;
@@ -11,5 +11,6 @@ export interface ICategoryTag {
   filter: ITagFitlerFront;
   tags?: ICategoryTag[];
   type: 'FILTER' | 'REDIRECT';
-  redirect_url?: string
+  redirect_url?: string;
+  url: string;
 }

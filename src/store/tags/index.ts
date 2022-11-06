@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { ICategoryTag } from 'src/models/ICategoryTag';
+import type { ICategoryTag } from 'assets/api/modules/categories';
 
 interface ITagsState {
   tags: ICategoryTag[];

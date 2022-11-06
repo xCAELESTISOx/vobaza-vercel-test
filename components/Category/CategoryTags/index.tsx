@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 
-import type { ICategoryTag } from 'src/models/ICategoryTag';
+import type { ICategoryTag } from 'assets/api/modules/categories';
 import { getTagsByUrl } from 'assets/utils/Category/getTagsByUrl';
 import { useAdvancedRouter } from 'assets/utils/useAdvancedRouter';
 
@@ -33,17 +33,17 @@ export const CategoryTags = ({ categorySlug, tags, setIsLoading }: Props) => {
       delete routerQuery['id'];
       delete routerQuery[tag.filter.id];
 
-      let newURL = router.asPath.split('?')[0].replace('/ekspress-dostavka', '');
+      let newURL = tag.url;
 
-      if (currentTag?.tags.length) {
-        newURL += '/' + tag.slug;
-      } else {
-        if (currentTag) {
-          newURL = newURL.replace(currentTag.slug, tag.slug);
-        } else {
-          newURL += '/' + tag.slug;
-        }
-      }
+      // if (currentTag?.tags.length) {
+      //   newURL += '/' + tag.slug;
+      // } else {
+      //   if (currentTag) {
+      //     newURL = newURL.replace(currentTag.slug, tag.slug);
+      //   } else {
+      //     newURL += '/' + tag.slug;
+      //   }
+      // }
 
       if (router.asPath.includes('/ekspress-dostavka')) {
         newURL += '/ekspress-dostavka';

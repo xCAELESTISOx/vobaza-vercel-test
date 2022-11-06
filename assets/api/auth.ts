@@ -6,7 +6,7 @@ export default async function checkAuth(req: any, withGuest?: boolean, withoutEr
     axios.defaults.headers.common.Authorization = `Bearer ${cookies.token || cookies.guestToken}`;
     return Boolean(cookies.token);
   } else if (!withoutError) {
-    throw new Error();
+    throw 'User is unauthorized';
   } else {
     return false;
   }

@@ -3,15 +3,15 @@ import { useEffect, useRef, useState } from 'react';
 import type { Dispatch, FC, SetStateAction } from 'react';
 import type { IFilterFront, ITagFitlerFront } from '../../../src/models/IFilter';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
-import type { ICategoryTag } from 'src/models/ICategoryTag';
+import type { ICategoryTag } from 'assets/api/modules/categories';
 import { GoodsSortTypes } from 'src/models/IGood';
 import { useAdvancedRouter } from 'assets/utils/useAdvancedRouter';
 import { useToggle } from 'src/hooks/useToggle';
+import { useSelector } from 'src/hooks/useSelector';
 
 import CategoryCurrentFilters from './CategoryCurrentFilters';
 import CategoryFiltersList from './FiltersList';
 import FiltersModal from './Modal';
-import { useSelector } from 'src/hooks/useSelector';
 
 const getQueryFromFilters = (filters: (IFilterFront | ITagFitlerFront)[]) => {
   const queryFilters: { [key: string]: string | string[] } = {};

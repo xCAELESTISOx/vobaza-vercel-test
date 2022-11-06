@@ -1,4 +1,4 @@
-import type { ICategoryTag } from 'src/models/ICategoryTag';
+import type { ICategoryTag } from 'assets/api/modules/categories';
 
 // Теги для категории pryamye_divany
 export const mockCategoryTags: ICategoryTag[] = [
@@ -26,6 +26,7 @@ export const mockCategoryTags: ICategoryTag[] = [
           data_type: 'STRING',
         },
         type: 'FILTER',
+        url: '',
       },
       {
         id: 3,
@@ -39,9 +40,11 @@ export const mockCategoryTags: ICategoryTag[] = [
           data_type: 'STRING',
         },
         type: 'FILTER',
+        url: '',
       },
     ],
     type: 'FILTER',
+    url: '',
   },
   {
     id: 4,
@@ -55,5 +58,6 @@ export const mockCategoryTags: ICategoryTag[] = [
       data_type: 'STRING',
     },
     type: 'FILTER',
+    url: '',
   },
 ];

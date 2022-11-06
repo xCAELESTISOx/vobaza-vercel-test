@@ -1,6 +1,6 @@
+import type { ICategoryTag } from 'assets/api/modules/categories';
 import type { BreadcrumbType } from 'components/Layout/Breadcrumbs';
 import type { ICategory } from 'src/models/ICategory';
-import type { ICategoryTag } from 'src/models/ICategoryTag';
 
 export const getCategoryBreadcrumps = (categories: ICategory[], tags: ICategoryTag[], isExpress: boolean) => {
   const breadcrumbs: BreadcrumbType[] = [

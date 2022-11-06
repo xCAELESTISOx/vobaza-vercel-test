@@ -3,7 +3,7 @@ import cookies from 'js-cookie';
 import type { IMenuItem } from 'src/models/IMenu';
 
 import { axios, setToken, setTokenWithGuest } from './axios';
-import { CategoriesAPI } from './modules/category';
+import { CategoriesAPI } from './modules/categories/endpoints';
 import { ordersAPI } from './modules/orders';
 
 export const api = {

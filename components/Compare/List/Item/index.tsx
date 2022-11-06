@@ -34,6 +34,23 @@ const CompareListItem: FC<Props> = ({ good, deleteGood }) => {
     dispatch({ type: 'setOneClickGood', payload: good });
   };
   const addToCartHandler = () => {
+    (window as any).dataLayer.push({
+      ecommerce: {
+        currencyCode: 'RUB',
+        add: {
+          products: [
+            {
+              id: good.id,
+              name: good.name,
+              price: good.list_price || good.price,
+              brand: 'Яндекс / Yandex',
+              category: 'Аксессуары/Сумки',
+              quantity: 1,
+            },
+          ],
+        },
+      },
+    });
     addToCart(count);
   };
 

@@ -3,7 +3,7 @@ import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
-import type { ICategoryTag } from 'src/models/ICategoryTag';
+import type { ICategoryTag } from 'assets/api/modules/categories';
 import type { ICategory } from '../../src/models/ICategory';
 import type { IGoodCard } from '../../src/models/IGood';
 import type { IFilter, IFilterFront } from '../../src/models/IFilter';
@@ -141,7 +141,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
     const category: ICategory = categoryRes.data.data;
 
     const { data: tagsData } = await api.getCategoryTags(category.id);
-    const tags: ICategoryTag[] = tagsData.data;
+    const tags = tagsData.data;
 
     // Получить по урлу массив всех активных тегов и уровень активных тегов
     const { currentTags, hasInvalidTags } = getTagsByUrl(resolvedUrl, tags, [

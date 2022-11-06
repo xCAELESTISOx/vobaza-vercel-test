@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import type { ICategory } from 'src/models/ICategory';
-import type { ICategoryTag } from 'src/models/ICategoryTag';
+import type { ICategoryTag } from 'assets/api/modules/categories';
 
 import tmpBannerImg1 from 'src/tmp/bannerFilter.jpg';
 import tmpBannerImg2 from 'src/tmp/bannerFilterMob.jpg';

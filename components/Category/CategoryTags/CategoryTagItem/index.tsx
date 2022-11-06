@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { ICategoryTag } from 'src/models/ICategoryTag';
+import type { ICategoryTag } from 'assets/api/modules/categories';
 import { useAdvancedRouter } from 'assets/utils/useAdvancedRouter';
 
 import styles from './styles.module.scss';

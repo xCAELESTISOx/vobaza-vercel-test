@@ -12,8 +12,8 @@ import { Filter } from './Filter';
 import styles from './styles.module.scss';
 
 const getSortVariants = () => {
-  return Object.keys(GoodsSortTypes).map((key) => {
-    return { code: key, value: GoodsSortTypes[key] };
+  return Object.entries(GoodsSortTypes).map(([key, value]) => {
+    return { code: key, value };
   });
 };
 

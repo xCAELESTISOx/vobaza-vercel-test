@@ -62,20 +62,22 @@ export interface IGoodDocument {
 
 export interface IGoodCard {
   id: number;
-  slug: string;
   name: string;
+  slug: string;
   sku: string;
   price: number;
   list_price?: number;
-  main_image?: Image;
   merchant: IGoodMerchant;
+  brand?: string;
+  parent_categories: { id: number; name: string }[];
   labels?: IDictionaryItem[];
+  main_image?: Image;
+  variant_products?: IVariantProduct[];
+  is_available: boolean;
   valuable_attributes?: {
     attribute: IAttribute;
     value: any;
   }[];
-  is_available: boolean;
-  variant_products?: IVariantProduct[];
 }
 
 export interface IVariantProduct {
