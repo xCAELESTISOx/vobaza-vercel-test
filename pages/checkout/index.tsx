@@ -5,7 +5,6 @@ import { useFormik } from 'formik';
 import Cookies from 'js-cookie';
 
 import { useToggle } from 'src/hooks/useToggle';
-import { useAuth } from 'src/context/auth';
 import checkAuth from '../../assets/api/auth';
 import { normalizeOrder } from 'assets/utils/normalizers/normalizeOrder';
 import { EOrderDeliveryType } from '../../src/models/IOrder';
@@ -16,6 +15,7 @@ import type { IAddressFull } from 'src/models/IAddress';
 import type { IReceiver } from '../../components/Cart/Order/Receiver';
 import { useDispatch } from 'src/hooks/useDispatch';
 import { setCartSize } from 'src/store/goods';
+import { useSelector } from 'src/hooks/useSelector';
 
 import CartSidebar from '../../components/Cart/Sidebar';
 import OrderReceiver from '../../components/Cart/Order/Receiver';
@@ -36,11 +36,13 @@ type Props = {
 };
 
 export default function Checkout({ price, weight, user, addresses, goods }) {
-  const { state } = useAuth();
+  const [isErrorModalOpen, toggleErrorModal] = useToggle(false);
+
+  const city = useSelector((state) => state.auth.city);
+  const dispatch = useDispatch();
+
   const formRef = useRef(null);
   const router = useRouter();
-  const [isErrorModalOpen, toggleErrorModal] = useToggle(false);
-  const dispatch = useDispatch();
 
   const initialValues: ILocalOrder = {
     delivery: {
@@ -98,10 +100,10 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
   useEffect(() => {
     const cookieCity = Cookies.get('city');
 
-    if ((router.query.city || state.city || cookieCity) && !values.address.address) {
-      setFieldValue('address.address', router.query.city?.toString() || state.city || cookieCity);
+    if ((router.query.city || city || cookieCity) && !values.address.address) {
+      setFieldValue('address.address', router.query.city?.toString() || city || cookieCity);
     }
-  }, [state.city]);
+  }, [city]);
 
   return (
     <div>

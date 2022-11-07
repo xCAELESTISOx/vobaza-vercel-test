@@ -5,7 +5,8 @@ import Link from 'next/link';
 
 import type { IMenuItem } from 'src/models/IMenu';
 import { useDispatch } from 'src/hooks/useDispatch';
-import { useAuth } from 'src/context/auth';
+import { useSelector } from 'src/hooks/useSelector';
+import { toogleMobCatalog } from 'src/store/goods';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { HeaderMobileMenu } from '../MobileMenu';
@@ -13,7 +14,7 @@ import Search from '../Search';
 import CitySelect from '../CitySelect';
 
 import styles from './styles.module.scss';
-import { useSelector } from 'src/hooks/useSelector';
+import { toggleModal } from 'src/store/auth';
 
 type Props = {
   mobileMenu?: IMenuItem[];
@@ -27,31 +28,31 @@ export const HeaderBody: FC<Props> = ({ mobileMenu, openPhoneCallModal }) => {
   const favoriteIds = useSelector((state) => state.goods.favoriteIds);
   const compareIds = useSelector((state) => state.goods.compareIds);
   const cartSize = useSelector((state) => state.goods.cartSize);
-  const goodsDispatch = useDispatch();
+  const dispatch = useDispatch();
+
+  const isUserLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const token = Cookies.get('token');
   const router = useRouter();
 
-  const { state, dispatch } = useAuth();
-
   const openAuthModal = () => {
-    dispatch({ type: 'toggleModal' });
+    dispatch(toggleModal());
   };
   const toggleMenu = (value?: any) => {
     if (value === undefined) {
-      goodsDispatch({ type: 'toogleMobCatalog', payload: !activeMobCatalog });
+      dispatch(toogleMobCatalog(!activeMobCatalog));
     } else {
-      goodsDispatch({ type: 'toogleMobCatalog', payload: value });
+      dispatch(toogleMobCatalog(Boolean(value)));
     }
   };
 
   useEffect(() => {
-    if (!state.isLoggedIn) {
+    if (!isUserLoggedIn) {
       setIsLoggedIn(Boolean(token));
     } else {
-      setIsLoggedIn(state.isLoggedIn);
+      setIsLoggedIn(isUserLoggedIn);
     }
-  }, [state.isLoggedIn, token]);
+  }, [isUserLoggedIn, token]);
 
   useEffect(() => {
     toggleMenu(false);

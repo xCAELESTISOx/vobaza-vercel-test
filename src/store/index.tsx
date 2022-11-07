@@ -1,10 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
+
 import filtersReducer from './filters';
 import tagsReducer from './tags';
 import goodsReducer from './goods';
+import authReducer from './auth';
 
 const store = configureStore({
   reducer: {
+    auth: authReducer,
     tags: tagsReducer,
     filters: filtersReducer,
     goods: goodsReducer,

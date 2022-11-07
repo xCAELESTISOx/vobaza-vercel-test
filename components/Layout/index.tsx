@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Provider } from 'react-redux';
 
-import { AuthProvider } from '../../src/context/auth';
-
 import { MobileBottomMenu } from './MobileBottomMenu';
 import PhoneCallModal from './PhoneCallModal';
 import { MainHead } from './MainHead';
@@ -26,17 +24,15 @@ export default function Layout({ children }: ILayoutChildren) {
 
   return (
     <Provider store={store}>
-      <AuthProvider>
-        <MainHead />
-        <PhoneCallModal isActive={isPhoneCallOpen} onClose={toggleIsPhoneCall} />
-        <AuthModal />
-        <Header openPhoneCallModal={toggleIsPhoneCall} />
-        <div className={styles.layout}>
-          <div className={styles.content}>{children}</div>
-        </div>
-        <MobileBottomMenu />
-        <Footer openPhoneCallModal={toggleIsPhoneCall} />
-      </AuthProvider>
+      <MainHead />
+      <PhoneCallModal isActive={isPhoneCallOpen} onClose={toggleIsPhoneCall} />
+      <AuthModal />
+      <Header openPhoneCallModal={toggleIsPhoneCall} />
+      <div className={styles.layout}>
+        <div className={styles.content}>{children}</div>
+      </div>
+      <MobileBottomMenu />
+      <Footer openPhoneCallModal={toggleIsPhoneCall} />
     </Provider>
   );
 }

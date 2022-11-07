@@ -4,12 +4,12 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import Cookies from 'js-cookie';
 
+import type { ElevatorType, IAddressFull } from 'src/models/IAddress';
+import type { IError } from 'src/models/IError';
 import { useClickOutside } from '@nebo-team/vobaza.ui.filter-select/dist/filter-select';
 import useDebounce from 'src/hooks/useDebounce';
 import { dadataApi } from 'assets/api/dadata';
-import { useAuth } from 'src/context/auth';
-import type { ElevatorType, IAddressFull } from 'src/models/IAddress';
-import type { IError } from 'src/models/IError';
+import { useSelector } from 'src/hooks/useSelector';
 
 import styles from './styles.module.scss';
 
@@ -51,7 +51,7 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
   const suggestRef = useRef(null);
   const router = useRouter();
 
-  const { state } = useAuth();
+  const city = useSelector((state) => state.auth.city);
 
   const submitHandler = async () => {
     try {
@@ -139,10 +139,10 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
   useEffect(() => {
     const cookieCity = Cookies.get('city');
 
-    if (!values.address && (router.query.city || state.city || cookieCity)) {
-      setFieldValue('address', router.query.city || state.city || cookieCity);
+    if (!values.address && (router.query.city || city || cookieCity)) {
+      setFieldValue('address', router.query.city || city || cookieCity);
     }
-  }, [state.city]);
+  }, [city]);
 
   return (
     <form className={`${styles.addressForm} ${inline ? styles.inline : ''}`} onSubmit={submitHandler}>

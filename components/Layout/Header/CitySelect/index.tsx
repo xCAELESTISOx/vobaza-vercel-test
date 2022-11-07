@@ -2,7 +2,9 @@ import React, { FC, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
-import { useAuth } from 'src/context/auth';
+import { useDispatch } from 'src/hooks/useDispatch';
+import { setCity as setUserCity } from 'src/store/auth';
+import { useSelector } from 'src/hooks/useSelector';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import CitySelectModal from './Modal/index';
@@ -17,7 +19,10 @@ type Props = {
 
 const CitySelect: FC<Props> = ({ withoutFetch }) => {
   const router = useRouter();
-  const { state, dispatch } = useAuth();
+  const dispatch = useDispatch();
+
+  const userCity = useSelector((state) => state.auth.city);
+
   const [city, setCity] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isQuestionModalOpen, setIsQuestionModalOpen] = useState(false);
@@ -46,12 +51,12 @@ const CitySelect: FC<Props> = ({ withoutFetch }) => {
     const json = await res.json();
     const newCity = json.location?.data.city || 'Москва';
     setCity(newCity);
-    dispatch({ type: 'setCity', payload: newCity });
+    dispatch(setUserCity(newCity));
     setIsQuestionModalOpen(true);
   };
   const saveCity = (newCity: string) => {
     setCity(newCity);
-    dispatch({ type: 'setCity', payload: newCity });
+    dispatch(setUserCity(newCity));
     Cookies.set('city', newCity);
   };
 
@@ -75,16 +80,14 @@ const CitySelect: FC<Props> = ({ withoutFetch }) => {
   }, [city]);
 
   useEffect(() => {
-    if (state.city) {
-      setCity(state.city);
+    if (userCity) {
+      setCity(userCity);
     }
-  }, [state.city]);
+  }, [userCity]);
 
   return (
     <div className={styles.citySelect}>
-      {isModalOpen && (
-        <CitySelectModal setCity={saveCity} closeModal={closeModal} />
-      )}
+      {isModalOpen && <CitySelectModal setCity={saveCity} closeModal={closeModal} />}
       {isQuestionModalOpen && (
         <CitySelectQuestionModal
           city={city}
@@ -98,10 +101,7 @@ const CitySelect: FC<Props> = ({ withoutFetch }) => {
           <>
             <Icon name="Location" />
             {city || router.query.city}
-            <Icon
-              name="SmallArrowDown"
-              className={isModalOpen ? styles.open : ''}
-            />
+            <Icon name="SmallArrowDown" className={isModalOpen ? styles.open : ''} />
           </>
         ) : (
           <div style={{ minWidth: '50px' }}></div>

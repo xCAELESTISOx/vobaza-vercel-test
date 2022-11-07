@@ -1,28 +1,33 @@
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 
-import { useAuth } from '../../src/context/auth';
+import { useDispatch } from 'src/hooks/useDispatch';
+import { useSelector } from 'src/hooks/useSelector';
+import { login, toggleModal } from 'src/store/auth';
+
 import ModalLayout from '../../src/hoc/withModal';
 
 import LoginForm from './LoginForm';
 import RegistrationForm from './RegistrationForm';
 
 const AuthModal: FC = () => {
-  const router = useRouter();
   const [isRegistration, setIsRegistration] = useState(false);
-  const { state, dispatch } = useAuth();
-  const { isModalOpen } = state;
+
+  const isModalOpen = useSelector((state) => state.auth.isModalOpen);
+  const dispatch = useDispatch();
+
+  const router = useRouter();
 
   const toggleIsRegistration = () => {
     setIsRegistration(!isRegistration);
   };
   const onClose = () => {
-    dispatch({ type: 'toggleModal' });
+    dispatch(toggleModal());
     setIsRegistration(false);
   };
 
-  const onSuccess = async () => {
-    await dispatch({ type: 'login' });
+  const onSuccess = () => {
+    dispatch(login());
     if (
       router.pathname.includes('profile') ||
       router.pathname.includes('cart') ||
@@ -32,6 +37,7 @@ const AuthModal: FC = () => {
     } else {
       router.push('/profile');
     }
+    dispatch(toggleModal());
   };
 
   return (
@@ -39,15 +45,9 @@ const AuthModal: FC = () => {
       {isModalOpen && (
         <ModalLayout onClose={onClose}>
           {isRegistration ? (
-            <RegistrationForm
-              goLogin={toggleIsRegistration}
-              onSuccess={onSuccess}
-            />
+            <RegistrationForm goLogin={toggleIsRegistration} onSuccess={onSuccess} />
           ) : (
-            <LoginForm
-              goRegister={toggleIsRegistration}
-              onSuccess={onSuccess}
-            />
+            <LoginForm goRegister={toggleIsRegistration} onSuccess={onSuccess} />
           )}
         </ModalLayout>
       )}

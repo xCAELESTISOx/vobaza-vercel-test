@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 
 import type { IMenuItem } from 'src/models/IMenu';
 import type { ICartGood } from 'components/Cart/ListItem';
-import { useAuth } from '../../../src/context/auth';
 import { useDispatch } from 'src/hooks/useDispatch';
 import { setCompare } from 'src/store/goods';
+import { useSelector } from 'src/hooks/useSelector';
 
 import { HeaderTop } from './HeaderTop';
 import { HeaderBody } from './HeaderBody';
@@ -66,10 +66,9 @@ type Props = {
 const Header: FC<Props> = ({ openPhoneCallModal }) => {
   const [menus, setMenus] = useState<{ main: IMenuItem[]; side: IMenuItem[]; mobile: IMenuItem[] }>(null);
 
-  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
-  const { state } = useAuth();
-  const { isLoggedIn } = state;
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const setCompareFromCookie = () => {

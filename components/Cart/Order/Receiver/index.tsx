@@ -3,14 +3,16 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import Cookies from 'js-cookie';
 
-import styles from './styles.module.scss';
-import { useAuth } from '../../../../src/context/auth';
-import { IProfile } from '../../../Profile/Data';
+import type { IProfile } from '../../../Profile/Data';
+import { useDispatch } from 'src/hooks/useDispatch';
+import { toggleModal } from 'src/store/auth';
 
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
 import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone/dist';
-import { Icon } from '@nebo-team/vobaza.ui.icon';
 import { InputRadio } from '@nebo-team/vobaza.ui.inputs.input-radio';
+import { Icon } from '@nebo-team/vobaza.ui.icon';
+
+import styles from './styles.module.scss';
 
 export interface IReceiver {
   name: string;
@@ -40,10 +42,11 @@ type Props = {
 };
 
 const OrderReceiver: FC<Props> = forwardRef(({ initialUser, createOrder }, ref) => {
-  const { dispatch } = useAuth();
-  const token = Cookies.get('token');
-  const [isLoading, setIsLoading] = useState(false);
   const [getsAnotherRecipient, setGetsAnotherRecipient] = useState<'true' | 'false'>('false');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const token = Cookies.get('token');
+  const dispatch = useDispatch();
 
   const validationSchema = yup.object({
     name: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
@@ -132,7 +135,7 @@ const OrderReceiver: FC<Props> = forwardRef(({ initialUser, createOrder }, ref) 
   };
 
   const openLoginModal = () => {
-    dispatch({ type: 'toggleModal' });
+    dispatch(toggleModal());
   };
 
   useEffect(() => {

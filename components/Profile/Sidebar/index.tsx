@@ -3,10 +3,10 @@ import Cookies from 'js-cookie';
 import Link from 'next/link';
 import { FC } from 'react';
 
-import { useAuth } from '../../../src/context/auth';
 import { useDispatch } from 'src/hooks/useDispatch';
 import { useSelector } from 'src/hooks/useSelector';
 import { setCartSize, setCompare, setFavorites } from 'src/store/goods';
+import { logout as logoutUser } from 'src/store/auth';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
@@ -17,7 +17,6 @@ const ProfileSidebar: FC = () => {
   const favoriteIds = useSelector((state) => state.goods.favoriteIds);
   const dispatch = useDispatch();
 
-  const authStore = useAuth();
   const router = useRouter();
 
   const logout = () => {
@@ -26,7 +25,7 @@ const ProfileSidebar: FC = () => {
         api.logout();
         Cookies.remove('token');
       }
-      authStore.dispatch({ type: 'logout' });
+      dispatch(logoutUser());
       Cookies.remove('guestToken');
       dispatch(setFavorites([]));
       dispatch(setCartSize(0));
