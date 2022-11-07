@@ -1,13 +1,14 @@
+import { useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 
 import type { ICartGood } from '../components/Cart/ListItem';
-import { useEffect, useState } from 'react';
-import { useGoods } from 'src/context/goods';
+import { useDispatch } from 'src/hooks/useDispatch';
+import { setCartSize } from 'src/store/goods';
+import checkAuth from '../assets/api/auth';
 
 import CartList from '../components/Cart/List';
 import CartSidebar from '../components/Cart/Sidebar';
 
-import checkAuth from '../assets/api/auth';
 import { api } from '../assets/api';
 import styles from '../styles/Cart.module.scss';
 
@@ -19,8 +20,7 @@ type Props = {
 
 export default function Cart({ initialGoods, initialPrice, withCountChange }) {
   const [orderPrice, setOrderPrice] = useState(initialPrice);
-
-  const { dispatch } = useGoods();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setOrderPrice(initialPrice);
@@ -29,10 +29,7 @@ export default function Cart({ initialGoods, initialPrice, withCountChange }) {
   useEffect(() => {
     const newCartSize = initialGoods.reduce((acc, item) => acc + item.quantity, 0);
 
-    dispatch({
-      type: 'setCartSize',
-      payload: newCartSize,
-    });
+    dispatch(setCartSize(newCartSize));
   }, [initialGoods]);
 
   return (

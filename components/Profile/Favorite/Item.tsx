@@ -5,8 +5,9 @@ import Image from 'next/image';
 import type { Image as IImage } from '../../../src/models/IImage';
 import { getImageVariantProps } from 'assets/utils/images';
 import { toNumberWithSpaces } from '../../../assets/utils/formatters';
-import { useGoods } from '../../../src/context/goods';
 import { useCart } from '../../../src/hooks/useCart';
+import { useDispatch } from 'src/hooks/useDispatch';
+import { removeFavorite } from 'src/store/goods';
 
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
@@ -33,7 +34,7 @@ type Props = {
 };
 const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const { dispatch } = useGoods();
+  const dispatch = useDispatch();
   const { addToCart } = useCart(good);
 
   const removeFromFavorite = async () => {
@@ -41,7 +42,7 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
     try {
       setIsLoading(true);
       await api.deleteGoodFavorite(good.id);
-      dispatch({ type: 'removeFavorite', payload: good.id });
+      dispatch(removeFavorite(good.id));
       onDelete(good.id);
     } catch (error) {
       setIsLoading(false);

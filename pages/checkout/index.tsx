@@ -7,7 +7,6 @@ import Cookies from 'js-cookie';
 import { useToggle } from 'src/hooks/useToggle';
 import { useAuth } from 'src/context/auth';
 import checkAuth from '../../assets/api/auth';
-import { useGoods } from '../../src/context/goods';
 import { normalizeOrder } from 'assets/utils/normalizers/normalizeOrder';
 import { EOrderDeliveryType } from '../../src/models/IOrder';
 import type { ILocalOrder } from '../../src/models/IOrder';
@@ -15,6 +14,8 @@ import type { ICartGood } from '../../components/Cart/ListItem';
 import type { IProfile } from '../../components/Profile/Data';
 import type { IAddressFull } from 'src/models/IAddress';
 import type { IReceiver } from '../../components/Cart/Order/Receiver';
+import { useDispatch } from 'src/hooks/useDispatch';
+import { setCartSize } from 'src/store/goods';
 
 import CartSidebar from '../../components/Cart/Sidebar';
 import OrderReceiver from '../../components/Cart/Order/Receiver';
@@ -39,7 +40,7 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
   const formRef = useRef(null);
   const router = useRouter();
   const [isErrorModalOpen, toggleErrorModal] = useToggle(false);
-  const { dispatch } = useGoods();
+  const dispatch = useDispatch();
 
   const initialValues: ILocalOrder = {
     delivery: {
@@ -81,7 +82,7 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
       } else {
         res = await api.createOrder(data);
       }
-      dispatch({ type: 'setCartSize', payload: 0 });
+      dispatch(setCartSize(0));
 
       router.push(`/checkout/complete?order_id=${res.data.data.number}`);
     } catch (error) {

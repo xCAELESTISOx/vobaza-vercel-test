@@ -2,11 +2,12 @@ import { FC, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { useGoods } from 'src/context/goods';
 import { useCart } from 'src/hooks/useCart';
 import { IGoodCompare } from 'src/models/IGood';
 import { toNumberWithSpaces } from 'assets/utils/formatters';
 import { getImageVariantProps } from 'assets/utils/images';
+import { useDispatch } from 'src/hooks/useDispatch';
+import { setOneClickGood } from 'src/store/goods';
 
 import ItemCounter from 'components/UI/ItemCounter';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
@@ -23,7 +24,7 @@ type Props = {
 
 const CompareListItem: FC<Props> = ({ good, deleteGood }) => {
   const { addToCart } = useCart(good);
-  const { dispatch } = useGoods();
+  const dispatch = useDispatch();
   const [count, setCount] = useState(1);
 
   const deleteGoodHandler = () => {
@@ -31,7 +32,7 @@ const CompareListItem: FC<Props> = ({ good, deleteGood }) => {
   };
 
   const openOneClickOrder = () => {
-    dispatch({ type: 'setOneClickGood', payload: good });
+    dispatch(setOneClickGood(good));
   };
   const addToCartHandler = () => {
     (window as any).dataLayer.push({

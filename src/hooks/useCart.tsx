@@ -1,32 +1,27 @@
 import { useState } from 'react';
 
 import { api } from '../../assets/api';
-import { useGoods } from '../context/goods';
 
-import { IGood, IGoodCard, IGoodCompare } from '../models/IGood';
+import type { IGood, IGoodCard, IGoodCompare } from '../models/IGood';
 import { FavoriteGood } from '../../components/Profile/Favorite/Item';
+import { addCartGood, setCartError } from 'src/store/goods';
+import { useDispatch } from './useDispatch';
 
 export const useCart = (good: IGoodCard | FavoriteGood | IGood | IGoodCompare) => {
   const [isLoading, setIsLoading] = useState(false);
-  const { dispatch } = useGoods();
+  const dispatch = useDispatch();
 
   const addToCart = async (quantity = 1) => {
     if (isLoading) return;
     setIsLoading(true);
     try {
       const response = await api.addGoodToCart(good.id, { quantity });
-      dispatch({
-        type: 'addCartGood',
-        payload: { good, quantity: response.data.data.changed_quantity },
-      });
+      dispatch(addCartGood({ good, quantity: response.data.data.changed_quantity }));
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       if (error.response.data.errors[0].code === '1') {
-        dispatch({
-          type: 'setCartError',
-          payload: true,
-        });
+        dispatch(setCartError(true));
       }
     }
   };

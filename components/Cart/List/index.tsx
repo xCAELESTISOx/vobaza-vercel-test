@@ -2,12 +2,14 @@ import { FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import styles from './styles.module.scss';
-import { useGoods } from '../../../src/context/goods';
-import { api } from '../../../assets/api';
+import { useDispatch } from 'src/hooks/useDispatch';
+import { addToCartSize } from 'src/store/goods';
 
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import CartListItem, { ICartGood } from '../ListItem';
 import CartItemChangeModal from '../Modal/CartItemChangeModal';
+
+import { api } from '../../../assets/api';
 
 type Props = {
   initialGoods: ICartGood[];
@@ -20,7 +22,7 @@ const CartList: FC<Props> = ({ initialGoods, withCountChange = false, setOrderPr
   const [isCountChangeModal, setIsCountChangeModal] = useState(withCountChange);
   const [errorTitle, setErrorTitle] = useState('');
   const router = useRouter();
-  const { dispatch } = useGoods();
+  const dispatch = useDispatch();
 
   const goShopping = () => {
     router.push('/');
@@ -37,10 +39,8 @@ const CartList: FC<Props> = ({ initialGoods, withCountChange = false, setOrderPr
         include: 'prices',
       });
       setGoods((prevArray) => prevArray.filter((good) => good.product.id !== id));
-      dispatch({
-        type: 'changeCartSize',
-        payload: res.data.data.changed_quantity,
-      });
+
+      dispatch(addToCartSize(res.data.data.changed_quantity));
       setOrderPrice(res.data.data.order_price / 100);
     } catch (error) {
       console.error(error);

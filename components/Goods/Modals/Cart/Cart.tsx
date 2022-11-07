@@ -2,26 +2,31 @@ import { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import styles from './styles.module.scss';
+import type { IGood } from 'src/models/IGood';
 
-import { useGoods } from '../../../../src/context/goods';
 import ModalLayout from '../../../../src/hoc/withModal';
 import PlaceholderImage from 'assets/images/placeholder.png';
 import { getImageVariantProps } from 'assets/utils/images';
+import { useDispatch } from 'src/hooks/useDispatch';
+import { useSelector } from 'src/hooks/useSelector';
+import { closeCartModal, setCartError } from 'src/store/goods';
 
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import { Title } from '@nebo-team/vobaza.ui.title/dist';
 import CartItemChangeModal from '../../../Cart/Modal/CartItemChangeModal';
 
+import styles from './styles.module.scss';
+
 const CartModal: FC = () => {
-  const { state, dispatch } = useGoods();
-  const { cartGood, cartError } = state;
+  const cartGood = useSelector((state) => state.goods.cartGood) as IGood;
+  const cartError = useSelector((state) => state.goods.cartError);
+  const dispatch = useDispatch();
 
   const onClose = () => {
-    dispatch({ type: 'closeCartModal' });
+    dispatch(closeCartModal());
   };
   const onCloseError = () => {
-    dispatch({ type: 'setCartError', payload: false });
+    dispatch(setCartError(false));
   };
 
   return (

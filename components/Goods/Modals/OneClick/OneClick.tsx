@@ -4,10 +4,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import * as yup from 'yup';
 
-import { api } from 'assets/api';
+import type { IGood } from 'src/models/IGood';
 import { getImageVariantProps } from 'assets/utils/images';
-import PlaceholderImage from 'assets/images/placeholder.png';
-import { useGoods } from 'src/context/goods';
+import { useDispatch } from 'src/hooks/useDispatch';
+import { useSelector } from 'src/hooks/useSelector';
 
 import { Title } from '@nebo-team/vobaza.ui.title/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
@@ -15,7 +15,10 @@ import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
 import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone/dist';
 import ModalLayout from 'src/hoc/withModal';
 
+import PlaceholderImage from 'assets/images/placeholder.png';
+
 import styles from './styles.module.scss';
+import { api } from 'assets/api';
 
 interface IOneClickOrder {
   name: string;
@@ -37,8 +40,8 @@ const validationSchema = yup.object({
 
 const OneClick: FC = () => {
   const router = useRouter();
-  const { state, dispatch } = useGoods();
-  const { oneClickGood: product } = state;
+  const product = useSelector((state) => state.goods.oneClickGood) as IGood;
+  const dispatch = useDispatch();
 
   const createOrder = async () => {
     // По API приходится НЕ добавлять email в запрос, если соответствующее поле пустое,

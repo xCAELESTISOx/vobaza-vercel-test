@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import filtersReducer from './filters';
 import tagsReducer from './tags';
+import goodsReducer from './goods';
 
 const store = configureStore({
   reducer: {
     tags: tagsReducer,
     filters: filtersReducer,
+    goods: goodsReducer,
   },
 });
 

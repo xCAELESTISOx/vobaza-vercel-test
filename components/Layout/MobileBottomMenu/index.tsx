@@ -2,24 +2,30 @@ import React, { FC, useState } from 'react';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 
-import styles from './styles.module.scss';
 import { useAuth } from '../../../src/context/auth';
-import { useGoods } from '../../../src/context/goods';
+import { useSelector } from 'src/hooks/useSelector';
+import { useDispatch } from 'src/hooks/useDispatch';
+import { toogleMobCatalog } from 'src/store/goods';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import ProfileMenu from '../../Profile/Menu';
 
+import styles from './styles.module.scss';
+
 export const MobileBottomMenu: FC = () => {
   const [isProfileMenuOpen, setIsProfileOpen] = useState(false);
-  const goodsState = useGoods();
   const { dispatch } = useAuth();
-  const { favoriteIds, cartSize, activeMobCatalog } = goodsState.state;
+
+  const activeMobCatalog = useSelector((state) => state.goods.activeMobCatalog);
+  const favoriteIds = useSelector((state) => state.goods.favoriteIds);
+  const cartSize = useSelector((state) => state.goods.cartSize);
+  const goodsDispatch = useDispatch();
 
   const openMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     e.preventDefault();
 
-    goodsState.dispatch({ type: 'toogleMobCatalog', payload: !activeMobCatalog });
+    goodsDispatch(toogleMobCatalog(!activeMobCatalog));
   };
   const profileClickHandler = () => {
     if (Cookies.get('token')) {

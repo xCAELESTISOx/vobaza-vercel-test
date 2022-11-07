@@ -1,21 +1,25 @@
 import { FC, useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
+
+import { removeCompare } from 'src/store/goods';
+import { useDispatch } from 'src/hooks/useDispatch';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 import styles from 'pages/product/[slug]/styles.module.scss';
-import { useGoods } from 'src/context/goods';
 import { api } from 'assets/api';
-import Cookies from 'js-cookie';
+import { useSelector } from 'src/hooks/useSelector';
 
 type Props = {
   id: number;
 };
 
 const ProductCompare: FC<Props> = ({ id }) => {
-  const { dispatch, state } = useGoods();
-  const { compareIds } = state;
   const [isLoading, setIsLoading] = useState(false);
   const [currentCompare, setCurrentCompare] = useState(false);
+
+  const compareIds = useSelector((state) => state.goods.compareIds);
+  const dispatch = useDispatch();
 
   const toggleCompare = async () => {
     if (isLoading) return;
@@ -30,7 +34,7 @@ const ProductCompare: FC<Props> = ({ id }) => {
           console.error(error);
         }
       }
-      dispatch({ type: 'removeCompare', payload: id });
+      dispatch(removeCompare(id));
     } else {
       if (token) {
         try {

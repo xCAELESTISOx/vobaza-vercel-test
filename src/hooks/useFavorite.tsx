@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
 
-import { api } from '../../assets/api/index';
-import { useGoods } from '../context/goods';
+import type { IGood, IGoodCard } from '../models/IGood';
+import { addFavorite, removeFavorite } from 'src/store/goods';
+import { useSelector } from './useSelector';
+import { useDispatch } from './useDispatch';
 
-import { IGood, IGoodCard } from '../models/IGood';
+import { api } from '../../assets/api/index';
 
 export const useFavorite = (good: IGood | IGoodCard) => {
   const [currentFavorite, setCurrentFavorite] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { state, dispatch } = useGoods();
-  const { favoriteIds } = state;
+  const favoriteIds = useSelector((state) => state.goods.favoriteIds);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (favoriteIds && favoriteIds.includes(good.id)) {
@@ -25,10 +27,10 @@ export const useFavorite = (good: IGood | IGoodCard) => {
       setIsLoading(true);
       if (currentFavorite) {
         await api.deleteGoodFavorite(good.id);
-        dispatch({ type: 'removeFavorite', payload: good.id });
+        dispatch(removeFavorite(good.id));
       } else {
         await api.setGoodFavorite(good.id);
-        dispatch({ type: 'addFavorite', payload: good });
+        dispatch(addFavorite(good));
       }
       setCurrentFavorite(!currentFavorite);
       setIsLoading(false);

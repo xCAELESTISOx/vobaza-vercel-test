@@ -3,9 +3,9 @@ import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 
-import { useAuth } from 'src/context/auth';
-import { useGoods } from 'src/context/goods';
 import type { IMenuItem } from 'src/models/IMenu';
+import { useDispatch } from 'src/hooks/useDispatch';
+import { useAuth } from 'src/context/auth';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { HeaderMobileMenu } from '../MobileMenu';
@@ -13,6 +13,7 @@ import Search from '../Search';
 import CitySelect from '../CitySelect';
 
 import styles from './styles.module.scss';
+import { useSelector } from 'src/hooks/useSelector';
 
 type Props = {
   mobileMenu?: IMenuItem[];
@@ -21,12 +22,15 @@ type Props = {
 
 export const HeaderBody: FC<Props> = ({ mobileMenu, openPhoneCallModal }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const router = useRouter();
+
+  const activeMobCatalog = useSelector((state) => state.goods.activeMobCatalog);
+  const favoriteIds = useSelector((state) => state.goods.favoriteIds);
+  const compareIds = useSelector((state) => state.goods.compareIds);
+  const cartSize = useSelector((state) => state.goods.cartSize);
+  const goodsDispatch = useDispatch();
 
   const token = Cookies.get('token');
-
-  const goodsContext = useGoods();
-  const { favoriteIds, compareIds, cartSize, activeMobCatalog } = goodsContext.state;
+  const router = useRouter();
 
   const { state, dispatch } = useAuth();
 
@@ -35,9 +39,9 @@ export const HeaderBody: FC<Props> = ({ mobileMenu, openPhoneCallModal }) => {
   };
   const toggleMenu = (value?: any) => {
     if (value === undefined) {
-      goodsContext.dispatch({ type: 'toogleMobCatalog', payload: !activeMobCatalog });
+      goodsDispatch({ type: 'toogleMobCatalog', payload: !activeMobCatalog });
     } else {
-      goodsContext.dispatch({ type: 'toogleMobCatalog', payload: value });
+      goodsDispatch({ type: 'toogleMobCatalog', payload: value });
     }
   };
 

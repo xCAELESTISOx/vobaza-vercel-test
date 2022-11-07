@@ -2,10 +2,11 @@ import React, { FC, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
-import { useGoods } from '../../../src/context/goods';
-import { useAuth } from '../../../src/context/auth';
 import type { IMenuItem } from 'src/models/IMenu';
 import type { ICartGood } from 'components/Cart/ListItem';
+import { useAuth } from '../../../src/context/auth';
+import { useDispatch } from 'src/hooks/useDispatch';
+import { setCompare } from 'src/store/goods';
 
 import { HeaderTop } from './HeaderTop';
 import { HeaderBody } from './HeaderBody';
@@ -65,7 +66,8 @@ type Props = {
 const Header: FC<Props> = ({ openPhoneCallModal }) => {
   const [menus, setMenus] = useState<{ main: IMenuItem[]; side: IMenuItem[]; mobile: IMenuItem[] }>(null);
 
-  const { dispatch } = useGoods();
+  const dispatch = useDispatch();
+
   const { state } = useAuth();
   const { isLoggedIn } = state;
   const router = useRouter();
@@ -73,10 +75,7 @@ const Header: FC<Props> = ({ openPhoneCallModal }) => {
   const setCompareFromCookie = () => {
     const ids = Cookies.get('compareIds');
     if (ids) {
-      dispatch({
-        type: 'setCompare',
-        payload: ids.split(',').map((id) => +id),
-      });
+      dispatch(setCompare(ids.split(',').map(Number)));
     }
   };
 

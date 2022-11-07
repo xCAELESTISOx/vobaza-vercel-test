@@ -4,7 +4,8 @@ import Cookies from 'js-cookie';
 
 import type { IGoodCompare } from 'src/models/IGood';
 import type { IAttributeCompare } from 'src/models/IAttributes';
-import { useGoods } from 'src/context/goods';
+import { useDispatch } from 'src/hooks/useDispatch';
+import { removeCompare, setCompare } from 'src/store/goods';
 
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import CompareListRemoveFeatures from './RemovedFeatures';
@@ -27,7 +28,7 @@ const CompareList: FC<Props> = ({ initialGoods, initialAttributes }) => {
   const [differentAttributesId, setDifferentAttributesId] = useState<number[]>(null);
   const [tab, setTab] = useState('ALL');
   const [removedAttributes, setRemovedAttributes] = useState([]);
-  const { dispatch } = useGoods();
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const goShopping = () => {
@@ -44,7 +45,7 @@ const CompareList: FC<Props> = ({ initialGoods, initialAttributes }) => {
         console.error(error);
       }
     }
-    dispatch({ type: 'setCompare', payload: [] });
+    dispatch(setCompare([]));
     router.push('/');
   };
 
@@ -60,7 +61,7 @@ const CompareList: FC<Props> = ({ initialGoods, initialAttributes }) => {
         console.error(error);
       }
     }
-    dispatch({ type: 'removeCompare', payload: deletedGood.id });
+    dispatch(removeCompare(deletedGood.id));
     router.replace(router.asPath, null, { scroll: false });
   };
 

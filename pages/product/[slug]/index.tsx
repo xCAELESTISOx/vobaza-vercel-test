@@ -4,7 +4,6 @@ import SimpleReactLightbox from 'simple-react-lightbox';
 import Head from 'next/head';
 
 import { useCart } from '../../../src/hooks/useCart';
-import { useGoods } from 'src/context/goods';
 import { mockProduct } from '../../../src/mock/detailProductPage';
 import { useFavorite } from '../../../src/hooks/useFavorite';
 import {
@@ -17,6 +16,8 @@ import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
 import type { IGood } from 'src/models/IGood';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select/dist/input-select';
 import type { IAttributeColor } from 'src/models/IAttributes';
+import { useDispatch } from 'src/hooks/useDispatch';
+import { setOneClickGood } from 'src/store/goods';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
@@ -53,7 +54,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
   const { currentFavorite, toggleFavorite } = useFavorite(product);
   const [selectedOptions, setSelectedOptions] = useState<Record<number, Variant> | null>(null);
   const { addToCart } = useCart(product);
-  const { dispatch } = useGoods();
+  const dispatch = useDispatch();
 
   const productVariantsView = normalizeProductVariants(product.variants);
 
@@ -70,7 +71,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
   };
 
   const openOneClickModal = () => {
-    dispatch({ type: 'setOneClickGood', payload: product });
+    dispatch(setOneClickGood(product));
   };
 
   useEffect(() => {
