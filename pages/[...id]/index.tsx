@@ -54,6 +54,7 @@ interface Props {
       pages_count: number;
     };
   };
+  error?: number;
 }
 
 const LIMIT = 40;
@@ -69,14 +70,22 @@ export default function Catalog({
   currentTags,
   baseFilters,
   meta,
+  error,
 }: Props) {
   const dispatch = useDispatch();
 
   const router = useRouter();
 
   const isExpress = router.asPath.includes('/ekspress-dostavka');
-  const breadcrumbs = getCategoryBreadcrumps([...category.ancestors, category], currentTags, isExpress);
-  const currentTag = currentTags[currentTags.length - 1] || null;
+  const breadcrumbs = category
+    ? getCategoryBreadcrumps([...category.ancestors, category], currentTags, isExpress)
+    : null;
+  const currentTag = currentTags ? currentTags[currentTags.length - 1] || null : null;
+
+  const errorText =
+    error >= 500 && error < 600
+      ? 'Непредвиденная ошибка сервера, попробуйте ещё раз позже'
+      : 'Непредвиденная ошибка, попробуйте позже';
 
   useEffect(() => {
     dispatch(setBaseFilters(baseFilters));
@@ -99,29 +108,41 @@ export default function Catalog({
     };
   }, [tags]);
 
+  useEffect(() => {
+    if (error) {
+      console.error('Непредвиденная ошибка со статусом: ' + error);
+    }
+  }, [error]);
+
   return (
     <>
       <Head>
-        {category.seo_title && <title>{currentTag?.title || category.seo_title}</title>}
-        {category.keywords && <meta name="keywords" content={currentTag?.keywords || category.keywords} />}
-        {category.seo_description && (
-          <meta name="description" content={currentTag?.description || category.seo_description} />
+        {category?.seo_title && <title>{currentTag?.title || category.seo_title}</title>}
+        {category?.keywords && <meta name="keywords" content={currentTag?.keywords || category.keywords} />}
+        {category?.seo_description && (
+          <meta name="description" content={currentTag?.description || category?.seo_description} />
         )}
       </Head>
       <div className={styles.page}>
-        <Breadcrumbs breadcrumbs={breadcrumbs} />
+        {breadcrumbs && <Breadcrumbs breadcrumbs={breadcrumbs} />}
         <section>
           <div className="container container--for-cards">
-            <CategoryHead category={category} currentTag={currentTag} isExpress={isExpress} />
-            <GoodsBlock
-              withFilters={Boolean(filters)}
-              categorySlug={category.slug}
-              isExpress={isExpress}
-              goods={goods}
-              meta={meta}
-            />
-            {category.description && (
-              <div className="seoText" dangerouslySetInnerHTML={{ __html: category.description }} />
+            {!error ? (
+              <>
+                <CategoryHead category={category} currentTag={currentTag} isExpress={isExpress} />
+                <GoodsBlock
+                  withFilters={Boolean(filters)}
+                  categorySlug={category.slug}
+                  isExpress={isExpress}
+                  goods={goods}
+                  meta={meta}
+                />
+                {category.description && (
+                  <div className="seoText" dangerouslySetInnerHTML={{ __html: category.description }} />
+                )}
+              </>
+            ) : (
+              <p className={styles.pageError}>{errorText}</p>
             )}
           </div>
         </section>
@@ -210,10 +231,25 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
   } catch (error) {
     console.error('Error has occured:', error.request?.res, error.response?.data, error.response?.status);
     // console.error(error);
+    // return {
+    //   redirect: {
+    //     destination: '/',
+    //     permanent: false,
+    //   },
+    // };
     return {
-      redirect: {
-        destination: '/',
-        permanent: false,
+      props: {
+        category: null,
+        filters: null,
+        baseFilters: null,
+        currentFilters: null,
+        currentTags: null,
+        goods: null,
+        meta: null,
+        tags: null,
+        hasInvalidTags: null,
+        hasInvalidFilters: null,
+        error: error.response.status,
       },
     };
   }

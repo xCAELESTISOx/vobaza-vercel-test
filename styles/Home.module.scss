@@ -1,3 +1,5 @@
+@import '~styles/variables.global.scss';
+
 .page > section + section {
   margin-top: 80px;
 }
@@ -49,4 +51,10 @@
 .homePage {
   composes: page;
   overflow-x: hidden;
+}
+
+.pageError {
+  text-align: center;
+  padding: 100px 10px 50px;
+  color: $error;
 }
