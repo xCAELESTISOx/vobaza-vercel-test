@@ -120,8 +120,11 @@ export default function Catalog({
               goods={goods}
               meta={meta}
             />
-            {category.description && (
-              <div className="seoText" dangerouslySetInnerHTML={{ __html: category.description }} />
+            {(category.description || currentTag?.description) && (
+              <div
+                className="seoText"
+                dangerouslySetInnerHTML={{ __html: currentTag?.description || category.description }}
+              />
             )}
           </div>
         </section>
