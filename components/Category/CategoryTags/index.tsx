@@ -24,40 +24,28 @@ export const CategoryTags = ({ categorySlug, tags, setIsLoading }: Props) => {
   const onTagClick = (tagId: number) => {
     const tag = currentTagsLevel.find((item) => item.id === tagId);
 
-    if (!router.asPath.includes(tag.slug)) {
-      setIsLoading(true);
+    setIsLoading(true);
 
-      const routerQuery = router.query;
-      delete routerQuery['page'];
-      delete routerQuery['city'];
-      delete routerQuery['id'];
-      delete routerQuery[tag.filter.id];
+    const routerQuery = router.query;
+    delete routerQuery['page'];
+    delete routerQuery['city'];
+    delete routerQuery['id'];
+    delete routerQuery[tag.filter.id];
 
-      let newURL = tag.url;
+    let newURL = tag.url;
 
-      // if (currentTag?.tags.length) {
-      //   newURL += '/' + tag.slug;
-      // } else {
-      //   if (currentTag) {
-      //     newURL = newURL.replace(currentTag.slug, tag.slug);
-      //   } else {
-      //     newURL += '/' + tag.slug;
-      //   }
-      // }
-
-      if (router.asPath.includes('/ekspress-dostavka')) {
-        newURL += '/ekspress-dostavka';
-      }
-
-      router.push(
-        {
-          pathname: newURL,
-          query: routerQuery,
-        },
-        null,
-        { scroll: false }
-      );
+    if (router.asPath.includes('/ekspress-dostavka')) {
+      newURL += '/ekspress-dostavka';
     }
+
+    router.push(
+      {
+        pathname: newURL,
+        query: routerQuery,
+      },
+      null,
+      { scroll: false }
+    );
   };
 
   return (
