@@ -43,6 +43,7 @@ export const GoodsBlock: FC<Props> = ({
   const tags = useSelector((state) => state.tags.tags);
   const currentTags = useSelector((state) => state.tags.currentTags);
   const hasInvalidTags = useSelector((state) => state.tags.hasInvalidTags);
+  const hasInvalidFilters = useSelector((state) => state.filters.hasInvalidFilters);
 
   const { router } = useAdvancedRouter();
   const { page } = router.query;
@@ -119,7 +120,7 @@ export const GoodsBlock: FC<Props> = ({
           </div>
         </>
       )}
-      {hasInvalidTags && (
+      {(hasInvalidTags || hasInvalidFilters) && (
         <Title element="h3" style={{ marginTop: 20 }}>
           При загрузке данных произошла ошибка
         </Title>

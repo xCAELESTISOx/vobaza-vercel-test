@@ -35,6 +35,7 @@ export const filtersSlice = createSlice({
     /** Указывает, что в урле есть невалидный фильтр */
     markFiltersAsInvalid: (state) => {
       state.hasInvalidFilters = true;
+      state.currentFilters = null;
     },
     /** Делает ресет стейта фильтров */
     resetFilters: (state) => {

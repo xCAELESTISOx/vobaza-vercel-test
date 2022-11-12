@@ -18,7 +18,7 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
 
   const [allProducts, setAllProducts] = useState(false);
 
-  const menuTabHover = (e, parentId) => {
+  const menuTabHover = (e, parentId: number) => {
     e.preventDefault();
     e.stopPropagation();
     setAllProducts(false);
@@ -98,13 +98,19 @@ export const CollapsingMenuItem = ({ menuBlock, closeMenu }: ICollapsingMenuItem
 
       {Boolean(items?.length) && (
         <div className={styles.collapsingMenuBlockItems}>
-          {items.map((item) => (
-            <Link key={item.id} href={getLinkFromMenuItem(item)}>
-              <a className={styles.collapsingMenuBlockItem} onClick={closeMenu}>
+          {items.map((item) =>
+            getLinkFromMenuItem(item) ? (
+              <Link key={item.id} href={getLinkFromMenuItem(item)}>
+                <a className={styles.collapsingMenuBlockItem} onClick={closeMenu}>
+                  {item.name}
+                </a>
+              </Link>
+            ) : (
+              <div key={item.id} className={styles.collapsingMenuBlockItem} onClick={closeMenu}>
                 {item.name}
-              </a>
-            </Link>
-          ))}
+              </div>
+            )
+          )}
         </div>
       )}
     </div>

@@ -47,7 +47,7 @@ interface Props {
   tags: ICategoryTag[];
   baseFilters: IFilter[];
   currentTags: ICategoryTag[];
-  currentFilters: Record<number, IFilterFront>;
+  currentFilters: Record<number, IFilterFront> | null;
   meta: {
     list: {
       count: number;
@@ -136,25 +136,50 @@ export default function Catalog({
 export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUrl, query }) => {
   const { page, id, sort, city, ...activeFilters } = query;
   const activeQueryFilters = { ...activeFilters };
+  let category: ICategory;
+  let tags: ICategoryTag[] = [];
+  let activeTags: ICategoryTag[] = [];
+  let withInvalidTags: boolean;
 
-  const isExpress = resolvedUrl.indexOf('/ekspress-dostavka') !== -1;
+  let baseFilters: IFilter[] = [];
+  let filters: IFilter[] = [];
+  let currentFilters: Record<number, IFilterFront> | null = null;
+  let hasInvalidFilters = false;
 
+  const isExpress = resolvedUrl.includes('/ekspress-dostavka');
+  const initialParams = {
+    limit: LIMIT,
+    offset: page ? (Number(page) - 1) * LIMIT : 0,
+    format: 'PUBLIC_LIST',
+    sort: sort || undefined,
+    ...(isExpress && { 'filter[label]': 'EXPRESS-DELIVERY' }),
+  };
+
+  let params: Record<string, string | number | boolean | string[]> = initialParams;
+  let goods: IGoodCard[] = [];
+  let meta: any = {};
+
+  // Получение категории и тегов товаров
   try {
     const categoryRes = await api.getCategoryByPath(resolvedUrl.split('?')[0].replace('/ekspress-dostavka', ''));
-    const category: ICategory = categoryRes.data.data;
+    category = categoryRes.data.data;
 
     const { data: tagsData } = await api.getCategoryTags(category.id);
-    const tags = tagsData.data;
+    tags = tagsData.data;
+
+    initialParams['filter[category_id]'] = category.id;
 
     // Получить по урлу массив всех активных тегов и уровень активных тегов
     const { currentTags, hasInvalidTags } = getTagsByUrl(resolvedUrl, tags, [
       ...category.ancestors.map((i) => i.slug),
       category.slug,
     ]);
+    activeTags = currentTags;
+    withInvalidTags = hasInvalidTags;
 
     const tagFilters = currentTags.map(({ filter }) => filter);
     tagFilters.forEach((filter) => {
-      let value: string | string[] = filter.values as string[];
+      let value: string | string[] = filter.values;
 
       if (filter.type === 'NUMERIC_RANGE') {
         value = `${filter.min}%-%${filter.max}`;
@@ -168,51 +193,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
 
       activeQueryFilters[filter.id] = value;
     });
-
-    // Формирование параметров для получения товаров и фильтров
-    const initialParams = {
-      limit: LIMIT,
-      offset: page ? (Number(page) - 1) * LIMIT : 0,
-      format: 'PUBLIC_LIST',
-      'filter[category_id]': category.id,
-      sort: sort || undefined,
-      ...(isExpress && { 'filter[label]': 'EXPRESS-DELIVERY' }),
-    };
-    const params = getParamsFromQuery(initialParams, activeQueryFilters);
-    //
-
-    const [goodsRes, filtersRes, baseFiltersRes] = await Promise.all([
-      api.getGoods(params),
-      api.getCategoryFilters(category.id, params),
-      api.getCategoryFilters(category.id),
-    ]);
-
-    const goods = normalizeGoods(goodsRes.data.data);
-    let filters = convertFiltersIfPrice(filtersRes.data.data);
-    const baseFilters = convertFiltersIfPrice(baseFiltersRes.data.data);
-    const { meta } = goodsRes.data;
-
-    const { activeFilters: currentFilters, hasInvalidFilters } = getActiveFiltersFromQuery(activeFilters, filters);
-
-    filters = filters.filter((filter) => !currentTags.some((tag) => tag.filter.id === filter.id));
-
-    return {
-      props: {
-        category,
-        filters,
-        baseFilters,
-        currentFilters,
-        currentTags,
-        goods,
-        meta,
-        tags,
-        hasInvalidTags,
-        hasInvalidFilters,
-      },
-    };
   } catch (error) {
     console.error('Error has occured:', error.request?.res, error.response?.data, error.response?.status);
-    // console.error(error);
     return {
       redirect: {
         destination: '/',
@@ -220,4 +202,58 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
       },
     };
   }
+  //
+
+  params = getParamsFromQuery(params, activeQueryFilters);
+
+  try {
+    const baseFiltersRes = await api.getCategoryFilters(category.id);
+    baseFilters = convertFiltersIfPrice(baseFiltersRes.data.data);
+
+    const filtersRes = await api.getCategoryFilters(category.id, getParamsFromQuery(params, activeQueryFilters));
+    filters = convertFiltersIfPrice(filtersRes.data.data);
+
+    const { activeFilters: newActiveFilters, hasInvalidFilters: newHasInvalidFilters } = getActiveFiltersFromQuery(
+      activeFilters,
+      filters
+    );
+    currentFilters = newActiveFilters;
+    hasInvalidFilters = newHasInvalidFilters;
+
+    filters = filters.filter((filter) => !activeTags.some((tag) => tag.filter.id === filter.id));
+  } catch (error) {
+    console.error('Error has occured:', error.request?.res, error.response?.data, error.response?.status);
+    hasInvalidFilters = true;
+  }
+
+  if (hasInvalidFilters) {
+    params = initialParams;
+    currentFilters = null;
+    filters = baseFilters;
+  }
+
+  try {
+    const goodsRes = await api.getGoods(params);
+    goods = normalizeGoods(goodsRes.data.data || []);
+
+    meta = goodsRes.data.meta;
+  } catch (error) {
+    console.error('Error has occured:', error.request?.res, error.response?.data, error.response?.status);
+    hasInvalidFilters = true;
+  }
+
+  return {
+    props: {
+      category,
+      filters,
+      baseFilters,
+      currentFilters,
+      currentTags: activeTags,
+      goods,
+      meta,
+      tags,
+      hasInvalidTags: withInvalidTags,
+      hasInvalidFilters,
+    },
+  };
 };

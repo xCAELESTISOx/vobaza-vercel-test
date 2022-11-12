@@ -50,6 +50,8 @@ const CategoryFilters: FC<Props> = ({ categorySlug, isLoading, currentTags, setI
   const filters = useSelector((state) => state.filters.filters);
   const currentFilters = useSelector((state) => state.filters.currentFilters);
 
+  const hasInvalidFilters = useSelector((state) => state.filters.hasInvalidFilters);
+
   const [isMenuOpen, toggleMenu] = useToggle(false);
   const [currentSort, setCurrentSort] = useState<Variant<keyof typeof GoodsSortTypes>>({
     code: 'POPULARITY',
@@ -92,11 +94,11 @@ const CategoryFilters: FC<Props> = ({ categorySlug, isLoading, currentTags, setI
     }
     //
 
-    if (currentFilters?.[filter.id]?.tag_slug) {
-      router.push({ pathname: href, query: { ...query, ...queryFilters } }, undefined, { scroll: false });
-    } else {
-      replaceRouterQuery({ ...query, ...queryFilters });
-    }
+    const newQuery = { ...(!hasInvalidFilters && query), ...queryFilters };
+
+    router.push({ pathname: href, query: newQuery }, undefined, {
+      scroll: false,
+    });
   };
 
   // Удаляет фильтр целиком, либо одно из значений фильтра
