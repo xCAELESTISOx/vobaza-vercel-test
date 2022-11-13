@@ -5,6 +5,8 @@ import Image from 'next/image';
 import type { IMenuItem } from 'src/models/IMenu';
 import { getLinkFromMenuItem } from 'assets/utils/getLinkFromMenuItem';
 
+import MenuIcon from '../Icons/MenuIcon';
+
 import styles from './styles.module.scss';
 
 type Props = {
@@ -89,7 +91,8 @@ export const CollapsingMenuItem = ({ menuBlock, closeMenu }: ICollapsingMenuItem
       {getLinkFromMenuItem(menuBlock) ? (
         <Link href={getLinkFromMenuItem(menuBlock)}>
           <a className={styles.collapsingMenuBlockTitle} onClick={closeMenu}>
-            {menuBlock.name + ' >'}
+            {menuBlock.name}
+            <MenuIcon name="arrow" />
           </a>
         </Link>
       ) : (

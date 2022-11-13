@@ -293,6 +293,24 @@ function DachaIcon(props) {
     </svg>
   );
 }
+function MenuArrowIcon(props) {
+  return (
+    <svg
+      {...props}
+      width="24"
+      height="24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M8.293 18.707a1 1 0 0 1 0-1.414L13.586 12 8.293 6.707a1 1 0 0 1 1.414-1.414l6 6a1 1 0 0 1 0 1.414l-6 6a1 1 0 0 1-1.414 0z"
+        fill="#AF1EBE"
+      />
+    </svg>
+  );
+}
 
 const renderIcon = ({ name, ...props }) => {
   switch (name) {
@@ -326,6 +344,8 @@ const renderIcon = ({ name, ...props }) => {
       return <OfisIcon {...props} />;
     case 'dacha':
       return <DachaIcon {...props} />;
+    case 'arrow':
+      return <MenuArrowIcon {...props} />;
     default:
       return <DivanyIcon {...props} />;
   }
