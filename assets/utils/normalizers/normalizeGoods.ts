@@ -1,6 +1,7 @@
 import type { IGood, IGoodCard, IGoodVariantsFront, IVariantsValue } from '../../../src/models/IGood';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 import type { AttributeDataType, IAttributeColor } from 'src/models/IAttributes';
+import { FavoriteGood } from 'components/Profile/Favorite/Item';
 
 const getPrice = (price: number) => {
   return price / 100;
@@ -100,7 +101,7 @@ export const normalizeProductAttributes = (productAttributes) => {
   return { ...productAttributes, additional };
 };
 
-export default function normalizeGoods(goods: IGood[] | IGoodCard[]): IGoodCard[] {
+export default function normalizeGoods(goods: IGood[] | IGoodCard[] | FavoriteGood[]): IGoodCard[] {
   return goods.map((good) => ({
     ...good,
     price: getPrice(good.price),

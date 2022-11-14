@@ -1,0 +1,50 @@
+import Cookies from 'js-cookie';
+
+import type { ICartGood } from 'components/Cart/ListItem';
+
+import checkAuth from 'assets/api/auth';
+import { api } from 'assets/api';
+
+export const getCartData = async () => {
+  let initialGoods: ICartGood[] = [];
+  let initialPrice = 0;
+  let withCountChange = false;
+
+  try {
+    await checkAuth({ cookies: { token: Cookies.get('token') } }, true);
+    const cartRes = await api.getCart();
+
+    const cart = cartRes.data.data;
+
+    initialPrice = cart.order_price / 100;
+    initialGoods = cart.products.map((good) => {
+      return {
+        quantity: good.quantity,
+        price: good.price / 100,
+        list_price: good.list_price / 100,
+        product: {
+          ...good.product,
+          price: good.product.price / 100,
+          list_price: good.product.list_price ? good.product.list_price / 100 : null,
+        },
+      };
+    });
+
+    if (cart.basket_changed) {
+      withCountChange = true;
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      initialGoods,
+      initialPrice,
+      withCountChange,
+    };
+  }
+
+  return {
+    initialGoods,
+    initialPrice,
+    withCountChange,
+  };
+};

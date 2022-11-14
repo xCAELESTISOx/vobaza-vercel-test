@@ -3,61 +3,16 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
 import type { IMenuItem } from 'src/models/IMenu';
-import type { ICartGood } from 'components/Cart/ListItem';
 import { useDispatch } from 'src/hooks/useDispatch';
-import { setCompare } from 'src/store/goods';
+import { setCartSize, setCompare, setFavorites } from 'src/store/goods';
 import { useSelector } from 'src/hooks/useSelector';
 
-import { HeaderTop } from './HeaderTop';
-import { HeaderBody } from './HeaderBody';
-import { HeaderMenu } from './HeaderMenu';
+import { HeaderTop } from './ui/HeaderTop';
+import { HeaderBody } from './ui/HeaderBody';
+import { HeaderMenu } from './ui/HeaderMenu';
 
 import { api } from 'assets/api';
-import checkAuth from 'assets/api/auth';
-
-const getCartData = async () => {
-  let initialGoods: ICartGood[] = [];
-  let initialPrice = 0;
-  let withCountChange = false;
-
-  try {
-    await checkAuth({ cookies: { token: Cookies.get('token') } }, true);
-    const cartRes = await api.getCart();
-
-    const cart = cartRes.data.data;
-
-    initialPrice = cart.order_price / 100;
-    initialGoods = cart.products.map((good) => {
-      return {
-        quantity: good.quantity,
-        price: good.price / 100,
-        list_price: good.list_price / 100,
-        product: {
-          ...good.product,
-          price: good.product.price / 100,
-          list_price: good.product.list_price ? good.product.list_price / 100 : null,
-        },
-      };
-    });
-
-    if (cart.basket_changed) {
-      withCountChange = true;
-    }
-  } catch (error) {
-    console.error(error);
-    return {
-      initialGoods,
-      initialPrice,
-      withCountChange,
-    };
-  }
-
-  return {
-    initialGoods,
-    initialPrice,
-    withCountChange,
-  };
-};
+import { getCartData } from './libs/getCartData';
 
 type Props = {
   openPhoneCallModal: () => void;
@@ -102,19 +57,13 @@ const Header: FC<Props> = ({ openPhoneCallModal }) => {
     try {
       const globalInfoRes = await api.getGlobalInfo();
       if (globalInfoRes) {
-        dispatch({
-          type: 'setFavorites',
-          payload: globalInfoRes.data.data.favorite_products_ids,
-        });
-        dispatch({
-          type: 'setCartSize',
-          payload: globalInfoRes.data.data.basket_size,
-        });
-        if (globalInfoRes.data.data.compare_products_ids) {
-          dispatch({
-            type: 'setCompare',
-            payload: globalInfoRes.data.data.compare_products_ids,
-          });
+        const { favorite_products_ids, basket_size, compare_products_ids } = globalInfoRes.data.data;
+
+        dispatch(setFavorites(favorite_products_ids));
+        dispatch(setCartSize(basket_size));
+
+        if (compare_products_ids) {
+          dispatch(setCompare(compare_products_ids));
         } else {
           setCompareFromCookie();
         }
@@ -126,6 +75,7 @@ const Header: FC<Props> = ({ openPhoneCallModal }) => {
       setCompareFromCookie();
     }
   };
+
   useEffect(() => {
     getGlobalInfo();
     getMenus();

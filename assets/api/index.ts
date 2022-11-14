@@ -1,10 +1,10 @@
-import cookies from 'js-cookie';
-
+import type { FavoriteGood } from 'components/Profile/Favorite/Item';
 import type { IMenuItem } from 'src/models/IMenu';
 
 import { axios, setToken, setTokenWithGuest } from './axios';
 import { CategoriesAPI } from './modules/categories/endpoints';
 import { ordersAPI } from './modules/orders';
+import { userAPI } from './modules/user';
 
 export const api = {
   getMenu(type: 'TOP' | 'LEFT_SIDE' | 'MOBILE') {
@@ -28,24 +28,6 @@ export const api = {
   logout() {
     setToken();
     return axios.delete('/customer/v1/token');
-  },
-  // Profile
-  getProfile() {
-    setToken();
-    return axios.get('/customer/v1/profile');
-  },
-  updateProfile(data: { name: string; surname: string; email: string }) {
-    setToken();
-    return axios.post('/customer/v1/profile', data);
-  },
-  getGlobalInfo() {
-    if (!(cookies.get('token') || cookies.get('guestToken'))) return;
-    setTokenWithGuest();
-    return axios.get('/v1/me');
-  },
-
-  subscribeMailing(data: { email: string }) {
-    return axios.post('/v1/subscriptions', data);
   },
   // Addresses
   getAddresses() {
@@ -115,7 +97,7 @@ export const api = {
   //Favorites
   async getFavorites() {
     await setTokenWithGuest();
-    return axios.get(`/v1/favorites`);
+    return axios.get<{ data: FavoriteGood[] }>(`/v1/favorites`);
   },
   async setGoodFavorite(id: number | string) {
     await setTokenWithGuest(true);
@@ -159,6 +141,6 @@ export const api = {
     return axios.post(`/v1/basket/${id}/sub`, data);
   },
   ...CategoriesAPI,
-  //Order
   ...ordersAPI,
+  ...userAPI,
 };

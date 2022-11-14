@@ -10,6 +10,8 @@ import ProfileSidebar from '../../components/Profile/Sidebar';
 import ProfileEmptyField from '../../components/Profile/EmptyField';
 import ProfileFavoriteItem, { FavoriteGood } from '../../components/Profile/Favorite/Item';
 import CartModal from '../../components/Goods/Modals/Cart/Cart';
+import { useDispatch } from 'src/hooks/useDispatch';
+import { setFavorites } from 'src/store/goods';
 
 interface Props {
   initialGoods: FavoriteGood[];
@@ -18,12 +20,17 @@ interface Props {
 export default function Home({ initialGoods }: Props) {
   const [goods, setGoods] = useState(initialGoods);
 
+  const dispatch = useDispatch();
+
   const onDelete = (id: number) => {
-    setGoods((prevArray: any) => prevArray.filter((item) => item.id !== id));
+    setGoods((prevArray) => prevArray.filter((item) => item.id !== id));
   };
 
   useEffect(() => {
     setGoods(initialGoods);
+
+    const favoriteIds = initialGoods.map(({ id }) => id);
+    dispatch(setFavorites(favoriteIds));
   }, [initialGoods]);
 
   return (
@@ -39,7 +46,7 @@ export default function Home({ initialGoods }: Props) {
             <div className={styles.profileContentBlock}>
               <h2 className={styles.profileSubtitle}>Избранное</h2>
 
-              {goods && goods.length > 0 ? (
+              {goods?.length > 0 ? (
                 <div>
                   {goods.map((good) => (
                     <ProfileFavoriteItem key={good.name} good={good} onDelete={onDelete} />

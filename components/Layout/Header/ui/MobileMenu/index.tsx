@@ -7,7 +7,7 @@ import type { IMenuItem } from 'src/models/IMenu';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import Search from '../Search';
 import CitySelect from '../CitySelect';
-import { MobileMenuBlock } from './MobileMenuBlock';
+import { MobileMenuBlock } from './ui/MobileMenuBlock';
 
 import styles from './styles.module.scss';
 
