@@ -56,6 +56,8 @@
 }
 .filtersAccordeon {
   border-bottom: none;
+  overflow: hidden;
+  padding-bottom: 4px;
 
   + .filtersAccordeon {
     margin-top: 8px;

@@ -20,14 +20,12 @@ type Props = {
 const NumericFilter: FC<Props> = ({ filter, full = false, currentFilter, addFilter }) => {
   const [values, setValues] = useState<[number, number]>([filter.meta.min || 0, filter.meta.max || 100]);
   const [filterValues, setFilterValues] = useState<[number, number]>([filter.meta.min || 0, filter.meta.max || 100]);
-
   const onClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     if (
-      !currentFilter ||
       filter.meta.min === filter.meta.max ||
-      (!currentFilter && filterValues[0] === filter.meta.min && filterValues[1] === filter.meta.max)
+      (filterValues[0] === filter.meta.min && filterValues[1] === filter.meta.max)
     )
       return;
 
