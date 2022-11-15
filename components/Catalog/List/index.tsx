@@ -21,7 +21,10 @@ const getHref = (routerPath: string, category: ICategory) => {
 
   if (!category.ancestors?.length) return '/' + category.slug;
   const path = index > -1 ? routerPath.slice(0, index) : routerPath;
-  return path + '/' + category.slug;
+
+  if (path.includes('ekspress-dostavka')) return `${path.replace('/ekspress-dostavka', '')}/${category.slug}/ekspress-dostavka`
+
+  return `${path}/${category.slug}`;
 };
 
 const CatalogList: FC<Props> = ({ list }) => {
