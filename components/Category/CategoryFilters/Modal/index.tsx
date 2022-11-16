@@ -51,6 +51,8 @@ const FiltersModal: FC<Props> = ({
     }
   }, [isOpen]);
 
+  // const additionalFilters = filters.filter((item) => item.visibility_type === 'ADDITIONAL');
+
   return (
     <div className={`${styles.filtersModal} ${isOpen && styles.filtersModalOpen}`} onClick={close}>
       <div className={styles.filtersContent} onClick={menuClickHandler}>
@@ -63,13 +65,15 @@ const FiltersModal: FC<Props> = ({
         <div className={styles.filtersBlock}>
           {filters.map((filter) => (
             <Accordeon key={filter.id} title={filter.name} className={styles.filtersAccordeon}>
-              <Filter
-                filter={filter}
-                baseFilter={baseFilters.find((item) => item.id === filter.id)}
-                currentFilter={currentFilters?.[filter.id]}
-                addFilter={addFilter}
-                full
-              />
+              <div className={filter.type === 'LISTED' ? styles.listWrapper : ''}>
+                <Filter
+                  filter={filter}
+                  baseFilter={baseFilters.find((item) => item.id === filter.id)}
+                  currentFilter={currentFilters?.[filter.id]}
+                  addFilter={addFilter}
+                  full
+                />
+              </div>
             </Accordeon>
           ))}
         </div>

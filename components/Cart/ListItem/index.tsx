@@ -45,7 +45,12 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
     setIsLoading(true);
     try {
       const quantity = await changeItem(good.product.id, count - good.quantity);
-      setCount(good.quantity + quantity);
+      if (quantity) {
+        setCount(good.quantity + quantity);
+      } else {
+        setCount(good.quantity);
+        setIsLoading(false);
+      }
       setIsLoading(false);
     } catch (error) {
       setCount(good.quantity);

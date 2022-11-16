@@ -185,16 +185,17 @@ const ListedFilter: FC<Props> = ({ filter, baseFilter, full = false, currentFilt
   return (
     <div className={styles.filter}>
       {full ? (
-        <div className={styles.filterCheckboxes}>
+        <div className={styles.filterList}>
           {values.map((item) => (
-            <InputCheckbox
-              key={item.code}
-              variation="secondary"
-              label={item.value}
-              initialValue={item.isActive}
-              onChange={() => changeValues(item)}
-              disabled={item.disabled}
-            />
+            <div className={styles.filterListItem} key={item.code}>
+              <InputCheckbox
+                variation="secondary"
+                label={item.value}
+                initialValue={item.isActive}
+                onChange={() => changeValues(item)}
+                disabled={item.disabled}
+              />
+            </div>
           ))}
           <button style={{ display: 'none' }} onClick={onClick} className="filtersJsButton" />
         </div>

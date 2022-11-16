@@ -41,11 +41,7 @@ const Accordeon: FC<Props> = ({ children, title, className }) => {
     <div className={`${styles.accordeonBlock} ${className}`}>
       <div className={styles.accordeon} onClick={toggleActive}>
         <div className={styles.accordeonTitle}>{title}</div>
-        <div
-          className={`${styles.accordeonArrow} ${
-            isOpen && styles.accordeonArrowActive
-          }`}
-        >
+        <div className={`${styles.accordeonArrow} ${isOpen && styles.accordeonArrowActive}`}>
           <Icon name="SmallArrowDown" />
         </div>
       </div>
