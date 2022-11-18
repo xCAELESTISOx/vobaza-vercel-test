@@ -17,12 +17,16 @@ type Props = {
 };
 
 const getHref = (routerPath: string, category: ICategory) => {
-  const index = routerPath.split('').findIndex((item) => item === '?');
-
   if (!category.ancestors?.length) return '/' + category.slug;
-  const path = index > -1 ? routerPath.slice(0, index) : routerPath;
 
-  if (path.includes('ekspress-dostavka')) return `${path.replace('/ekspress-dostavka', '')}/${category.slug}/ekspress-dostavka`
+  let path = '';
+
+  category.ancestors?.forEach((ancestor) => {
+    path += '/' + ancestor.slug;
+  });
+
+  if (routerPath.includes('ekspress-dostavka'))
+    return `${path.replace('/ekspress-dostavka', '')}/${category.slug}/ekspress-dostavka`;
 
   return `${path}/${category.slug}`;
 };
