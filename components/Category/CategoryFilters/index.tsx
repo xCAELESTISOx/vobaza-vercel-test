@@ -1,54 +1,32 @@
 import { useEffect, useRef, useState } from 'react';
 
 import type { Dispatch, FC, SetStateAction } from 'react';
-import type { IFilterFront, ITagFitlerFront } from '../../../src/models/IFilter';
+import type { IFilterFront } from '../../../src/models/IFilter';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
-import type { ICategoryTag } from 'assets/api/modules/categories';
 import { GoodsSortTypes } from 'src/models/IGood';
 import { useAdvancedRouter } from 'assets/utils/useAdvancedRouter';
 import { useToggle } from 'src/hooks/useToggle';
 import { useSelector } from 'src/hooks/useSelector';
+import { getQueryFromFilters } from './lib/getQueryFromFilters';
 
-import CategoryCurrentFilters from './CategoryCurrentFilters';
-import CategoryFiltersList from './FiltersList';
-import FiltersModal from './Modal';
-
-const getQueryFromFilters = (filters: (IFilterFront | ITagFitlerFront)[]) => {
-  const queryFilters: { [key: string]: string | string[] } = {};
-  /** ID фильтра на случай, если при редактировании будет выбрано 0 вариантов */
-  let excludeFilterId: number | null = null;
-
-  filters.forEach((filter) => {
-    if (filter.values && filter.values.length) {
-      if (filter.type === 'NUMERIC_RANGE') {
-        const multiplier = filter.value_type === 'PRICE' ? 100 : 1;
-        const newValues = filter.values.map((i) => i * multiplier);
-        queryFilters[filter.id] = `${newValues[0]}%-%${newValues[1]}`;
-      } else {
-        queryFilters[filter.id] = filter.values;
-      }
-    } else {
-      excludeFilterId = filter.id;
-    }
-  });
-
-  return { queryFilters, excludeFilterId };
-};
+import CategoryCurrentFilters from './ui/CategoryCurrentFilters';
+import CategoryFiltersList from './ui/FiltersList';
+import FiltersModal from './ui/Modal';
 
 type Props = {
   categorySlug?: string;
   isLoading: boolean;
-  currentTags: ICategoryTag[];
   setIsLoading?: Dispatch<SetStateAction<boolean>>;
 };
 
-const CategoryFilters: FC<Props> = ({ categorySlug, isLoading, currentTags, setIsLoading }) => {
+const CategoryFilters: FC<Props> = ({ categorySlug, isLoading, setIsLoading }) => {
   const { router, replaceRouterQuery } = useAdvancedRouter();
   const { page, id, sort, text, city, ...activeFilters } = router.query;
 
   const baseFilters = useSelector((state) => state.filters.baseFilters);
   const filters = useSelector((state) => state.filters.filters);
   const currentFilters = useSelector((state) => state.filters.currentFilters);
+  const currentTags = useSelector((state) => state.tags.currentTags);
 
   const hasInvalidFilters = useSelector((state) => state.filters.hasInvalidFilters);
 

@@ -5,7 +5,7 @@ import { toNumberWithSpaces } from 'assets/utils/formatters';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
-import styles from './styles.module.scss';
+import styles from './../styles.module.scss';
 
 type Props = {
   filter: IFilterFront;

@@ -1,10 +1,10 @@
 import React, { FC, MouseEvent, useEffect } from 'react';
 
-import type { IFilter, IFilterFront } from '../../../../src/models/IFilter';
+import type { IFilter, IFilterFront } from '../../../../../src/models/IFilter';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
-import Accordeon from '../../../UI/Accordeon';
+import Accordeon from '../../../../UI/Accordeon';
 import { Filter } from '../Filter';
 
 import styles from './styles.module.scss';

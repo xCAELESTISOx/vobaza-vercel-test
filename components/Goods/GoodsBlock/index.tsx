@@ -41,7 +41,6 @@ export const GoodsBlock: FC<Props> = ({
   const [isLoading, setIsLoading] = useState(true);
 
   const tags = useSelector((state) => state.tags.tags);
-  const currentTags = useSelector((state) => state.tags.currentTags);
   const hasInvalidTags = useSelector((state) => state.tags.hasInvalidTags);
   const hasInvalidFilters = useSelector((state) => state.filters.hasInvalidFilters);
 
@@ -111,16 +110,16 @@ export const GoodsBlock: FC<Props> = ({
             </div>
           )}
           <div className={styles.filtersBlock}>
-            <CategoryFilters
-              categorySlug={categorySlug}
-              currentTags={currentTags}
-              setIsLoading={setIsLoading}
-              isLoading={isLoading}
-            />
+            <CategoryFilters categorySlug={categorySlug} setIsLoading={setIsLoading} isLoading={isLoading} />
           </div>
         </>
       )}
-      {(hasInvalidTags || hasInvalidFilters) && (
+      {!goods.length && (
+        <Title element="h3" style={{ marginTop: 20 }}>
+          Нет товаров, соответствующих условию
+        </Title>
+      )}
+      {(hasInvalidTags || hasInvalidFilters) && !!goods.length && (
         <Title element="h3" style={{ marginTop: 20 }}>
           При загрузке данных произошла ошибка
         </Title>

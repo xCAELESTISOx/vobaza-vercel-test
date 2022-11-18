@@ -7,7 +7,7 @@ import { IFilterSelectVariant } from '@nebo-team/vobaza.ui.filter-select/dist';
 import { FilterSelect } from '@nebo-team/vobaza.ui.filter-select/dist';
 import { RangeBlock } from '@nebo-team/vobaza.ui.range/dist';
 
-import styles from './styles.module.scss';
+import styles from './../styles.module.scss';
 
 type Props = {
   full?: boolean;

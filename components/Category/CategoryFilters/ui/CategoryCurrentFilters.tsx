@@ -4,7 +4,7 @@ import type { IFilterFront } from 'src/models/IFilter';
 
 import { ActiveFilterLabel } from './ActiveFilterLabel';
 
-import styles from './styles.module.scss';
+import styles from './../styles.module.scss';
 
 type Props = {
   isLoading: boolean;

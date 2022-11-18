@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 import Head from 'next/head';
 
 import type { ICategoryTag } from 'assets/api/modules/categories';
@@ -12,6 +13,7 @@ import { getActiveFiltersFromQuery } from 'assets/utils/Category/filters/getActi
 import { getCategoryBreadcrumps } from 'assets/utils/Category/getCategoryBreadcrumps';
 import { getParamsFromQuery } from 'assets/utils/Category/getParamsFromQuery';
 import { getTagsByUrl } from 'assets/utils/Category/getTagsByUrl';
+import { formatAxiosError } from 'assets/utils/formatAxiosError';
 import { useDispatch } from 'src/hooks/useDispatch';
 
 import { markTagsAsInvalid, resetTags, setCurrentTags, setTags } from 'src/store/tags';
@@ -42,11 +44,14 @@ interface Props {
   hasInvalidFilters: boolean;
   hasInvalidTags: boolean;
   category: ICategory;
+  /** Доступные фильтры */
   filters: IFilter[];
   goods: IGoodCard[];
   tags: ICategoryTag[];
+  /** Базовые фильтры без учета примененных */
   baseFilters: IFilter[];
   currentTags: ICategoryTag[];
+  /** Примененные фильтры */
   currentFilters: Record<number, IFilterFront> | null;
   meta: {
     list: {
@@ -159,6 +164,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
   let goods: IGoodCard[] = [];
   let meta: any = {};
 
+  const tagsQueryFilters: { [key: string]: string | string[] } = {};
   // Получение категории и тегов товаров
   try {
     const categoryRes = await api.getCategoryByPath(resolvedUrl.split('?')[0].replace('/ekspress-dostavka', ''));
@@ -191,10 +197,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
         filter.max = filter.max / 100;
       }
 
+      tagsQueryFilters[filter.id] = value;
       activeQueryFilters[filter.id] = value;
     });
   } catch (error) {
-    console.error('Error has occured:', error.request?.res, error.response?.data, error.response?.status);
+    if (axios.isAxiosError(error)) {
+      const text = formatAxiosError(error);
+      console.error(text);
+    } else {
+      console.error('Error has occured:', error);
+    }
     return {
       redirect: {
         destination: '/',
@@ -222,12 +234,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
 
     filters = filters.filter((filter) => !activeTags.some((tag) => tag.filter.id === filter.id));
   } catch (error) {
-    console.error('Error has occured:', error.request?.res, error.response?.data, error.response?.status);
+    // console.error('Error has occured:', error.request?.res, error.response?.data, error.response?.status);
     hasInvalidFilters = true;
   }
 
   if (hasInvalidFilters) {
-    params = initialParams;
+    params = getParamsFromQuery(initialParams, tagsQueryFilters);
     currentFilters = null;
     filters = baseFilters;
   }
@@ -238,8 +250,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
 
     meta = goodsRes.data.meta;
   } catch (error) {
-    console.error('Error has occured:', error.request?.res, error.response?.data, error.response?.status);
-    hasInvalidFilters = true;
+    if (axios.isAxiosError(error)) {
+      const text = formatAxiosError(error);
+      console.error(text);
+    } else {
+      console.error('Error has occured:', error);
+    }
   }
 
   return {

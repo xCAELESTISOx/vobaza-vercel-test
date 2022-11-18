@@ -9,7 +9,7 @@ import { FilterSelect } from '@nebo-team/vobaza.ui.filter-select';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import { Filter } from './Filter';
 
-import styles from './styles.module.scss';
+import styles from './../styles.module.scss';
 
 const getSortVariants = () => {
   return Object.entries(GoodsSortTypes).map(([key, value]) => {
