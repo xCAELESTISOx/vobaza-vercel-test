@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -19,6 +20,9 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
   const [currentMenuItem, setCurrentMenuItem] = useState<IMenuItem>(withRoot ? menu[0] : menu);
 
   const [allProducts, setAllProducts] = useState(false);
+
+  const router = useRouter();
+  const isExpress = router.asPath.includes('/ekspress-dostavka');
 
   const menuTabHover = (e, parentId: number) => {
     e.preventDefault();
@@ -46,7 +50,7 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
               <div key={group.id} className={`${index > 0 ? styles.rootMenuItemDivided : ''} `}>
                 {group.children?.map((item) => (
                   <div key={item.id}>
-                    <Link href={getLinkFromMenuItem(item)}>
+                    <Link href={getLinkFromMenuItem(item, isExpress)}>
                       <a
                         data-id={item.id}
                         onMouseEnter={(e) => menuTabHover(e, group.id)}
@@ -85,11 +89,13 @@ type ICollapsingMenuItemProps = {
 
 export const CollapsingMenuItem = ({ menuBlock, closeMenu }: ICollapsingMenuItemProps) => {
   const items = menuBlock.children || [];
+  const router = useRouter();
+  const isExpress = router.asPath.includes('/ekspress-dostavka');
 
   return (
     <div className={styles.collapsingMenuBlock}>
       {getLinkFromMenuItem(menuBlock) ? (
-        <Link href={getLinkFromMenuItem(menuBlock)}>
+        <Link href={getLinkFromMenuItem(menuBlock, isExpress)}>
           <a className={styles.collapsingMenuBlockTitle} onClick={closeMenu}>
             {menuBlock.name}
             <MenuIcon name="arrow" />
@@ -103,7 +109,7 @@ export const CollapsingMenuItem = ({ menuBlock, closeMenu }: ICollapsingMenuItem
         <div className={styles.collapsingMenuBlockItems}>
           {items.map((item) =>
             getLinkFromMenuItem(item) ? (
-              <Link key={item.id} href={getLinkFromMenuItem(item)}>
+              <Link key={item.id} href={getLinkFromMenuItem(item, isExpress)}>
                 <a className={styles.collapsingMenuBlockItem} onClick={closeMenu}>
                   {item.name}
                 </a>

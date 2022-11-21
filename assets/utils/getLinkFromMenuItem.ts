@@ -1,7 +1,8 @@
 import type { IMenuItem } from 'src/models/IMenu';
 
-export const getLinkFromMenuItem = (item: IMenuItem) => {
+export const getLinkFromMenuItem = (item: IMenuItem, isExpress = false) => {
   let url = '';
+
   if (item.item_type === 'NORMAL') {
     url = item.link;
   } else {
@@ -11,5 +12,5 @@ export const getLinkFromMenuItem = (item: IMenuItem) => {
     url += '/' + item.category.slug;
   }
 
-  return url;
+  return isExpress && url ? url + '/ekspress-dostavka' : url;
 };

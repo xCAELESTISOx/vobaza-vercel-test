@@ -63,7 +63,8 @@ type MainMenuItemProps = { index: number; item: IMenuItem; openFullMenu: (e: any
 
 const HeaderMenuItem = ({ index, item, openFullMenu }: MainMenuItemProps) => {
   const router = useRouter();
-  const link = getLinkFromMenuItem(item);
+  const isExpress = router.asPath.includes('/ekspress-dostavka');
+  const link = getLinkFromMenuItem(item, isExpress);
 
   return (
     <Link href={link}>

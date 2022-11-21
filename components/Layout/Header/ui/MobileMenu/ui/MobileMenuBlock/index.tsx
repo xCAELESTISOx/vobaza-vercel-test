@@ -1,4 +1,5 @@
 import React, { FC, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -18,6 +19,8 @@ export const MobileMenuBlock: FC<Props> = ({ item }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const refPanel = useRef(null);
+  const router = useRouter();
+  const isExpress = router.asPath.includes('/ekspress-dostavka');
 
   const clickHandler = () => {
     if (isLoading || !refPanel.current) return;
@@ -44,7 +47,7 @@ export const MobileMenuBlock: FC<Props> = ({ item }) => {
   return (
     <div className={styles.subMenuItem}>
       <div className={styles.subMenuHeader} onClick={clickHandler}>
-        <Link href={getLinkFromMenuItem(item)}>
+        <Link href={getLinkFromMenuItem(item, isExpress)}>
           <a className={styles.subMenuLink}>
             {item.icon && <Image src={item.icon} width={24} height={24} alt="" />}
             <span>{item.name}</span>
@@ -58,7 +61,7 @@ export const MobileMenuBlock: FC<Props> = ({ item }) => {
         <div className={styles.subMenuList} ref={refPanel}>
           {item.children.map((menuItem) => (
             <div key={menuItem.id} className={styles.subMenuListItem}>
-              <Link href={getLinkFromMenuItem(menuItem)}>
+              <Link href={getLinkFromMenuItem(menuItem, isExpress)}>
                 <a>{menuItem.name}</a>
               </Link>
             </div>
