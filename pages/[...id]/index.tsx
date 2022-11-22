@@ -192,7 +192,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
       }
 
       if (filter.value_type === 'PRICE') {
-        value = `${filter.min * 100}%-%${filter.max * 100}`;
+        value = `${filter.min * 100}%-%${(filter.max + 1) * 100}`;
         filter.min = filter.min / 100;
         filter.max = filter.max / 100;
       }
@@ -234,7 +234,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
 
     filters = filters.filter((filter) => !activeTags.some((tag) => tag.filter.id === filter.id));
   } catch (error) {
-    // console.error('Error has occured:', error.request?.res, error.response?.data, error.response?.status);
     hasInvalidFilters = true;
   }
 
@@ -245,7 +244,22 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
   }
 
   try {
-    const goodsRes = await api.getGoods(params);
+    let goodsRes = await api.getGoods(params);
+    if (!goodsRes.data.data.length) {
+      if (activeTags.length > 1) {
+        Object.keys(params).forEach((key) => {
+          if (key.includes(`[filters][${activeTags.length - 1}]`)) {
+            delete params[key];
+          }
+        });
+        activeTags.splice(activeTags.length - 1, 1);
+      } else {
+        activeTags = [];
+        params = initialParams;
+      }
+      withInvalidTags = true;
+      goodsRes = await api.getGoods(params);
+    }
     goods = normalizeGoods(goodsRes.data.data || []);
 
     meta = goodsRes.data.meta;
