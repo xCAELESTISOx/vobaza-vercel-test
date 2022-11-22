@@ -257,7 +257,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
         activeTags = [];
         params = initialParams;
       }
-      withInvalidTags = true;
+      hasInvalidFilters = true;
       goodsRes = await api.getGoods(params);
     }
     goods = normalizeGoods(goodsRes.data.data || []);

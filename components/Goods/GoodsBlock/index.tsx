@@ -114,12 +114,12 @@ export const GoodsBlock: FC<Props> = ({
           </div>
         </>
       )}
-      {!goods.length && (
+      {(!goods.length || hasInvalidFilters) && (
         <Title element="h3" style={{ marginTop: 20 }}>
           Нет товаров, соответствующих условию
         </Title>
       )}
-      {(hasInvalidTags || hasInvalidFilters) && !!goods.length && (
+      {hasInvalidTags && !!goods.length && (
         <Title element="h3" style={{ marginTop: 20 }}>
           При загрузке данных произошла ошибка
         </Title>
