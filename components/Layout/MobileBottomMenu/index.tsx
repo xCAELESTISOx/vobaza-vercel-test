@@ -27,6 +27,9 @@ export const MobileBottomMenu: FC = () => {
 
     dispatch(toogleMobCatalog(!activeMobCatalog));
   };
+  const closeMenu = () => {
+    dispatch(toogleMobCatalog(false));
+  };
   const profileClickHandler = () => {
     if (Cookies.get('token')) {
       toggleProfileMenu();
@@ -43,7 +46,7 @@ export const MobileBottomMenu: FC = () => {
       <ProfileMenu isOpen={isProfileMenuOpen} close={toggleProfileMenu} />
       <div className={styles.tabbar}>
         <Link href="/">
-          <a className={styles.tab}>
+          <a className={styles.tab} onClick={closeMenu}>
             <Icon name="SmallLogo" />
             <div className={styles.tabTitle}>Главная</div>
           </a>
