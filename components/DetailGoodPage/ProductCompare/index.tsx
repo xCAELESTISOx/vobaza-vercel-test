@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 
-import { removeCompare } from 'src/store/goods';
+import { removeCompare, addCompare } from 'src/store/goods';
 import { useDispatch } from 'src/hooks/useDispatch';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
@@ -43,7 +43,7 @@ const ProductCompare: FC<Props> = ({ id }) => {
           console.error(error);
         }
       }
-      dispatch({ type: 'addCompare', payload: id });
+      dispatch(addCompare(id))
     }
     setIsLoading(false);
   };

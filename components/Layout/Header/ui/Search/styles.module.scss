@@ -26,6 +26,10 @@
   &::placeholder {
     opacity: 1;
   }
+
+  @media screen and (max-width: 767px) {
+    font-size: 16px;
+  }
 }
 .searchButton {
   position: absolute;
