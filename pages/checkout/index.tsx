@@ -70,6 +70,29 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
     formRef.current.submitForm();
   };
 
+  const ecommerceGoods = goods.map((product) => {
+    return {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      brand: product.brand,
+      category: `${product?.main_category?.slug}/${
+        product?.other_categories?.length > 0 ? product?.other_categories[0]?.slug : ''
+      }`,
+    };
+  });
+
+  const ecommerceAfterPurchase = () => {
+    (window as any).dataLayer.push({
+      ecommerce: {
+        currencyCode: 'RUB',
+        purchase: {
+          products: ecommerceGoods,
+        },
+      },
+    });
+  };
+
   const createOrder = async (customer: IReceiver) => {
     const token = Cookies.get('token');
     const userId = values.address?.id;
@@ -81,8 +104,10 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
 
       if (token) {
         res = await api.createAuthOrder(data);
+        ecommerceAfterPurchase();
       } else {
         res = await api.createOrder(data);
+        ecommerceAfterPurchase();
       }
       dispatch(setCartSize(0));
 

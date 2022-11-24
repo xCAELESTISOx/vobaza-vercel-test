@@ -93,6 +93,27 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
   };
 
   useEffect(() => {
+    (window as any).dataLayer.push({
+      ecommerce: {
+        currencyCode: 'RUB',
+        detail: {
+          products: [
+            {
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              brand: product.brand,
+              category: `${product?.main_category.slug}/${
+                product?.other_categories.length > 0 ? product?.other_categories[0].slug : ''
+              }`,
+            },
+          ],
+        },
+      },
+    });
+  }, []);
+
+  useEffect(() => {
     let options = {};
     if (product.variants && product.variants.variants) {
       product.variants.variants.forEach((t) => {
