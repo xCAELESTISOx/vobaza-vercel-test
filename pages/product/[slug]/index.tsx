@@ -60,6 +60,24 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
 
   const addToCartHandler = () => {
     addToCart();
+    (window as any).dataLayer.push({
+      ecommerce: {
+        currencyCode: 'RUB',
+        add: {
+          products: [
+            {
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              brand: product.brand,
+              category: `${product.main_category.slug}/${
+                product?.other_categories.length > 0 ? product?.other_categories[0].slug : ''
+              }`,
+            },
+          ],
+        },
+      },
+    });
   };
 
   const handelSelectOption = (name: string, value: Variant) => {

@@ -38,6 +38,21 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const deleteItemHandler = () => {
+    (window as any).dataLayer.push({
+      ecommerce: {
+        currencyCode: 'RUB',
+        remove: {
+          products: [
+            {
+              id: good.product.id,
+              name: good.product.name,
+              // category: good.product,
+              quantity: good.quantity,
+            },
+          ],
+        },
+      },
+    });
     deleteItem(good.product.id, good.quantity);
   };
 

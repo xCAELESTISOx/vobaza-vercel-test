@@ -49,8 +49,26 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
       console.error(error);
     }
   };
+
   const addToCartHandler = () => {
     addToCart();
+    (window as any).dataLayer.push({
+      ecommerce: {
+        currencyCode: 'RUB',
+        add: {
+          products: [
+            {
+              id: good.id,
+              name: good.name,
+              price: good.price,
+              // brand: good.brand,
+              // category: good.main_category,
+              quantity: 1,
+            },
+          ],
+        },
+      },
+    });
   };
 
   return (

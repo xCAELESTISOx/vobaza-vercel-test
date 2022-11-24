@@ -25,7 +25,6 @@ export default function Home({ initialGoods }: Props) {
   const onDelete = (id: number) => {
     setGoods((prevArray) => prevArray.filter((item) => item.id !== id));
   };
-
   useEffect(() => {
     setGoods(initialGoods);
 

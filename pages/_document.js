@@ -53,7 +53,7 @@ export default class MyDocument extends Document {
                       console.error(e)
                      }
                 });
-        
+
                 var n = d.getElementsByTagName("script")[0],
                     x = "https://mc.yandex.ru/metrika/watch.js",
                     s = d.createElement("script"),
@@ -64,7 +64,7 @@ export default class MyDocument extends Document {
                 s.type = "text/javascript";
                 s.async = true;
                 s.src = x;
-        
+
                 if (w.opera == "[object Opera]") {
                     d.addEventListener("DOMContentLoaded", f, false);
                 } else { f(); }
