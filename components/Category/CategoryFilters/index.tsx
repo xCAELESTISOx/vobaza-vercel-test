@@ -123,7 +123,6 @@ const CategoryFilters: FC<Props> = ({ isLoading, setIsLoading }) => {
     isInitialized.current = true;
 
     return () => {
-      // Очистка фильтров при изменении категории
       if (isInitialized.current) removeAllFilters();
       isInitialized.current = false;
     };

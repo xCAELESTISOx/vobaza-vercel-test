@@ -219,10 +219,14 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
   params = getParamsFromQuery(params, activeQueryFilters);
 
   try {
-    const baseFiltersRes = await api.getCategoryFilters(category.id);
+    const [baseFiltersRes, filtersRes] = await Promise.all([
+      api.getCategoryFilters(category.id),
+      api.getCategoryFilters(category.id, getParamsFromQuery(params, activeQueryFilters)),
+    ]);
+    // const baseFiltersRes = await api.getCategoryFilters(category.id);
     baseFilters = convertFiltersIfPrice(baseFiltersRes.data.data);
 
-    const filtersRes = await api.getCategoryFilters(category.id, getParamsFromQuery(params, activeQueryFilters));
+    // const filtersRes = await api.getCategoryFilters(category.id, getParamsFromQuery(params, activeQueryFilters));
     filters = convertFiltersIfPrice(filtersRes.data.data);
 
     const { activeFilters: newActiveFilters, hasInvalidFilters: newHasInvalidFilters } = getActiveFiltersFromQuery(
