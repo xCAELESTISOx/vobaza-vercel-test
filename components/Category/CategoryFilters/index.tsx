@@ -19,7 +19,7 @@ type Props = {
   setIsLoading?: Dispatch<SetStateAction<boolean>>;
 };
 
-const CategoryFilters: FC<Props> = ({ categorySlug, isLoading, setIsLoading }) => {
+const CategoryFilters: FC<Props> = ({ isLoading, setIsLoading }) => {
   const { router, replaceRouterQuery } = useAdvancedRouter();
   const { page, id, sort, text, city, ...activeFilters } = router.query;
 
@@ -114,15 +114,17 @@ const CategoryFilters: FC<Props> = ({ categorySlug, isLoading, setIsLoading }) =
     if (router.query.id) replaceRouterQuery({}, excludeFilters);
   };
 
-  useEffect(() => {
-    // Очистка фильтров при изменении категории
-    if (isInitialized.current) removeAllFilters();
-  }, [categorySlug]);
+  // useEffect(() => {
+  //   // Очистка фильтров при изменении категории
+  //   if (isInitialized.current) removeAllFilters();
+  // }, [categorySlug]);
 
   useEffect(() => {
     isInitialized.current = true;
 
     return () => {
+      // Очистка фильтров при изменении категории
+      if (isInitialized.current) removeAllFilters();
       isInitialized.current = false;
     };
   }, []);
