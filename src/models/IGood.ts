@@ -155,6 +155,11 @@ export interface IGood {
         id: number | string;
         name: string;
       };
+      display: {
+        display_type: 'IMAGE' | 'TITLE' | 'DROPDOWN' | 'CHOICE';
+        /** Кол-во элементов. Имеется только когда display_type равен IMAGE или TITLE  */
+        count?: number;
+      };
       values: IVariantsValue[];
     }[];
   };
