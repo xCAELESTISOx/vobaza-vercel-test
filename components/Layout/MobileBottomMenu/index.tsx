@@ -15,18 +15,12 @@ import styles from './styles.module.scss';
 export const MobileBottomMenu: FC = () => {
   const [isProfileMenuOpen, setIsProfileOpen] = useState(false);
 
-  const activeMobCatalog = useSelector((state) => state.goods.activeMobCatalog);
   const favoriteIds = useSelector((state) => state.goods.favoriteIds);
   const cartSize = useSelector((state) => state.goods.cartSize);
+  const compareIds = useSelector((state) => state.goods.compareIds);
 
   const dispatch = useDispatch();
 
-  const openMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    e.stopPropagation();
-    e.preventDefault();
-
-    dispatch(toogleMobCatalog(!activeMobCatalog));
-  };
   const closeMenu = () => {
     dispatch(toogleMobCatalog(false));
   };
@@ -51,10 +45,6 @@ export const MobileBottomMenu: FC = () => {
             <div className={styles.tabTitle}>Главная</div>
           </a>
         </Link>
-        <div className={styles.tab} onClick={openMenu}>
-          <Icon name="Catalog" />
-          <div className={styles.tabTitle}>Каталог</div>
-        </div>
         <Link href="/cart">
           <a className={styles.tab}>
             <div className={styles.tabIcon}>
@@ -71,6 +61,15 @@ export const MobileBottomMenu: FC = () => {
               {favoriteIds.length > 0 && <div className={styles.tabBadge}>{favoriteIds.length}</div>}
             </div>
             <div className={styles.tabTitle}>Избранное</div>
+          </a>
+        </Link>
+        <Link href="/compare">
+          <a className={styles.tab} onClick={closeMenu}>
+            <div className={styles.tabIcon}>
+              <Icon name="Compare" />
+              {compareIds && compareIds.length > 0 && <span className={styles.tabBadge}>{compareIds.length}</span>}
+            </div>
+            <div className={styles.tabTitle}>Сравнение</div>
           </a>
         </Link>
         <div className={styles.tab} onClick={profileClickHandler}>
