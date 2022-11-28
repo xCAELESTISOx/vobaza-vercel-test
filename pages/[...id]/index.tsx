@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -46,19 +46,12 @@ interface Props {
   category: ICategory;
   /** Доступные фильтры */
   filters: IFilter[];
-  goods: IGoodCard[];
   tags: ICategoryTag[];
   /** Базовые фильтры без учета примененных */
   baseFilters: IFilter[];
   currentTags: ICategoryTag[];
   /** Примененные фильтры */
   currentFilters: Record<number, IFilterFront> | null;
-  meta: {
-    list: {
-      count: number;
-      pages_count: number;
-    };
-  };
 }
 
 const LIMIT = 40;
@@ -68,18 +61,76 @@ export default function Catalog({
   hasInvalidTags,
   category,
   filters,
-  goods,
+  // goods,
   tags,
   currentFilters,
   currentTags,
   baseFilters,
-  meta,
-}: Props) {
+}: // meta,
+Props) {
   const dispatch = useDispatch();
 
   const router = useRouter();
-
+  const [goods, setGoods] = useState<IGoodCard[]>([]);
+  const [meta, setMeta] = useState<{
+    list: {
+      count: number;
+      pages_count: number;
+    } | null;
+  }>(null);
   const isExpress = router.asPath.includes('/ekspress-dostavka');
+  const { page, id, sort, city, ...activeFilters } = router.query;
+  const activeQueryFilters = { ...activeFilters };
+
+  const initialParams = {
+    ['filter[category_id]']: category.id,
+    limit: LIMIT,
+    offset: page ? (Number(page) - 1) * LIMIT : 0,
+    format: 'PUBLIC_LIST',
+    sort: sort || undefined,
+    ...(isExpress && { 'filter[label]': 'EXPRESS-DELIVERY' }),
+  };
+
+  let params: Record<string, string | number | boolean | string[]> = initialParams;
+
+  params = getParamsFromQuery(params, activeQueryFilters);
+
+  const getGoods = async () => {
+    try {
+      let goodsRes = await api.getGoods(params);
+      if (!goodsRes.data.data.length) {
+        if (currentTags.length > 1) {
+          Object.keys(params).forEach((key) => {
+            if (key.includes(`[filters][${currentTags.length - 1}]`)) {
+              delete params[key];
+            }
+          });
+          currentTags.splice(currentTags.length - 1, 1);
+        } else {
+          // currentTags = [];
+          params = initialParams;
+        }
+        // hasInvalidFilters = true;
+        goodsRes = await api.getGoods(params);
+      }
+      const goods = normalizeGoods(goodsRes.data.data || []);
+
+      const meta = goodsRes.data.meta;
+
+      setGoods(goods);
+      setMeta(meta);
+
+      return { goods, meta };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const text = formatAxiosError(error);
+        console.error(text);
+      } else {
+        console.error('Error has occured:', error);
+      }
+    }
+  };
+
   const breadcrumbs = getCategoryBreadcrumps([...category.ancestors, category], currentTags, isExpress);
   const currentTag = currentTags[currentTags.length - 1] || null;
 
@@ -103,6 +154,10 @@ export default function Catalog({
       dispatch(resetTags());
     };
   }, [tags]);
+
+  useEffect(() => {
+    getGoods();
+  }, [router.query]);
 
   return (
     <>
@@ -161,15 +216,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
   };
 
   let params: Record<string, string | number | boolean | string[]> = initialParams;
-  let goods: IGoodCard[] = [];
-  let meta: any = {};
 
   const tagsQueryFilters: { [key: string]: string | string[] } = {};
   // Получение категории и тегов товаров
   try {
     const categoryRes = await api.getCategoryByPath(resolvedUrl.split('?')[0].replace('/ekspress-dostavka', ''));
     category = categoryRes.data.data;
-
     const { data: tagsData } = await api.getCategoryTags(category.id);
     tags = tagsData.data;
 
@@ -223,10 +275,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
       api.getCategoryFilters(category.id),
       api.getCategoryFilters(category.id, getParamsFromQuery(params, activeQueryFilters)),
     ]);
-    // const baseFiltersRes = await api.getCategoryFilters(category.id);
     baseFilters = convertFiltersIfPrice(baseFiltersRes.data.data);
-
-    // const filtersRes = await api.getCategoryFilters(category.id, getParamsFromQuery(params, activeQueryFilters));
     filters = convertFiltersIfPrice(filtersRes.data.data);
 
     const { activeFilters: newActiveFilters, hasInvalidFilters: newHasInvalidFilters } = getActiveFiltersFromQuery(
@@ -247,35 +296,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
     filters = baseFilters;
   }
 
-  try {
-    let goodsRes = await api.getGoods(params);
-    if (!goodsRes.data.data.length) {
-      if (activeTags.length > 1) {
-        Object.keys(params).forEach((key) => {
-          if (key.includes(`[filters][${activeTags.length - 1}]`)) {
-            delete params[key];
-          }
-        });
-        activeTags.splice(activeTags.length - 1, 1);
-      } else {
-        activeTags = [];
-        params = initialParams;
-      }
-      hasInvalidFilters = true;
-      goodsRes = await api.getGoods(params);
-    }
-    goods = normalizeGoods(goodsRes.data.data || []);
-
-    meta = goodsRes.data.meta;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const text = formatAxiosError(error);
-      console.error(text);
-    } else {
-      console.error('Error has occured:', error);
-    }
-  }
-
   return {
     props: {
       category,
@@ -283,8 +303,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
       baseFilters,
       currentFilters,
       currentTags: activeTags,
-      goods,
-      meta,
+      // goods,
+      // meta,
       tags,
       hasInvalidTags: withInvalidTags,
       hasInvalidFilters,
