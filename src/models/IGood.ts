@@ -155,6 +155,10 @@ export interface IGood {
         id: number | string;
         name: string;
       };
+      display: {
+        display_type: 'IMAGE' | 'TITLE' | 'DROPDOWN' | 'CHOICE';
+        count?: number;
+      };
       values: IVariantsValue[];
     }[];
   };
