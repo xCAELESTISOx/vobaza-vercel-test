@@ -71,14 +71,16 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
   };
 
   const ecommerceGoods = goods.map((product) => {
+    // const categories = product.product.parent_categories.map(({ name }) => name); //закомментирован до правок бэка
+
     return {
-      id: product.id,
-      name: product.name,
+      id: product.product.id,
+      name: product.product.name,
       price: product.price,
-      brand: product.brand,
-      category: `${product?.main_category?.slug}/${
-        product?.other_categories?.length > 0 ? product?.other_categories[0]?.slug : ''
-      }`,
+      quantity: product.quantity,
+      // код ниже закомментирован до правок бэка
+      // brand: product.product.brand,
+      // category: categories.join('/'),
     };
   });
 

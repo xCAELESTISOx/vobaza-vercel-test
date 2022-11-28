@@ -35,6 +35,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
 
   const addToCartHandler = () => {
     const categories = good.parent_categories.map(({ name }) => name);
+
     (window as any).dataLayer.push({
       ecommerce: {
         currencyCode: 'RUB',
@@ -45,7 +46,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
               name: good.name,
               price: good.list_price || good.price,
               brand: good.brand,
-              category: categories.join(', '),
+              category: categories.join('/'),
               quantity: 1,
             },
           ],

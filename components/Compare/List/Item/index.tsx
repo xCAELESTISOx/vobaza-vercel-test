@@ -34,7 +34,10 @@ const CompareListItem: FC<Props> = ({ good, deleteGood }) => {
   const openOneClickOrder = () => {
     dispatch(setOneClickGood(good));
   };
+
   const addToCartHandler = () => {
+    const categories = good.parent_categories.map(({ name }) => name);
+
     (window as any).dataLayer.push({
       ecommerce: {
         currencyCode: 'RUB',
@@ -44,8 +47,8 @@ const CompareListItem: FC<Props> = ({ good, deleteGood }) => {
               id: good.id,
               name: good.name,
               price: good.list_price || good.price,
-              brand: 'Яндекс / Yandex',
-              category: 'Аксессуары/Сумки',
+              brand: good.brand,
+              category: categories.join('/'),
               quantity: 1,
             },
           ],

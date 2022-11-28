@@ -38,6 +38,8 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const deleteItemHandler = () => {
+    // const categories = product.product.parent_categories.map(({ name }) => name); //закомментирован до правок бэка
+
     (window as any).dataLayer.push({
       ecommerce: {
         currencyCode: 'RUB',
@@ -46,7 +48,9 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
             {
               id: good.product.id,
               name: good.product.name,
-              // category: good.product,
+              // код ниже закомментирован до правок бэка
+              // brand: good.product.brand,
+              // category: categories.join('/'),
               quantity: good.quantity,
             },
           ],

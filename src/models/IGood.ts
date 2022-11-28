@@ -190,6 +190,8 @@ export interface IGoodCompare {
   attributes_value: {
     [id: number]: number | string | boolean;
   };
+  brand: string;
+  parent_categories: { id: number; name: string }[];
 }
 
 export const goodStatusDictionary = {

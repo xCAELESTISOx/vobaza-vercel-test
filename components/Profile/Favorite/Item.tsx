@@ -26,6 +26,8 @@ export type FavoriteGood = {
   list_price?: number;
   main_image?: IImage;
   is_available: boolean;
+  parent_categories: { id: number; name: string }[];
+  brand?: string;
 };
 
 type Props = {
@@ -52,6 +54,8 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
 
   const addToCartHandler = () => {
     addToCart();
+    const categories = good.parent_categories.map(({ name }) => name);
+
     (window as any).dataLayer.push({
       ecommerce: {
         currencyCode: 'RUB',
@@ -61,8 +65,8 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
               id: good.id,
               name: good.name,
               price: good.price,
-              // brand: good.brand,
-              // category: good.main_category,
+              brand: good.brand,
+              category: categories.join('/'),
               quantity: 1,
             },
           ],
