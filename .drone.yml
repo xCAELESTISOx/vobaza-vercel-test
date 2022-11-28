@@ -179,6 +179,31 @@ steps:
 
 ---
 kind: pipeline
+type: exec
+name: deploy/demo
+
+trigger:
+  event: [promote, rollback]
+  target: [demo/deploy]
+
+node:
+  instance: "nebo-dev1/vobaza-dev"
+
+clone:
+  disable: true
+
+steps:
+  - name: prepare
+    commands:
+      - mkdir -p "$HOME"
+      - cp -r /root/.docker "$HOME"/
+  - name: deploy
+    commands:
+      - "docker pull -q nebo-registry.ossbuild.ru/nebo/vobaza-frontend:${DRONE_DEPLOY_TO%%/*}"
+      - "docker service update -q --with-registry-auth --image nebo-registry.ossbuild.ru/nebo/vobaza-frontend:${DRONE_DEPLOY_TO%%/*} ${DRONE_DEPLOY_TO%%/*}_frontend"
+
+---
+kind: pipeline
 name: mirror
 
 depends_on: [test]
