@@ -24,11 +24,16 @@ export const CategoryTags = ({ categorySlug, tags, setIsLoading }: Props) => {
   const getTagUrl = (tagId: number) => {
     const tag = currentTagsLevel.find((item) => item.id === tagId);
 
+    if (tag.type === 'REDIRECT') return tag.redirect_url || '/';
+
     return router.asPath.includes('/ekspress-dostavka') ? tag.url + '/ekspress-dostavka' : tag.url;
   };
 
   const getTagQuery = (tagId: number) => {
     const tag = currentTagsLevel.find((item) => item.id === tagId);
+
+    if (tag.type === 'REDIRECT') return {};
+
     const routerQuery = { ...router.query };
 
     delete routerQuery['page'];

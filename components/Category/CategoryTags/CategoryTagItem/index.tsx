@@ -14,7 +14,7 @@ type Props = {
 };
 
 export const CategoryTagItem = ({ isActive, tag, getTagUrl, getTagQuery, onClick }: Props) => {
-  const href = tag.type === 'REDIRECT' ? tag.redirect_url || '/' : getTagUrl(tag.id);
+  const href = getTagUrl(tag.id);
   const params = getTagQuery(tag.id);
 
   return (
