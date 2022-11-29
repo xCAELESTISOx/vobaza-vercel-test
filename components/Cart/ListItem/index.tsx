@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import styles from './styles.module.scss';
 import { toNumberWithSpaces } from '../../../assets/utils/formatters';
 import { Image as IImage } from '../../../src/models/IImage';
 import { getImageVariantProps } from 'assets/utils/images';
@@ -10,6 +9,8 @@ import PlaceholderImage from 'assets/images/placeholder_small.png';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import ItemCounter from '../../UI/ItemCounter';
+
+import styles from './styles.module.scss';
 
 export type ICartGood = {
   product: {
@@ -21,6 +22,13 @@ export type ICartGood = {
     list_price?: number;
     assembly: 'NONE' | 'SIMPLY' | 'PROFESSIONAL';
     main_image: IImage;
+    parent_categories: {
+      id: number;
+      slug: string;
+      name: string;
+      status: string;
+    }[];
+    brand?: string;
   };
   quantity: number;
   price: number;
@@ -38,8 +46,11 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const deleteItemHandler = () => {
-    // const categories = product.product.parent_categories.map(({ name }) => name); //закомментирован до правок бэка
-
+    const category = good.product.parent_categories
+      .map(({ name }) => {
+        return name;
+      })
+      .join('/');
     (window as any).dataLayer.push({
       ecommerce: {
         currencyCode: 'RUB',
@@ -48,9 +59,8 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
             {
               id: good.product.id,
               name: good.product.name,
-              // код ниже закомментирован до правок бэка
-              // brand: good.product.brand,
-              // category: categories.join('/'),
+              brand: good.product.brand || '',
+              category,
               quantity: good.quantity,
             },
           ],
