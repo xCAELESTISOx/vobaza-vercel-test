@@ -21,31 +21,26 @@ export const CategoryTags = ({ categorySlug, tags, setIsLoading }: Props) => {
 
   const currentTag = currentTags[currentTags.length - 1];
 
-  const onTagClick = (tagId: number) => {
+  const getTagUrl = (tagId: number) => {
     const tag = currentTagsLevel.find((item) => item.id === tagId);
 
-    setIsLoading(true);
+    return router.asPath.includes('/ekspress-dostavka') ? tag.url + '/ekspress-dostavka' : tag.url;
+  };
 
-    const routerQuery = router.query;
+  const getTagQuery = (tagId: number) => {
+    const tag = currentTagsLevel.find((item) => item.id === tagId);
+    const routerQuery = { ...router.query };
+
     delete routerQuery['page'];
     delete routerQuery['city'];
     delete routerQuery['id'];
     delete routerQuery[tag.filter.id];
+    console.log(routerQuery);
+    return routerQuery;
+  };
 
-    let newURL = tag.url;
-
-    if (router.asPath.includes('/ekspress-dostavka')) {
-      newURL += '/ekspress-dostavka';
-    }
-
-    router.push(
-      {
-        pathname: newURL,
-        query: routerQuery,
-      },
-      null,
-      { scroll: false }
-    );
+  const onTagClick = () => {
+    setIsLoading(true);
   };
 
   return (
@@ -53,7 +48,14 @@ export const CategoryTags = ({ categorySlug, tags, setIsLoading }: Props) => {
       {Boolean(currentTagsLevel?.length) && (
         <div className={styles.categoryTags}>
           {currentTagsLevel.map((tag) => (
-            <CategoryTagItem key={tag.id} isActive={currentTag?.id === tag.id} tag={tag} onClick={onTagClick} />
+            <CategoryTagItem
+              key={tag.id}
+              isActive={currentTag?.id === tag.id}
+              tag={tag}
+              getTagUrl={getTagUrl}
+              getTagQuery={getTagQuery}
+              onClick={onTagClick}
+            />
           ))}
         </div>
       )}

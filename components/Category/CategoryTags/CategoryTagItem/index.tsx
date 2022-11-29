@@ -1,25 +1,27 @@
 import React from 'react';
+import Link from 'next/link';
 
 import type { ICategoryTag } from 'assets/api/modules/categories';
-import { useAdvancedRouter } from 'assets/utils/useAdvancedRouter';
 
 import styles from './styles.module.scss';
 
 type Props = {
   isActive: boolean;
   tag: ICategoryTag;
-  onClick: (id: number) => void;
+  getTagUrl: (id: number) => string;
+  getTagQuery: (id: number) => { [key: string | number]: string[] | number[] | string | number };
+  onClick: () => void;
 };
 
-export const CategoryTagItem = ({ isActive, tag, onClick }: Props) => {
-  const { router } = useAdvancedRouter();
-  const onClickHandler = () => {
-    tag.type === 'REDIRECT' ? router.push(tag.redirect_url || '/') : onClick(tag.id);
-  };
+export const CategoryTagItem = ({ isActive, tag, getTagUrl, getTagQuery, onClick }: Props) => {
+  const href = tag.type === 'REDIRECT' ? tag.redirect_url || '/' : getTagUrl(tag.id);
+  const params = getTagQuery(tag.id);
 
   return (
-    <div className={`${styles.tag} ${isActive ? styles.active : ''}`} onClick={onClickHandler}>
-      {tag.name}
-    </div>
+    <Link href={{ pathname: href, query: params }}>
+      <a className={`${styles.tag} ${isActive ? styles.active : ''}`} onClick={onClick}>
+        {tag.name}
+      </a>
+    </Link>
   );
 };
