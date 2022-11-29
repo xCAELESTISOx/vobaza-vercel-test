@@ -35,7 +35,7 @@ export const CategoryTags = ({ categorySlug, tags, setIsLoading }: Props) => {
     delete routerQuery['city'];
     delete routerQuery['id'];
     delete routerQuery[tag.filter.id];
-    console.log(routerQuery);
+
     return routerQuery;
   };
 
