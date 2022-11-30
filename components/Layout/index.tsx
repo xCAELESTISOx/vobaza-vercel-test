@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Provider } from 'react-redux';
 
-import { MobileBottomMenu } from './MobileBottomMenu';
+import { MobileBottomMenu } from 'templates/MobileBottomMenu';
 import PhoneCallModal from './PhoneCallModal';
 import { MainHead } from './MainHead';
 import AuthModal from '../Auth';
 import store from 'src/store';
-import Header from './Header';
-import Footer from './Footer';
+import Footer from '../../templates/Footer';
 
 import styles from './styles.module.scss';
+import Header from 'templates/Header';
 
 interface ILayoutChildren {
   children: React.ReactNode;

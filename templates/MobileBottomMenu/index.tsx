@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { useSelector } from 'src/hooks/useSelector';
 import { useDispatch } from 'src/hooks/useDispatch';
 import { toogleMobCatalog } from 'src/store/goods';
+import ProfileMenu from 'components/Profile/Menu';
 import { toggleModal } from 'src/store/auth';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
-import ProfileMenu from '../../Profile/Menu';
 
 import styles from './styles.module.scss';
 

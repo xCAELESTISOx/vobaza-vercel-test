@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import styles from './styles.module.scss';
 
-import Accordeon from '../../../UI/Accordeon';
+import Accordeon from '../../../components/UI/Accordeon';
 
 const footerLinks = [
   {
@@ -119,33 +119,22 @@ const MainFooter: FC = () => {
         <div className="container">
           <div className={styles.mainFooterContent}>
             <div className={styles.mainFooterColumn}>
-              <div className={styles.mainFooterColumnTitle}>
-                Контактная информация
-              </div>
+              <div className={styles.mainFooterColumnTitle}>Контактная информация</div>
               <div className={styles.mainFooterColumnItem}>
-                <div className={styles.mainFooterColumnSubtitle}>
-                  Горячая линия
-                </div>
+                <div className={styles.mainFooterColumnSubtitle}>Горячая линия</div>
                 <a href="tel:+74951725526">+7(495) 172-55-26</a>
                 <div>ежедневно</div>
                 <div>с 9:00 до 21:00</div>
               </div>
               <div className={styles.mainFooterColumnItem}>
-                <div className={styles.mainFooterColumnSubtitle}>
-                  Доставка заказов
-                </div>
+                <div className={styles.mainFooterColumnSubtitle}>Доставка заказов</div>
                 <a href="tel:+74951725526">+7(495) 172-55-26 </a>
                 <div>ежедневно</div>
                 <div>с 9:00 до 21:00</div>
               </div>
               <div className={styles.mainFooterColumnItem}>
-                <div className={styles.mainFooterColumnSubtitle}>
-                  Электронная почта
-                </div>
-                <a
-                  href="mailto:notify@vobaza.ru"
-                  className={styles.mainFooterColumnEmail}
-                >
+                <div className={styles.mainFooterColumnSubtitle}>Электронная почта</div>
+                <a href="mailto:notify@vobaza.ru" className={styles.mainFooterColumnEmail}>
                   notify@vobaza.ru
                 </a>
               </div>
@@ -154,15 +143,9 @@ const MainFooter: FC = () => {
               <div className={styles.mainFooterColumn} key={item.title}>
                 <div className={styles.mainFooterColumnTitle}>{item.title}</div>
                 {item.links.map((link) => (
-                  <div
-                    className={styles.mainFooterColumnItem}
-                    key={link.title}
-                    style={{ lineHeight: 'initial' }}
-                  >
+                  <div className={styles.mainFooterColumnItem} key={link.title} style={{ lineHeight: 'initial' }}>
                     <Link href={link.href} key={link.title}>
-                      <a className={styles.mainFooterColumnLink}>
-                        {link.title}
-                      </a>
+                      <a className={styles.mainFooterColumnLink}>{link.title}</a>
                     </Link>
                   </div>
                 ))}
@@ -174,11 +157,7 @@ const MainFooter: FC = () => {
           {footerLinks.map((item) => (
             <Accordeon key={item.title} title={item.title}>
               {item.links.map((link) => (
-                <div
-                  className={styles.mainFooterColumnItem}
-                  key={link.title}
-                  style={{ lineHeight: 'initial' }}
-                >
+                <div className={styles.mainFooterColumnItem} key={link.title} style={{ lineHeight: 'initial' }}>
                   <Link href={link.href} key={link.title}>
                     <a className={styles.mainFooterColumnLink}>{link.title}</a>
                   </Link>

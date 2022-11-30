@@ -5,7 +5,7 @@ import { num2str } from '../assets/utils';
 import normalizeGoods from '../assets/utils/normalizers/normalizeGoods';
 
 import Breadcrumbs from '../components/Layout/Breadcrumbs';
-import { GoodsBlock } from '../components/Goods/GoodsBlock';
+import { GoodsBlock } from '../templates/GoodsBlock';
 
 import styles from '../styles/Home.module.scss';
 import { api } from '../assets/api';

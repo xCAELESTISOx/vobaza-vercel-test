@@ -8,12 +8,13 @@ import { useSelector } from 'src/hooks/useSelector';
 import { CategoryTags } from 'components/Category/CategoryTags';
 import { Pagination } from '@nebo-team/vobaza.ui.pagination/dist';
 import { Title } from '@nebo-team/vobaza.ui.title';
-import { CategoryFilters } from '../../Category/CategoryFilters';
-import CartModal from '../Modals/Cart/Cart';
-import GoodsList from '../List/index';
-import Toggle from '../../UI/Toggle';
+import { CategoryFilters } from '../../components/Category/CategoryFilters';
+import CartModal from '../../components/Goods/Modals/Cart/Cart';
+import GoodsList from '../../components/Goods/List/index';
+import Toggle from '../../components/UI/Toggle';
 
 import styles from './styles.module.scss';
+import Preloader from 'components/shared/Preloader';
 
 type Props = {
   withoutExpress?: boolean;
@@ -21,6 +22,7 @@ type Props = {
   isExpress?: boolean;
   goods: IGoodCard[];
   withFilters?: boolean;
+  isListLoading?: boolean;
   meta: {
     list: {
       count: number;
@@ -34,6 +36,7 @@ export const GoodsBlock: FC<Props> = ({
   withFilters,
   categorySlug,
   isExpress = false,
+  isListLoading,
   goods,
   meta,
 }) => {
@@ -114,7 +117,7 @@ export const GoodsBlock: FC<Props> = ({
           </div>
         </>
       )}
-      {(!goods.length || hasInvalidFilters) && (
+      {(!goods.length || hasInvalidFilters) && !isListLoading && (
         <Title element="h3" style={{ marginTop: 20 }}>
           Нет товаров, соответствующих условию
         </Title>
@@ -124,7 +127,9 @@ export const GoodsBlock: FC<Props> = ({
           При загрузке данных произошла ошибка
         </Title>
       )}
-      {goods.length > 0 ? (
+      {isListLoading ? (
+        <Preloader />
+      ) : goods.length > 0 && !isListLoading ? (
         <div className={`${styles.goodsList} ${isLoading ? styles.busy : ''}`}>
           <GoodsList goods={goods} />
         </div>

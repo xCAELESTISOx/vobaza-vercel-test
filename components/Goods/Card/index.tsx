@@ -200,7 +200,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
             </div> */}
             <div className={styles.cardInfo}>
               <div className={styles.cardFeatures}>
-                {good.valuable_attributes.map((feature) => (
+                {good.valuable_attributes?.map((feature) => (
                   <div className={styles.cardFeature} key={feature.attribute.id}>
                     <div className={styles.cardFeatureTitle}>{feature.attribute.name} :</div>
                     <div className={styles.cardFeatureValue}>{renderFeatureValue(feature)}</div>

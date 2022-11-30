@@ -7,7 +7,7 @@ import type { ICategory } from '../../src/models/ICategory';
 
 import Breadcrumbs, { BreadcrumbType } from '../../components/Layout/Breadcrumbs';
 import CatalogList from '../../components/Catalog/List';
-import { GoodsBlock } from '../../components/Goods/GoodsBlock';
+import { GoodsBlock } from '../../templates/GoodsBlock';
 
 import styles from '../../styles/Home.module.scss';
 import { api } from '../../assets/api';

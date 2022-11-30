@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 
-import { api } from '../../../../assets/api';
+import { api } from '../../../assets/api';
 
 import Link from 'next/link';
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';

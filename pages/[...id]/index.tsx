@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -6,12 +6,11 @@ import Head from 'next/head';
 
 import type { ICategoryTag } from 'assets/api/modules/categories';
 import type { ICategory } from '../../src/models/ICategory';
-import type { IGoodCard } from '../../src/models/IGood';
 import type { IFilter, IFilterFront } from '../../src/models/IFilter';
-import normalizeGoods from '../../assets/utils/normalizers/normalizeGoods';
 import { getActiveFiltersFromQuery } from 'assets/utils/Category/filters/getActiveFiltersFromQuery';
 import { getCategoryBreadcrumps } from 'assets/utils/Category/getCategoryBreadcrumps';
 import { getParamsFromQuery } from 'assets/utils/Category/getParamsFromQuery';
+import { getProductsList } from 'assets/utils/Products/getProductsList';
 import { getTagsByUrl } from 'assets/utils/Category/getTagsByUrl';
 import { formatAxiosError } from 'assets/utils/formatAxiosError';
 import { useDispatch } from 'src/hooks/useDispatch';
@@ -20,7 +19,7 @@ import { markTagsAsInvalid, resetTags, setCurrentTags, setTags } from 'src/store
 import { setBaseFilters, setFilters, setCurrentFilters, markFiltersAsInvalid, resetFilters } from 'src/store/filters';
 
 import Breadcrumbs from '../../components/Layout/Breadcrumbs';
-import { GoodsBlock } from '../../components/Goods/GoodsBlock';
+import { GoodsBlock } from '../../templates/GoodsBlock';
 import CategoryHead from 'components/Category/CategoryHead';
 
 import styles from '../../styles/Home.module.scss';
@@ -46,19 +45,13 @@ interface Props {
   category: ICategory;
   /** Доступные фильтры */
   filters: IFilter[];
-  goods: IGoodCard[];
   tags: ICategoryTag[];
   /** Базовые фильтры без учета примененных */
   baseFilters: IFilter[];
   currentTags: ICategoryTag[];
   /** Примененные фильтры */
   currentFilters: Record<number, IFilterFront> | null;
-  meta: {
-    list: {
-      count: number;
-      pages_count: number;
-    };
-  };
+  params: Record<string, string | number | boolean | string[]>;
 }
 
 const LIMIT = 40;
@@ -68,13 +61,16 @@ export default function Catalog({
   hasInvalidTags,
   category,
   filters,
-  goods,
   tags,
   currentFilters,
   currentTags,
   baseFilters,
-  meta,
+  params,
 }: Props) {
+  const [isLoading, setIsLoading] = useState(true);
+  const [products, setProducts] = useState([]);
+  const [meta, setMeta] = useState(null);
+
   const dispatch = useDispatch();
 
   const router = useRouter();
@@ -82,6 +78,20 @@ export default function Catalog({
   const isExpress = router.asPath.includes('/ekspress-dostavka');
   const breadcrumbs = getCategoryBreadcrumps([...category.ancestors, category], currentTags, isExpress);
   const currentTag = currentTags[currentTags.length - 1] || null;
+
+  const getProducts = async () => {
+    setIsLoading(true);
+
+    setProducts([]);
+    const { products, meta, withError, currentTags: newCurrentTags } = await getProductsList(params, currentTags);
+    hasInvalidFilters = withError;
+
+    dispatch(setCurrentTags(newCurrentTags));
+    setProducts(products);
+    setMeta(meta);
+
+    setIsLoading(false);
+  };
 
   useEffect(() => {
     dispatch(setBaseFilters(baseFilters));
@@ -104,6 +114,10 @@ export default function Catalog({
     };
   }, [tags]);
 
+  useEffect(() => {
+    getProducts();
+  }, [params]);
+
   return (
     <>
       <Head>
@@ -122,7 +136,8 @@ export default function Catalog({
               withFilters={Boolean(filters)}
               categorySlug={category.slug}
               isExpress={isExpress}
-              goods={goods}
+              isListLoading={isLoading}
+              goods={products}
               meta={meta}
             />
             {(category.description || currentTag?.description) && (
@@ -156,13 +171,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
     limit: LIMIT,
     offset: page ? (Number(page) - 1) * LIMIT : 0,
     format: 'PUBLIC_LIST',
-    sort: sort || undefined,
+    ...(sort && { sort }),
     ...(isExpress && { 'filter[label]': 'EXPRESS-DELIVERY' }),
   };
 
   let params: Record<string, string | number | boolean | string[]> = initialParams;
-  let goods: IGoodCard[] = [];
-  let meta: any = {};
 
   const tagsQueryFilters: { [key: string]: string | string[] } = {};
   // Получение категории и тегов товаров
@@ -181,6 +194,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
       category.slug,
     ]);
     activeTags = currentTags;
+
     withInvalidTags = hasInvalidTags;
 
     const tagFilters = currentTags.map(({ filter }) => filter);
@@ -247,35 +261,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
     filters = baseFilters;
   }
 
-  try {
-    let goodsRes = await api.getGoods(params);
-    if (!goodsRes.data.data.length) {
-      if (activeTags.length > 1) {
-        Object.keys(params).forEach((key) => {
-          if (key.includes(`[filters][${activeTags.length - 1}]`)) {
-            delete params[key];
-          }
-        });
-        activeTags.splice(activeTags.length - 1, 1);
-      } else {
-        activeTags = [];
-        params = initialParams;
-      }
-      hasInvalidFilters = true;
-      goodsRes = await api.getGoods(params);
-    }
-    goods = normalizeGoods(goodsRes.data.data || []);
-
-    meta = goodsRes.data.meta;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const text = formatAxiosError(error);
-      console.error(text);
-    } else {
-      console.error('Error has occured:', error);
-    }
-  }
-
   return {
     props: {
       category,
@@ -283,11 +268,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
       baseFilters,
       currentFilters,
       currentTags: activeTags,
-      goods,
-      meta,
       tags,
       hasInvalidTags: withInvalidTags,
       hasInvalidFilters,
+      params,
     },
   };
 };
