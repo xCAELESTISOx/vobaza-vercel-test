@@ -1,12 +1,13 @@
 import React, { FC, useEffect, useRef } from 'react';
-import { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper';
 
-import styles from './styles.module.scss';
-import { IGoodCard } from '../../../src/models/IGood';
+import type { IGoodCard } from '../../../src/models/IGood';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import GoodsCard from '../Card';
+
+import styles from './styles.module.scss';
 
 type Props = {
   goods: IGoodCard[];

@@ -86,7 +86,6 @@ const ProductImages = ({ images }) => {
       </SwiperSlide>
     ));
   };
-
   const moreOneImage = mainImages.length > 1;
 
   const lightboxViewerButtons = {
@@ -112,7 +111,7 @@ const ProductImages = ({ images }) => {
                   prevEl: '.product-swiper__prev',
                   nextEl: '.product-swiper__next',
                 }}
-                thumbs={{ swiper: thumbsSwiper }}
+                thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
                 pagination={{
                   el: '.product-images-pagination',
                   type: 'bullets',

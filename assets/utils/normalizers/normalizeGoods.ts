@@ -1,13 +1,12 @@
-import type { IGood, IGoodCard, IGoodVariantsFront, IVariantsValue } from '../../../src/models/IGood';
+import type { IGood, IGoodCard, IGoodVariantsFront, IProductVariants, IVariantsValue } from '../../../src/models/IGood';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 import type { AttributeDataType, IAttributeColor } from 'src/models/IAttributes';
+
 import { FavoriteGood } from 'components/Profile/Favorite/Item';
 
-const getPrice = (price: number) => {
-  return price / 100;
-};
+const getPrice = (price: number) => price / 100;
 
-export const normalizeProductVariants = (productVariantsObj: IGood['variants']): IGoodVariantsFront => {
+export const normalizeProductVariants = (variants: IProductVariants): IGoodVariantsFront => {
   const convertVariantValue = (val: IVariantsValue['value'], dataType: AttributeDataType): Variant => {
     let code = '';
     let value = '';
@@ -38,7 +37,7 @@ export const normalizeProductVariants = (productVariantsObj: IGood['variants']):
   };
 
   const variantsList =
-    productVariantsObj.variants?.map((variant) => {
+    variants.variants?.map((variant) => {
       const { values, attribute } = variant;
 
       const newValues = values.map((valueItem) => {
@@ -49,7 +48,13 @@ export const normalizeProductVariants = (productVariantsObj: IGood['variants']):
       return { ...variant, values: newValues };
     }) || null;
 
-  return { ...productVariantsObj, variants: variantsList };
+  /* Для отображения миниатюр вариаций необходимо удалить из опций первый 
+      в списке элемент с типом отображения IMAGE */
+  const imageVariantIndex = variantsList.findIndex(({ display }) => display?.display_type === 'IMAGE');
+  imageVariantIndex > -1 && variantsList.splice(imageVariantIndex, 1);
+  //
+
+  return { ...variants, variants: variantsList };
 };
 
 export const normalizeProductInfo = (productObject) => {

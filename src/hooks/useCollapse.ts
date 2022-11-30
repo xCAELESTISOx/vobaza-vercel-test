@@ -8,7 +8,10 @@ interface Options {
 // Шаг на каждую тысячу пикселей
 const AUTODURATION_STEP = 200;
 
-export const useCollapse = <T extends HTMLElement = HTMLElement>(ref: RefObject<T>, options: Options = {}) => {
+export const useCollapse = <T extends HTMLElement = HTMLElement>(
+  ref: RefObject<T>,
+  options: Options = {}
+): [boolean, (value: unknown) => void] => {
   const { initialVal, duration, autoDuration } = options;
 
   const [isOpen, setIsOpen] = useState(Boolean(initialVal));
@@ -54,7 +57,7 @@ export const useCollapse = <T extends HTMLElement = HTMLElement>(ref: RefObject<
     };
   }, [isOpen]);
 
-  const toggle = (bool?: boolean) => {
+  const toggle = (bool?: unknown) => {
     if (typeof bool === 'boolean') {
       setIsOpen(bool);
     } else {

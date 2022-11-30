@@ -83,26 +83,14 @@ export default function Catalog({
     setIsLoading(true);
 
     setProducts([]);
-    const { products, meta, withError, currentTags: newCurrentTags } = await getProductsList(params, currentTags);
+    const { products, meta, withError } = await getProductsList(params, currentTags);
     hasInvalidFilters = withError;
 
-    dispatch(setCurrentTags(newCurrentTags));
     setProducts(products);
     setMeta(meta);
 
     setIsLoading(false);
   };
-
-  useEffect(() => {
-    dispatch(setBaseFilters(baseFilters));
-    dispatch(setFilters(filters));
-    dispatch(setCurrentFilters(currentFilters));
-    if (hasInvalidFilters) dispatch(markFiltersAsInvalid());
-
-    return () => {
-      dispatch(resetFilters());
-    };
-  }, [filters]);
 
   useEffect(() => {
     dispatch(setTags(tags));
@@ -117,6 +105,17 @@ export default function Catalog({
   useEffect(() => {
     getProducts();
   }, [params]);
+
+  useEffect(() => {
+    dispatch(setBaseFilters(baseFilters));
+    dispatch(setFilters(filters));
+    dispatch(setCurrentFilters(currentFilters));
+    if (hasInvalidFilters) dispatch(markFiltersAsInvalid());
+
+    return () => {
+      dispatch(resetFilters());
+    };
+  }, [filters]);
 
   return (
     <>

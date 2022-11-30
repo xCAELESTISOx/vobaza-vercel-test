@@ -22,7 +22,7 @@ import { setOneClickGood } from 'src/store/goods';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import Breadcrumbs from '../../../components/Layout/Breadcrumbs';
-import { ProductImagesMemo } from '../../../components/DetailGoodPage/ProductImages';
+import { ProductImages } from '../../../components/DetailGoodPage/ProductImages';
 import { ProductVariants } from '../../../components/DetailGoodPage/ProductVariants';
 import { ProductInfoAccordion } from '../../../components/DetailGoodPage/ProductInfoAccordion';
 import { ProductAttributes } from '../../../components/DetailGoodPage/ProductAttributes';
@@ -170,12 +170,10 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                       </button>
                       <ProductCompare id={product.id} />
                     </div>
-
                     <ProductBadges className={styles.mobileHidden} badges={product.labels} />
                   </div>
 
-                  <ProductImagesMemo images={product.images} />
-
+                  <ProductImages images={product.images} />
                   <ProductSeller className={styles.mobileHidden} merchant={product.merchant} />
                 </div>
               </div>
@@ -192,7 +190,11 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                 {selectedOptions && (
                   <div className={styles.productOptionList}>
                     <div className={styles.productOption}>
-                      <ProductVariants id={product.id} items={product.variants.variant_products} />
+                      <ProductVariants
+                        id={product.id}
+                        attributesVariants={product.variants.variants}
+                        productVariants={product.variants.variant_products}
+                      />
                     </div>
                     <ProductOptions
                       variants={productVariantsView}
@@ -281,6 +283,9 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
               </div>
             )}
           </div>
+
+          {/* FIXME: Компонент ниже вызывает:
+              "Hydration failed because the initial UI does not match what was rendered on the server" */}
           <div className="container container--for-cards">
             {product.similar_products && product.similar_products.length > 0 && (
               <div className={styles.productBlockList}>

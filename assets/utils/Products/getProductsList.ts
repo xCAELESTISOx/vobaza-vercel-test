@@ -16,7 +16,6 @@ interface GetProducts {
     };
   } | null;
   withError?: boolean;
-  currentTags: ICategoryTag[];
 }
 
 /** Получает и возвращает список товаров и мета-информацию для страниц категорий */
@@ -78,5 +77,5 @@ export const getProductsList = async (
     }
   }
 
-  return { products, meta, withError, currentTags };
+  return { products, meta, withError };
 };

@@ -80,6 +80,23 @@ export interface IGoodCard {
   }[];
 }
 
+export interface IProductVariants {
+  variant_products: IVariantProduct[];
+  variants: {
+    attribute: {
+      data_type: AttributeDataType;
+      id: number | string;
+      name: string;
+    };
+    display: {
+      display_type: 'IMAGE' | 'TITLE' | 'DROPDOWN' | 'CHOICE';
+      /** Кол-во элементов. Имеется только когда display_type равен IMAGE или TITLE  */
+      count?: number;
+    };
+    values: IVariantsValue[];
+  }[];
+}
+
 export interface IVariantProduct {
   id: number;
   sku: string;
@@ -147,22 +164,7 @@ export interface IGood {
 
   similar_products: IGoodCard[];
 
-  variants: {
-    variant_products: IVariantProduct[];
-    variants: {
-      attribute: {
-        data_type: AttributeDataType;
-        id: number | string;
-        name: string;
-      };
-      display: {
-        display_type: 'IMAGE' | 'TITLE' | 'DROPDOWN' | 'CHOICE';
-        /** Кол-во элементов. Имеется только когда display_type равен IMAGE или TITLE  */
-        count?: number;
-      };
-      values: IVariantsValue[];
-    }[];
-  };
+  variants: IProductVariants;
 
   warehouse: {
     id: number;

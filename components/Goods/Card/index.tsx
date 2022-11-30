@@ -2,6 +2,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+// import type { IAttribute } from 'src/models/IAttributes';
 import type { IGoodCard } from '../../../src/models/IGood';
 import { useFavorite } from '../../../src/hooks/useFavorite';
 import { toNumberWithSpaces } from '../../../assets/utils/formatters';
@@ -63,24 +64,24 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
     cardContainerRef.current.style.minHeight = `${cardRef.current.clientHeight}px`;
   };
 
-  const renderFeatureValue = (feature) => {
-    if (typeof feature.value === 'object') {
-      let str = '';
-      feature.value.forEach((attribute) => {
-        if (str) str += ', ';
-        if (typeof attribute === 'object') {
-          str += attribute.value;
-        } else {
-          str += attribute;
-        }
-      });
-      return str;
-    } else if (typeof feature.value === 'boolean') {
-      if (feature.value) return 'Да';
-      else return 'Нет';
-    }
-    return feature.value;
-  };
+  // const renderFeatureValue = (feature: { attribute: IAttribute; value: any }) => {
+  //   if (Array.isArray(feature.value)) {
+  //     let str = '';
+  //     feature.value.forEach((attribute) => {
+  //       if (str) str += ', ';
+  //       if (typeof attribute === 'object') {
+  //         str += attribute.value;
+  //       } else {
+  //         str += attribute;
+  //       }
+  //     });
+  //     return str;
+  //   } else if (typeof feature.value === 'boolean') {
+  //     if (feature.value) return 'Да';
+  //     else return 'Нет';
+  //   }
+  //   return feature.value;
+  // };
 
   useEffect(() => {
     if (isFixedHeight) {
@@ -199,14 +200,14 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
               </div>
             </div> */}
             <div className={styles.cardInfo}>
-              <div className={styles.cardFeatures}>
+              {/* <div className={styles.cardFeatures}>
                 {good.valuable_attributes?.map((feature) => (
                   <div className={styles.cardFeature} key={feature.attribute.id}>
                     <div className={styles.cardFeatureTitle}>{feature.attribute.name} :</div>
                     <div className={styles.cardFeatureValue}>{renderFeatureValue(feature)}</div>
                   </div>
                 ))}
-              </div>
+              </div> */}
               <div className={styles.cardCart}>
                 {good.is_available ? (
                   <Button icon="Cart" text="В корзину" onClick={addToCartHandler} />
