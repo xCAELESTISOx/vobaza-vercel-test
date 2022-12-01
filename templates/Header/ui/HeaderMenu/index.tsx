@@ -43,12 +43,14 @@ export const HeaderMenu: FC<Props> = ({ mainMenu, sideMenu }) => {
     <div className={`${styles.menuContainer}`} onMouseLeave={closeMenu}>
       {(currentMenu || isSideMenu) && <CollapsingMenu menu={currentMenu} withRoot={isSideMenu} closeMenu={closeMenu} />}
       <nav className={styles.menu}>
-        <button
-          className={`${styles.headerCategory} ${styles.headerCategoryAll} ${withRoot ? styles.active : ''}`}
-          onMouseEnter={openMenuAll}
-        >
-          <Icon name="MenuBurger" /> Каталог
-        </button>
+        <Link href="/katalog">
+          <a
+            className={`${styles.headerCategory} ${styles.headerCategoryAll} ${withRoot ? styles.active : ''}`}
+            onMouseEnter={openMenuAll}
+          >
+            <Icon name="MenuBurger" /> Каталог
+          </a>
+        </Link>
         <div className={styles.headerMenuItemsWrapper}>
           {mainMenu?.map((item, index) => (
             <HeaderMenuItem key={item.id} index={index} item={item} openFullMenu={openFullMenu} />
