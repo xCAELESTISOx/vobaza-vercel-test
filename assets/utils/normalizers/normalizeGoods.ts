@@ -50,7 +50,7 @@ export const normalizeProductVariants = (variants: IProductVariants): IGoodVaria
 
   /* Для отображения миниатюр вариаций необходимо удалить из опций первый 
       в списке элемент с типом отображения IMAGE */
-  const imageVariantIndex = variantsList.findIndex(({ display }) => display?.display_type === 'IMAGE');
+  const imageVariantIndex = variantsList?.findIndex(({ display }) => display?.display_type === 'IMAGE');
   imageVariantIndex > -1 && variantsList.splice(imageVariantIndex, 1);
   //
 

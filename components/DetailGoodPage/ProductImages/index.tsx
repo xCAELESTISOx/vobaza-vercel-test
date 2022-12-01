@@ -111,7 +111,7 @@ const ProductImages = ({ images }) => {
                   prevEl: '.product-swiper__prev',
                   nextEl: '.product-swiper__next',
                 }}
-                thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
+                thumbs={{ swiper: thumbsSwiper && !thumbsSwiper?.destroyed ? thumbsSwiper : null }}
                 pagination={{
                   el: '.product-images-pagination',
                   type: 'bullets',

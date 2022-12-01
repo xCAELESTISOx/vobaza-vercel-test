@@ -152,15 +152,6 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
               <div className={styles.left}>
                 <div className={styles.leftContent}>
                   <div className={styles.leftMenu}>
-                    {/* <div className={styles.leftMenuItem}>
-                    <RatingStars
-                      size="Small"
-                      value={mockProduct.reviews.average_score}
-                    />
-                    <div className={styles.productReviews}>
-                      {mockProduct.reviews.count} отзывов
-                    </div>
-                  </div> */}
                     <div className={styles.leftMenuActions}>
                       <button
                         className={`${styles.leftMenuActionBtn} ${currentFavorite ? styles.active : ''}`}
@@ -214,7 +205,6 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
 
                   <div className={styles.productStockInfo}>
                     <ProductStock inStock={product.inStonk} />
-                    {/* <ProductLoyaltyBonus value={product.loyaltyBonus} /> */}
                   </div>
                 </div>
 
@@ -225,16 +215,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                       <Button text="Заказать в 1 клик" variation="dashed" onClick={openOneClickModal} />
                     </div>
 
-                    {/* <ProductCredit
-                    className={styles.productInfoBlock}
-                    creditPayment={product.creditMinimalPayment}
-                  /> */}
-
-                    <ProductDelivery
-                      className={styles.productInfoBlock}
-                      // pickup={mockProduct.pickup}
-                      delivery={mockProduct.delivery}
-                    />
+                    <ProductDelivery className={styles.productInfoBlock} delivery={mockProduct.delivery} />
 
                     <ProductSeller className={styles.mobileVisible} />
                   </>
@@ -258,19 +239,6 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                 )}
               </div>
             </div>
-
-            {/* <ProductReviews
-            reviewsInfo={mockProduct.reviews}
-            productInfo={{
-              id: product.id,
-              title: product.name,
-              articleNumber: product.sku,
-              price: product.price,
-              image: product.images
-                ? getImageVariantByFieldname(product.images[0], 'small')
-                : null,
-            }}
-          /> */}
 
             <br />
             <br />

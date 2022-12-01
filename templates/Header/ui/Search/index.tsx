@@ -11,6 +11,7 @@ const Search: FC = () => {
   const setValueHandler = (e: SyntheticEvent<HTMLInputElement>) => {
     setValue(e.currentTarget.value);
   };
+
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     router.push({
