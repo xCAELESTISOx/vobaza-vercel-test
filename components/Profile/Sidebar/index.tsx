@@ -60,7 +60,7 @@ const ProfileSidebar: FC = () => {
         <a className={`${styles.profileSidebarItem} ${router.pathname === '/profile/wishlist' ? styles.active : ''}`}>
           <Icon name="Favorite" />
           Избранное
-          {favoriteIds.length > 0 && <div className={styles.profileSidebarBadge}>{favoriteIds.length}</div>}
+          {favoriteIds?.length > 0 && <div className={styles.profileSidebarBadge}>{favoriteIds.length}</div>}
           <div className={styles.profileSidebarIcons}>
             <Icon name="SmallArrowUp" style={{ transform: 'rotate(90deg)' }} />
           </div>

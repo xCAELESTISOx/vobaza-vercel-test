@@ -58,7 +58,7 @@ export const MobileBottomMenu: FC = () => {
           <a className={styles.tab}>
             <div className={styles.tabIcon}>
               <Icon name="Favorite" />
-              {favoriteIds.length > 0 && <div className={styles.tabBadge}>{favoriteIds.length}</div>}
+              {favoriteIds?.length > 0 && <div className={styles.tabBadge}>{favoriteIds.length}</div>}
             </div>
             <div className={styles.tabTitle}>Избранное</div>
           </a>

@@ -28,7 +28,7 @@ export default function Home({ initialGoods }: Props) {
   useEffect(() => {
     setGoods(initialGoods);
 
-    const favoriteIds = initialGoods.map(({ id }) => id);
+    const favoriteIds = initialGoods?.map(({ id }) => id);
     dispatch(setFavorites(favoriteIds));
   }, [initialGoods]);
 
