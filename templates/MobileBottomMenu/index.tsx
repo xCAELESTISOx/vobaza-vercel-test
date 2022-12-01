@@ -41,7 +41,10 @@ export const MobileBottomMenu: FC = () => {
       <div className={styles.tabbar}>
         <Link href="/">
           <a className={styles.tab} onClick={closeMenu}>
-            <Icon name="SmallLogo" />
+            <div className={styles.tabIcon}>
+              <Icon name="SmallLogo" />
+            </div>
+
             <div className={styles.tabTitle}>Главная</div>
           </a>
         </Link>
@@ -73,7 +76,9 @@ export const MobileBottomMenu: FC = () => {
           </a>
         </Link>
         <div className={styles.tab} onClick={profileClickHandler}>
-          <Icon name="Person" />
+          <div className={styles.tabIcon}>
+            <Icon name="Person" />
+          </div>
           <div className={styles.tabTitle}>Профиль</div>
         </div>
       </div>
