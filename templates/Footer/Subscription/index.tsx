@@ -65,7 +65,7 @@ const Subscription: FC = () => {
             </div>
             <div className={styles.subscriptionText}>
               Подтверждаю согласие на&nbsp;рассылку и&nbsp;
-              <Link href="/politika-obrabotki-dannyh">
+              <Link href="/politika-obrabotki-dannyh" prefetch={false}>
                 <a className={styles.subscriptionLink}>обработку персональных данных</a>
               </Link>
             </div>

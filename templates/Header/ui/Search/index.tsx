@@ -33,7 +33,7 @@ const Search: FC = () => {
         title="Найти товар или категорию..."
         placeholder="Найти товар или категорию..."
       />
-      <button className={styles.searchButton} type="submit">
+      <button className={styles.searchButton} type="submit" aria-label="Искать товар или категорию">
         <Icon className={styles.searchIcon} name="Magnifier"></Icon>
       </button>
     </form>

@@ -9,6 +9,8 @@ import { GoodsBlock } from '../templates/GoodsBlock';
 
 import styles from '../styles/Home.module.scss';
 import { api } from '../assets/api';
+import axios from 'axios';
+import { formatAxiosError } from 'assets/utils/formatAxiosError';
 
 const breadcrumbs = [
   {
@@ -66,7 +68,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) =
     goods = normalizeGoods(goodsRes.data.data);
     meta = goodsRes.data.meta;
   } catch (error) {
-    console.error(error);
+    if (axios.isAxiosError(error)) {
+      const text = formatAxiosError(error);
+      console.error(text);
+    }
+
     return {
       redirect: {
         destination: '/',

@@ -38,7 +38,7 @@ const ProductSeller: FC<ProductSeller> = ({ className = '', merchant }) => {
           <Icon name="ArrowLeft" />
           <span>
             Возрат 7 дней, при соблюдении{' '}
-            <Link href="/obmen-i-vozvrat">
+            <Link href="/obmen-i-vozvrat" prefetch={false}>
               <a className={styles.sellerLink}>условий</a>
             </Link>
           </span>

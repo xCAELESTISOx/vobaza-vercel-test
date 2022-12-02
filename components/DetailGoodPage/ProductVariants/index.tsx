@@ -1,6 +1,7 @@
 import React, { FC, useRef } from 'react';
-import Link from 'next/link';
+import Tooltip from 'rc-tooltip';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { useCollapse } from '../../../src/hooks/useCollapse';
 import { useMatchMedia } from '../../../src/hooks/useMatchMedia';
@@ -21,17 +22,19 @@ interface VariantProps {
 const Variant: FC<VariantProps> = ({ item, active = false }) => {
   return (
     <Link href={`/product/${item.slug}-${item.sku}`} passHref>
-      <div className={`${styles.variant} ${active ? styles.variantActive : ''}`} title={item.slug}>
-        <div className={styles.variantImg}>
-          <Image
-            src={item.main_image?.variants?.small?.url || PlaceholderImage}
-            objectFit="contain"
-            alt={item.color}
-            height={48}
-            width={48}
-          />
-        </div>
-      </div>
+      <Tooltip placement="top" overlay={<span>{item.color}</span>}>
+        <a className={`${styles.variant} ${active ? styles.variantActive : ''}`} title={item.slug}>
+          <div className={styles.variantImg}>
+            <Image
+              src={item.main_image?.variants?.small?.url || PlaceholderImage}
+              objectFit="contain"
+              alt=""
+              height="100%"
+              width="100%"
+            />
+          </div>
+        </a>
+      </Tooltip>
     </Link>
   );
 };
