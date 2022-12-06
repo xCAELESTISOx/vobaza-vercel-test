@@ -8,7 +8,7 @@ export interface ICategoryTag {
   description?: string;
   keywords?: string;
   page_title?: string;
-  filter: ITagFitlerFront;
+  filters: ITagFitlerFront[];
   tags?: ICategoryTag[];
   type: 'FILTER' | 'REDIRECT';
   redirect_url?: string;

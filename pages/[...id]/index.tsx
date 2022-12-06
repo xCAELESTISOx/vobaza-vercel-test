@@ -6,7 +6,7 @@ import Head from 'next/head';
 
 import type { ICategoryTag } from 'assets/api/modules/categories';
 import type { ICategory } from '../../src/models/ICategory';
-import type { IFilter, IFilterFront } from '../../src/models/IFilter';
+import type { IFilter, IFilterFront, ITagFitlerFront } from '../../src/models/IFilter';
 import { getActiveFiltersFromQuery } from 'assets/utils/Category/filters/getActiveFiltersFromQuery';
 import { getCategoryBreadcrumps } from 'assets/utils/Category/getCategoryBreadcrumps';
 import { getParamsFromQuery } from 'assets/utils/Category/getParamsFromQuery';
@@ -24,6 +24,12 @@ import CategoryHead from 'components/Category/CategoryHead';
 
 import styles from '../../styles/Home.module.scss';
 import { api } from '../../assets/api';
+
+const getFlatTagsFilters = (tags: ICategoryTag[]) => {
+  return tags.reduce((acc, tagItem) => {
+    return [...acc, ...tagItem.filters];
+  }, [] as ITagFitlerFront[]);
+};
 
 const convertFiltersIfPrice = (filters: IFilter[]) => {
   return filters.map((filter) =>
@@ -183,6 +189,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
     category = categoryRes.data.data;
 
     const { data: tagsData } = await api.getCategoryTags(category.id);
+
     tags = tagsData.data;
 
     initialParams['filter[category_id]'] = category.id;
@@ -196,7 +203,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
 
     withInvalidTags = hasInvalidTags;
 
-    const tagFilters = currentTags.map(({ filter }) => filter);
+    const tagFilters = getFlatTagsFilters(currentTags);
     tagFilters.forEach((filter) => {
       let value: string | string[] = filter.values;
 
@@ -249,7 +256,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
     currentFilters = newActiveFilters;
     hasInvalidFilters = newHasInvalidFilters;
 
-    filters = filters.filter((filter) => !activeTags.some((tag) => tag.filter.id === filter.id));
+    // filters = filters.filter((filter) => !activeTags.some((tag) => tag.filter.id === filter.id));
+    filters = filters.filter(
+      (filter) => !getFlatTagsFilters(activeTags).some((tagFilter) => tagFilter.id === filter.id)
+    );
   } catch (error) {
     hasInvalidFilters = true;
   }

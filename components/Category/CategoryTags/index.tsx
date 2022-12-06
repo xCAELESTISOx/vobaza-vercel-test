@@ -39,7 +39,11 @@ export const CategoryTags = ({ categorySlug, tags, setIsLoading }: Props) => {
     delete routerQuery['page'];
     delete routerQuery['city'];
     delete routerQuery['id'];
-    delete routerQuery[tag.filter.id];
+    // delete routerQuery[tag.filter.id];
+
+    tag.filters.forEach((filter) => {
+      delete routerQuery[filter.id];
+    });
 
     return routerQuery;
   };
