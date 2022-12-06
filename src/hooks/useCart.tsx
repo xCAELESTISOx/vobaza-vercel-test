@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { api } from '../../assets/api';
 
 import type { IGood, IGoodCard, IGoodCompare } from '../models/IGood';
-import { FavoriteGood } from '../../components/Profile/Favorite/Item';
+import type { FavoriteGood } from '../../components/Profile/Favorite/Item';
 import { addCartGood, setCartError } from 'src/store/goods';
 import { useDispatch } from './useDispatch';
 

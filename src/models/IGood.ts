@@ -1,7 +1,7 @@
 import type { Image } from './IImage';
 import type { IDictionaryItem } from './IDictionary';
 import type { CategoryStatus } from './ICategory';
-import type { AttributeDataType, IAttribute, IAttributeColor, IAttributes } from './IAttributes';
+import type { AttributeDataType, IAttribute, IAttributes } from './IAttributes';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 
 export enum GoodStatus {
@@ -80,52 +80,36 @@ export interface IGoodCard {
   }[];
 }
 
-export interface IProductVariants {
-  variant_products: IVariantProduct[];
-  variants: {
-    attribute: {
-      data_type: AttributeDataType;
-      id: number | string;
-      name: string;
-    };
-    display: {
-      display_type: 'IMAGE' | 'TITLE' | 'DROPDOWN' | 'CHOICE';
-      /** Кол-во элементов. Имеется только когда display_type равен IMAGE или TITLE  */
-      count?: number;
-    };
-    values: IVariantsValue[];
-  }[];
+export type ProductVariantValue = boolean | number | string | number[] | string[];
+
+/** Характеристика товаров вариации */
+export interface IProductVariant<ValuesType = ProductVariantValue> {
+  attribute: {
+    data_type: AttributeDataType;
+    id: number | string;
+    name: string;
+  };
+  display: {
+    display_type: 'IMAGE' | 'TITLE' | 'DROPDOWN' | 'CHOICE';
+    /** Кол-во элементов. Имеется только когда display_type равен IMAGE или TITLE  */
+    count?: number;
+  };
+  values: ValuesType[];
 }
 
+/** Товар вариации */
 export interface IVariantProduct {
   id: number;
   sku: string;
   slug: string;
   main_image?: Image;
-}
-
-export interface IVariantsValue {
-  is_current: boolean;
-  value: boolean | number | string | string[] | IAttributeColor[];
-  product: IVariantProduct;
+  attributes: { id: number; value: ProductVariantValue }[];
 }
 
 export interface IVariantsValueFront {
   is_current: boolean;
   value: Variant;
   product: IVariantProduct;
-}
-
-export interface IGoodVariantsFront {
-  variant_products: IVariantProduct[];
-  variants: {
-    attribute: {
-      data_type: AttributeDataType;
-      id: number | string;
-      name: string;
-    };
-    values: IVariantsValueFront[];
-  }[];
 }
 
 export interface IGood {
@@ -164,7 +148,10 @@ export interface IGood {
 
   similar_products: IGoodCard[];
 
-  variants: IProductVariants;
+  variants: {
+    products: IVariantProduct[];
+    variants: IProductVariant[];
+  };
 
   warehouse: {
     id: number;
@@ -182,7 +169,7 @@ export interface IGood {
   set: IGoodCard[];
 }
 export interface IGoodFront extends Omit<IGood, 'variants'> {
-  variants: IGoodVariantsFront;
+  variants: { products: IVariantProduct[]; variants: IProductVariant<Variant>[] };
 }
 
 export interface IGoodCompare {

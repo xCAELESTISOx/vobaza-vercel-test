@@ -3,23 +3,23 @@ import Tooltip from 'rc-tooltip';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { useCollapse } from '../../../src/hooks/useCollapse';
-import { useMatchMedia } from '../../../src/hooks/useMatchMedia';
-
-import type { IProductVariants, IVariantProduct } from 'src/models/IGood';
+import { useCollapse } from '../../../../src/hooks/useCollapse';
+import { useMatchMedia } from '../../../../src/hooks/useMatchMedia';
+import type { IProductVariant, IVariantProduct } from 'src/models/IGood';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
+
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 
 import styles from './styles.module.scss';
+import { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 
-// TODO: Next-image
 interface VariantProps {
   item: IVariantProduct & { color: string };
   active: boolean;
 }
 
-const Variant: FC<VariantProps> = ({ item, active = false }) => {
+const ProductVariantTile: FC<VariantProps> = ({ item, active = false }) => {
   return (
     <Link href={`/product/${item.slug}-${item.sku}`} passHref>
       <Tooltip placement="top" overlay={<span>{item.color}</span>}>
@@ -40,37 +40,53 @@ const Variant: FC<VariantProps> = ({ item, active = false }) => {
 };
 
 const getProductVariants = (
-  productVariants: IProductVariants['variant_products'],
-  attributesVariants: IProductVariants['variants']
+  products: IVariantProduct[],
+  attributesVariants: IProductVariant[],
+  selectedOptions: Record<number, Variant>
 ): (IVariantProduct & { color: string })[] => {
   const displayableAttribute = attributesVariants.find(({ display }) => display?.display_type === 'IMAGE');
 
   if (!displayableAttribute) return [];
 
-  const productIds = displayableAttribute.values.map(({ product }) => product.id);
-  const newProducts = productVariants
-    .filter(({ id }) => productIds.includes(id))
+  const parameters = Object.values(selectedOptions).map(({ code }) => code);
+  const newProducts = products
+    .filter(({ attributes }) => {
+      return attributes.every((attr) => {
+        if (displayableAttribute.attribute.id === attr.id) return true;
+        return (
+          Object.keys(selectedOptions).includes(attr.id.toString()) &&
+          parameters.includes(Array.isArray(attr.value) ? attr.value[0].toString() : attr.value.toString())
+        );
+      });
+    })
+    // .filter(({ id }) => productIds.includes(id))
     .map((product) => {
-      const value = displayableAttribute.values.find((value) => value.product.id === product.id);
-      return { ...product, color: value?.value.toString() };
+      const color = product.attributes.find((attr) => attr.id === displayableAttribute.attribute.id);
+      return { ...product, color: color.value.toString() };
     });
 
   return newProducts;
 };
 
 interface ProductVariantsProps {
-  id: number;
-  productVariants: IProductVariants['variant_products'];
-  attributesVariants: IProductVariants['variants'];
+  productId: number;
+  selectedOptions: Record<number, Variant>;
+  productVariants: IVariantProduct[];
+  attributesVariants: IProductVariant[];
 }
 
-const ProductVariants: FC<ProductVariantsProps> = ({ id, productVariants = [], attributesVariants }) => {
+const ProductVariants: FC<ProductVariantsProps> = ({
+  productId,
+  selectedOptions,
+  productVariants = [],
+  attributesVariants,
+}) => {
   const hiddenVariantsRef = useRef(null);
   const [isOpen, toggleOpen] = useCollapse(hiddenVariantsRef, {
     duration: 300,
   });
 
-  const items = getProductVariants(productVariants, attributesVariants);
+  const items = getProductVariants(productVariants, attributesVariants, selectedOptions);
 
   const isMobile = useMatchMedia(500);
 
@@ -78,11 +94,13 @@ const ProductVariants: FC<ProductVariantsProps> = ({ id, productVariants = [], a
 
   const isOverLimit = items.length > ITEMS_PER_ROW;
 
+  if (!items.length) return null;
+
   return (
     <div className={styles.variantsContainer}>
       <div className={styles.variantsGrid}>
         {items.slice(0, ITEMS_PER_ROW).map((item) => (
-          <Variant key={item.id} item={item} active={item.id === id} />
+          <ProductVariantTile key={item.id} item={item} active={item.id === productId} />
         ))}
       </div>
 
@@ -103,7 +121,7 @@ const ProductVariants: FC<ProductVariantsProps> = ({ id, productVariants = [], a
         <div ref={hiddenVariantsRef} className={styles.variantsDrawer}>
           <div className={styles.variantsGrid}>
             {items.slice(ITEMS_PER_ROW).map((item) => (
-              <Variant key={item.id} item={item} active={item.id === id} />
+              <ProductVariantTile key={item.id} item={item} active={item.id === productId} />
             ))}
           </div>
         </div>

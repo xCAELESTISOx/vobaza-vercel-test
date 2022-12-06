@@ -1,29 +1,26 @@
-import type { GetServerSideProps } from 'next';
-import React, { FC, useEffect, useState } from 'react';
 import SimpleReactLightbox from 'simple-react-lightbox';
+import React, { FC, useEffect, useState } from 'react';
+import type { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 
-import { useCart } from '../../../src/hooks/useCart';
+import { normalizeProductAttributes, normalizeProductInfo } from 'assets/utils/normalizers/normalizeGoods';
+import { normalizeProductVariation } from 'assets/utils/normalizers/Products/normalizeProductVariation';
+import { getProductBreadcrumbs } from 'assets/utils/Category/getCategoryBreadcrumps';
 import { mockProduct } from '../../../src/mock/detailProductPage';
 import { useFavorite } from '../../../src/hooks/useFavorite';
-import {
-  normalizeProductAttributes,
-  normalizeProductInfo,
-  normalizeProductVariants,
-} from 'assets/utils/normalizers/normalizeGoods';
-import { getProductBreadcrumbs } from 'assets/utils/Category/getCategoryBreadcrumps';
-import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
-import type { IGood } from 'src/models/IGood';
-import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select/dist/input-select';
-import type { IAttributeColor } from 'src/models/IAttributes';
+import { useCart } from '../../../src/hooks/useCart';
 import { useDispatch } from 'src/hooks/useDispatch';
 import { setOneClickGood } from 'src/store/goods';
+import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select/dist/input-select';
+import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
+import type { IGood, ProductVariantValue } from 'src/models/IGood';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import Breadcrumbs from '../../../components/Layout/Breadcrumbs';
 import { ProductImages } from '../../../components/DetailGoodPage/ProductImages';
-import { ProductVariants } from '../../../components/DetailGoodPage/ProductVariants';
+import { ProductVariants } from '../../../components/features/product-variation/ProductVariants';
 import { ProductInfoAccordion } from '../../../components/DetailGoodPage/ProductInfoAccordion';
 import { ProductAttributes } from '../../../components/DetailGoodPage/ProductAttributes';
 import { ProductDescription } from '../../../components/DetailGoodPage/ProductDescription';
@@ -36,27 +33,46 @@ import CartModal from '../../../components/Goods/Modals/Cart/Cart';
 import OneClick from 'components/Goods/Modals/OneClick/OneClick';
 import { ProductDocuments } from 'components/DetailGoodPage/ProductDocuments';
 import { ProductCompare } from 'components/DetailGoodPage/ProductCompare';
-import { ProductOptions } from 'components/DetailGoodPage/ProductOptions';
+import { ProductOptions } from 'components/features/product-variation/ProductOptions';
 import GoodsList from 'components/Goods/List';
 
 import { api } from '../../../assets/api';
 import styles from './styles.module.scss';
 
-const booleanVariantToText = (value: string | number | boolean | string[] | IAttributeColor[]) => {
+const booleanVariantToText = (value: ProductVariantValue) => {
   return typeof value === 'boolean' ? (value ? 'YES' : 'NO') : value.toString();
 };
+
 interface DetailGoodPage {
   product: IGood;
   breadcrumbs: BreadcrumbType[];
 }
 
+const getProductOptions = (variation: IGood['variants'], productId: number): Record<number, Variant> | null => {
+  if (!variation) return null;
+  const { products } = variation;
+  const currentProduct = products.find(({ id }) => id === productId);
+  const options = {};
+
+  currentProduct.attributes.forEach((attribute) => {
+    options[attribute.id] = {
+      code: booleanVariantToText(attribute.value),
+      value: booleanVariantToText(attribute.value),
+    };
+  });
+
+  return options;
+};
+
 const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
   const { currentFavorite, toggleFavorite } = useFavorite(product);
-  const [selectedOptions, setSelectedOptions] = useState<Record<number, Variant> | null>(null);
+
+  const [selectedOptions, setSelectedOptions] = useState<Record<number, Variant>>(null);
   const { addToCart } = useCart(product);
   const dispatch = useDispatch();
+  const router = useRouter();
 
-  const productVariantsView = normalizeProductVariants(product.variants);
+  const productVariants = normalizeProductVariation(product.variants);
 
   const addToCartHandler = () => {
     addToCart();
@@ -81,8 +97,20 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
 
   const handelSelectOption = (name: string, value: Variant) => {
     const options = { ...selectedOptions };
-
     options[name] = value;
+
+    const parameters = Object.values(options).map(({ code }) => code);
+
+    // Определение товара, соответствующего выбранным опциям вариации
+    const { slug, sku } = product.variants.products.find(({ attributes }) => {
+      return attributes.every(
+        (attr) =>
+          Object.keys(options).includes(attr.id.toString()) &&
+          parameters.includes(Array.isArray(attr.value) ? attr.value[0].toString() : attr.value.toString())
+      );
+    });
+
+    router.push(`/product/${slug}-${sku}`);
 
     setSelectedOptions(options);
   };
@@ -111,21 +139,8 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
   }, []);
 
   useEffect(() => {
-    let options = {};
-    if (product.variants && product.variants.variants) {
-      product.variants.variants.forEach((t) => {
-        const currentOption = t.values.find((v) => v.is_current);
-        options[t.attribute.id] = {
-          code: booleanVariantToText(currentOption.value),
-          value: booleanVariantToText(currentOption.value),
-        };
-      });
-    } else {
-      options = null;
-    }
-
-    setSelectedOptions(options);
-  }, [product.variants]);
+    setSelectedOptions(getProductOptions(product.variants, product.id));
+  }, [product.id]);
 
   return (
     <>
@@ -178,17 +193,18 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                   </div>
                 </div>
 
-                {selectedOptions && (
+                {selectedOptions && selectedOptions && (
                   <div className={styles.productOptionList}>
                     <div className={styles.productOption}>
                       <ProductVariants
-                        id={product.id}
+                        productId={product.id}
+                        selectedOptions={selectedOptions}
+                        productVariants={product.variants.products}
                         attributesVariants={product.variants.variants}
-                        productVariants={product.variants.variant_products}
                       />
                     </div>
                     <ProductOptions
-                      variants={productVariantsView}
+                      variants={productVariants}
                       selectedOptions={selectedOptions}
                       handelSelectOption={handelSelectOption}
                     />
@@ -301,14 +317,13 @@ export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({ q
     };
   } catch (err) {
     console.error(err);
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
   }
-
-  return {
-    redirect: {
-      destination: '/',
-      permanent: false,
-    },
-  };
 };
 
 export default DetailGoodPage;
