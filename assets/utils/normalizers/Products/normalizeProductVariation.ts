@@ -41,7 +41,7 @@ export const normalizeProductVariation = (
   };
 
   const variantsList: IProductVariant<Variant>[] =
-    variants.variants.map((variant) => {
+    variants.variants?.map((variant) => {
       const { values, attribute } = variant;
 
       const newValues = values.map((value) => {

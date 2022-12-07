@@ -11,12 +11,12 @@ import useDebounce from 'src/hooks/useDebounce';
 import { dadataApi } from 'assets/api/dadata';
 import { useSelector } from 'src/hooks/useSelector';
 
-import styles from './styles.module.scss';
-
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
 import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
 import { InputRadio } from '@nebo-team/vobaza.ui.inputs.input-radio';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
+
+import styles from './styles.module.scss';
 
 const BASIC_FLOOR_ERROR = 'Укажите этаж';
 const EXCEEDING_FLOOR_ERROR = 'Номер этажа должен быть не более 100';

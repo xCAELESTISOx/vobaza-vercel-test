@@ -49,7 +49,7 @@ interface DetailGoodPage {
 }
 
 const getProductOptions = (variation: IGood['variants'], productId: number): Record<number, Variant> | null => {
-  if (!variation) return null;
+  if (!variation?.variants) return null;
   const { products } = variation;
   const currentProduct = products.find(({ id }) => id === productId);
   const options = {};
