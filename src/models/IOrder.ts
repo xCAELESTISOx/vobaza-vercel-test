@@ -105,6 +105,7 @@ export interface IOrder {
       time_interval: ITimeInterval;
     };
   };
+  payment_status: string
 }
 export interface IFullOrderDelivery {
   address: {

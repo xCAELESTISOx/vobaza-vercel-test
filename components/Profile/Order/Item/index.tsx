@@ -2,7 +2,12 @@ import { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { labelColorsDictionary, orderStatusDictionary } from 'assets/dictionaries/order';
+import {
+  labelColorsDictionary,
+  orderPaymentStatusColorsDictionary,
+  orderPaymentStatusDictionary,
+  orderStatusDictionary,
+} from 'assets/dictionaries/order';
 import { formatOrderDate } from 'assets/utils/formatters';
 import { getImageVariantProps } from 'assets/utils/images';
 import { EOrderDeliveryType } from '../../../../src/models/IOrder';
@@ -36,7 +41,16 @@ const ProfileOrderItem: FC<IProps> = ({ order, isLast }) => {
           <div className={styles.orderItemDate}>от {formatOrderDate(order.order_date, true)}</div>
         </div>
         <div>
-          {!isLast ? <div className={styles.orderItemStatus}>не оплачен</div> : <div>&nbsp;</div>}
+          {!isLast ? (
+            <div
+              className={styles.orderItemStatus}
+              style={{ background: orderPaymentStatusColorsDictionary[order.payment_status] }}
+            >
+              {orderPaymentStatusDictionary[order.payment_status]}
+            </div>
+          ) : (
+            <div>&nbsp;</div>
+          )}
           <div className={styles.orderItemPrice}>{Intl.NumberFormat('ru-RU').format(order.price)} ₽</div>
         </div>
       </div>

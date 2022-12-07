@@ -40,6 +40,12 @@ export const orderPaymentStatusDictionary: Record<OrderPaymentStatus, string> = 
   NOT_PAID: 'Не оплачен',
 };
 
+export const orderPaymentStatusColorsDictionary: Record<OrderPaymentStatus, string> = {
+  PAID: '#2ABC33',
+  PARTIALLY_PAID: '#FFA726',
+  NOT_PAID: '#E73030',
+};
+
 export const orderPaymentMethodDictionary = {
   [EOrderPaymentMethod.CASH]: 'Оплата наличными',
   [EOrderPaymentMethod.CARD]: 'Оплата картой',
