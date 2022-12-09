@@ -187,12 +187,27 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
   try {
     const categoryRes = await api.getCategoryByPath(resolvedUrl.split('?')[0].replace('/ekspress-dostavka', ''));
     category = categoryRes.data.data;
+    initialParams['filter[category_id]'] = category.id;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const text = formatAxiosError(error);
+      console.error(text);
+    } else {
+      console.error('Error has occured:', error);
+    }
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+  //
 
+  try {
     const { data: tagsData } = await api.getCategoryTags(category.id);
 
     tags = tagsData.data;
-
-    initialParams['filter[category_id]'] = category.id;
 
     // Получить по урлу массив всех активных тегов и уровень активных тегов
     const { currentTags, hasInvalidTags } = getTagsByUrl(resolvedUrl, tags, [
@@ -220,21 +235,23 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
       tagsQueryFilters[filter.id] = value;
       activeQueryFilters[filter.id] = value;
     });
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const text = formatAxiosError(error);
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      const text = formatAxiosError(err);
       console.error(text);
     } else {
-      console.error('Error has occured:', error);
+      console.error('Error has occured:', err);
     }
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
+    withInvalidTags = true;
+    if (err.response?.status != 500) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
   }
-  //
 
   params = getParamsFromQuery(params, activeQueryFilters);
 
