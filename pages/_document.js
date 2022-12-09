@@ -36,13 +36,49 @@ export default class MyDocument extends Document {
           <link rel="stylesheet" href="https://unpkg.com/normalize.css@8.0.1/normalize.css" />
           <NextScript />
           <script
+            // dangerouslySetInnerHTML={{
+            //   __html: `
+            //   (function (d, w, c) {
+            //     (w[c] = w[c] || []).push(function() {
+            //         try {
+            //             w.yaCounter68012902 = new Ya.Metrika({
+            //                 id:68012902,
+            //                 clickmap:true,
+            //                 trackLinks:true,
+            //                 accurateTrackBounce:true,
+            //                 webvisor:true,
+            //                 ecommerce:"dataLayer"
+            //             });
+            //         } catch(e) {
+            //           console.error(e)
+            //          }
+            //     });
+
+            //     var n = d.getElementsByTagName("script")[0],
+            //         x = "https://mc.yandex.ru/metrika/watch.js",
+            //         s = d.createElement("script"),
+            //         f = function () { n.parentNode.insertBefore(s, n); };
+            //     for (var i = 0; i < document.scripts.length; i++) {
+            //         if (document.scripts[i].src === x) { return; }
+            //     }
+            //     s.type = "text/javascript";
+            //     s.async = true;
+            //     s.src = x;
+
+            //     if (w.opera == "[object Opera]") {
+            //         d.addEventListener("DOMContentLoaded", f, false);
+            //     } else { f(); }
+            // })(document, window, "yandex_metrika_callbacks");
+            // window.dataLayer = window.dataLayer || [];
+            //   `,
+            // }}
             dangerouslySetInnerHTML={{
               __html: `
               (function (d, w, c) {
                 (w[c] = w[c] || []).push(function() {
                     try {
-                        w.yaCounter68012902 = new Ya.Metrika({
-                            id:68012902,
+                        w.yaCounter91593418 = new Ya.Metrika({
+                            id:91593418,
                             clickmap:true,
                             trackLinks:true,
                             accurateTrackBounce:true,
@@ -75,7 +111,8 @@ export default class MyDocument extends Document {
           />
           <noscript>
             <div>
-              <img src="https://mc.yandex.ru/watch/68012902" style={{ position: 'absolute', left: -9999 }} alt="" />
+              {/* <img src="https://mc.yandex.ru/watch/68012902" style={{ position: 'absolute', left: -9999 }} alt="" /> */}
+              <img src="https://mc.yandex.ru/watch/91593418" style={{ position: 'absolute', left: -9999 }} alt="" />
             </div>
           </noscript>
         </Head>
