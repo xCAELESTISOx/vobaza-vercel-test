@@ -110,7 +110,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
       );
     });
 
-    router.push(`/product/${slug}-${sku}`);
+    router.push(`/product/${slug}-${sku}`, undefined, { scroll: false });
 
     setSelectedOptions(options);
   };

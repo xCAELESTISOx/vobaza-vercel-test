@@ -12,8 +12,10 @@ export const normalizeProductVariation = (
   if (!variants) return null;
 
   const convertVariantValue = (val: ProductVariantValue, dataType: AttributeDataType): Variant => {
-    let code = '';
+    if (val === null) return { code: null, value: '–' };
+
     let value = '';
+    let code = '';
 
     switch (dataType) {
       case 'BOOLEAN':
@@ -23,14 +25,6 @@ export const normalizeProductVariation = (
       // case 'MANY_FROM_MANY':
       //   code = (val as string[]).toString();
       //   value = (val as string[]).join(', ');
-      //   break;
-      // case 'COLOR':
-      //   () => {
-      //     const newCode = (val as IAttributeColor[]).map(({ code }) => code).join(',');
-      //     const newVal = (val as IAttributeColor[]).map(({ value }) => value).join(',');
-      //     code = newCode + 'ТЕСТ ЦВЕТА';
-      //     value = newVal + 'ТЕСТ ЦВЕТА';
-      //   };
       //   break;
       default:
         code = val.toString();
@@ -44,9 +38,7 @@ export const normalizeProductVariation = (
     variants.variants?.map((variant) => {
       const { values, attribute } = variant;
 
-      const newValues = values.map((value) => {
-        return convertVariantValue(value, attribute.data_type);
-      });
+      const newValues = values.map((value) => convertVariantValue(value, attribute.data_type)).filter(Boolean);
 
       return { ...variant, values: newValues };
     }) || null;
@@ -56,6 +48,5 @@ export const normalizeProductVariation = (
   const imageVariantIndex = variantsList?.findIndex(({ display }) => display?.display_type === 'IMAGE');
   imageVariantIndex > -1 && variantsList?.splice(imageVariantIndex, 1);
   //
-
   return { ...variants, variants: variantsList };
 };

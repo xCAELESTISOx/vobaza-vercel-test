@@ -34,11 +34,14 @@ export const ProductOptions = ({ variants, selectedOptions, handelSelectOption }
           delete options[attr.id];
           const parameters = Object.values(options).map(({ code }) => code);
 
-          const canBeFound = [...parameters, val.code].every((param) =>
-            attributes.some((attr) =>
-              Array.isArray(attr.value) ? attr.value.map(String).includes(param.toString()) : attr.value == param
-            )
-          );
+          // Проверка, есть ли в вариации другой товар с подходящими характеристиками
+          const canBeFound = [...parameters, val.code].every((param) => {
+            return attributes.some((attr) => {
+              return Array.isArray(attr.value)
+                ? attr.value.map(String).includes(param.toString())
+                : attr.value == param;
+            });
+          });
 
           if (attributesIds.includes(attr.id) && canBeFound) return true;
         });
@@ -47,7 +50,7 @@ export const ProductOptions = ({ variants, selectedOptions, handelSelectOption }
         const code = val.code;
         const value = val.value;
 
-        return { code, value, onClick: () => {} };
+        return { code, value };
       });
 
     return { ...variant, values };

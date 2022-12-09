@@ -89,12 +89,13 @@ export interface IProductVariant<ValuesType = ProductVariantValue> {
     id: number | string;
     name: string;
   };
-  display: {
+  display?: {
     display_type: 'IMAGE' | 'TITLE' | 'DROPDOWN' | 'CHOICE';
     /** Кол-во элементов. Имеется только когда display_type равен IMAGE или TITLE  */
     count?: number;
   };
   values: ValuesType[];
+  current_value: ProductVariantValue;
 }
 
 /** Товар вариации */
@@ -103,7 +104,7 @@ export interface IVariantProduct {
   sku: string;
   slug: string;
   main_image?: Image;
-  attributes: { id: number; value: ProductVariantValue }[];
+  attributes: { id: number; name: string; value: ProductVariantValue; data_type: AttributeDataType }[];
 }
 
 export interface IVariantsValueFront {
