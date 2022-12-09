@@ -9,7 +9,8 @@ import SuccessModal from './SuccessModal';
 import styles from './styles.module.scss';
 
 export function checkEmail(value: string) {
-  const patternEmail = new RegExp(/^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/);
+  const patternEmail = new RegExp(/^([A-Za-zа-яА-ЯёЁ0-9_\-.])+@([A-Za-zа-яА-ЯёЁ0-9_\-.])+\.([A-Za-zа-яА-ЯёЁ]{2,4})$/);
+
   return patternEmail.test(value);
 }
 
