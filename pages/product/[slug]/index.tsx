@@ -38,6 +38,8 @@ import GoodsList from 'components/Goods/List';
 
 import { api } from '../../../assets/api';
 import styles from './styles.module.scss';
+import { formatAxiosError } from 'assets/utils/formatAxiosError';
+import axios from 'axios';
 
 const booleanVariantToText = (value: ProductVariantValue) => {
   return typeof value === 'boolean' ? (value ? 'YES' : 'NO') : value.toString();
@@ -316,7 +318,12 @@ export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({ q
       },
     };
   } catch (err) {
-    console.error(err);
+    if (axios.isAxiosError(err)) {
+      const text = formatAxiosError(err);
+      console.error(text);
+    } else {
+      console.error(err);
+    }
     return {
       redirect: {
         destination: '/',

@@ -25,26 +25,29 @@ export const ProductOptions = ({ variants, selectedOptions, handelSelectOption }
     const values = sortedValues
       .filter((val) => {
         // Проверка, может ли найтись товар при нажатии на данную опцию
-        return variants.products.some(({ attributes }) => {
-          const attributesIds = attributes.map(({ id }) => id);
+        return (
+          val.code !== null &&
+          variants.products.some(({ attributes }) => {
+            const attributesIds = attributes.map(({ id }) => id);
 
-          const attr = attributes.find(({ id }) => id === variant.attribute.id);
+            const attr = attributes.find(({ id }) => id === variant.attribute.id);
 
-          const options = { ...selectedOptions };
-          delete options[attr.id];
-          const parameters = Object.values(options).map(({ code }) => code);
+            const options = { ...selectedOptions };
+            delete options[attr.id];
+            const parameters = Object.values(options).map(({ code }) => code);
 
-          // Проверка, есть ли в вариации другой товар с подходящими характеристиками
-          const canBeFound = [...parameters, val.code].every((param) => {
-            return attributes.some((attr) => {
-              return Array.isArray(attr.value)
-                ? attr.value.map(String).includes(param.toString())
-                : attr.value == param;
+            // Проверка, есть ли в вариации другой товар с подходящими характеристиками
+            const canBeFound = [...parameters, val.code].every((param) => {
+              return attributes.some((attr) => {
+                return Array.isArray(attr.value)
+                  ? attr.value.map(String).includes(param.toString())
+                  : attr.value == param;
+              });
             });
-          });
 
-          if (attributesIds.includes(attr.id) && canBeFound) return true;
-        });
+            if (attributesIds.includes(attr.id) && canBeFound) return true;
+          })
+        );
       })
       .map((val) => {
         const code = val.code;
@@ -61,26 +64,27 @@ export const ProductOptions = ({ variants, selectedOptions, handelSelectOption }
   return (
     <div className={styles.productOptions}>
       {options.map(({ attribute, values }) => {
-        return (
-          <div className={styles.productOption} key={attribute.id + attribute.name}>
-            {values.length > 5 ? (
-              <InputSelect
-                name={attribute.id.toString()}
-                label={attribute.name}
-                currentValue={selectedOptions[attribute.id]}
-                variants={values}
-                onChange={(value) => handelSelectOption(attribute.id, value as SelectVariant)}
-              />
-            ) : (
-              <SelectTabs
-                label={attribute.name}
-                value={selectedOptions[attribute.id]}
-                variants={values}
-                onChange={(value) => handelSelectOption(attribute.id, value)}
-              />
-            )}
-          </div>
-        );
+        if (values.length)
+          return (
+            <div className={styles.productOption} key={attribute.id + attribute.name}>
+              {values.length > 5 ? (
+                <InputSelect
+                  name={attribute.id.toString()}
+                  label={attribute.name}
+                  currentValue={selectedOptions[attribute.id]}
+                  variants={values}
+                  onChange={(value) => handelSelectOption(attribute.id, value as SelectVariant)}
+                />
+              ) : (
+                <SelectTabs
+                  label={attribute.name}
+                  value={selectedOptions[attribute.id]}
+                  variants={values}
+                  onChange={(value) => handelSelectOption(attribute.id, value)}
+                />
+              )}
+            </div>
+          );
       })}
     </div>
   );
