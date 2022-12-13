@@ -163,7 +163,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
   let category: ICategory;
   let tags: ICategoryTag[] = [];
   let activeTags: ICategoryTag[] = [];
-  let withInvalidTags: boolean;
+  let withInvalidTags = false;
 
   let baseFilters: IFilter[] = [];
   let filters: IFilter[] = [];
@@ -241,7 +241,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
     } else {
       console.error('Error has occured:', err);
     }
-    withInvalidTags = true;
     if (err.response?.status != 500) {
       return {
         redirect: {
