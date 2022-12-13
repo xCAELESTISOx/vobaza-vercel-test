@@ -90,8 +90,8 @@ export interface IProductVariant<ValuesType = ProductVariantValue> {
     name: string;
   };
   display?: {
-    display_type: 'IMAGE' | 'TITLE' | 'DROPDOWN' | 'CHOICE';
-    /** Кол-во элементов. Имеется только когда display_type равен IMAGE или TITLE  */
+    display_type: 'IMAGE' | 'TILE' | 'DROPDOWN' | 'CHOICE';
+    /** Кол-во элементов. Имеется только когда display_type равен IMAGE или TILE  */
     count?: number;
   };
   values: ValuesType[];

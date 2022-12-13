@@ -3,6 +3,7 @@ import type { Variant as SelectVariant, Variant } from '@nebo-team/vobaza.ui.inp
 
 import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select/dist/input-select';
 import { SelectTabs } from 'components/UI/SelectTabs';
+import ProductOptionsTiles from '../ProductOptionsTiles';
 
 import styles from './styles.module.scss';
 
@@ -63,25 +64,55 @@ export const ProductOptions = ({ variants, selectedOptions, handelSelectOption }
 
   return (
     <div className={styles.productOptions}>
-      {options.map(({ attribute, values }) => {
+      {options.map((option) => {
+        const { attribute, display, values } = option;
         if (values.length)
           return (
             <div className={styles.productOption} key={attribute.id + attribute.name}>
-              {values.length > 5 ? (
-                <InputSelect
-                  name={attribute.id.toString()}
-                  label={attribute.name}
-                  currentValue={selectedOptions[attribute.id]}
-                  variants={values}
-                  onChange={(value) => handelSelectOption(attribute.id, value as SelectVariant)}
-                />
-              ) : (
-                <SelectTabs
-                  label={attribute.name}
-                  value={selectedOptions[attribute.id]}
-                  variants={values}
-                  onChange={(value) => handelSelectOption(attribute.id, value)}
-                />
+              <span key={attribute.id + attribute.name} className={styles.productOptionLabel}>
+                {attribute.name}
+              </span>
+
+              {{
+                TILE: (
+                  <ProductOptionsTiles selectedOptions={selectedOptions} option={option} onClick={handelSelectOption} />
+                ),
+                IMAGE: null,
+                DROPDOWN: (
+                  <InputSelect
+                    name={attribute.id.toString()}
+                    label={attribute.name}
+                    currentValue={selectedOptions[attribute.id]}
+                    variants={values}
+                    onChange={(value) => handelSelectOption(attribute.id, value as SelectVariant)}
+                  />
+                ),
+                CHOICE: (
+                  <SelectTabs
+                    label={attribute.name}
+                    value={selectedOptions[attribute.id]}
+                    variants={values}
+                    onChange={(value) => handelSelectOption(attribute.id, value)}
+                  />
+                ),
+              }[display?.display_type] ?? (
+                <>
+                  {values.length > 5 ? (
+                    <InputSelect
+                      name={attribute.id.toString()}
+                      label={attribute.name}
+                      currentValue={selectedOptions[attribute.id]}
+                      variants={values}
+                      onChange={(value) => handelSelectOption(attribute.id, value as SelectVariant)}
+                    />
+                  ) : (
+                    <SelectTabs
+                      value={selectedOptions[attribute.id]}
+                      variants={values}
+                      onChange={(value) => handelSelectOption(attribute.id, value)}
+                    />
+                  )}
+                </>
               )}
             </div>
           );

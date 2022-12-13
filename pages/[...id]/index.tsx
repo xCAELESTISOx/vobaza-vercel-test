@@ -126,9 +126,11 @@ export default function Catalog({
   return (
     <>
       <Head>
-        {category.seo_title && <title>{currentTag?.title || category.seo_title}</title>}
-        {category.keywords && <meta name="keywords" content={currentTag?.keywords || category.keywords} />}
-        {category.seo_description && (
+        {(category.seo_title || currentTag?.title) && <title>{currentTag?.title || category.seo_title}</title>}
+        {(category.keywords || currentTag?.keywords) && (
+          <meta name="keywords" content={currentTag?.keywords || category.keywords} />
+        )}
+        {(category.seo_description || currentTag?.description) && (
           <meta name="description" content={currentTag?.description || category.seo_description} />
         )}
       </Head>
@@ -145,11 +147,8 @@ export default function Catalog({
               goods={products}
               meta={meta}
             />
-            {(category.description || currentTag?.description) && (
-              <div
-                className="seoText"
-                dangerouslySetInnerHTML={{ __html: currentTag?.description || category.description }}
-              />
+            {category.description && (
+              <div className="seoText" dangerouslySetInnerHTML={{ __html: category.description }} />
             )}
           </div>
         </section>

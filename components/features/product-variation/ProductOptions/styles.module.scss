@@ -2,7 +2,15 @@
   padding-top: 20px;
 }
 .productOption {
-    &:not(:last-child) {
-      margin-bottom: 20px;
-    }
+  &:not(:last-child) {
+    margin-bottom: 20px;
   }
+}
+
+.productOptionLabel {
+  margin-bottom: 8px;
+
+  font-size: 12px;
+  line-height: 150%;
+  color: #b3b3b3;
+}

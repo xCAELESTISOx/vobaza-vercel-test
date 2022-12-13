@@ -6,7 +6,7 @@ import styles from './styles.module.scss';
 import { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 
 type SelectTabs = {
-  label: string;
+  label?: string;
   value: null | Variant;
   variants: Variant[];
   keyField?: string;

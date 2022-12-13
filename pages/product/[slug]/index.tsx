@@ -195,7 +195,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                   </div>
                 </div>
 
-                {selectedOptions && selectedOptions && (
+                {selectedOptions && (
                   <div className={styles.productOptionList}>
                     <div className={styles.productOption}>
                       <ProductVariants
