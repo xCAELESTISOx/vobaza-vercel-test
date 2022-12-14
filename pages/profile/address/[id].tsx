@@ -1,13 +1,13 @@
 import { GetServerSideProps } from 'next';
 
-import checkAuth from 'assets/api/auth';
+import checkAuth from 'app/api/auth';
 import type { IAddressFull } from 'src/models/IAddress';
 
 import ProfileSidebar from '../../../components/Profile/Sidebar';
 import { AuthorizedAddressForm } from 'components/Profile/Addresses/Form/Presenters/AuthorizedForm';
 
-import styles from '../../../styles/Profile.module.scss';
-import { api } from 'assets/api';
+import styles from 'app/styles/Profile.module.scss';
+import { api } from 'app/api';
 
 type Props = {
   address: IAddressFull;

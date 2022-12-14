@@ -12,8 +12,8 @@ import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox';
 import { Title } from '@nebo-team/vobaza.ui.title';
 import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone';
 
-import styles from '../../../styles/modules/inline-modal.module.scss';
-import { api } from '../../../assets/api';
+import styles from 'app/styles/modules/inline-modal.module.scss';
+import { api } from '../../../app/api';
 
 interface Auth {
   name: string;

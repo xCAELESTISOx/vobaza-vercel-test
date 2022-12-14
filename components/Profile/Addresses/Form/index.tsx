@@ -8,7 +8,7 @@ import type { ElevatorType, IAddressFull } from 'src/models/IAddress';
 import type { IError } from 'src/models/IError';
 import { useClickOutside } from '@nebo-team/vobaza.ui.filter-select/dist/filter-select';
 import useDebounce from 'src/hooks/useDebounce';
-import { dadataApi } from 'assets/api/dadata';
+import { dadataApi } from 'app/api/dadata';
 import { useSelector } from 'src/hooks/useSelector';
 
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';

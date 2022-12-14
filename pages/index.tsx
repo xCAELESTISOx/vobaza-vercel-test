@@ -1,22 +1,20 @@
 import type { GetServerSideProps } from 'next';
 
-import normalizeGoods from '../assets/utils/normalizers/normalizeGoods';
-import normalizeCollections from '../assets/utils/normalizers/normalizeCollections';
+import normalizeGoods from '../shared/lib/normalizers/normalizeGoods';
+import normalizeCollections from '../shared/lib/normalizers/normalizeCollections';
 import type { Banner } from '../src/models/IBanner';
-import type { IGoodCard } from '../src/models/IGood';
-import type { ICategory } from '../src/models/ICategory';
+import type { IGoodCard } from '../entities/products/model/IGood';
+import type { ICategory } from '../entities/categories/model/ICategory';
 import type { ICollection } from '../src/models/ICollection';
 
 import Banners from '../components/MainPage/Banners';
 import PopularCategories from '../components/MainPage/CategoriesList';
 import Collections from '../components/MainPage/Collections';
 import Blog from '../components/MainPage/Blog';
-import GoodsList from '../components/Goods/List';
-import GoodsSwiper from '../components/Goods/Swiper';
-import CartModal from '../components/Goods/Modals/Cart/Cart';
+import { CartModal, ProductsCarousel, ProductsList } from '../widgets/products';
 
-import { api } from '../assets/api';
-import styles from '../styles/Home.module.scss';
+import { api } from '../app/api';
+import styles from 'app/styles/Home.module.scss';
 
 interface Props {
   banners: {
@@ -49,7 +47,7 @@ export default function Home({ banners, hits, newGoods, popularCategories, colle
           <div className="container">
             <h2 className={styles.sectionTitle}>Хиты продаж</h2>
           </div>
-          <GoodsSwiper goods={hits} />
+          <ProductsCarousel goods={hits} />
         </section>
       )}
       {collections && collections.length > 0 && (
@@ -64,7 +62,7 @@ export default function Home({ banners, hits, newGoods, popularCategories, colle
         <section>
           <div className={`${styles.newGoodsBlock} container`}>
             <h2 className={styles.sectionTitle}>Новые предложения </h2>
-            <GoodsList goods={newGoods} />
+            <ProductsList goods={newGoods} />
           </div>
         </section>
       )}

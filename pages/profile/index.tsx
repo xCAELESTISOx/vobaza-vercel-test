@@ -9,9 +9,9 @@ import ProfileSidebar from '../../components/Profile/Sidebar';
 import ProfileData from '../../components/Profile/Data';
 import ProfileOrderItem from '../../components/Profile/Order/Item';
 
-import checkAuth from '../../assets/api/auth';
-import { api } from '../../assets/api';
-import styles from '../../styles/Profile.module.scss';
+import checkAuth from '../../app/api/auth';
+import { api } from '../../app/api';
+import styles from 'app/styles/Profile.module.scss';
 
 interface Props {
   user: IProfile;

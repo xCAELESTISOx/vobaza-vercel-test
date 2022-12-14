@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { IGoodCompare } from 'src/models/IGood';
+import { IGoodCompare } from 'entities/products/model/IGood';
 import { AttributeDataType, IAttributeCompare } from 'src/models/IAttributes';
 
 import styles from './styles.module.scss';

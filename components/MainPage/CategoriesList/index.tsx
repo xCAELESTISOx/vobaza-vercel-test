@@ -2,9 +2,9 @@ import React, { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { ICategory } from '../../../src/models/ICategory';
+import { ICategory } from '../../../entities/categories/model/ICategory';
 import PlaceholderImage from 'assets/images/placeholder_small.png';
-import { getImageVariantProps } from 'assets/utils/images';
+import { getImageVariantProps } from 'shared/lib/images';
 
 import styles from './styles.module.scss';
 

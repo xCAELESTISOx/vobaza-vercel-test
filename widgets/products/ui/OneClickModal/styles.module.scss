@@ -1,0 +1,165 @@
+@import "~app/styles/modules/inline-modal.module.scss";
+
+.contentWrapper {
+    padding: 40px 48px 48px;
+    @media screen and (max-width: 767px) {
+        padding: 28px 16px 32px;
+    }
+}
+.modalItem {
+    display: flex;
+}
+.content {
+    display: flex;
+    width: 100%;
+}
+.imageBlock {
+    padding-right: 20px;
+}
+.imageWrapper {
+    position: relative;
+    width: 175px;
+    height: 175px;
+
+    svg {
+        width: 100%;
+        height: 100%;
+        color: #b3b3b3;
+    }
+
+    @media screen and (max-width: 590px) {
+        width: 160px;
+        height: 160px;
+    }
+}
+.modalItemBlock {
+}
+.info {
+    flex-grow: 1;
+    display: flex;
+    min-height: 175px;
+    @media screen and (max-width: 590px) {
+        flex-direction: column;
+        min-height: auto;
+    }
+}
+.form {
+    padding-left: 195px;
+
+    @media screen and (max-width: 590px) {
+        padding-left: 0;
+    }
+}
+.formItemWrapper {
+    margin-top: 16px;
+    display: flex;
+    .formHalfItem:first-of-type {
+        padding-right: 8px;
+    }
+    .formHalfItem:last-of-type {
+        padding-left: 8px;
+    }
+    @media screen and (max-width: 590px) {
+        flex-direction: column;
+        margin-top: 0;
+        .formHalfItem:first-of-type {
+            padding-right: 0;
+        }
+        .formHalfItem:last-of-type {
+            padding-left: 0;
+        }
+    }
+}
+.formItem {
+    width: 100%;
+}
+.formHalfItem {
+    width: 50%;
+    @media screen and (max-width: 590px) {
+        margin-top: 16px;
+        width: 100%;
+    }
+}
+.productNameWrapper {
+    flex-grow: 1;
+    @media screen and (max-width: 590px) {
+        flex-grow: unset;
+    }
+}
+.productId {
+    color: gray;
+    font-size: 12px;
+    margin-bottom: 6px;
+}
+.productName {
+    display: block;
+    margin-top: 4px;
+    font-size: 20px;
+    font-weight: 500;
+
+    @media screen and (max-width: 590px) {
+        margin-top: 0;
+        font-size: 15px;
+        line-height: 18px;
+    }
+}
+.productPriceWrapper {
+    margin-left: 24px;
+    margin-top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: -1px;
+    line-height: 1;
+
+    @media screen and (max-width: 767px) {
+        font-size: 24px;
+        margin-left: 20px;
+    }
+    @media screen and (max-width: 590px) {
+        font-size: 18px;
+        text-align: right;
+        margin-top: 12px;
+    }
+}
+.productDiscountPrice {
+    margin-top: 4px;
+
+    text-align: right;
+    font-size: 20px;
+    color: #808080;
+    font-weight: 400;
+    text-decoration: line-through;
+
+    @media screen and (max-width: 590px) {
+        font-size: 14px;
+        text-align: right;
+    }
+}
+.contentFooter {
+    display: flex;
+
+    @media screen and (max-width: 590px) {
+        flex-direction: column;
+    }
+}
+.buttonWrapper {
+    min-width: 40%;
+
+    @media screen and (max-width: 590px) {
+        margin-top: 16px;
+    }
+}
+.textWrapper {
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
+
+    font-size: 11px;
+    line-height: 13px;
+    color: gray;
+
+    @media screen and (max-width: 590px) {
+        margin-top: 16px;
+        padding-left: 0;
+    }
+}

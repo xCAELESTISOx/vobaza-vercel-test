@@ -11,7 +11,7 @@ import { HeaderTop } from './ui/HeaderTop';
 import { HeaderBody } from './ui/HeaderBody';
 import { HeaderMenu } from './ui/HeaderMenu';
 
-import { api } from 'assets/api';
+import { api } from 'app/api';
 import { getCartData } from './libs/getCartData';
 
 type Props = {

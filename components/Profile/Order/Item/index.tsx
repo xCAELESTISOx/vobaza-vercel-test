@@ -8,8 +8,8 @@ import {
   orderPaymentStatusDictionary,
   orderStatusDictionary,
 } from 'assets/dictionaries/order';
-import { formatOrderDate } from 'assets/utils/formatters';
-import { getImageVariantProps } from 'assets/utils/images';
+import { formatOrderDate } from 'shared/lib/formatters';
+import { getImageVariantProps } from 'shared/lib/images';
 import { EOrderDeliveryType } from '../../../../src/models/IOrder';
 import type { IOrder } from '../../../../src/models/IOrder';
 

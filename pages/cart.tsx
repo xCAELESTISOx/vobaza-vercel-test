@@ -4,13 +4,13 @@ import { GetServerSideProps } from 'next';
 import type { ICartGood } from '../components/Cart/ListItem';
 import { useDispatch } from 'src/hooks/useDispatch';
 import { setCartSize } from 'src/store/goods';
-import checkAuth from '../assets/api/auth';
+import checkAuth from '../app/api/auth';
 
 import CartList from '../components/Cart/List';
 import CartSidebar from '../components/Cart/Sidebar';
 
-import { api } from '../assets/api';
-import styles from '../styles/Cart.module.scss';
+import { api } from '../app/api';
+import styles from 'app/styles/Cart.module.scss';
 
 type Props = {
   withCountChange: boolean;

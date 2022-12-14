@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
-import styles from '../styles/Contacts.module.scss';
+import styles from 'app/styles/Contacts.module.scss';
 
-import Breadcrumbs, { BreadcrumbType } from '../components/Layout/Breadcrumbs';
+import Breadcrumbs, { BreadcrumbType } from 'shared/ui/Breadcrumbs';
 import StaticPagesMenu from '../components/StaticPages/Menu';
 
 import VkIcon from '../templates/Footer/Credentials/VkIcon';

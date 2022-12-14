@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Button } from '@nebo-team/vobaza.ui.button';
 
-import styles from '../../styles/BlogPost.module.scss';
+import styles from 'app/styles/BlogPost.module.scss';
 import stylesPayment from './styles.module.scss';
 
 const OrderPaymentInfo = ({ text }: { text: string }) => {

@@ -9,7 +9,7 @@ import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import CartListItem, { ICartGood } from '../ListItem';
 import CartItemChangeModal from '../Modal/CartItemChangeModal';
 
-import { api } from '../../../assets/api';
+import { api } from '../../../app/api';
 
 type Props = {
   initialGoods: ICartGood[];

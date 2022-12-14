@@ -1,16 +1,16 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 
-import normalizeGoods from '../../assets/utils/normalizers/normalizeGoods';
-import type { IGoodCard } from '../../src/models/IGood';
-import type { ICategory } from '../../src/models/ICategory';
+import normalizeGoods from '../../shared/lib/normalizers/normalizeGoods';
+import type { IGoodCard } from '../../entities/products/model/IGood';
+import type { ICategory } from '../../entities/categories/model/ICategory';
 
-import Breadcrumbs, { BreadcrumbType } from '../../components/Layout/Breadcrumbs';
+import Breadcrumbs, { BreadcrumbType } from 'shared/ui/Breadcrumbs';
 import CatalogList from '../../components/Catalog/List';
 import { GoodsBlock } from '../../templates/GoodsBlock';
 
-import styles from '../../styles/Home.module.scss';
-import { api } from '../../assets/api';
+import styles from 'app/styles/Home.module.scss';
+import { api } from '../../app/api';
 
 const breadcrumbs: BreadcrumbType[] = [
   {

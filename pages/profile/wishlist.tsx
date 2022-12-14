@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 
-import styles from '../../styles/Profile.module.scss';
-import { api } from '../../assets/api';
-import checkAuth from '../../assets/api/auth';
-import normalizeGoods from '../../assets/utils/normalizers/normalizeGoods';
+import styles from 'app/styles/Profile.module.scss';
+import { api } from '../../app/api';
+import checkAuth from '../../app/api/auth';
+import normalizeGoods from '../../shared/lib/normalizers/normalizeGoods';
 
 import ProfileSidebar from '../../components/Profile/Sidebar';
 import ProfileEmptyField from '../../components/Profile/EmptyField';
 import ProfileFavoriteItem, { FavoriteGood } from '../../components/Profile/Favorite/Item';
-import CartModal from '../../components/Goods/Modals/Cart/Cart';
+import { CartModal } from 'widgets/products';
 import { useDispatch } from 'src/hooks/useDispatch';
 import { setFavorites } from 'src/store/goods';
 

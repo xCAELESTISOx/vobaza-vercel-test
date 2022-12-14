@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { FavoriteGood } from 'components/Profile/Favorite/Item';
 import Cookies from 'js-cookie';
 
-import type { IGood, IGoodCard, IGoodCompare } from 'src/models/IGood';
+import type { IGood, IGoodCard, IGoodCompare } from 'entities/products/model/IGood';
 
 interface IGoodsState {
   favoriteIds: number[];

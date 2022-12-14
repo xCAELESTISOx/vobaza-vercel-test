@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type { ITimeInterval } from 'src/models/IOrder';
-import { formatOrderDate, formatOrderTimeInterval } from 'assets/utils/formatters';
+import { formatOrderDate, formatOrderTimeInterval } from 'shared/lib/formatters';
 
 import styles from './styles.module.scss';
 

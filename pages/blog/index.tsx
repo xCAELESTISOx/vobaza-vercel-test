@@ -1,10 +1,10 @@
-import { useAdvancedRouter } from 'assets/utils/useAdvancedRouter';
+import { useAdvancedRouter } from 'shared/lib/useAdvancedRouter';
 
 import { Pagination } from '@nebo-team/vobaza.ui.pagination/dist';
-import Breadcrumbs, { BreadcrumbType } from '../../components/Layout/Breadcrumbs';
+import Breadcrumbs, { BreadcrumbType } from 'shared/ui/Breadcrumbs';
 import BlogList from '../../components/Blog';
 
-import styles from '../../styles/Blog.module.scss';
+import styles from 'app/styles/Blog.module.scss';
 
 const breadcrumbs: BreadcrumbType[] = [
   {

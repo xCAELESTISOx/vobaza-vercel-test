@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import { api } from '../../assets/api';
+import { api } from '../../app/api';
 
-import type { IGood, IGoodCard, IGoodCompare } from '../models/IGood';
+import type { IGood, IGoodCard, IGoodCompare } from '../../entities/products/model/IGood';
 import type { FavoriteGood } from '../../components/Profile/Favorite/Item';
 import { addCartGood, setCartError } from 'src/store/goods';
 import { useDispatch } from './useDispatch';

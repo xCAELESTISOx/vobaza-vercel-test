@@ -2,7 +2,7 @@ import type { GetServerSideProps, NextPage } from 'next';
 
 import OrderPaymentInfo from 'components/OrderPaymentInfo';
 
-import { api } from 'assets/api';
+import { api } from 'app/api';
 
 const formatter = Intl.NumberFormat('ru-RU');
 

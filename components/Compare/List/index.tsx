@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 
-import type { IGoodCompare } from 'src/models/IGood';
+import type { IGoodCompare } from 'entities/products/model/IGood';
 import type { IAttributeCompare } from 'src/models/IAttributes';
 import { useDispatch } from 'src/hooks/useDispatch';
 import { removeCompare, setCompare } from 'src/store/goods';
@@ -13,7 +13,7 @@ import CompareListTable from './Table';
 import CompareListItem from './Item';
 
 import styles from './styles.module.scss';
-import { api } from 'assets/api';
+import { api } from 'app/api';
 
 type Props = {
   initialGoods: IGoodCompare[];

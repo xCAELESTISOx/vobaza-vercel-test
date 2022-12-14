@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React from 'react';
 
 import type { ICartGood } from 'components/Cart/ListItem';
-import { getImageVariantProps } from 'assets/utils/images';
+import { getImageVariantProps } from 'shared/lib/images';
 
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 import styles from './../styles.module.scss';

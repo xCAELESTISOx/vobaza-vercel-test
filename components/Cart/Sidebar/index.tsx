@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Link from 'next/link';
 
-import { toNumberWithSpaces } from '../../../assets/utils/formatters';
+import { toNumberWithSpaces } from 'shared/lib/formatters';
 
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 

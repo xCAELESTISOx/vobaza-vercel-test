@@ -1,10 +1,10 @@
 import { GetServerSideProps } from 'next';
 
-import { api } from 'assets/api';
-import checkAuth from 'assets/api/auth';
+import { api } from 'app/api';
+import checkAuth from 'app/api/auth';
 import { IAddress } from 'src/models/IAddress';
 
-import styles from '../../../styles/Profile.module.scss';
+import styles from 'app/styles/Profile.module.scss';
 
 import ProfileSidebar from '../../../components/Profile/Sidebar';
 import ProfileAddresses from '../../../components/Profile/Addresses';
@@ -34,9 +34,7 @@ export default function ProfileAddress({ addreses }: Props) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({
-  req,
-}) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => {
   let addreses = [];
 
   try {

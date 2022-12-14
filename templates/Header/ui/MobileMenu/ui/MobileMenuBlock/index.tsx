@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import type { IMenuItem } from 'src/models/IMenu';
-import { getLinkFromMenuItem } from 'assets/utils/getLinkFromMenuItem';
+import { getLinkFromMenuItem } from 'shared/lib/getLinkFromMenuItem';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 

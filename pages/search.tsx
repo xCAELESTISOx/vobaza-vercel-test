@@ -1,16 +1,16 @@
 import { GetServerSideProps } from 'next';
+import axios from 'axios';
 
-import { IGoodCard } from '../src/models/IGood';
-import { num2str } from '../assets/utils';
-import normalizeGoods from '../assets/utils/normalizers/normalizeGoods';
+import normalizeGoods from '../shared/lib/normalizers/normalizeGoods';
+import { formatAxiosError } from 'shared/lib/formatAxiosError';
+import { IGoodCard } from '../entities/products/model/IGood';
+import { num2str } from 'shared/lib';
 
-import Breadcrumbs from '../components/Layout/Breadcrumbs';
+import Breadcrumbs from 'shared/ui/Breadcrumbs';
 import { GoodsBlock } from '../templates/GoodsBlock';
 
-import styles from '../styles/Home.module.scss';
-import { api } from '../assets/api';
-import axios from 'axios';
-import { formatAxiosError } from 'assets/utils/formatAxiosError';
+import styles from 'app/styles/Home.module.scss';
+import { api } from '../app/api';
 
 const breadcrumbs = [
   {

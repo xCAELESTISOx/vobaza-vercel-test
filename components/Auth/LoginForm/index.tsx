@@ -3,8 +3,8 @@ import { useFormik } from 'formik';
 import Cookies from 'js-cookie';
 import * as yup from 'yup';
 
-import { api } from '../../../assets/api';
-import styles from '../../../styles/modules/inline-modal.module.scss';
+import { api } from '../../../app/api';
+import styles from 'app/styles/modules/inline-modal.module.scss';
 import { IError } from '../../../src/models/IError';
 
 import { Button } from '@nebo-team/vobaza.ui.button/dist';

@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 
-import type { ITarget } from 'components/UI/RadioTabsGroup';
+import type { ITarget } from 'shared/ui/RadioTabsGroup';
 import type { ICartGood } from 'components/Cart/ListItem';
 import type { IOrderAddress } from 'src/models/IOrder';
 import type { IAssemblyPrice } from 'src/models/IDelivery';
 import useDebounce from 'src/hooks/useDebounce';
 
 import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
-import { RadioTabsGroup } from 'components/UI/RadioTabsGroup';
-import Toggle from 'components/UI/Toggle';
+import { RadioTabsGroup } from 'shared/ui/RadioTabsGroup';
+import Toggle from 'shared/ui/Toggle';
 
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 
 import styles from './../styles.module.scss';
-import { api } from 'assets/api';
+import { api } from 'app/api';
 
 const ASSEMBLY_PRICE_ERROR = 'Временно невозможно посчитать стоимость сборки';
 

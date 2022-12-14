@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { ICategoryTag } from 'assets/api/modules/categories';
+import type { ITag } from 'entities/tags';
 
 interface ITagsState {
-  tags: ICategoryTag[];
-  currentTags: ICategoryTag[];
+  tags: ITag[];
+  currentTags: ITag[];
   hasInvalidTags: boolean;
 }
 
@@ -18,13 +18,13 @@ export const tagsSlice = createSlice({
   initialState,
   reducers: {
     /** Устанавливает базовые теги */
-    setTags: (state, action: PayloadAction<ICategoryTag[]>) => {
+    setTags: (state, action: PayloadAction<ITag[]>) => {
       state.tags = action.payload;
       state.currentTags = [];
       state.hasInvalidTags = false;
     },
     /** Устанавливает текущие (примененные) теги */
-    setCurrentTags: (state, action: PayloadAction<ICategoryTag[]>) => {
+    setCurrentTags: (state, action: PayloadAction<ITag[]>) => {
       state.currentTags = action.payload;
     },
     /** Указывает, что в урле есть невалидный тег */

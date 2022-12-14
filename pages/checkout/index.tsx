@@ -5,8 +5,8 @@ import { useFormik } from 'formik';
 import Cookies from 'js-cookie';
 
 import { useToggle } from 'src/hooks/useToggle';
-import checkAuth from '../../assets/api/auth';
-import { normalizeOrder } from 'assets/utils/normalizers/normalizeOrder';
+import checkAuth from '../../app/api/auth';
+import { normalizeOrder } from 'shared/lib/normalizers/normalizeOrder';
 import { EOrderDeliveryType } from '../../src/models/IOrder';
 import type { ILocalOrder } from '../../src/models/IOrder';
 import type { ICartGood } from '../../components/Cart/ListItem';
@@ -24,8 +24,8 @@ import OrderObtaining from '../../components/Cart/Order/Obtaining';
 import OrderPayment from '../../components/Cart/Order/Payment';
 import CartItemChangeModal from 'components/Cart/Modal/CartItemChangeModal';
 
-import { api } from '../../assets/api';
-import styles from '../../styles/Cart.module.scss';
+import { api } from '../../app/api';
+import styles from 'app/styles/Cart.module.scss';
 
 type Props = {
   price: number;

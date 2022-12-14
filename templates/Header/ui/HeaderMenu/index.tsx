@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import type { IMenuItem } from 'src/models/IMenu';
-import { getLinkFromMenuItem } from 'assets/utils/getLinkFromMenuItem';
+import { getLinkFromMenuItem } from 'shared/lib/getLinkFromMenuItem';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { CollapsingMenu } from '../CollapsingMenu';

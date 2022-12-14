@@ -4,28 +4,29 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import Head from 'next/head';
 
-import type { ICategoryTag } from 'assets/api/modules/categories';
-import type { ICategory } from '../../src/models/ICategory';
-import type { IFilter, IFilterFront, ITagFitlerFront } from '../../src/models/IFilter';
-import { getActiveFiltersFromQuery } from 'assets/utils/Category/filters/getActiveFiltersFromQuery';
-import { getCategoryBreadcrumps } from 'assets/utils/Category/getCategoryBreadcrumps';
-import { getParamsFromQuery } from 'assets/utils/Category/getParamsFromQuery';
-import { getProductsList } from 'assets/utils/Products/getProductsList';
-import { getTagsByUrl } from 'assets/utils/Category/getTagsByUrl';
-import { formatAxiosError } from 'assets/utils/formatAxiosError';
+import type { ITag, ITagFitlerFront } from 'entities/tags';
+import type { ICategory } from '../../entities/categories/model/ICategory';
+import type { IFilter, IFilterFront } from '../../entities/filters/model/IFilter';
+import { getActiveFiltersFromQuery } from 'shared/lib/categories/filters/getActiveFiltersFromQuery';
+import { getCategoryBreadcrumps } from 'shared/lib/categories/getCategoryBreadcrumps';
+import { getParamsFromQuery } from 'shared/lib/categories/getParamsFromQuery';
+import { getProductsList } from 'shared/lib/products/getProductsList';
+import { getTagsByUrl } from 'shared/lib/categories/getTagsByUrl';
+import { formatAxiosError } from 'shared/lib/formatAxiosError';
 import { useDispatch } from 'src/hooks/useDispatch';
+
+import Breadcrumbs from 'shared/ui/Breadcrumbs';
 
 import { markTagsAsInvalid, resetTags, setCurrentTags, setTags } from 'src/store/tags';
 import { setBaseFilters, setFilters, setCurrentFilters, markFiltersAsInvalid, resetFilters } from 'src/store/filters';
 
-import Breadcrumbs from '../../components/Layout/Breadcrumbs';
 import { GoodsBlock } from '../../templates/GoodsBlock';
-import CategoryHead from 'components/Category/CategoryHead';
+import { CategoryHeader } from 'widgets/categories';
 
-import styles from '../../styles/Home.module.scss';
-import { api } from '../../assets/api';
+import styles from 'app/styles/Home.module.scss';
+import { api } from '../../app/api';
 
-const getFlatTagsFilters = (tags: ICategoryTag[]) => {
+const getFlatTagsFilters = (tags: ITag[]) => {
   return tags.reduce((acc, tagItem) => {
     return [...acc, ...tagItem.filters];
   }, [] as ITagFitlerFront[]);
@@ -51,10 +52,10 @@ interface Props {
   category: ICategory;
   /** Доступные фильтры */
   filters: IFilter[];
-  tags: ICategoryTag[];
+  tags: ITag[];
   /** Базовые фильтры без учета примененных */
   baseFilters: IFilter[];
-  currentTags: ICategoryTag[];
+  currentTags: ITag[];
   /** Примененные фильтры */
   currentFilters: Record<number, IFilterFront> | null;
   params: Record<string, string | number | boolean | string[]>;
@@ -138,7 +139,7 @@ export default function Catalog({
         <Breadcrumbs breadcrumbs={breadcrumbs} />
         <section>
           <div className="container container--for-cards">
-            <CategoryHead category={category} currentTag={currentTag} isExpress={isExpress} />
+            <CategoryHeader category={category} currentTag={currentTag} isExpress={isExpress} />
             <GoodsBlock
               withFilters={Boolean(filters)}
               categorySlug={category.slug}
@@ -161,8 +162,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
   const { page, id, sort, city, ...activeFilters } = query;
   const activeQueryFilters = { ...activeFilters };
   let category: ICategory;
-  let tags: ICategoryTag[] = [];
-  let activeTags: ICategoryTag[] = [];
+  let tags: ITag[] = [];
+  let activeTags: ITag[] = [];
   let withInvalidTags = false;
 
   let baseFilters: IFilter[] = [];

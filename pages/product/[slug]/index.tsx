@@ -2,25 +2,26 @@ import SimpleReactLightbox from 'simple-react-lightbox';
 import React, { FC, useEffect, useState } from 'react';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 import Head from 'next/head';
 
-import { normalizeProductAttributes, normalizeProductInfo } from 'assets/utils/normalizers/normalizeGoods';
-import { normalizeProductVariation } from 'assets/utils/normalizers/Products/normalizeProductVariation';
-import { getProductBreadcrumbs } from 'assets/utils/Category/getCategoryBreadcrumps';
+import { normalizeProductAttributes, normalizeProductInfo } from 'shared/lib/normalizers/normalizeGoods';
+import { normalizeProductVariation } from 'shared/lib/normalizers/Products/normalizeProductVariation';
+import { getProductBreadcrumbs } from 'shared/lib/categories/getCategoryBreadcrumps';
 import { mockProduct } from '../../../src/mock/detailProductPage';
+import { formatAxiosError } from 'shared/lib/formatAxiosError';
 import { useFavorite } from '../../../src/hooks/useFavorite';
 import { useCart } from '../../../src/hooks/useCart';
 import { useDispatch } from 'src/hooks/useDispatch';
 import { setOneClickGood } from 'src/store/goods';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select/dist/input-select';
-import type { BreadcrumbType } from '../../../components/Layout/Breadcrumbs';
-import type { IGood, ProductVariantValue } from 'src/models/IGood';
+import type { IGood, ProductVariantValue } from 'entities/products';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
-import Breadcrumbs from '../../../components/Layout/Breadcrumbs';
+import Breadcrumbs, { BreadcrumbType } from 'shared/ui/Breadcrumbs';
 import { ProductImages } from '../../../components/DetailGoodPage/ProductImages';
-import { ProductVariants } from '../../../components/features/product-variation/ProductVariants';
+import { ProductVariants } from '../../../features/product-variation/ProductVariants';
 import { ProductInfoAccordion } from '../../../components/DetailGoodPage/ProductInfoAccordion';
 import { ProductAttributes } from '../../../components/DetailGoodPage/ProductAttributes';
 import { ProductDescription } from '../../../components/DetailGoodPage/ProductDescription';
@@ -29,17 +30,13 @@ import { ProductBadges } from '../../../components/DetailGoodPage/ProductBadges'
 import { ProductPrice } from '../../../components/DetailGoodPage/ProductPrice';
 import { ProductStock } from '../../../components/DetailGoodPage/ProductStock';
 import { ProductDelivery } from '../../../components/DetailGoodPage/ProductDelivery';
-import CartModal from '../../../components/Goods/Modals/Cart/Cart';
-import OneClick from 'components/Goods/Modals/OneClick/OneClick';
 import { ProductDocuments } from 'components/DetailGoodPage/ProductDocuments';
 import { ProductCompare } from 'components/DetailGoodPage/ProductCompare';
-import { ProductOptions } from 'components/features/product-variation/ProductOptions';
-import GoodsList from 'components/Goods/List';
+import { ProductOptions } from 'features/product-variation/ProductOptions';
+import { ProductsList, CartModal, OneClickModal } from 'widgets/products';
 
-import { api } from '../../../assets/api';
 import styles from './styles.module.scss';
-import { formatAxiosError } from 'assets/utils/formatAxiosError';
-import axios from 'axios';
+import { api } from '../../../app/api';
 
 const booleanVariantToText = (value: ProductVariantValue) => {
   return typeof value === 'boolean' ? (value ? 'YES' : 'NO') : value.toString();
@@ -153,7 +150,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
       <SimpleReactLightbox>
         <div className={styles.page}>
           <CartModal />
-          <OneClick />
+          <OneClickModal />
           <Breadcrumbs breadcrumbs={breadcrumbs} />
           <div className="container">
             <div className={styles.productInfo}>
@@ -265,7 +262,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
             {product.set && product.set.length > 0 && (
               <div className={styles.productBlockList}>
                 <h2 className={styles.productBlockTitle}>Товары из этой серии </h2>
-                <GoodsList goods={product.set} />
+                <ProductsList goods={product.set} />
               </div>
             )}
           </div>
@@ -276,7 +273,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
             {product.similar_products && product.similar_products.length > 0 && (
               <div className={styles.productBlockList}>
                 <h2 className={styles.productBlockTitle}>Похожие товары </h2>
-                <GoodsList goods={product.similar_products} />
+                <ProductsList goods={product.similar_products} />
               </div>
             )}
           </div>

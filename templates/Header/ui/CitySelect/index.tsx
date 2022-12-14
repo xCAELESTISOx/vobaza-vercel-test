@@ -11,7 +11,7 @@ import CitySelectModal from './Modal/index';
 import CitySelectQuestionModal from './Modal/question';
 
 import styles from './styles.module.scss';
-import { dadataApi } from 'assets/api/dadata';
+import { dadataApi } from 'app/api/dadata';
 
 type Props = {
   withoutFetch?: boolean;

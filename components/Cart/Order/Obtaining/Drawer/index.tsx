@@ -6,7 +6,7 @@ import { EOrderDeliveryType } from '../../../../../src/models/IOrder';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import Drawer from 'src/hoc/withDrawer';
 
-import { api } from 'assets/api';
+import { api } from 'app/api';
 import styles from './styles.module.scss';
 
 type Props = {

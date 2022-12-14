@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { IFilter, IFilterFront } from 'src/models/IFilter';
+import type { IFilter, IFilterFront } from 'entities/filters/model/IFilter';
 
 interface IFiltersState {
   baseFilters: IFilter[];

@@ -8,7 +8,7 @@ import styles from './styles.module.scss';
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone/dist';
-import { api } from '../../../assets/api';
+import { api } from '../../../app/api';
 import { IError } from '../../../src/models/IError';
 
 const validationSchema = yup.object({

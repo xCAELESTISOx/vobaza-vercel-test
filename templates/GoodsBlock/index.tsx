@@ -1,20 +1,20 @@
 import { FC, useEffect, useState } from 'react';
 
-import type { IGoodCard } from 'src/models/IGood';
-import { useAdvancedRouter } from 'assets/utils/useAdvancedRouter';
+import type { IGoodCard } from 'entities/products/model/IGood';
+import { useAdvancedRouter } from 'shared/lib/useAdvancedRouter';
 
 import { useSelector } from 'src/hooks/useSelector';
 
-import { CategoryTags } from 'components/Category/CategoryTags';
+import { CategoryTags } from 'widgets/categories/ui/CategoryTags';
 import { Pagination } from '@nebo-team/vobaza.ui.pagination/dist';
 import { Title } from '@nebo-team/vobaza.ui.title';
-import { CategoryFilters } from '../../components/Category/CategoryFilters';
-import CartModal from '../../components/Goods/Modals/Cart/Cart';
-import GoodsList from '../../components/Goods/List/index';
-import Toggle from '../../components/UI/Toggle';
+import { CategoryFilters } from '../../widgets/categories';
+import { CartModal } from '../../widgets/products';
+import { ProductsList } from '../../widgets/products';
+import Toggle from 'shared/ui/Toggle';
 
 import styles from './styles.module.scss';
-import Preloader from 'components/shared/Preloader';
+import Preloader from 'shared/ui/Preloader';
 
 type Props = {
   withoutExpress?: boolean;
@@ -131,7 +131,7 @@ export const GoodsBlock: FC<Props> = ({
         <Preloader />
       ) : goods.length > 0 && !isListLoading ? (
         <div className={`${styles.goodsList} ${isLoading ? styles.busy : ''}`}>
-          <GoodsList goods={goods} />
+          <ProductsList goods={goods} />
         </div>
       ) : (
         <div className={styles.goodsListEmpty}>По вашему запросу ничего не найдено</div>

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { RatingStars } from '../../../UI/RatingStars';
+import { RatingStars } from 'shared/ui/RatingStars';
 
 import styles from './styles.module.scss';
 

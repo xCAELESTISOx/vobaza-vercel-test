@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import Breadcrumbs, {
-  BreadcrumbType,
-} from '../../components/Layout/Breadcrumbs';
+import Breadcrumbs, { BreadcrumbType } from 'shared/ui/Breadcrumbs';
 
 import blogPosts from '../../src/mock/blog/blogPosts';
 
-import styles from '../../styles/BlogPost.module.scss';
+import styles from 'app/styles/BlogPost.module.scss';
 
 const baseBreadcrumbs: BreadcrumbType[] = [
   {
@@ -28,10 +26,7 @@ export default function BlogPost() {
 
     if (foundedPost) {
       setPost(foundedPost);
-      setBreadcrumbs([
-        ...baseBreadcrumbs,
-        { title: foundedPost.title, href: `/${foundedPost.slug}` },
-      ]);
+      setBreadcrumbs([...baseBreadcrumbs, { title: foundedPost.title, href: `/${foundedPost.slug}` }]);
     }
   }, [router]);
 
@@ -40,14 +35,9 @@ export default function BlogPost() {
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       {post && (
         <div className="container">
-          <h1 className={`${styles.sectionTitle} ${styles.blogPostTitle}`}>
-            {post.title}
-          </h1>
+          <h1 className={`${styles.sectionTitle} ${styles.blogPostTitle}`}>{post.title}</h1>
           <div className={styles.blogPostDate}>{post.created_at}</div>
-          <div
-            className={styles.blogPostContent}
-            dangerouslySetInnerHTML={{ __html: post.htmlContent }}
-          ></div>
+          <div className={styles.blogPostContent} dangerouslySetInnerHTML={{ __html: post.htmlContent }}></div>
         </div>
       )}
     </div>

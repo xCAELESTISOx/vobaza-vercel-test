@@ -1,7 +1,7 @@
-import type { ICategoryTag } from 'assets/api/modules/categories';
+import type { ITag } from 'entities/tags';
 
 // Теги для категории pryamye_divany
-export const mockCategoryTags: ICategoryTag[] = [
+export const mockCategoryTags: ITag[] = [
   {
     id: 369,
     type: 'FILTER',
@@ -13,14 +13,16 @@ export const mockCategoryTags: ICategoryTag[] = [
     description: 'здесь description',
     keywords: 'здесь keywords',
     page_title: 'здесь h1',
-    filters: [{
-      min: 0,
-      max: 500,
-      id: 218,
-      type: 'NUMERIC_RANGE',
-      value_type: 'NUMBER',
-      data_type: 'INTEGER'
-    }]
+    filters: [
+      {
+        min: 0,
+        max: 500,
+        id: 218,
+        type: 'NUMERIC_RANGE',
+        value_type: 'NUMBER',
+        data_type: 'INTEGER',
+      },
+    ],
   },
   {
     id: 370,
@@ -33,13 +35,15 @@ export const mockCategoryTags: ICategoryTag[] = [
     description: 'здесь description',
     keywords: 'здесь keywords',
     page_title: 'здесь h1',
-    filters: [{
-      min: 0,
-      max: 500,
-      id: 219,
-      type: 'NUMERIC_RANGE',
-      value_type: 'NUMBER',
-      data_type: 'DECIMAL'
-    }]
-  }
-]
+    filters: [
+      {
+        min: 0,
+        max: 500,
+        id: 219,
+        type: 'NUMERIC_RANGE',
+        value_type: 'NUMBER',
+        data_type: 'DECIMAL',
+      },
+    ],
+  },
+];

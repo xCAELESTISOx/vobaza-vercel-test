@@ -2,13 +2,13 @@ import { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { toNumberWithSpaces } from '../../../assets/utils/formatters';
+import { toNumberWithSpaces } from 'shared/lib/formatters';
 import { Image as IImage } from '../../../src/models/IImage';
-import { getImageVariantProps } from 'assets/utils/images';
+import { getImageVariantProps } from 'shared/lib/images';
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
-import ItemCounter from '../../UI/ItemCounter';
+import ItemCounter from 'shared/ui/ItemCounter';
 
 import styles from './styles.module.scss';
 

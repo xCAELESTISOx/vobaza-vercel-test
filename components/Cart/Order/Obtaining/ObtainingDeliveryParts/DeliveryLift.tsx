@@ -5,8 +5,8 @@ import type { ElevatorType } from 'src/models/IAddress';
 
 import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
 import { InputRadio } from '@nebo-team/vobaza.ui.inputs.input-radio/dist/input-radio';
-import ItemCounter from 'components/UI/ItemCounter';
-import Toggle from 'components/UI/Toggle';
+import ItemCounter from 'shared/ui/ItemCounter';
+import Toggle from 'shared/ui/Toggle';
 
 import styles from './../styles.module.scss';
 

@@ -5,10 +5,10 @@ import type { IOrderItemFull } from 'src/models/IOrder';
 import ProfileSidebar from '../../../components/Profile/Sidebar';
 import ProfileOrder from '../../../components/Profile/Order';
 
-import checkAuth from '../../../assets/api/auth';
-import { api } from '../../../assets/api';
+import checkAuth from '../../../app/api/auth';
+import { api } from '../../../app/api';
 
-import styles from '../../../styles/Profile.module.scss';
+import styles from 'app/styles/Profile.module.scss';
 
 type Props = {
   order: IOrderItemFull;

@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import router from 'next/router';
 
-import { api } from 'assets/api';
+import { api } from 'app/api';
 import { IAddress } from 'src/models/IAddress';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
@@ -45,12 +45,7 @@ const ProfileAddress: FC<Props> = ({ address, onDelete, onToggleDefault }) => {
   };
 
   return (
-    <div
-      key={address.address}
-      className={`${styles.profileAddress} ${
-        address.is_default ? styles.default : ''
-      }`}
-    >
+    <div key={address.address} className={`${styles.profileAddress} ${address.is_default ? styles.default : ''}`}>
       <div className={styles.profileAddressName}>{address.address}</div>
       <div className={styles.profileAddressButtons}>
         <div className={styles.profileAddressButton} onClick={editAddress}>

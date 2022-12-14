@@ -10,7 +10,7 @@ import { logout as logoutUser } from 'src/store/auth';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
-import { api } from '../../../assets/api';
+import { api } from '../../../app/api';
 import styles from './styles.module.scss';
 
 const ProfileSidebar: FC = () => {

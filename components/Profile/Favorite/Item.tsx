@@ -3,8 +3,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import type { Image as IImage } from '../../../src/models/IImage';
-import { getImageVariantProps } from 'assets/utils/images';
-import { toNumberWithSpaces } from '../../../assets/utils/formatters';
+import { getImageVariantProps } from 'shared/lib/images';
+import { toNumberWithSpaces } from 'shared/lib/formatters';
 import { useCart } from '../../../src/hooks/useCart';
 import { useDispatch } from 'src/hooks/useDispatch';
 import { removeFavorite } from 'src/store/goods';
@@ -14,7 +14,7 @@ import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 
-import { api } from '../../../assets/api';
+import { api } from '../../../app/api';
 import styles from './styles.module.scss';
 
 export type FavoriteGood = {

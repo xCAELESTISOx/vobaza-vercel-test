@@ -1,10 +1,10 @@
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 
-import checkAuth from '../../assets/api/auth';
-import { api } from '../../assets/api';
+import checkAuth from '../../app/api/auth';
+import { api } from '../../app/api';
 import { IProfile } from '../../components/Profile/Data';
-import styles from '../../styles/Profile.module.scss';
+import styles from 'app/styles/Profile.module.scss';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import ProfileSidebar from '../../components/Profile/Sidebar';
@@ -42,9 +42,7 @@ export default function ProfileWishlist({ user }) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({
-  req,
-}) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => {
   let user = null;
 
   try {

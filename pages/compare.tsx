@@ -1,15 +1,16 @@
 import { GetServerSideProps } from 'next';
-import styles from '../styles/Home.module.scss';
 
-import checkAuth from 'assets/api/auth';
-import { api } from 'assets/api';
-import { IGoodCompare } from 'src/models/IGood';
+import checkAuth from 'app/api/auth';
+import { IGoodCompare } from 'entities/products/model/IGood';
 import { IAttributeCompare } from 'src/models/IAttributes';
 
-import Breadcrumbs, { BreadcrumbType } from '../components/Layout/Breadcrumbs';
+import Breadcrumbs, { BreadcrumbType } from 'shared/ui/Breadcrumbs';
 import CompareList from '../components/Compare/List';
-import OneClick from 'components/Goods/Modals/OneClick/OneClick';
-import CartModal from 'components/Goods/Modals/Cart/Cart';
+import { OneClickModal } from 'widgets/products';
+import { CartModal } from 'widgets/products';
+
+import styles from 'app/styles/Home.module.scss';
+import { api } from 'app/api';
 
 const breadcrumbs: BreadcrumbType[] = [
   {
@@ -27,7 +28,7 @@ export default function Compare({ goods, attributes }) {
   return (
     <div>
       <CartModal />
-      <OneClick />
+      <OneClickModal />
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <div className="container">
         <h1 className={styles.sectionTitle}>Сравнить</h1>

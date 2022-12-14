@@ -2,9 +2,9 @@ import React from 'react';
 
 import type { ILocalOrderDelivery } from 'src/models/IOrder';
 import type { ICartGood } from 'components/Cart/ListItem';
-import { normalizeTimeSlots } from 'assets/utils/normalizers/normalizeTimeSlots';
+import { normalizeTimeSlots } from 'shared/lib/normalizers/normalizeTimeSlots';
 
-import { InputCalendar } from 'components/UI/InputCalendar';
+import { InputCalendar } from 'shared/ui/InputCalendar';
 import DeliveryItems from '../ObtainingDeliveryParts/DeliveryItems';
 import { InputSelect, Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 import { Button } from '@nebo-team/vobaza.ui.button';

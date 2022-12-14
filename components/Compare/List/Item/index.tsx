@@ -3,13 +3,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { useCart } from 'src/hooks/useCart';
-import { IGoodCompare } from 'src/models/IGood';
-import { toNumberWithSpaces } from 'assets/utils/formatters';
-import { getImageVariantProps } from 'assets/utils/images';
+import { IGoodCompare } from 'entities/products/model/IGood';
+import { toNumberWithSpaces } from 'shared/lib/formatters';
+import { getImageVariantProps } from 'shared/lib/images';
 import { useDispatch } from 'src/hooks/useDispatch';
 import { setOneClickGood } from 'src/store/goods';
 
-import ItemCounter from 'components/UI/ItemCounter';
+import ItemCounter from 'shared/ui/ItemCounter';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import { Button } from '@nebo-team/vobaza.ui.button';
 

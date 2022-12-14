@@ -8,9 +8,9 @@ import {
   orderPaymentStatusDictionary,
   orderStatusDictionary,
 } from 'assets/dictionaries/order';
-import { num2str } from '../../../assets/utils';
-import { formatOrderDate } from 'assets/utils/formatters';
-import { getImageVariantProps } from 'assets/utils/images';
+import { num2str } from 'shared/lib';
+import { formatOrderDate } from 'shared/lib/formatters';
+import { getImageVariantProps } from 'shared/lib/images';
 import { EOrderDeliveryType } from '../../../src/models/IOrder';
 import type { IOrderItemFull } from '../../../src/models/IOrder';
 

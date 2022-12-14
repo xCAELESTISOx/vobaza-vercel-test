@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import styles from '../styles/Partners.module.scss';
+import styles from 'app/styles/Partners.module.scss';
 
-import Breadcrumbs, { BreadcrumbType } from '../components/Layout/Breadcrumbs';
+import Breadcrumbs, { BreadcrumbType } from 'shared/ui/Breadcrumbs';
 import StaticPagesMenu from '../components/StaticPages/Menu';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 

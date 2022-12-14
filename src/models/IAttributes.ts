@@ -1,4 +1,4 @@
-import { CategoryStatus } from './ICategory';
+import { CategoryStatus } from '../../entities/categories/model/ICategory';
 
 import type { IDictionaryItem } from './IDictionary';
 

@@ -3,8 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import type { ICategory } from '../../../src/models/ICategory';
-import { getImageVariantProps } from 'assets/utils/images';
+import type { ICategory } from '../../../entities/categories/model/ICategory';
+import { getImageVariantProps } from 'shared/lib/images';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 

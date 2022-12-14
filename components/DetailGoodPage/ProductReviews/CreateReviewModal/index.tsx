@@ -4,13 +4,13 @@ import Image from 'next/image';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 
-import { toNumberWithSpaces } from '../../../../assets/utils/formatters';
+import { toNumberWithSpaces } from 'shared/lib/formatters';
 import PlaceholderImage from 'assets/images/placeholder.png';
 
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
 import Modal from '../../../../src/hoc/withModal';
-import { RatingStars } from '../../../UI/RatingStars';
+import { RatingStars } from 'shared/ui/RatingStars';
 import { UploadPhotos } from './UploadPhotos';
 
 import styles from './styles.module.scss';

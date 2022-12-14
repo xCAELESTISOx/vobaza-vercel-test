@@ -2,9 +2,9 @@ import Link from 'next/link';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 
-import styles from '../styles/Partners.module.scss';
+import styles from 'app/styles/Partners.module.scss';
 
-import Breadcrumbs, { BreadcrumbType } from '../components/Layout/Breadcrumbs';
+import Breadcrumbs, { BreadcrumbType } from 'shared/ui/Breadcrumbs';
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
 import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';

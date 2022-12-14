@@ -4,9 +4,9 @@ import type { ILocalOrder } from 'src/models/IOrder';
 import type { IAssemblyPrice } from 'src/models/IDelivery';
 import type { ICartGood } from 'components/Cart/ListItem';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
-import { normalizeTimeSlots } from 'assets/utils/normalizers/normalizeTimeSlots';
+import { normalizeTimeSlots } from 'shared/lib/normalizers/normalizeTimeSlots';
 
-import { InputCalendar } from 'components/UI/InputCalendar';
+import { InputCalendar } from 'shared/ui/InputCalendar';
 import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select';
 import { Button } from '@nebo-team/vobaza.ui.button';
 import DeliveryAssembly from '../ObtainingDeliveryParts/DeliveryAssembly';

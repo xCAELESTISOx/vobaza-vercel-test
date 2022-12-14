@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import type { IMenuItem } from 'src/models/IMenu';
-import { getLinkFromMenuItem } from 'assets/utils/getLinkFromMenuItem';
+import { getLinkFromMenuItem } from 'shared/lib/getLinkFromMenuItem';
 
 import MenuIcon from '../Icons/MenuIcon';
 

@@ -1,9 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
 
+import { formatDate } from 'shared/lib/normalizers/normalizeTimeSlots';
 import { useToggle } from 'src/hooks/useToggle';
-import { num2str } from '../../../../assets/utils';
 import useDebounce from 'src/hooks/useDebounce';
 import type { ICartGood } from '../../ListItem';
+import { num2str } from 'shared/lib';
 import type { IDeliveryVariants, ILocalOrder, ILocalOrderDelivery, ITimeInterval } from '../../../../src/models/IOrder';
 import type { IAssemblyPrice } from 'src/models/IDelivery';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select/dist';
@@ -14,9 +15,8 @@ import { ObtainingDelivery } from './ObtainingDelivery';
 import { ObtainingSelfDelivery } from './ObtainingSelfDelivery';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
-import { api } from 'assets/api';
+import { api } from 'app/api';
 import styles from './styles.module.scss';
-import { formatDate } from 'assets/utils/normalizers/normalizeTimeSlots';
 
 const getMinDate = (): Date => {
   const today = new Date();

@@ -2,8 +2,8 @@ import Cookies from 'js-cookie';
 
 import type { ICartGood } from 'components/Cart/ListItem';
 
-import checkAuth from 'assets/api/auth';
-import { api } from 'assets/api';
+import checkAuth from 'app/api/auth';
+import { api } from 'app/api';
 
 export const getCartData = async () => {
   let initialGoods: ICartGood[] = [];

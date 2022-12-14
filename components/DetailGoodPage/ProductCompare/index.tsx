@@ -7,7 +7,7 @@ import { useDispatch } from 'src/hooks/useDispatch';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 import styles from 'pages/product/[slug]/styles.module.scss';
-import { api } from 'assets/api';
+import { api } from 'app/api';
 import { useSelector } from 'src/hooks/useSelector';
 
 type Props = {
@@ -43,7 +43,7 @@ const ProductCompare: FC<Props> = ({ id }) => {
           console.error(error);
         }
       }
-      dispatch(addCompare(id))
+      dispatch(addCompare(id));
     }
     setIsLoading(false);
   };

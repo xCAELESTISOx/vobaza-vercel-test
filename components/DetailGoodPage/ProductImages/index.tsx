@@ -4,7 +4,7 @@ import { useLightbox } from 'simple-react-lightbox';
 import { Navigation, Thumbs, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { getImageVariantByFieldname } from '../../../assets/utils/images';
+import { getImageVariantByFieldname } from 'shared/lib/images';
 import PlaceholderImageFull from 'assets/images/placeholder.png';
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 import type { ImageVariant } from 'src/models/IImage';

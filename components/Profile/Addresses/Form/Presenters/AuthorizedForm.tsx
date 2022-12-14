@@ -1,4 +1,4 @@
-import { api } from 'assets/api';
+import { api } from 'app/api';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { ElevatorType, IAddressFull } from 'src/models/IAddress';
