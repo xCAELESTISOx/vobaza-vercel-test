@@ -49,17 +49,17 @@ const getProductVariants = (
   if (!displayableAttribute) return [];
 
   const parameters = Object.values(selectedOptions).map(({ code }) => code);
+
   const newProducts = products
     .filter(({ attributes }) => {
       return attributes.every((attr) => {
         if (displayableAttribute.attribute.id === attr.id) return true;
         return (
           Object.keys(selectedOptions).includes(attr.id.toString()) &&
-          parameters.includes(Array.isArray(attr.value) ? attr.value[0].toString() : attr.value.toString())
+          parameters.includes(Array.isArray(attr.value) ? String(attr.value[0]) : attr.value.toString())
         );
       });
     })
-    // .filter(({ id }) => productIds.includes(id))
     .map((product) => {
       const color = product.attributes.find((attr) => attr.id === displayableAttribute.attribute.id);
       return { ...product, color: color.value.toString() };
