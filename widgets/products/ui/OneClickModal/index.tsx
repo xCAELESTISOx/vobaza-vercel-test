@@ -19,6 +19,7 @@ import PlaceholderImage from 'assets/images/placeholder.png';
 
 import styles from './styles.module.scss';
 import { api } from 'app/api';
+import { closeOneClickModal } from 'src/store/goods';
 
 interface IOneClickOrder {
   name: string;
@@ -34,7 +35,7 @@ const initialValues = {
 
 const validationSchema = yup.object({
   name: yup.string(),
-  phone: yup.string().required('Обязательное поле'),
+  phone: yup.string().min(12, 'Номер должен содержать минимум 11 цифр').required('Обязательное поле'),
   email: yup.string().email('Невалидный адрес электронной почты'),
 });
 
@@ -53,7 +54,7 @@ const OneClickModal: FC = () => {
     };
 
     await api.createOneClickOrder(product.id, data);
-    dispatch({ type: 'closeOneClickModal' });
+    dispatch(closeOneClickModal());
   };
 
   const { values, errors, validateField, setFieldValue, handleSubmit, resetForm } = useFormik<IOneClickOrder>({
@@ -69,7 +70,7 @@ const OneClickModal: FC = () => {
   };
 
   const onClose = () => {
-    dispatch({ type: 'closeOneClickModal' });
+    dispatch(closeOneClickModal());
   };
 
   const handleBlur = async (e: any) => {
@@ -91,7 +92,7 @@ const OneClickModal: FC = () => {
   // Чтобы окно не оставалось открытым при открытии другой ссылки,
   // когда открыто окно "Заказать в один клик"
   useEffect(() => {
-    dispatch({ type: 'closeOneClickModal' });
+    dispatch(closeOneClickModal());
   }, [router.asPath]);
 
   if (product)
