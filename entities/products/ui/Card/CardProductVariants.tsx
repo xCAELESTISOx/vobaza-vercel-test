@@ -19,11 +19,12 @@ const CardProductVariants = ({ good, setCurrentImage }: Props) => {
     <>
       {good.variant_products?.length > 0 &&
         good.variant_products.slice(0, 4).map((item) => (
-          <Link key={item.id} href={`/product/${item.slug}-${item.sku}`}>
+          <Link key={item.id} href={`/product/${item.slug}-${item.sku}`} passHref>
             <a
               onMouseEnter={() => {
                 setCurrentImage(item);
               }}
+              target="_blank"
             >
               <div className={styles.cardVariant}>
                 {item.main_image ? (
@@ -40,8 +41,8 @@ const CardProductVariants = ({ good, setCurrentImage }: Props) => {
           </Link>
         ))}
       {good.variant_products && good.variant_products.length > 4 && (
-        <Link href={`/product/${good.slug}-${good.sku}`}>
-          <a>
+        <Link href={`/product/${good.slug}-${good.sku}`} passHref>
+          <a target="_blank">
             <div className={styles.cardVariant}>+{good.variant_products.length - 4}</div>
           </a>
         </Link>

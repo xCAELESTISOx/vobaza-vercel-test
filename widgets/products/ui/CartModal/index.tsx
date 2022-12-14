@@ -68,8 +68,10 @@ const CartModal: FC = () => {
                 <div className={styles.favoriteModalItemInfo}>
                   <div onClick={onClose}>
                     <div className={styles.favoriteModalItemSku}>Артикул: {cartGood.sku}</div>
-                    <Link href={`/product/${cartGood.slug}-${cartGood.sku}`}>
-                      <a className={styles.favoriteModalItemTitle}>{cartGood.name}</a>
+                    <Link href={`/product/${cartGood.slug}-${cartGood.sku}`} passHref>
+                      <a className={styles.favoriteModalItemTitle} target="_blank">
+                        {cartGood.name}
+                      </a>
                     </Link>
                   </div>
                   <div className={styles.favoriteModalItemPrice}>

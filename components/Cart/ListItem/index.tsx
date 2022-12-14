@@ -101,8 +101,8 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
   return (
     <div className={styles.cartListItem}>
       <div className={styles.cartListItemImageBlock}>
-        <Link href={`/product/${good.product.slug}-${good.product.sku}`}>
-          <a>
+        <Link href={`/product/${good.product.slug}-${good.product.sku}`} passHref>
+          <a target="_blank">
             {good.product.main_image ? (
               <Image
                 {...getImageVariantProps(good.product.main_image.variants, 'small')}
@@ -116,8 +116,10 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
         </Link>
       </div>
       <div className={styles.cartListItemContent}>
-        <Link href={`/product/${good.product.slug}-${good.product.sku}`}>
-          <a className={styles.cartListItemTitle}>{good.product.name}</a>
+        <Link href={`/product/${good.product.slug}-${good.product.sku}`} passHref>
+          <a className={styles.cartListItemTitle} target="_blank">
+            {good.product.name}
+          </a>
         </Link>
         <div className={styles.cartListItemButtons}>
           <ItemCounter minCount={1} itemCount={count} setItemCount={setCount} isLoading={isLoading} isWhite />

@@ -113,8 +113,9 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
               href={
                 currentImage ? `/product/${currentImage.slug}-${currentImage.sku}` : `/product/${good.slug}-${good.sku}`
               }
+              passHref
             >
-              <a>
+              <a target="_blank">
                 {good.main_image ? (
                   <Image
                     {...getImageVariantProps(
@@ -139,8 +140,8 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
             )}
           </div>
           <div className={styles.cardVariants}>
-            <Link href={`/product/${good.slug}-${good.sku}`}>
-              <a onMouseEnter={resetImage}>
+            <Link href={`/product/${good.slug}-${good.sku}`}  passHref>
+              <a onMouseEnter={resetImage} target="_blank">
                 <div className={styles.cardVariant}>
                   {good.main_image ? (
                     <Image
@@ -157,8 +158,8 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
             <CardProductVariants good={good} setCurrentImage={setCurrentImage} />
           </div>
           <div className={styles.cardContent}>
-            <Link href={`/product/${good.slug}-${good.sku}`}>
-              <a className={styles.cardTitle} title={good.name}>
+            <Link href={`/product/${good.slug}-${good.sku}`} passHref>
+              <a className={styles.cardTitle} title={good.name} target="_blank">
                 {good.name}
               </a>
             </Link>
