@@ -16,8 +16,24 @@ type Props = {
   closeMenu?: () => void;
 };
 
+// Разделяет категории по полю is_sticky для переноса
+const getGroupedCategories = (list: IMenuItem[] = []) => {
+  const res: IMenuItem[][] = [];
+  list.forEach(category => {
+    if (!category.is_sticky) {
+      res.push([category]);
+    } else {
+      if (!res.length) res.push([])
+      res[(res.length || 1) - 1].push(category)
+    }
+  })
+
+  return res;
+}
+
 export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
   const [currentMenuItem, setCurrentMenuItem] = useState<IMenuItem>(withRoot ? menu[0] : menu);
+  const [groupedCategories, setGroupedCategories] = useState<IMenuItem[][]>([]);
 
   const [allProducts, setAllProducts] = useState(false);
 
@@ -40,6 +56,12 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
   useEffect(() => {
     setCurrentMenuItem(withRoot ? menu[0] : menu);
   }, [menu]);
+
+  useEffect(() => {
+    if(!!currentMenuItem.children?.length) {
+      setGroupedCategories(getGroupedCategories(currentMenuItem.children));
+    }
+  }, [currentMenuItem])
 
   return (
     <div className={`${styles.collapsingMenu} container`}>
@@ -72,9 +94,17 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
         )}
         {Boolean(currentMenuItem.children?.length) && (
           <div className={`${styles.collapsingMenuBody} ${withRoot ? styles.big : ''}`}>
-            {currentMenuItem.children.map((block) => (
-              <CollapsingMenuItem key={block.id} menuBlock={block} closeMenu={closeMenu} />
-            ))}
+            <>
+              {groupedCategories.map((block, index) => {
+                return (
+                  <div key={'collapsingMenublock' + index}>
+                    {block.map((item) => (
+                      <CollapsingMenuItem key={item.id} menuBlock={item} closeMenu={closeMenu} />
+                    ))}
+                  </div>
+                );
+              })}
+            </>
           </div>
         )}
       </div>
