@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import styles from './styles.module.scss';
 
-import Accordeon from '../../../shared/ui/Accordeon';
+import Accordeon from 'shared/ui/Accordeon';
 
 const footerLinks = [
   {

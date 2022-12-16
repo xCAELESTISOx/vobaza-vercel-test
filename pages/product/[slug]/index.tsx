@@ -2,8 +2,8 @@ import SimpleReactLightbox from 'simple-react-lightbox';
 import React, { FC, useEffect, useState } from 'react';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 import Head from 'next/head';
+import axios from 'axios';
 
 import { normalizeProductAttributes, normalizeProductInfo } from 'shared/lib/normalizers/normalizeGoods';
 import { normalizeProductVariation } from 'shared/lib/normalizers/Products/normalizeProductVariation';
@@ -20,23 +20,22 @@ import type { IGood, ProductVariantValue } from 'entities/products';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import Breadcrumbs, { BreadcrumbType } from 'shared/ui/Breadcrumbs';
-import { ProductImages } from '../../../components/DetailGoodPage/ProductImages';
-import { ProductVariants } from '../../../features/product-variation/ProductVariants';
-import { ProductInfoAccordion } from '../../../components/DetailGoodPage/ProductInfoAccordion';
-import { ProductAttributes } from '../../../components/DetailGoodPage/ProductAttributes';
-import { ProductDescription } from '../../../components/DetailGoodPage/ProductDescription';
-import { ProductSeller } from '../../../components/DetailGoodPage/ProductSeller';
-import { ProductBadges } from '../../../components/DetailGoodPage/ProductBadges';
-import { ProductPrice } from '../../../components/DetailGoodPage/ProductPrice';
-import { ProductStock } from '../../../components/DetailGoodPage/ProductStock';
-import { ProductDelivery } from '../../../components/DetailGoodPage/ProductDelivery';
+import { ProductImages } from 'components/DetailGoodPage/ProductImages';
+import { ProductInfoAccordion } from 'components/DetailGoodPage/ProductInfoAccordion';
+import { ProductAttributes } from 'components/DetailGoodPage/ProductAttributes';
+import { ProductDescription } from 'components/DetailGoodPage/ProductDescription';
+import { ProductSeller } from 'components/DetailGoodPage/ProductSeller';
+import { ProductBadges } from 'components/DetailGoodPage/ProductBadges';
+import { ProductPrice } from 'components/DetailGoodPage/ProductPrice';
+import { ProductStock } from 'components/DetailGoodPage/ProductStock';
+import { ProductDelivery } from 'components/DetailGoodPage/ProductDelivery';
 import { ProductDocuments } from 'components/DetailGoodPage/ProductDocuments';
 import { ProductCompare } from 'components/DetailGoodPage/ProductCompare';
-import { ProductOptions } from 'features/product-variation/ProductOptions';
-import { ProductsList, CartModal, OneClickModal } from 'widgets/products';
+import { ProductsList, CartModal, OneClickModal, ProductOptions } from 'widgets/products';
+import { ProductVariants } from 'features/product-variation';
 
 import styles from './styles.module.scss';
-import { api } from '../../../app/api';
+import { api } from 'app/api';
 
 const booleanVariantToText = (value: ProductVariantValue) => {
   return typeof value === 'boolean' ? (value ? 'YES' : 'NO') : value.toString();

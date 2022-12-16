@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 
-import type { IFilterFront } from 'entities/filters/model/IFilter';
-
-import { ActiveFilterLabel } from '../../../../entities/filters/ui/ActiveFilterLabel';
+import type { IFilterFront } from 'entities/filters';
+import { ActiveFilterLabel } from 'entities/filters';
 
 import styles from './styles.module.scss';
 

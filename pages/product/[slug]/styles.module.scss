@@ -171,7 +171,6 @@
     line-height: 34px;
   }
 }
-
 .productSubinfo {
   margin-top: 4px;
 
@@ -182,6 +181,9 @@
 
 .productOptionList {
   composes: productInfoShort;
+}
+.productOption {
+  margin-bottom: 20px;
 }
 
 .productInfoBlock {

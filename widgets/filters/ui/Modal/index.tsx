@@ -5,7 +5,7 @@ import type { IFilter, IFilterFront } from '../../../../entities/filters/model/I
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import Accordeon from '../../../../shared/ui/Accordeon';
-import { Filter } from '../../../../entities/filters/ui/Filter';
+import { Filter } from '../../../../entities/filters';
 
 import styles from './styles.module.scss';
 
