@@ -97,7 +97,7 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
             <>
               {groupedCategories.map((block, index) => {
                 return (
-                  <div key={'collapsingMenublock' + index}>
+                  <div key={'collapsingMenublock' + index} className={styles.collapsingMenuItem}>
                     {block.map((item) => (
                       <CollapsingMenuItem key={item.id} menuBlock={item} closeMenu={closeMenu} />
                     ))}

@@ -41,6 +41,10 @@
   }
 }
 
+.collapsingMenuItem {
+  min-height: 100%;
+}
+
 .rootMenu {
   display: flex;
   flex-direction: column;
