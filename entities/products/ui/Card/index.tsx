@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useLayoutEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -61,7 +61,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
 
   //Обработка случая когда на строке остается один элемент и при ховере он теряет высоту
   const setCardHeight = () => {
-    cardContainerRef.current.style.minHeight = `${cardRef.current.clientHeight}px`;
+    cardContainerRef.current.style.minHeight = `${cardRef.current.clientHeight + 0.5}px`;
   };
 
   // const renderFeatureValue = (feature: { attribute: IAttribute; value: any }) => {
@@ -83,7 +83,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
   //   return feature.value;
   // };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isFixedHeight) {
       setCardHeight();
       window.addEventListener('resize', setCardHeight);
@@ -140,19 +140,27 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
             )}
           </div>
           <div className={styles.cardVariants}>
-            <Link href={`/product/${good.slug}-${good.sku}`}  passHref>
-              <a onMouseEnter={resetImage} target="_blank">
-                <div className={styles.cardVariant}>
-                  {good.main_image ? (
-                    <Image
-                      {...getImageVariantProps(good.main_image.variants, 'extra_small')}
-                      objectFit="contain"
-                      alt={good.name}
-                    />
-                  ) : (
-                    <Image src={PlaceholderImageSmall} objectFit="contain" alt="" unoptimized />
-                  )}
-                </div>
+            <Link href={`/product/${good.slug}-${good.sku}`} passHref>
+              <a onMouseEnter={resetImage} target="_blank" className={styles.cardVariant}>
+                {good.main_image ? (
+                  <Image
+                    {...getImageVariantProps(good.main_image.variants, 'extra_small')}
+                    objectFit="contain"
+                    alt={good.name}
+                    className={styles.variantImg}
+                    height="100%"
+                    width="100%"
+                  />
+                ) : (
+                  <Image
+                    src={PlaceholderImageSmall}
+                    objectFit="contain"
+                    alt=""
+                    height="100%"
+                    width="100%"
+                    unoptimized
+                  />
+                )}
               </a>
             </Link>
             <CardProductVariants good={good} setCurrentImage={setCurrentImage} />

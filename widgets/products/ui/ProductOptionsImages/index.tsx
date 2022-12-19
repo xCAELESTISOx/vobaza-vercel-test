@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 
 import type { IVariantProduct } from 'entities/products';
+import { useToggle } from 'src/hooks/useToggle';
 
 import { ProductOptionsImage } from 'features/product-variation/ui/ProductOptionsImage';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 import styles from './styles.module.scss';
-import { useToggle } from 'src/hooks/useToggle';
 
 const ITEMS_LIMIT = 4;
 
