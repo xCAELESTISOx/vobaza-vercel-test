@@ -4,8 +4,8 @@ import Cookies from 'js-cookie';
 import Link from 'next/link';
 
 import type { IMenuItem } from 'src/models/IMenu';
-import { useDispatch } from 'src/hooks/useDispatch';
-import { useSelector } from 'src/hooks/useSelector';
+import { useDispatch } from 'shared/lib/hooks/useDispatch';
+import { useSelector } from 'shared/lib/hooks/useSelector';
 import { toogleMobCatalog } from 'src/store/goods';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';

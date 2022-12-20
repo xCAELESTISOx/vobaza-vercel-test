@@ -2,11 +2,11 @@ import { FC, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { useCart } from 'src/hooks/useCart';
+import { useCart } from 'shared/lib/hooks/useCart';
 import { IGoodCompare } from 'entities/products/model/IGood';
 import { toNumberWithSpaces } from 'shared/lib/formatters';
 import { getImageVariantProps } from 'shared/lib/images';
-import { useDispatch } from 'src/hooks/useDispatch';
+import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { setOneClickGood } from 'src/store/goods';
 
 import ItemCounter from 'shared/ui/ItemCounter';

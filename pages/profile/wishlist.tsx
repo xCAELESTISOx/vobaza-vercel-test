@@ -10,7 +10,7 @@ import ProfileSidebar from '../../components/Profile/Sidebar';
 import ProfileEmptyField from '../../components/Profile/EmptyField';
 import ProfileFavoriteItem, { FavoriteGood } from '../../components/Profile/Favorite/Item';
 import { CartModal } from 'widgets/products';
-import { useDispatch } from 'src/hooks/useDispatch';
+import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { setFavorites } from 'src/store/goods';
 
 interface Props {

@@ -2,9 +2,9 @@ import React, { FC, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
-import { useDispatch } from 'src/hooks/useDispatch';
+import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { setCity as setUserCity } from 'src/store/auth';
-import { useSelector } from 'src/hooks/useSelector';
+import { useSelector } from 'shared/lib/hooks/useSelector';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import CitySelectModal from './Modal/index';

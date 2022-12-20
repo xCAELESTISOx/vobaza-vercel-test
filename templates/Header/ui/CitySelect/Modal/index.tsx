@@ -2,7 +2,7 @@ import { useClickOutside } from '@nebo-team/vobaza.ui.filter-select/dist/filter-
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { dadataApi } from 'app/api/dadata';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import useDebounce from 'src/hooks/useDebounce';
+import useDebounce from 'shared/lib/hooks/useDebounce';
 
 import styles from './styles.module.scss';
 

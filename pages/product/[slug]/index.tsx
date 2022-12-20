@@ -10,9 +10,9 @@ import { normalizeProductVariation } from 'shared/lib/normalizers/Products/norma
 import { getProductBreadcrumbs } from 'shared/lib/categories/getCategoryBreadcrumps';
 import { mockProduct } from '../../../src/mock/detailProductPage';
 import { formatAxiosError } from 'shared/lib/formatAxiosError';
-import { useFavorite } from '../../../src/hooks/useFavorite';
-import { useCart } from '../../../src/hooks/useCart';
-import { useDispatch } from 'src/hooks/useDispatch';
+import { useFavorite } from '../../../shared/lib/hooks/useFavorite';
+import { useCart } from '../../../shared/lib/hooks/useCart';
+import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { setOneClickGood } from 'src/store/goods';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select/dist/input-select';
 import type { IGood, ProductVariantValue } from 'entities/products';
@@ -38,7 +38,7 @@ import styles from './styles.module.scss';
 import { api } from 'app/api';
 
 const booleanVariantToText = (value: ProductVariantValue) => {
-  return typeof value === 'boolean' ? (value ? 'YES' : 'NO') : value.toString();
+  return typeof value === 'boolean' ? (value ? 'true' : 'false') : value.toString();
 };
 
 interface DetailGoodPage {
@@ -49,6 +49,7 @@ interface DetailGoodPage {
 const getProductOptions = (variation: IGood['variants'], productId: number): Record<number, Variant> | null => {
   if (!variation?.variants) return null;
   const { products } = variation;
+
   const currentProduct = products.find(({ id }) => id === productId);
   const options = {};
 
@@ -196,12 +197,13 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
                     <div className={styles.productOption}>
                       <ProductVariants
                         productId={product.id}
-                        selectedOptions={selectedOptions}
+                        // selectedOptions={selectedOptions}
                         productVariants={product.variants.products}
                         attributesVariants={product.variants.variants}
                       />
                     </div>
                     <ProductOptions
+                      currentProductId={product.id}
                       variants={productVariants}
                       selectedOptions={selectedOptions}
                       handelSelectOption={handelSelectOption}
@@ -308,10 +310,7 @@ export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({ q
     const breadcrumbs = getProductBreadcrumbs(ancestors, product.main_category);
 
     return {
-      props: {
-        product,
-        breadcrumbs,
-      },
+      props: { product, breadcrumbs },
     };
   } catch (err) {
     if (axios.isAxiosError(err)) {

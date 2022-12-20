@@ -5,8 +5,8 @@ import type { IFilterFront } from '../../../../entities/filters/model/IFilter';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 import { GoodsSortTypes } from 'entities/products/model/IGood';
 import { useAdvancedRouter } from 'shared/lib/useAdvancedRouter';
-import { useToggle } from 'src/hooks/useToggle';
-import { useSelector } from 'src/hooks/useSelector';
+import { useToggle } from 'shared/lib/hooks/useToggle';
+import { useSelector } from 'shared/lib/hooks/useSelector';
 import { getQueryFromFilters } from '../../../filters/lib/getQueryFromFilters';
 
 import { CurrentFiltersList } from 'widgets/filters';

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import Cookies from 'js-cookie';
 
-import { useToggle } from 'src/hooks/useToggle';
+import { useToggle } from 'shared/lib/hooks/useToggle';
 import checkAuth from '../../app/api/auth';
 import { normalizeOrder } from 'shared/lib/normalizers/normalizeOrder';
 import { EOrderDeliveryType } from '../../src/models/IOrder';
@@ -13,9 +13,9 @@ import type { ICartGood } from '../../components/Cart/ListItem';
 import type { IProfile } from '../../components/Profile/Data';
 import type { IAddressFull } from 'src/models/IAddress';
 import type { IReceiver } from '../../components/Cart/Order/Receiver';
-import { useDispatch } from 'src/hooks/useDispatch';
+import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { setCartSize } from 'src/store/goods';
-import { useSelector } from 'src/hooks/useSelector';
+import { useSelector } from 'shared/lib/hooks/useSelector';
 
 import CartSidebar from '../../components/Cart/Sidebar';
 import OrderReceiver from '../../components/Cart/Order/Receiver';

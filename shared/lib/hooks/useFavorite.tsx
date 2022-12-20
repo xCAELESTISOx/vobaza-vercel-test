@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import type { IGood, IGoodCard } from '../../entities/products/model/IGood';
+import type { IGood, IGoodCard } from '../../../entities/products/model/IGood';
 import { addFavorite, removeFavorite } from 'src/store/goods';
 import { useSelector } from './useSelector';
 import { useDispatch } from './useDispatch';
 
-import { api } from '../../app/api/index';
+import { api } from '../../../app/api/index';
 
 export const useFavorite = (good: IGood | IGoodCard) => {
   const [currentFavorite, setCurrentFavorite] = useState(false);

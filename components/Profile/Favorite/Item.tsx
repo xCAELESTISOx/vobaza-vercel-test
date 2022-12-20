@@ -5,8 +5,8 @@ import Image from 'next/image';
 import type { Image as IImage } from '../../../src/models/IImage';
 import { getImageVariantProps } from 'shared/lib/images';
 import { toNumberWithSpaces } from 'shared/lib/formatters';
-import { useCart } from '../../../src/hooks/useCart';
-import { useDispatch } from 'src/hooks/useDispatch';
+import { useCart } from '../../../shared/lib/hooks/useCart';
+import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { removeFavorite } from 'src/store/goods';
 
 import { Button } from '@nebo-team/vobaza.ui.button/dist';

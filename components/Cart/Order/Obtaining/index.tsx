@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 
 import { formatDate } from 'shared/lib/normalizers/normalizeTimeSlots';
-import { useToggle } from 'src/hooks/useToggle';
-import useDebounce from 'src/hooks/useDebounce';
+import { useToggle } from 'shared/lib/hooks/useToggle';
+import useDebounce from 'shared/lib/hooks/useDebounce';
 import type { ICartGood } from '../../ListItem';
 import { num2str } from 'shared/lib';
 import type { IDeliveryVariants, ILocalOrder, ILocalOrderDelivery, ITimeInterval } from '../../../../src/models/IOrder';

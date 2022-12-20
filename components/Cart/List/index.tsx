@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import styles from './styles.module.scss';
-import { useDispatch } from 'src/hooks/useDispatch';
+import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { addToCartSize } from 'src/store/goods';
 
 import { Button } from '@nebo-team/vobaza.ui.button/dist';

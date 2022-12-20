@@ -13,7 +13,7 @@ import { getParamsFromQuery } from 'shared/lib/categories/getParamsFromQuery';
 import { getProductsList } from 'shared/lib/products/getProductsList';
 import { getTagsByUrl } from 'shared/lib/categories/getTagsByUrl';
 import { formatAxiosError } from 'shared/lib/formatAxiosError';
-import { useDispatch } from 'src/hooks/useDispatch';
+import { useDispatch } from 'shared/lib/hooks/useDispatch';
 
 import Breadcrumbs from 'shared/ui/Breadcrumbs';
 

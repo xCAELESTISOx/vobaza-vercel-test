@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 
 import type { ICartGood } from '../components/Cart/ListItem';
-import { useDispatch } from 'src/hooks/useDispatch';
+import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { setCartSize } from 'src/store/goods';
 import checkAuth from '../app/api/auth';
 

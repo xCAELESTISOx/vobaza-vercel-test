@@ -4,13 +4,13 @@ import Image from 'next/image';
 
 // import type { IAttribute } from 'src/models/IAttributes';
 import type { IGoodCard } from '../../model/IGood';
-import { useFavorite } from '../../../../src/hooks/useFavorite';
+import { useFavorite } from '../../../../shared/lib/hooks/useFavorite';
 import { toNumberWithSpaces } from 'shared/lib/formatters';
 import { getImageVariantProps } from 'shared/lib/images';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
-import { useCart } from '../../../../src/hooks/useCart';
+import { useCart } from '../../../../shared/lib/hooks/useCart';
 import CardProductVariants from './CardProductVariants';
 
 import PlaceholderImage from 'assets/images/placeholder.png';

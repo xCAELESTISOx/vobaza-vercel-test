@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 import type { IVariantProduct } from 'entities/products';
-import { useToggle } from 'src/hooks/useToggle';
+import { useToggle } from 'shared/lib/hooks/useToggle';
 
 import { ProductOptionsImage } from 'features/product-variation/ui/ProductOptionsImage';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
@@ -12,11 +12,11 @@ const ITEMS_LIMIT = 4;
 
 type Props = {
   itemsLimit: number;
-  currentValue?: string;
+  currentProductId?: string | number;
   items: (IVariantProduct & { tooltipText: string })[];
 };
 
-const ProductOptionsImages: FC<Props> = ({ itemsLimit, currentValue, items }) => {
+const ProductOptionsImages: FC<Props> = ({ itemsLimit, currentProductId, items }) => {
   const [showMore, toggleShowMore] = useToggle(false);
 
   const limitedItems = [...items];
@@ -28,7 +28,7 @@ const ProductOptionsImages: FC<Props> = ({ itemsLimit, currentValue, items }) =>
     <div className={styles.variantsContainer}>
       <div className={styles.variantsGrid}>
         {(showMore ? items : limitedItems).map((item) => {
-          return <ProductOptionsImage key={item.tooltipText} item={item} active={item.tooltipText == currentValue} />;
+          return <ProductOptionsImage key={item.tooltipText} item={item} active={item.id == currentProductId} />;
         })}
         {showButton && (
           <button className={styles.variantsToggleBtn} onClick={toggleShowMore} aria-label="Показать больше вариаций">

@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 
 import type { IGoodCompare } from 'entities/products/model/IGood';
 import type { IAttributeCompare } from 'src/models/IAttributes';
-import { useDispatch } from 'src/hooks/useDispatch';
+import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { removeCompare, setCompare } from 'src/store/goods';
 
 import { Button } from '@nebo-team/vobaza.ui.button/dist';

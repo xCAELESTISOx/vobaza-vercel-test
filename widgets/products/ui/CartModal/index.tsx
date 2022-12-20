@@ -7,8 +7,8 @@ import type { IGood } from 'entities/products/model/IGood';
 import ModalLayout from '../../../../src/hoc/withModal';
 import PlaceholderImage from 'assets/images/placeholder.png';
 import { getImageVariantProps } from 'shared/lib/images';
-import { useDispatch } from 'src/hooks/useDispatch';
-import { useSelector } from 'src/hooks/useSelector';
+import { useDispatch } from 'shared/lib/hooks/useDispatch';
+import { useSelector } from 'shared/lib/hooks/useSelector';
 import { closeCartModal, setCartError } from 'src/store/goods';
 
 import { Button } from '@nebo-team/vobaza.ui.button/dist';

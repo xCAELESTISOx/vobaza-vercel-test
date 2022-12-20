@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import type { IGoodCard } from 'entities/products/model/IGood';
 import { useAdvancedRouter } from 'shared/lib/useAdvancedRouter';
 
-import { useSelector } from 'src/hooks/useSelector';
+import { useSelector } from 'shared/lib/hooks/useSelector';
 
 import { CategoryTags } from 'widgets/categories/ui/CategoryTags';
 import { Pagination } from '@nebo-team/vobaza.ui.pagination/dist';

@@ -1,4 +1,4 @@
-import { useState, useEffect, RefObject } from 'react';
+import { useState, useEffect, RefObject, useLayoutEffect } from 'react';
 
 interface Options {
   initialVal?: boolean;
@@ -17,7 +17,7 @@ export const useCollapse = <T extends HTMLElement = HTMLElement>(
   const [isOpen, setIsOpen] = useState(Boolean(initialVal));
   const [innerDuration, setInnerDuration] = useState(+duration || 200);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (ref.current) {
       ref.current.style.transition = `height ${innerDuration}ms ease-in-out`;
       ref.current.style.height = isOpen ? 'auto' : '0px';
@@ -37,7 +37,7 @@ export const useCollapse = <T extends HTMLElement = HTMLElement>(
 
   const setAuto = () => (ref.current.style.height = 'auto');
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     let timer: NodeJS.Timeout = null;
 
     requestAnimationFrame(() => {

@@ -3,8 +3,8 @@ import Cookies from 'js-cookie';
 import Link from 'next/link';
 import { FC } from 'react';
 
-import { useDispatch } from 'src/hooks/useDispatch';
-import { useSelector } from 'src/hooks/useSelector';
+import { useDispatch } from 'shared/lib/hooks/useDispatch';
+import { useSelector } from 'shared/lib/hooks/useSelector';
 import { setCartSize, setCompare, setFavorites } from 'src/store/goods';
 import { logout as logoutUser } from 'src/store/auth';
 

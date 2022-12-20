@@ -3,7 +3,7 @@ import React, { FC, ReactNode, useRef } from 'react';
 import styles from './styles.module.scss';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
-import { useCollapse } from '../../../src/hooks/useCollapse';
+import { useCollapse } from 'shared/lib/hooks/useCollapse';
 
 type Props = {
   children: ReactNode;
@@ -21,7 +21,7 @@ const ProductInfoAccordion: FC<Props> = ({ children, title, duration = 200, auto
 
   return (
     <div className={styles.accordionBlock}>
-      <div className={isOpen ? styles.accordionActive : styles.accordion} onClick={toggleOpen as any}>
+      <div className={isOpen ? styles.accordionActive : styles.accordion} onClick={toggleOpen}>
         <div className={styles.accordionTitle}>{title}</div>
         <div className={styles.accordionArrow}>
           <Icon name="SmallArrowDown" />

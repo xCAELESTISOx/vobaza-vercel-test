@@ -19,7 +19,7 @@ export const normalizeProductVariation = (
 
     switch (dataType) {
       case 'BOOLEAN':
-        code = val === true ? 'YES' : 'NO';
+        code = val === true ? 'true' : 'false';
         value = val === true ? 'Да' : 'Нет';
         break;
       // case 'MANY_FROM_MANY':

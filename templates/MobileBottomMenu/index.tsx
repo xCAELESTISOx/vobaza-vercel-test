@@ -2,8 +2,8 @@ import React, { FC, useState } from 'react';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 
-import { useSelector } from 'src/hooks/useSelector';
-import { useDispatch } from 'src/hooks/useDispatch';
+import { useSelector } from 'shared/lib/hooks/useSelector';
+import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { toogleMobCatalog } from 'src/store/goods';
 import ProfileMenu from 'components/Profile/Menu';
 import { toggleModal } from 'src/store/auth';

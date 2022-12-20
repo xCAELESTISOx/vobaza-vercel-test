@@ -11,12 +11,13 @@ import { SelectTabs } from 'shared/ui/SelectTabs';
 import styles from './styles.module.scss';
 
 type Props = {
+  currentProductId: string | number;
   variants: IGoodFront['variants'];
   selectedOptions: Record<number, Variant>;
   handelSelectOption: (id: string | number, value: Variant) => void;
 };
 
-export const ProductOptions: FC<Props> = ({ variants, selectedOptions, handelSelectOption }) => {
+export const ProductOptions: FC<Props> = ({ currentProductId, variants, selectedOptions, handelSelectOption }) => {
   const options = variants.variants.map((variant) => {
     // Сортировка по возрастанию/в алфавитном порядке
     const sortedValues = variant.values
@@ -36,30 +37,29 @@ export const ProductOptions: FC<Props> = ({ variants, selectedOptions, handelSel
     // Опции для селектов
     const values = sortedValues
       .filter((val) => {
+        if (!val.code) return false;
         // Проверка, может ли найтись товар при нажатии на данную опцию
-        return (
-          val.code !== null &&
-          variants.products.some(({ attributes }) => {
-            const attributesIds = attributes.map(({ id }) => id);
+        return variants.products.some(({ attributes }) => {
+          const attributesIds = attributes.map(({ id }) => id);
 
-            const attr = attributes.find(({ id }) => id === variant.attribute.id);
+          const attr = attributes.find(({ id }) => id === variant.attribute.id);
 
-            const options = { ...selectedOptions };
-            delete options[attr.id];
-            const parameters = Object.values(options).map(({ code }) => code);
-
-            // Проверка, есть ли в вариации другой товар с подходящими характеристиками
-            const canBeFound = [...parameters, val.code].every((param) => {
-              return attributes.some((attr) => {
-                return Array.isArray(attr.value)
-                  ? attr.value.map(String).includes(param.toString())
-                  : attr.value == param;
-              });
+          const options = { ...selectedOptions };
+          delete options[attr.id];
+          const parameters = Object.values(options).map(({ code }) => code);
+          const convertedVal =
+            variant.attribute.data_type === 'BOOLEAN' ? (val.code === 'YES' ? true : false) : val.code;
+          // Проверка, есть ли в вариации другой товар с подходящими характеристиками
+          const canBeFound = [...parameters, convertedVal].every((param) => {
+            return attributes.some((attr) => {
+              return Array.isArray(attr.value)
+                ? attr.value.map(String).includes(param.toString())
+                : attr.value == param;
             });
+          });
 
-            if (attributesIds.includes(attr.id) && canBeFound) return true;
-          })
-        );
+          if (attributesIds.includes(attr.id) && canBeFound) return true;
+        });
       })
       .map(({ code, value }) => {
         const product: IVariantProduct = variants.products.find(({ attributes }) => {
@@ -73,8 +73,6 @@ export const ProductOptions: FC<Props> = ({ variants, selectedOptions, handelSel
 
         return { product, param: { code, value } as Variant };
       });
-
-    // .map(({ code, value }) => ({ code, value }));
 
     return { ...variant, values };
   });
@@ -125,8 +123,8 @@ export const ProductOptions: FC<Props> = ({ variants, selectedOptions, handelSel
                     <>
                       <span className={styles.productOptionLabel}>{attribute.name}</span>
                       <ProductOptionsImages
-                        currentValue={selectedOptions[attribute.id].code}
-                        itemsLimit={2}
+                        currentProductId={currentProductId}
+                        itemsLimit={display?.count}
                         items={items}
                       />
                     </>
@@ -141,14 +139,16 @@ export const ProductOptions: FC<Props> = ({ variants, selectedOptions, handelSel
                     onChange={(value) => handelSelectOption(attribute.id, value as SelectVariant)}
                   />
                 ),
-                CHOICE: (
-                  <SelectTabs
-                    label={attribute.name}
-                    value={selectedOptions[attribute.id]}
-                    variants={values.map(({ param }) => param)}
-                    onChange={(value) => handelSelectOption(attribute.id, value)}
-                  />
-                ),
+                CHOICE: (() => {
+                  return (
+                    <SelectTabs
+                      label={attribute.name}
+                      value={selectedOptions[attribute.id]}
+                      variants={values.map(({ param }) => param)}
+                      onChange={(value) => handelSelectOption(attribute.id, value)}
+                    />
+                  );
+                })(),
               }[display?.display_type] ?? (
                 <>
                   {values.length > 3 ? (
@@ -161,7 +161,6 @@ export const ProductOptions: FC<Props> = ({ variants, selectedOptions, handelSel
                     />
                   ) : (
                     <>
-                      <span className={styles.productOptionLabel}>{attribute.name}</span>
                       <SelectTabs
                         value={selectedOptions[attribute.id]}
                         label={attribute.name}

@@ -2,13 +2,13 @@ import { FC, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 
 import { removeCompare, addCompare } from 'src/store/goods';
-import { useDispatch } from 'src/hooks/useDispatch';
+import { useDispatch } from 'shared/lib/hooks/useDispatch';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 import styles from 'pages/product/[slug]/styles.module.scss';
 import { api } from 'app/api';
-import { useSelector } from 'src/hooks/useSelector';
+import { useSelector } from 'shared/lib/hooks/useSelector';
 
 type Props = {
   id: number;

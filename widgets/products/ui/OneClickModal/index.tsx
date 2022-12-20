@@ -6,8 +6,8 @@ import * as yup from 'yup';
 
 import type { IGood } from 'entities/products/model/IGood';
 import { getImageVariantProps } from 'shared/lib/images';
-import { useDispatch } from 'src/hooks/useDispatch';
-import { useSelector } from 'src/hooks/useSelector';
+import { useDispatch } from 'shared/lib/hooks/useDispatch';
+import { useSelector } from 'shared/lib/hooks/useSelector';
 
 import { Title } from '@nebo-team/vobaza.ui.title/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';

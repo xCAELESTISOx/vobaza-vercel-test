@@ -5,7 +5,7 @@ import type { ITarget } from 'shared/ui/RadioTabsGroup';
 import type { ICartGood } from 'components/Cart/ListItem';
 import type { IOrderAddress } from 'src/models/IOrder';
 import type { IAssemblyPrice } from 'src/models/IDelivery';
-import useDebounce from 'src/hooks/useDebounce';
+import useDebounce from 'shared/lib/hooks/useDebounce';
 
 import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
 import { RadioTabsGroup } from 'shared/ui/RadioTabsGroup';

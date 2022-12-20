@@ -2,8 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import type { IGoodCard } from 'entities/products/model/IGood';
-import { useMatchMedia } from 'src/hooks/useMatchMedia';
+import type { IGoodCard, IVariantProduct } from 'entities/products/model/IGood';
+import { useMatchMedia } from 'shared/lib/hooks/useMatchMedia';
 import { getImageVariantProps } from 'shared/lib/images';
 
 import PlaceholderImageSmall from 'assets/images/placeholder_small.png';
@@ -12,7 +12,7 @@ import styles from './styles.module.scss';
 
 type Props = {
   good?: IGoodCard;
-  setCurrentImage: (value: any) => void;
+  setCurrentImage: (value: IVariantProduct) => void;
 };
 
 const CardProductVariants = ({ good, setCurrentImage }: Props) => {
@@ -56,7 +56,7 @@ const CardProductVariants = ({ good, setCurrentImage }: Props) => {
             </a>
           </Link>
         ))}
-      {good.variant_products && good.variant_products.length > VARIANTS_LIMIT && (
+      {good.variant_products?.length > VARIANTS_LIMIT && (
         <Link href={`/product/${good.slug}-${good.sku}`}>
           <a target="_blank" className={styles.moreVariants}>
             +{good.variant_products.length - VARIANTS_LIMIT}

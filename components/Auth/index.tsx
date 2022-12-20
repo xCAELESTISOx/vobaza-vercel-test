@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 
-import { useDispatch } from 'src/hooks/useDispatch';
-import { useSelector } from 'src/hooks/useSelector';
+import { useDispatch } from 'shared/lib/hooks/useDispatch';
+import { useSelector } from 'shared/lib/hooks/useSelector';
 import { login, toggleModal } from 'src/store/auth';
 
 import ModalLayout from '../../src/hoc/withModal';

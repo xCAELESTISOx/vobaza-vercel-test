@@ -3,9 +3,9 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
 import type { IMenuItem } from 'src/models/IMenu';
-import { useDispatch } from 'src/hooks/useDispatch';
+import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { setCartSize, setCompare, setFavorites } from 'src/store/goods';
-import { useSelector } from 'src/hooks/useSelector';
+import { useSelector } from 'shared/lib/hooks/useSelector';
 
 import { HeaderTop } from './ui/HeaderTop';
 import { HeaderBody } from './ui/HeaderBody';

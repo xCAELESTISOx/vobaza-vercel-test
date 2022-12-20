@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import Cookies from 'js-cookie';
 
 import type { IProfile } from '../../../Profile/Data';
-import { useDispatch } from 'src/hooks/useDispatch';
+import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { toggleModal } from 'src/store/auth';
 
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
