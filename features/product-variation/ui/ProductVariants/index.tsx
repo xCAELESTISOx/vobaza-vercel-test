@@ -22,6 +22,8 @@ const ProductVariants: FC<ProductVariantsProps> = ({
   const isMobile = useMatchMedia(500);
 
   const displayableAttr = attributesVariants.find(({ display }) => display?.display_type === 'IMAGE');
+  if (!displayableAttr) return null;
+
   const currentValue = selectedOptions[displayableAttr.attribute.id].code;
   const items = getImagesVariationProducts(
     productVariants,
