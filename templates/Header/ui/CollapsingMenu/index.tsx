@@ -19,17 +19,17 @@ type Props = {
 // Разделяет категории по полю is_sticky для переноса
 const getGroupedCategories = (list: IMenuItem[] = []) => {
   const res: IMenuItem[][] = [];
-  list.forEach(category => {
+  list.forEach((category) => {
     if (!category.is_sticky) {
       res.push([category]);
     } else {
-      if (!res.length) res.push([])
-      res[(res.length || 1) - 1].push(category)
+      if (!res.length) res.push([]);
+      res[(res.length || 1) - 1].push(category);
     }
-  })
+  });
 
   return res;
-}
+};
 
 export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
   const [currentMenuItem, setCurrentMenuItem] = useState<IMenuItem>(withRoot ? menu[0] : menu);
@@ -58,10 +58,10 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
   }, [menu]);
 
   useEffect(() => {
-    if(!!currentMenuItem.children?.length) {
+    if (!!currentMenuItem.children?.length) {
       setGroupedCategories(getGroupedCategories(currentMenuItem.children));
     }
-  }, [currentMenuItem])
+  }, [currentMenuItem]);
 
   return (
     <div className={`${styles.collapsingMenu} container`}>
@@ -72,20 +72,35 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
               <div key={group.id} className={`${index > 0 ? styles.rootMenuItemDivided : ''} `}>
                 {group.children?.map((item) => (
                   <div key={item.id}>
-                    <Link href={getLinkFromMenuItem(item, isExpress)}>
-                      <a
+                    {getLinkFromMenuItem(item, isExpress) ? (
+                      <Link href={getLinkFromMenuItem(item, isExpress)}>
+                        <a
+                          data-id={item.id}
+                          onMouseEnter={(e) => menuTabHover(e, group.id)}
+                          onClick={closeMenu}
+                          className={`${styles.rootMenuLink}
+                      ${!allProducts && currentMenuItem.id === item.id ? styles.active : ''}`}
+                        >
+                          {item.icon && (
+                            <Image className={styles.rootMenuItemIcon} src={item.icon} alt="" width={32} height={32} />
+                          )}
+                          <span>{item.name}</span>
+                        </a>
+                      </Link>
+                    ) : (
+                      <div
                         data-id={item.id}
                         onMouseEnter={(e) => menuTabHover(e, group.id)}
                         onClick={closeMenu}
                         className={`${styles.rootMenuLink}
-                      ${!allProducts && currentMenuItem.id === item.id ? styles.active : ''}`}
+                     ${!allProducts && currentMenuItem.id === item.id ? styles.active : ''}`}
                       >
                         {item.icon && (
                           <Image className={styles.rootMenuItemIcon} src={item.icon} alt="" width={32} height={32} />
                         )}
                         <span>{item.name}</span>
-                      </a>
-                    </Link>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

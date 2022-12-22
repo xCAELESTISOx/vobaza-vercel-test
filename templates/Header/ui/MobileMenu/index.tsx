@@ -75,7 +75,7 @@ export const HeaderMobileMenu: FC<Props> = ({ menu, isOpen, close }) => {
               </div>
             )}
             {currentMenuItem?.children?.map((child) => (
-              <MobileMenuBlock key={child.id} item={child} />
+              <MobileMenuBlock key={child.id} item={child} onClose={close} />
             ))}
           </div>
         </>
