@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import * as yup from 'yup';
 
 import type { IGood } from 'entities/products/model/IGood';
+import type { IError } from 'src/models/IError';
 import { getImageVariantProps } from 'shared/lib/images';
 import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { useSelector } from 'shared/lib/hooks/useSelector';
@@ -53,11 +54,24 @@ const OneClickModal: FC = () => {
       ...(values.email && { email: values.email }),
     };
 
-    await api.createOneClickOrder(product.id, data);
-    dispatch(closeOneClickModal());
+    try {
+      await api.createOneClickOrder(product.id, data);
+      dispatch(closeOneClickModal());
+    } catch (e) {
+      const errors = e.response?.data?.errors || [];
+      const backErrors = {} as any;
+
+      errors.forEach((err: IError) => {
+        if (err.source) {
+          backErrors[err.source] = err.title;
+        }
+      });
+
+      setErrors(backErrors);
+    }
   };
 
-  const { values, errors, validateField, setFieldValue, handleSubmit, resetForm } = useFormik<IOneClickOrder>({
+  const { values, errors, validateField, setFieldValue, handleSubmit, resetForm, setErrors } = useFormik<IOneClickOrder>({
     initialValues,
     validationSchema,
     validateOnBlur: false,
@@ -87,6 +101,7 @@ const OneClickModal: FC = () => {
 
   useEffect(() => {
     resetForm();
+    setErrors({})
   }, [product]);
 
   // Чтобы окно не оставалось открытым при открытии другой ссылки,
