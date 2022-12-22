@@ -105,7 +105,7 @@ export interface IOrder {
       time_interval: ITimeInterval;
     };
   };
-  payment_status: string
+  payment_status: string;
 }
 export interface IFullOrderDelivery {
   address: {
@@ -167,6 +167,7 @@ export interface IOrderItemFull {
     price: number;
     item_list_price: number;
     image: Image;
+    slug: string;
   }[];
   item_list_price: number;
   recipient: {
