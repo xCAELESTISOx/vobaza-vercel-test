@@ -10,7 +10,7 @@ type SelectTabs = {
   value: null | Variant;
   variants: Variant[];
   keyField?: string;
-  onChange: (item: Variant) => void;
+  onChange?: (item: Variant) => void;
 };
 
 const SelectTabs: FC<SelectTabs> = ({ label = '', value = null, variants = [], keyField = 'code', onChange }) => {

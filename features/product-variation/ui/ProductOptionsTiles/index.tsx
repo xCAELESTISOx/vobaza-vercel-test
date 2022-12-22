@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 import type { IProductVariant, IVariantProduct } from 'entities/products/model/IGood';
+import { SelectVariationOption } from 'features/product-variation';
 import { useToggle } from 'shared/lib/hooks/useToggle';
 
 import ProductOptionTile from './ui/ProductOptionTile';
@@ -12,15 +13,14 @@ const ITEMS_LIMIT = 5;
 
 type Props = {
   option: IProductVariant<{ product: IVariantProduct; param: Variant }>;
-  selectedOptions: Record<number, Variant<string | number, string>>;
-  onClick: (optionId: number | string, value: Variant) => void;
+  currentProductId: string | number;
+  onClick: SelectVariationOption;
 };
 
-const ProductOptionsTiles = ({ option, selectedOptions, onClick }: Props) => {
+const ProductOptionsTiles = ({ option, currentProductId, onClick }: Props) => {
   const [showMore, toggleShowMore] = useToggle(false);
 
   const { attribute, display, values } = option;
-  const currentOption = selectedOptions[attribute.id];
 
   const limitedValues = [...values];
   limitedValues.splice(display?.count || ITEMS_LIMIT);
@@ -33,15 +33,13 @@ const ProductOptionsTiles = ({ option, selectedOptions, onClick }: Props) => {
 
   return (
     <div className={styles.optionTiles}>
-      {(showMore ? values : limitedValues).map(({ param }) => {
-        const formatedValue = attribute.data_type === 'BOOLEAN' ? (param.code == 'YES' ? 'true' : 'false') : param.code;
-
+      {(showMore ? values : limitedValues).map((option) => {
         return (
           <ProductOptionTile
-            key={param.code}
-            isCurrent={currentOption.code == formatedValue}
-            onClick={() => onClick(attribute.id, param)}
-            value={param.code}
+            key={option.param.code}
+            isCurrent={currentProductId == option.product.id}
+            onClick={() => onClick(attribute.id, option.product)}
+            value={option.param.value}
           />
         );
       })}

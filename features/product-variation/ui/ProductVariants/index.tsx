@@ -1,24 +1,25 @@
 import React, { FC } from 'react';
 
 import { useMatchMedia } from 'shared/lib/hooks/useMatchMedia';
+import { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 import type { IProductVariant, IVariantProduct } from 'entities/products/model/IGood';
-// import { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
+
 import { ProductOptionsImages } from 'widgets/products';
-// import { getImagesVariationProducts } from 'features/product-variation';
 
 /** Получение товаров для изображений вариации */
-const getProductsVariants = (productVariants: IVariantProduct[], attributesVariants: IProductVariant[]) => {
+const getProductsVariants = (
+  productVariants: IVariantProduct[],
+  attributesVariants: IProductVariant[],
+  selectedOptions: Record<number, Variant>
+) => {
   const displayableAttr = attributesVariants.find(({ display }) => display?.display_type === 'IMAGE');
   const products = [];
 
   displayableAttr.values.forEach((val) => {
     const newProduct = productVariants.find(({ attributes }) => {
-      const attr = attributes.find(({ id }) => id == displayableAttr.attribute.id);
+      const opts = { ...selectedOptions, [displayableAttr.attribute.id]: { code: val[0], value: val[0] } };
 
-      if (Array.isArray(val)) {
-        return (attr.value as string[]).every((i) => (val as string[]).includes(i));
-      }
-      return (attr.value as string[]).includes(val as string);
+      return attributes.every((attr) => (attr.value as string[]).map(String).includes(opts[attr.id].code));
     });
 
     const tooltipText = displayableAttr.attribute.data_type === 'BOOLEAN' ? (val === true ? 'Да' : 'Нет') : String(val);
@@ -31,25 +32,24 @@ const getProductsVariants = (productVariants: IVariantProduct[], attributesVaria
 
 interface ProductVariantsProps {
   productId: number;
-  // selectedOptions: Record<number, Variant>;
   productVariants: IVariantProduct[];
   attributesVariants: IProductVariant[];
+  selectedOptions: Record<number, Variant>;
 }
 
-const ProductVariants: FC<ProductVariantsProps> = ({ productId, productVariants = [], attributesVariants }) => {
+const ProductVariants: FC<ProductVariantsProps> = ({
+  productId,
+  productVariants = [],
+  attributesVariants,
+  selectedOptions,
+}) => {
   const isMobile = useMatchMedia(500);
 
   const displayableAttr = attributesVariants.find(({ display }) => display?.display_type === 'IMAGE');
 
   if (!displayableAttr) return null;
 
-  // const items = getImagesVariationProducts(
-  //   productVariants,
-  //   attributesVariants,
-  //   selectedOptions,
-  //   displayableAttr.attribute.id
-  // ).reduce((acc, element) => {
-  const items = getProductsVariants(productVariants, attributesVariants).reduce((acc, element) => {
+  const items = getProductsVariants(productVariants, attributesVariants, selectedOptions).reduce((acc, element) => {
     if (element.id == productId) return [element, ...acc];
     return [...acc, element];
   }, []);

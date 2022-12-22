@@ -6,7 +6,6 @@ import Head from 'next/head';
 import axios from 'axios';
 
 import { normalizeProductAttributes, normalizeProductInfo } from 'shared/lib/normalizers/normalizeGoods';
-import { normalizeProductVariation } from 'shared/lib/normalizers/Products/normalizeProductVariation';
 import { getProductBreadcrumbs } from 'shared/lib/categories/getCategoryBreadcrumps';
 import { mockProduct } from '../../../src/mock/detailProductPage';
 import { formatAxiosError } from 'shared/lib/formatAxiosError';
@@ -14,8 +13,8 @@ import { useFavorite } from '../../../shared/lib/hooks/useFavorite';
 import { useCart } from '../../../shared/lib/hooks/useCart';
 import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { setOneClickGood } from 'src/store/goods';
-import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select/dist/input-select';
-import type { IGood, ProductVariantValue } from 'entities/products';
+import { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
+import type { IGood, IProductVariant, IVariantProduct } from 'entities/products';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
@@ -32,21 +31,22 @@ import { ProductDelivery } from 'components/DetailGoodPage/ProductDelivery';
 import { ProductDocuments } from 'components/DetailGoodPage/ProductDocuments';
 import { ProductCompare } from 'components/DetailGoodPage/ProductCompare';
 import { ProductsList, CartModal, OneClickModal, ProductOptions } from 'widgets/products';
-import { ProductVariants } from 'features/product-variation';
+import { SelectVariationOption } from 'features/product-variation';
 
 import styles from './styles.module.scss';
 import { api } from 'app/api';
-
-const booleanVariantToText = (value: ProductVariantValue) => {
-  return typeof value === 'boolean' ? (value ? 'true' : 'false') : value.toString();
-};
+import { getProductOptions } from 'features/product-variation/lib/getProductOptions';
 
 interface DetailGoodPage {
   product: IGood;
+  options: IProductVariant<{ product: IVariantProduct; param: Variant }>[];
   breadcrumbs: BreadcrumbType[];
 }
 
-const getProductOptions = (variation: IGood['variants'], productId: number): Record<number, Variant> | null => {
+const getProductInitialOptions = (
+  variation: IGood['variants'],
+  productId: number
+): Record<number, (string | number)[]> | null => {
   if (!variation?.variants) return null;
   const { products } = variation;
 
@@ -54,24 +54,21 @@ const getProductOptions = (variation: IGood['variants'], productId: number): Rec
   const options = {};
 
   currentProduct.attributes.forEach((attribute) => {
-    options[attribute.id] = {
-      code: booleanVariantToText(attribute.value),
-      value: booleanVariantToText(attribute.value),
-    };
+    options[attribute.id] = attribute.value;
   });
 
   return options;
 };
 
-const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
+const DetailGoodPage: FC<DetailGoodPage> = ({ product, options, breadcrumbs }) => {
   const { currentFavorite, toggleFavorite } = useFavorite(product);
 
-  const [selectedOptions, setSelectedOptions] = useState<Record<number, Variant>>(null);
+  const [selectedOptions, setSelectedOptions] = useState<Record<number, (string | number)[]>>(null);
   const { addToCart } = useCart(product);
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const productVariants = normalizeProductVariation(product.variants);
+  // const productVariants = normalizeProductVariation(product.variants);
 
   const addToCartHandler = () => {
     addToCart();
@@ -94,20 +91,12 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
     });
   };
 
-  const handelSelectOption = (name: string, value: Variant) => {
+  const handelSelectOption: SelectVariationOption = (id, variantProduct) => {
     const options = { ...selectedOptions };
-    options[name] = value;
-
-    const parameters = Object.values(options).map(({ code }) => code);
+    options[id] = variantProduct.attributes.find((attr) => attr.id == id)?.value;
 
     // Определение товара, соответствующего выбранным опциям вариации
-    const { slug, sku } = product.variants.products.find(({ attributes }) => {
-      return attributes.every(
-        (attr) =>
-          Object.keys(options).includes(attr.id.toString()) &&
-          parameters.includes(Array.isArray(attr.value) ? attr.value[0].toString() : attr.value.toString())
-      );
-    });
+    const { slug, sku } = variantProduct;
 
     router.push(`/product/${slug}-${sku}`, undefined, { scroll: false });
 
@@ -138,7 +127,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
   }, []);
 
   useEffect(() => {
-    setSelectedOptions(getProductOptions(product.variants, product.id));
+    setSelectedOptions(getProductInitialOptions(product.variants, product.id));
   }, [product.id]);
 
   return (
@@ -194,17 +183,18 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, breadcrumbs }) => {
 
                 {selectedOptions && (
                   <div className={styles.productOptionList}>
-                    <div className={styles.productOption}>
+                    {/* <div className={styles.productOption}>
                       <ProductVariants
                         productId={product.id}
-                        // selectedOptions={selectedOptions}
+                        selectedOptions={selectedOptions}
                         productVariants={product.variants.products}
                         attributesVariants={product.variants.variants}
                       />
-                    </div>
+                    </div> */}
                     <ProductOptions
                       currentProductId={product.id}
-                      variants={productVariants}
+                      options={options}
+                      variants={product.variants}
                       selectedOptions={selectedOptions}
                       handelSelectOption={handelSelectOption}
                     />
@@ -309,8 +299,12 @@ export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({ q
 
     const breadcrumbs = getProductBreadcrumbs(ancestors, product.main_category);
 
+    // Опции вариаций товаров
+    const selectedOptions = getProductInitialOptions(product.variants, product.id);
+    const options = getProductOptions(product.id, product.variants, selectedOptions);
+
     return {
-      props: { product, breadcrumbs },
+      props: { product, options, breadcrumbs },
     };
   } catch (err) {
     if (axios.isAxiosError(err)) {
