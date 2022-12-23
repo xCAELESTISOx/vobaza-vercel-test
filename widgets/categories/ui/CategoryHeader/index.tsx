@@ -19,9 +19,10 @@ type Props = {
   isExpress: boolean;
   currentTag: ITag;
   category: ICategory;
+  filtersTitle: string;
 };
 
-const CategoryHeader: FC<Props> = ({ isExpress, currentTag, category }) => {
+const CategoryHeader: FC<Props> = ({ isExpress, currentTag, category, filtersTitle }) => {
   const router = useRouter();
   const { page } = router.query;
 
@@ -38,7 +39,7 @@ const CategoryHeader: FC<Props> = ({ isExpress, currentTag, category }) => {
         </Link>
       </div>
       <h1 className={styles.sectionTitle}>
-        {currentTag?.page_title || category.name} {page && page !== '1' && ` – страница ${page}`}
+        {filtersTitle || currentTag?.page_title || category.name} {page && page !== '1' && ` – страница ${page}`}  
       </h1>
       {category.children?.length > 0 && <CatalogList list={category.children} />}
       <div className={styles.bannerBlock}>
