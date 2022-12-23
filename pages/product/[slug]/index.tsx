@@ -108,7 +108,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, options, breadcrumbs }) =
   };
 
   useEffect(() => {
-    (window as any).dataLayer.push({
+    (window as any)?.dataLayer?.push({
       ecommerce: {
         currencyCode: 'RUB',
         detail: {
