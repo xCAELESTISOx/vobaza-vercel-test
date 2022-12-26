@@ -28,6 +28,9 @@ type Props = {
       count: number;
       pages_count: number;
     };
+    seo: {
+      [key: string]: string;
+    };
   };
 };
 
