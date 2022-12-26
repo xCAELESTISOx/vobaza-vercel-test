@@ -26,7 +26,6 @@ import { CategoryHeader } from 'widgets/categories';
 
 import styles from 'app/styles/Home.module.scss';
 import { api } from '../../app/api';
-import { dadataApi } from 'app/api/dadata';
 
 const getFlatTagsFilters = (tags: ITag[]) => {
   return tags.reduce((acc, tagItem) => {
@@ -95,6 +94,7 @@ export default function Catalog({
 
     setProducts([]);
     const { products, meta, withError } = await getProductsList(params, currentTags);
+
     hasInvalidFilters = withError;
 
     setProducts(products);
@@ -176,22 +176,13 @@ export default function Catalog({
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({ req, resolvedUrl, query }) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUrl, query }) => {
   const { page, id, sort, city, ...activeFilters } = query;
   const activeQueryFilters = { ...activeFilters };
   let category: ICategory;
   let tags: ITag[] = [];
   let activeTags: ITag[] = [];
   let withInvalidTags = false;
-
-  const cookies: string | undefined = req?.headers?.cookie || '';
-  const cookiesObj: { [key: string]: string } = cookies.split('; ').reduce((prev, current) => {
-    const [name, ...value] = current.split('=');
-    prev[name] = value.join('=');
-    return prev;
-  }, {});
-
-  const isNeedSeoChange = cookiesObj.isNeedSeoChange !== 'false' || !cookiesObj.isNeedSeoChange;
 
   let baseFilters: IFilter[] = [];
   let filters: IFilter[] = [];
@@ -288,33 +279,22 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, resol
   params = getParamsFromQuery(params, activeQueryFilters);
 
   try {
-    const res = await dadataApi.getAddressByIp();
-    const json = await res.json();
-    const city = json.location?.data.city || 'Москва';
     const filtersFromQuery = getParamsFromQuery(params, activeQueryFilters)
 
     const [baseFiltersRes, filtersRes] = await Promise.all([
-      api.getCategoryFilters(category.id, city),
-      api.getCategoryFilters(category.id, city, filtersFromQuery),
+      api.getCategoryFilters(category.id),
+      api.getCategoryFilters(category.id, filtersFromQuery),
     ]);
 
     // const baseFiltersRes = await api.getCategoryFilters(category.id);
-    baseFilters = convertFiltersIfPrice(baseFiltersRes.data.data.filters);
+    baseFilters = convertFiltersIfPrice(baseFiltersRes.data.data);
     // const filtersRes = await api.getCategoryFilters(category.id, getParamsFromQuery(params, activeQueryFilters));
-    filters = convertFiltersIfPrice(filtersRes.data.data.filters);
+    filters = convertFiltersIfPrice(filtersRes.data.data);
 
     const { activeFilters: newActiveFilters, hasInvalidFilters: newHasInvalidFilters } = getActiveFiltersFromQuery(
       activeFilters,
       filters
     );
-    const hasActiveFilters = Object.keys(activeFilters || {}).length;
-
-    if (hasActiveFilters && isNeedSeoChange) {
-      filtersMeta.h1 = filtersRes.data.data.meta?.h1 || '';
-      filtersMeta.title = filtersRes.data.data.meta?.title || '';
-      filtersMeta.description = filtersRes.data.data.meta?.description || '';
-      filtersMeta.keywords = filtersRes.data.data.meta?.keywords || '';
-    }
 
     currentFilters = newActiveFilters;
     hasInvalidFilters = newHasInvalidFilters;
