@@ -11,13 +11,6 @@ export interface IFilter {
   };
 }
 
-export interface IFilterMeta {
-  h1: string;
-  title: string;
-  description: string;
-  keywords: string;
-}
-
 export interface IFilterFront {
   id: number;
   name: string;
