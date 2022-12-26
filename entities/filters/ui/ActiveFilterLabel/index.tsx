@@ -15,8 +15,10 @@ type Props = {
 
 const renderNumericText = (filter: IFilterFront) => {
   if (filter.value_type === 'PRICE')
-    return `${filter.name}: ${toNumberWithSpaces(filter.values[0])} ₽ - ${toNumberWithSpaces(filter.values[1])} ₽`;
-  return `${filter.name}: ${filter.values[0]} - ${filter.values[1]}`;
+    return `${filter.display_name || filter.name}: ${toNumberWithSpaces(filter.values[0])} ₽ - ${toNumberWithSpaces(
+      filter.values[1]
+    )} ₽`;
+  return `${filter.display_name || filter.name}: ${filter.values[0]} - ${filter.values[1]}`;
 };
 
 export const ActiveFilterLabel: FC<Props> = ({ filter, removeFilter, isLoading }) => {
@@ -39,7 +41,7 @@ export const ActiveFilterLabel: FC<Props> = ({ filter, removeFilter, isLoading }
       ) : (
         filter.values.map((value) => (
           <div key={value} className={`${styles.active} ${styles.filtersButton}`}>
-            {`${filter.name}: ${value === 'true' ? 'Да' : value === 'false' ? 'Нет' : value}`}
+            {`${filter.display_name || filter.name}: ${value === 'true' ? 'Да' : value === 'false' ? 'Нет' : value}`}
             <button
               className="filter-close-btn"
               type="button"

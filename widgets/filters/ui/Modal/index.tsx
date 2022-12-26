@@ -64,7 +64,7 @@ const FiltersModal: FC<Props> = ({
         </div>
         <div className={styles.filtersBlock}>
           {filters.map((filter) => (
-            <Accordeon key={filter.id} title={filter.name} className={styles.filtersAccordeon}>
+            <Accordeon key={filter.id} title={filter.display_name || filter.name} className={styles.filtersAccordeon}>
               <div className={filter.type === 'LISTED' ? styles.listWrapper : ''}>
                 <Filter
                   filter={filter}

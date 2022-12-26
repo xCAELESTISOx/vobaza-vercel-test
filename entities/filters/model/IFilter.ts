@@ -9,6 +9,7 @@ export interface IFilter {
     max?: number;
     items?: string[];
   };
+  display_name?: string
 }
 
 export interface IFilterFront {
@@ -18,4 +19,5 @@ export interface IFilterFront {
   value_type?: 'NUMBER' | 'PRICE' | 'STRING';
   type: 'NUMERIC_RANGE' | 'LISTED';
   values: any[];
+  display_name?: string
 }

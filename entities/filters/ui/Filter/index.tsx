@@ -31,7 +31,7 @@ const NumericFilter: FC<Props> = ({ filter, full = false, currentFilter, addFilt
 
     addFilter({
       id: filter.id,
-      name: filter.name,
+      name: filter.display_name || filter.name,
       value_type: filter.value_type,
       type: filter.type,
       values: filterValues,
@@ -41,7 +41,7 @@ const NumericFilter: FC<Props> = ({ filter, full = false, currentFilter, addFilt
   const onButtonClick = (newValues: [number, number]) => {
     addFilter({
       id: filter.id,
-      name: filter.name,
+      name: filter.display_name || filter.name,
       value_type: filter.value_type,
       type: filter.type,
       values: newValues,
@@ -84,7 +84,7 @@ const NumericFilter: FC<Props> = ({ filter, full = false, currentFilter, addFilt
           type="range"
           incomeValues={values}
           setIncomeValues={setValues}
-          placeholder={filter.name}
+          placeholder={filter.display_name || filter.name}
           buttonText="Показать"
           onButtonClick={onButtonClick}
         />
@@ -144,7 +144,7 @@ const ListedFilter: FC<Props> = ({ filter, baseFilter, full = false, currentFilt
 
     addFilter({
       id: filter.id,
-      name: filter.name,
+      name: filter.display_name || filter.name,
       type: filter.type,
       values: newValues,
     });
@@ -204,7 +204,7 @@ const ListedFilter: FC<Props> = ({ filter, baseFilter, full = false, currentFilt
           variation="secondary"
           variants={values}
           type="checkbox"
-          placeholder={filter.name}
+          placeholder={filter.display_name || filter.name}
           buttonText="Показать"
           onChange={changeValues}
           onButtonClick={onClick}

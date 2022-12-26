@@ -37,6 +37,7 @@ export const getActiveFiltersFromQuery = (
         name: filter.name,
         type: filter.type,
         value_type: filter.value_type,
+        display_name: filter.display_name,
         values,
       };
     } else {
