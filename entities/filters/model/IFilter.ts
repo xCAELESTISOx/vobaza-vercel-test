@@ -12,6 +12,13 @@ export interface IFilter {
   display_name?: string
 }
 
+export interface IFilterMeta {
+  h1: string;
+  title: string;
+  description: string;
+  keywords: string;
+}
+
 export interface IFilterFront {
   id: number;
   name: string;

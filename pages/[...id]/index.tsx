@@ -3,12 +3,10 @@ import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import Head from 'next/head';
-import Cookies from 'js-cookie';
 
 import type { ITag, ITagFitlerFront } from 'entities/tags';
 import type { ICategory } from '../../entities/categories/model/ICategory';
-import type { IGood } from 'entities/products/model/IGood';
-import type { IFilter, IFilterFront } from '../../entities/filters/model/IFilter';
+import type { IFilter, IFilterFront, IFilterMeta } from '../../entities/filters/model/IFilter';
 import { getActiveFiltersFromQuery } from 'shared/lib/categories/filters/getActiveFiltersFromQuery';
 import { getCategoryBreadcrumps } from 'shared/lib/categories/getCategoryBreadcrumps';
 import { getParamsFromQuery } from 'shared/lib/categories/getParamsFromQuery';
@@ -35,7 +33,7 @@ const getFlatTagsFilters = (tags: ITag[]) => {
   }, [] as ITagFitlerFront[]);
 };
 
-const convertFiltersIfPrice = (filters: IFilter[]) => {
+const convertFiltersIfPrice = (filters: IFilter[] = []) => {
   return filters.map((filter) =>
     filter.value_type === 'PRICE'
       ? {
@@ -62,18 +60,7 @@ interface Props {
   /** Примененные фильтры */
   currentFilters: Record<number, IFilterFront> | null;
   params: Record<string, string | number | boolean | string[]>;
-  backMeta: {
-    list: {
-      count: number;
-      pages_count: number;
-    };
-    seo: {
-      [key: string]: string;
-    };
-  };
-  backProducts: IGood[];
-  backErrors: boolean;
-  isNeedSeoChange: boolean;
+  filtersMeta: IFilterMeta;
 }
 
 const LIMIT = 40;
@@ -88,10 +75,7 @@ export default function Catalog({
   currentTags,
   baseFilters,
   params,
-  backMeta,
-  backProducts,
-  backErrors,
-  isNeedSeoChange,
+  filtersMeta,
 }: Props) {
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
@@ -104,35 +88,19 @@ export default function Catalog({
   const isExpress = router.asPath.includes('/ekspress-dostavka');
   const breadcrumbs = getCategoryBreadcrumps([...category.ancestors, category], currentTags, isExpress);
   const currentTag = currentTags[currentTags.length - 1] || null;
-  const filtersTitle = isNeedSeoChange ? backMeta.seo?.title : '';
-  const filtersDescription = isNeedSeoChange ? backMeta.seo?.description : '';
-  const filtersKeywords = isNeedSeoChange ? backMeta.seo?.keywords : '';
-  const filtersH1 = isNeedSeoChange ? backMeta.seo?.h1 : '';
 
   const getProducts = async () => {
     setIsLoading(true);
 
     setProducts([]);
-    hasInvalidFilters = backErrors;
+    const { products, meta, withError } = await getProductsList(params, currentTags);
+    hasInvalidFilters = withError;
 
-    setProducts(backProducts);
-    setMeta(backMeta);
+    setProducts(products);
+    setMeta(meta);
 
     setIsLoading(false);
   };
-
-  const setSeoCookie = () => {
-    Cookies.remove('isNeedSeoChange');
-  }
-
-  /** Кука проверяется на фронтовом беке и вставляет сео только при прямом (или первом) заходе на страницу или перезагрузке*/
-  useEffect(() => {
-    Cookies.set('isNeedSeoChange', 'false');
-    window.addEventListener("beforeunload", setSeoCookie);
-    return () => {
-      window.removeEventListener("beforeunload", setSeoCookie);
-    };
-  }, [])
 
   useEffect(() => {
     dispatch(setTags(tags));
@@ -163,19 +131,19 @@ export default function Catalog({
   return (
     <>
       <Head>
-        {(filtersTitle || category.seo_title || currentTag?.title) && <title>{filtersTitle || currentTag?.title || category.seo_title}</title>}
-        {(filtersKeywords || category.keywords || currentTag?.keywords) && (
-          <meta name="keywords" content={filtersKeywords || currentTag?.keywords || category.keywords} />
+        {(filtersMeta.title || category.seo_title || currentTag?.title) && <title>{filtersMeta.title || currentTag?.title || category.seo_title}</title>}
+        {(filtersMeta.keywords || category.keywords || currentTag?.keywords) && (
+          <meta name="keywords" content={filtersMeta.keywords || currentTag?.keywords || category.keywords} />
         )}
-        {(filtersDescription || category.seo_description || currentTag?.description) && (
-          <meta name="description" content={filtersDescription || currentTag?.description || category.seo_description} />
+        {(filtersMeta.description || category.seo_description || currentTag?.description) && (
+          <meta name="description" content={filtersMeta.description || currentTag?.description || category.seo_description} />
         )}
       </Head>
       <div className={styles.page}>
         <Breadcrumbs breadcrumbs={breadcrumbs} />
         <section>
           <div className="container container--for-cards">
-            <CategoryHeader category={category} currentTag={currentTag} isExpress={isExpress} filtersTitle={filtersH1} />
+            <CategoryHeader category={category} currentTag={currentTag} isExpress={isExpress} filtersTitle={filtersMeta.h1} />
             <GoodsBlock
               withFilters={Boolean(filters)}
               categorySlug={category.slug}
@@ -194,7 +162,7 @@ export default function Catalog({
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({ req, resolvedUrl, query }) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUrl, query }) => {
   const { page, id, sort, city, ...activeFilters } = query;
   const activeQueryFilters = { ...activeFilters };
   let category: ICategory;
@@ -206,11 +174,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, resol
   let filters: IFilter[] = [];
   let currentFilters: Record<number, IFilterFront> | null = null;
   let hasInvalidFilters = false;
-  let backMeta = null;
-  let backProducts = [];
-  let backErrors = false;
-  let isNeedSeoChange = false;
-  let location = '';
+  const filtersMeta: IFilterMeta = {
+    h1: '',
+    title: '',
+    description:'',
+    keywords: '',
+  }
 
   const isExpress = resolvedUrl.includes('/ekspress-dostavka');
   const initialParams = {
@@ -296,17 +265,25 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, resol
   params = getParamsFromQuery(params, activeQueryFilters);
 
   try {
-    const filtersFromQuery = getParamsFromQuery(params, activeQueryFilters)
+    const res = await dadataApi.getAddressByIp();
+    const json = await res.json();
+    const city = json.location?.data.city || 'Москва';
+    const paramsFromQuery = getParamsFromQuery(params, activeQueryFilters)
 
     const [baseFiltersRes, filtersRes] = await Promise.all([
       api.getCategoryFilters(category.id),
-      api.getCategoryFilters(category.id, filtersFromQuery),
+      api.getCategoryFilters(category.id, city, paramsFromQuery),
     ]);
 
     // const baseFiltersRes = await api.getCategoryFilters(category.id);
-    baseFilters = convertFiltersIfPrice(baseFiltersRes.data.data);
+    baseFilters = convertFiltersIfPrice(baseFiltersRes.data.data.filters);
     // const filtersRes = await api.getCategoryFilters(category.id, getParamsFromQuery(params, activeQueryFilters));
-    filters = convertFiltersIfPrice(filtersRes.data.data);
+    filters = convertFiltersIfPrice(filtersRes.data.data.filters);
+
+    filtersMeta.h1 = filtersRes.data.data.meta?.h1 || '';
+    filtersMeta.title = filtersRes.data.data.meta?.title || '';
+    filtersMeta.description = filtersRes.data.data.meta?.description || '';
+    filtersMeta.keywords = filtersRes.data.data.meta?.keywords || '';
 
     const { activeFilters: newActiveFilters, hasInvalidFilters: newHasInvalidFilters } = getActiveFiltersFromQuery(
       activeFilters,
@@ -330,42 +307,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, resol
     filters = baseFilters;
   }
 
-  /** Получение города */
-  try {
-    const res = await dadataApi.getAddressByIp();
-    const json = await res.json();
-    location = json.location?.data.city;
-
-    params = { ...params, location };
-  } catch (errpr) {
-    location = 'Москва';
-  }
-
-  /** Получение списка продуктов и сео при примененных фильтрах */
-  try {
-    const { products, meta, withError } = await getProductsList(params, activeTags);
-
-    backMeta = meta;
-    backProducts = products;
-    backErrors = withError;
-  } catch (error) {
-    backErrors = true;
-  }
-
-  /** Проверка куки для проверки необходимости изменения сео */
-  try {
-    const cookies: string | undefined = req?.headers?.cookie || '';
-    const cookiesObj: { [key: string]: string } = cookies.split('; ').reduce((prev, current) => {
-      const [name, ...value] = current.split('=');
-      prev[name] = value.join('=');
-      return prev;
-    }, {});
-
-    isNeedSeoChange = cookiesObj.isNeedSeoChange !== 'false' || !cookiesObj.isNeedSeoChange;
-  } catch (error) {
-    isNeedSeoChange = false;
-  }
-
   return {
     props: {
       category,
@@ -377,10 +318,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, resol
       hasInvalidTags: withInvalidTags,
       hasInvalidFilters,
       params,
-      backMeta,
-      backProducts,
-      backErrors,
-      isNeedSeoChange,
+      filtersMeta,
     },
   };
 };

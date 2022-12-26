@@ -14,9 +14,6 @@ interface GetProducts {
       count: number;
       pages_count: number;
     };
-    seo: {
-      [key: string]: string;
-    };
   } | null;
   withError?: boolean;
 }
