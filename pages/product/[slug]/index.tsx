@@ -73,7 +73,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, options, breadcrumbs }) =
   const addToCartHandler = () => {
     addToCart();
 
-    (window as any).dataLayer.push({
+    (window as any).dataLayer?.push({
       ecommerce: {
         currencyCode: 'RUB',
         add: {

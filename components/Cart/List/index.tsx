@@ -98,7 +98,11 @@ const CartList: FC<Props> = ({ initialGoods, withCountChange = false, setOrderPr
   return (
     <div className={styles.cartList}>
       {isCountChangeModal && (
-        <CartItemChangeModal onClose={closeModal} description={errorTitle} title="Количество товара ограничено" />
+        <CartItemChangeModal
+          onClose={closeModal}
+          description={errorTitle}
+          title="Недостаточно данного товара для заказа. Количество было уменьшено до доступного."
+        />
       )}
       {goods && goods.length > 0 ? (
         <div className={`${styles.cartContent} ${styles.small}`}>
