@@ -15,6 +15,19 @@ const getSortVariants = () => {
   return Object.entries(GoodsSortTypes).map(([key, value]) => ({ code: key, value }));
 };
 
+const sortFiltersItems = (filters: IFilter[]) => {
+  return filters.map((filterItem) => {
+    if (filterItem.value_type !== 'PRICE' && filterItem.meta.items.length > 0) {
+      const metaItems = [...filterItem.meta.items];
+      metaItems.sort((a, b) => (a > b ? 1 : -1));
+
+      return { ...filterItem, meta: { ...filterItem.meta, items: metaItems } };
+    }
+
+    return filterItem;
+  });
+};
+
 type Props = {
   filters: IFilter[];
   baseFilters: IFilter[];
@@ -39,10 +52,12 @@ const CategoryFiltersList = ({
   const router = useRouter();
   const { id, city, page, sort, text, ...activeFilters } = router.query;
 
+  const sortedFilters = sortFiltersItems(filters);
+
   return (
     <div className={styles.filtersBlock}>
       <div className={styles.filters}>
-        {filters.map(
+        {sortedFilters.map(
           (filter) =>
             filter.visibility_type === 'MAIN' && (
               <Filter
@@ -54,7 +69,7 @@ const CategoryFiltersList = ({
               />
             )
         )}
-        {filters.length > 0 && (
+        {sortedFilters.length > 0 && (
           <button className={styles.filtersButton} onClick={toggleMenu}>
             Еще фильтры
           </button>
