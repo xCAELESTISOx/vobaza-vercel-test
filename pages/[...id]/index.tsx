@@ -285,11 +285,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
     Object.keys(filtersMeta).forEach((key) => {
       const minStr = filtersMeta[key].match(/от (-?\d+(\.\d+)?)/g) || [];
       const maxStr = filtersMeta[key].match(/до (-?\d+(\.\d+)?)/g) || [];
-      const min = minStr[0].replace(/[^0-9]+/g, '');
-      const max = maxStr[0].replace(/[^0-9]+/g, '');
+      const min = minStr[0]?.replace(/[^0-9]+/g, '') || '';
+      const max = maxStr[0]?.replace(/[^0-9]+/g, '') || '';
 
-      filtersMeta[key] = filtersMeta[key].replace(min, +min / 100);
-      filtersMeta[key] = filtersMeta[key].replace(max, +max / 100);
+      if (min) filtersMeta[key] = filtersMeta[key].replace(min, +min / 100);
+      if (max) filtersMeta[key] = filtersMeta[key].replace(max, +max / 100);
     });
 
     const { activeFilters: newActiveFilters, hasInvalidFilters: newHasInvalidFilters } = getActiveFiltersFromQuery(
