@@ -280,10 +280,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
     // const filtersRes = await api.getCategoryFilters(category.id, getParamsFromQuery(params, activeQueryFilters));
     filters = convertFiltersIfPrice(filtersRes.data.data.filters);
 
-    filtersMeta.h1 = filtersRes.data.data.meta?.h1 || '';
-    filtersMeta.title = filtersRes.data.data.meta?.title || '';
-    filtersMeta.description = filtersRes.data.data.meta?.description || '';
-    filtersMeta.keywords = filtersRes.data.data.meta?.keywords || '';
+    filtersMeta.h1 = filtersRes.data.meta?.h1 || '';
+    filtersMeta.title = filtersRes.data.meta?.title || '';
+    filtersMeta.description = filtersRes.data.meta?.description || '';
+    filtersMeta.keywords = filtersRes.data.meta?.keywords || '';
 
     const { activeFilters: newActiveFilters, hasInvalidFilters: newHasInvalidFilters } = getActiveFiltersFromQuery(
       activeFilters,

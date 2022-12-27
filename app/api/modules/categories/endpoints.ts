@@ -23,7 +23,7 @@ export const CategoriesAPI = {
     return axios.get<{ data: ICategory }>(`/v1/categories/bySlug/${slug}`, { params });
   },
   getCategoryFilters(id: number | string, location?: string, filters?: { [key: string]: string[] | string | number | boolean }) {
-    return axios.get<{ data: { filters: IFilter[], meta: IFilterMeta } }>(`/v1/categories/${id}/filters`, { params: { filters, location } });
+    return axios.get<{ data: { filters: IFilter[] }, meta: IFilterMeta }>(`/v1/categories/${id}/filters`, { params: { filters, location } });
   },
   getCategoryTags(categoryId: number | string) {
     return axios.get<{ data: ITag[] }>(`v1/categories/${categoryId}/tags`);
