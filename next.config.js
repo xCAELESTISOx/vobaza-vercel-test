@@ -1,6 +1,10 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { withSentryConfig } = require('@sentry/nextjs');
+
 /** @type {import('next').NextConfig} */
-const config = {
+const moduleExports = {
   reactStrictMode: true,
+  productionBrowserSourceMaps: true,
   images: {
     domains: [
       'cdn.dev.immelman.ru',
@@ -11,6 +15,13 @@ const config = {
       'contenttest.vobaza.ru',
     ],
   },
+  sentry: {
+    hideSourceMaps: true,
+  },
 };
 
-module.exports = config;
+const sentryWebpackPluginOptions = {
+  silent: true,
+};
+
+module.exports = withSentryConfig(moduleExports, sentryWebpackPluginOptions);

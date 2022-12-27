@@ -57,7 +57,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => 
   let withCountChange = false;
 
   try {
-    await checkAuth(req, true);
+    const authorized = await checkAuth(req, true);
+    if (!authorized)
+      return {
+        props: {
+          initialGoods,
+          initialPrice,
+          withCountChange,
+        },
+      };
+
     const cartRes = await api.getCart();
     const cart = cartRes.data.data;
 

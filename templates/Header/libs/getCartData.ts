@@ -11,7 +11,8 @@ export const getCartData = async () => {
   let withCountChange = false;
 
   try {
-    await checkAuth({ cookies: { token: Cookies.get('token') } }, true);
+    const authorized = await checkAuth({ cookies: { token: Cookies.get('token') } }, true);
+    if (!authorized) return { initialGoods, initialPrice, withCountChange };
     const cartRes = await api.getCart();
 
     const cart = cartRes.data.data;

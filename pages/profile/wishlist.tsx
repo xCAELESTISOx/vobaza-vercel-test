@@ -66,7 +66,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => 
   let initialGoods = null;
 
   try {
-    await checkAuth(req, true);
+    if (!(await checkAuth(req, true))) return;
     const favoritesRes = await api.getFavorites();
 
     initialGoods = normalizeGoods(favoritesRes.data.data);

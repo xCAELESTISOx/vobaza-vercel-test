@@ -21,6 +21,7 @@
     "@nebo-team/vobaza.ui.range": "^0.0.28",
     "@nebo-team/vobaza.ui.title": "^0.0.3",
     "@reduxjs/toolkit": "1.8.6",
+    "@sentry/nextjs": "^7.28.1",
     "@types/rc-tooltip": "^3.7.7",
     "axios": "0.26.1",
     "formik": "2.2.9",

@@ -43,7 +43,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => 
   let attributes = [];
 
   try {
-    const isLoggedIn = await checkAuth(req, false, true);
+    const isLoggedIn = await checkAuth(req, false);
     let compareRes = null;
 
     if (isLoggedIn) {

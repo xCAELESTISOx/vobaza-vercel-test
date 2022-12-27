@@ -87,7 +87,7 @@ export default function Catalog({
 
   const isExpress = router.asPath.includes('/ekspress-dostavka');
   const breadcrumbs = getCategoryBreadcrumps([...category.ancestors, category], currentTags, isExpress);
-  const currentTag = currentTags[currentTags.length - 1] || null;
+  const currentTag = currentTags[currentTags?.length - 1] || null;
 
   const getProducts = async () => {
     setIsLoading(true);
@@ -131,19 +131,29 @@ export default function Catalog({
   return (
     <>
       <Head>
-        {(filtersMeta.title || category.seo_title || currentTag?.title) && <title>{filtersMeta.title || currentTag?.title || category.seo_title}</title>}
+        {(filtersMeta.title || category.seo_title || currentTag?.title) && (
+          <title>{filtersMeta.title || currentTag?.title || category.seo_title}</title>
+        )}
         {(filtersMeta.keywords || category.keywords || currentTag?.keywords) && (
           <meta name="keywords" content={filtersMeta.keywords || currentTag?.keywords || category.keywords} />
         )}
         {(filtersMeta.description || category.seo_description || currentTag?.description) && (
-          <meta name="description" content={filtersMeta.description || currentTag?.description || category.seo_description} />
+          <meta
+            name="description"
+            content={filtersMeta.description || currentTag?.description || category.seo_description}
+          />
         )}
       </Head>
       <div className={styles.page}>
         <Breadcrumbs breadcrumbs={breadcrumbs} />
         <section>
           <div className="container container--for-cards">
-            <CategoryHeader category={category} currentTag={currentTag} isExpress={isExpress} filtersTitle={filtersMeta.h1} />
+            <CategoryHeader
+              category={category}
+              currentTag={currentTag}
+              isExpress={isExpress}
+              filtersTitle={filtersMeta.h1}
+            />
             <GoodsBlock
               withFilters={Boolean(filters)}
               categorySlug={category.slug}
@@ -177,9 +187,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
   const filtersMeta: IFilterMeta = {
     h1: '',
     title: '',
-    description:'',
+    description: '',
     keywords: '',
-  }
+  };
 
   const isExpress = resolvedUrl.includes('/ekspress-dostavka');
   const initialParams = {
@@ -268,7 +278,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
     const res = await dadataApi.getAddressByIp();
     const json = await res.json();
     const city = json.location?.data.city || 'Москва';
-    const paramsFromQuery = getParamsFromQuery(params, activeQueryFilters)
+    const paramsFromQuery = getParamsFromQuery(params, activeQueryFilters);
 
     const [baseFiltersRes, filtersRes] = await Promise.all([
       api.getCategoryFilters(category.id),

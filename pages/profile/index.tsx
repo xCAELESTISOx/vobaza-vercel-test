@@ -55,7 +55,15 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => 
   let lastOrder = null;
 
   try {
-    await checkAuth(req);
+    const authorized = await checkAuth(req);
+    if (!authorized)
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+
     const [propfileRes, lastOrderRes] = await Promise.all([api.getProfile(), api.getLastOrder()]);
 
     user = propfileRes.data.data;

@@ -38,7 +38,14 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => 
   let addreses = [];
 
   try {
-    await checkAuth(req);
+    const authorized = await checkAuth(req);
+    if (!authorized)
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
     const addressesRes = await api.getAddresses();
     addreses = addressesRes.data.data;
   } catch (error: any) {

@@ -190,6 +190,13 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => 
 
   try {
     const isAuth = await checkAuth(req, true);
+    if (!isAuth)
+      return {
+        redirect: {
+          destination: '/cart',
+          permanent: false,
+        },
+      };
     const [cartRes, addressesRes, propfileRes] = await Promise.all([
       api.getCart(),
       isAuth ? api.getAddresses() : null,

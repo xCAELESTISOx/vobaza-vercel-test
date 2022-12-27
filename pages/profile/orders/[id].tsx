@@ -38,7 +38,14 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, query
   let order = null;
 
   try {
-    await checkAuth(req);
+    const authorized = await checkAuth(req);
+    if (!authorized)
+      return {
+        redirect: {
+          destination: '/profile/orders',
+          permanent: false,
+        },
+      };
     const orderRes = await api.getOrder(query.id);
 
     order = { ...orderRes.data.data };

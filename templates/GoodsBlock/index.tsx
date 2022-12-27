@@ -7,14 +7,14 @@ import { useSelector } from 'shared/lib/hooks/useSelector';
 
 import { CategoryTags } from 'widgets/categories/ui/CategoryTags';
 import { Pagination } from '@nebo-team/vobaza.ui.pagination/dist';
-import { Title } from '@nebo-team/vobaza.ui.title';
 import { CategoryFilters } from '../../widgets/categories';
-import { CartModal } from '../../widgets/products';
 import { ProductsList } from '../../widgets/products';
+import { Title } from '@nebo-team/vobaza.ui.title';
+import { CartModal } from '../../widgets/products';
+import Preloader from 'shared/ui/Preloader';
 import Toggle from 'shared/ui/Toggle';
 
 import styles from './styles.module.scss';
-import Preloader from 'shared/ui/Preloader';
 
 type Props = {
   withoutExpress?: boolean;

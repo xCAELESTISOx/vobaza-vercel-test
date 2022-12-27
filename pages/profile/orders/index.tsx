@@ -48,7 +48,14 @@ export const getServerSideProps: GetServerSideProps<IProps> = async ({ req }) =>
   let orders = [];
 
   try {
-    await checkAuth(req);
+    const authorized = await checkAuth(req);
+    if (!authorized)
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
     const ordersRes = await api.getOrders();
 
     orders = ordersRes.data.data.map((order: IOrder) => {

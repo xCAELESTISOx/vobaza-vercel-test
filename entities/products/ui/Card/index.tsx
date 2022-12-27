@@ -226,7 +226,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
                   </div>
                 )}
               </div>
-              <div className={styles.cardProvider}>{good.merchant.brand}</div>
+              <div className={styles.cardProvider}>{good.brand}</div>
             </div>
           </div>
           {isExpress && (
