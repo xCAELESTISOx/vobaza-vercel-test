@@ -24,10 +24,9 @@ import { GoodsBlock } from '../../templates/GoodsBlock';
 import { CategoryHeader } from 'widgets/categories';
 
 import styles from 'app/styles/Home.module.scss';
-import { dadataApi } from 'app/api/dadata';
 import { api } from '../../app/api';
 
-const getFlatTagsFilters = (tags: ITag[]) => {
+const getFlatTagsFilters = (tags: ITag[] = []) => {
   return tags.reduce((acc, tagItem) => {
     return [...acc, ...tagItem.filters];
   }, [] as ITagFitlerFront[]);
@@ -265,14 +264,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
   params = getParamsFromQuery(params, activeQueryFilters);
 
   try {
-    const res = await dadataApi.getAddressByIp();
-    const json = await res.json();
-    const city = json.location?.data.city || 'Москва';
-    const paramsFromQuery = getParamsFromQuery(params, activeQueryFilters)
-
+    const paramsFromQuery = getParamsFromQuery(params, activeQueryFilters);
+    const location: string = typeof city === 'string' ? city : 'Москва';
     const [baseFiltersRes, filtersRes] = await Promise.all([
       api.getCategoryFilters(category.id),
-      api.getCategoryFilters(category.id, city, paramsFromQuery),
+      api.getCategoryFilters(category.id, location, paramsFromQuery),
     ]);
 
     // const baseFiltersRes = await api.getCategoryFilters(category.id);
@@ -284,6 +280,17 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
     filtersMeta.title = filtersRes.data.meta?.title || '';
     filtersMeta.description = filtersRes.data.meta?.description || '';
     filtersMeta.keywords = filtersRes.data.meta?.keywords || '';
+
+    // Переводит в рубли цены в сео
+    Object.keys(filtersMeta).forEach((key) => {
+      const minStr = filtersMeta[key].match(/от (-?\d+(\.\d+)?)/g) || [];
+      const maxStr = filtersMeta[key].match(/до (-?\d+(\.\d+)?)/g) || [];
+      const min = minStr[0].replace(/[^0-9]+/g, '');
+      const max = maxStr[0].replace(/[^0-9]+/g, '');
+
+      filtersMeta[key] = filtersMeta[key].replace(min, +min / 100);
+      filtersMeta[key] = filtersMeta[key].replace(max, +max / 100);
+    });
 
     const { activeFilters: newActiveFilters, hasInvalidFilters: newHasInvalidFilters } = getActiveFiltersFromQuery(
       activeFilters,
