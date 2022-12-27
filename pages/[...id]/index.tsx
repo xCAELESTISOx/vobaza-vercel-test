@@ -87,7 +87,7 @@ export default function Catalog({
 
   const isExpress = router.asPath.includes('/ekspress-dostavka');
   const breadcrumbs = getCategoryBreadcrumps([...category.ancestors, category], currentTags, isExpress);
-  const currentTag = currentTags[currentTags.length - 1] || null;
+  const currentTag = currentTags[currentTags?.length - 1] || null;
 
   const getProducts = async () => {
     setIsLoading(true);
@@ -276,9 +276,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
     ]);
 
     // const baseFiltersRes = await api.getCategoryFilters(category.id);
-    baseFilters = convertFiltersIfPrice(baseFiltersRes.data.data.filters);
+    baseFilters = convertFiltersIfPrice(baseFiltersRes.data.data);
     // const filtersRes = await api.getCategoryFilters(category.id, getParamsFromQuery(params, activeQueryFilters));
-    filters = convertFiltersIfPrice(filtersRes.data.data.filters);
+    filters = convertFiltersIfPrice(filtersRes.data.data);
 
     filtersMeta.h1 = filtersRes.data.meta?.h1 || '';
     filtersMeta.title = filtersRes.data.meta?.title || '';

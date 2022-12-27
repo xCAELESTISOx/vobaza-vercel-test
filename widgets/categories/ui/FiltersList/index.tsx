@@ -17,7 +17,7 @@ const getSortVariants = () => {
 
 const sortFiltersItems = (filters: IFilter[]) => {
   return filters.map((filterItem) => {
-    if (filterItem.value_type !== 'PRICE' && filterItem.meta.items.length > 0) {
+    if (filterItem.value_type !== 'PRICE' && filterItem?.meta?.items?.length > 0) {
       const metaItems = [...filterItem.meta.items];
       metaItems.sort((a, b) => (a > b ? 1 : -1));
 
