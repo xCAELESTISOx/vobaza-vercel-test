@@ -7,9 +7,9 @@
   padding-top: 40px;
   padding-bottom: 16px;
   width: 100vw;
-  border: none;
-  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1);
-  background: white;
+  // border: none;
+  // box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1);
+  // background: white;
   z-index: 100;
   min-height: 140px;
 
@@ -19,7 +19,22 @@
   }
 }
 
+.collapsingMenuIn {
+  border: none;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1);
+  background: white;
+  position: absolute;
+  z-index: 101;
+  left: -9000px;
+  right: -9000px;
+  top: 0;
+  width: auto;
+  height: 100%;
+}
+
 .headerMenuContent {
+  position: relative;
+  z-index: 102;
   display: flex;
   width: 100%;
 
@@ -66,7 +81,7 @@
   margin-top: 12px;
 
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0px;
     left: 22px;
@@ -114,10 +129,12 @@
   flex-wrap: wrap;
   flex-direction: column;
   align-content: flex-start;
-  max-height: 520px;
+  max-height: 700px;
+  padding-left: 55px;
 
   &.big {
-    max-height: 620px;
+    max-height: 700px;
+    padding-left: 0;
   }
 }
 

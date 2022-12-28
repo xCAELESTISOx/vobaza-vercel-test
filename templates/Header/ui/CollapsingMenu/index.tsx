@@ -47,6 +47,7 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
     if (e.target.dataset.id) {
       const currentGroup = (menu as IMenuItem[]).find(({ id }) => id === parentId);
       const newCurrentItem = currentGroup.children.find((item) => item.id === +e.target.dataset.id);
+
       setCurrentMenuItem(newCurrentItem || menu[0]);
     } else {
       setCurrentMenuItem(menu[0]);
@@ -54,7 +55,7 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
   };
 
   useEffect(() => {
-    setCurrentMenuItem(withRoot ? menu[0] : menu);
+    setCurrentMenuItem(withRoot ? menu[0].children[0] : menu);
   }, [menu]);
 
   useEffect(() => {
@@ -65,6 +66,7 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
 
   return (
     <div className={`${styles.collapsingMenu} container`}>
+      <div className={styles.collapsingMenuIn}></div>
       <div className={styles.headerMenuContent}>
         {withRoot && (
           <div className={styles.rootMenu}>
