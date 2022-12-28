@@ -283,13 +283,17 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
 
     // Переводит в рубли цены в сео
     Object.keys(filtersMeta).forEach((key) => {
-      const minStr = filtersMeta[key].match(/от (-?\d+(\.\d+)?)/g) || [];
-      const maxStr = filtersMeta[key].match(/до (-?\d+(\.\d+)?)/g) || [];
-      const min = minStr[0]?.replace(/[^0-9]+/g, '') || '';
-      const max = maxStr[0]?.replace(/[^0-9]+/g, '') || '';
-
-      if (min) filtersMeta[key] = filtersMeta[key].replace(min, +min / 100);
-      if (max) filtersMeta[key] = filtersMeta[key].replace(max, +max / 100);
+      let min = '';
+      let max = '';
+      // Ищется строка цена - от <digits> до <digits>
+      const priceStr = (filtersMeta[key].match(/цена - от (\d+) до (\d+)/g) || [''])[0];
+      // В строках ищутся числовые строки min и max
+      if (priceStr) {
+        min = (priceStr.match(/от (\d+)/g) || [''])[0].replace(/[^0-9]+/g, '');
+        max = (priceStr.match(/до (\d+)/g) || [''])[0].replace(/[^0-9]+/g, '');
+      }
+      // Заменяем всю строку цена - от <digits> до <digits> на новую
+      if (min && max) filtersMeta[key] = filtersMeta[key].replace(priceStr, `цена - от ${+min / 100} до ${+max / 100}`);
     });
 
     const { activeFilters: newActiveFilters, hasInvalidFilters: newHasInvalidFilters } = getActiveFiltersFromQuery(
