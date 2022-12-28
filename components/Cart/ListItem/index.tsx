@@ -29,6 +29,9 @@ export type ICartGood = {
       status: string;
     }[];
     brand?: string;
+    seo?: {
+      page_name?: string;
+    };
   };
   quantity: number;
   price: number;
@@ -118,7 +121,7 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
       <div className={styles.cartListItemContent}>
         <Link href={`/product/${good.product.slug}-${good.product.sku}`} passHref>
           <a className={styles.cartListItemTitle} target="_blank">
-            {good.product.name}
+            {good.product?.seo?.page_name || good.product.name}
           </a>
         </Link>
         <div className={styles.cartListItemButtons}>

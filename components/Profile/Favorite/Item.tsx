@@ -28,6 +28,9 @@ export type FavoriteGood = {
   is_available: boolean;
   parent_categories: { id: number; name: string }[];
   brand?: string;
+  seo?: {
+    page_name?: string;
+  };
 };
 
 type Props = {
@@ -90,7 +93,7 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
         <div>
           <Link href={`/product/${good.slug}-${good.sku}`} passHref>
             <a className={styles.profileFavoriteItemTitle} target="_blank">
-              {good.name}
+              {good.seo?.page_name || good.name}
             </a>
           </Link>
           {/* <div className={styles.profileFavoriteItemInfo}>{item.info}</div> */}

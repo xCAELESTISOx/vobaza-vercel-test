@@ -168,7 +168,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
           <div className={styles.cardContent}>
             <Link href={`/product/${good.slug}-${good.sku}`} passHref>
               <a className={styles.cardTitle} title={good.name} target="_blank">
-                {good.name}
+                {good.seo?.page_name || good.name}
               </a>
             </Link>
             <div className={styles.cardPriceBlock}>

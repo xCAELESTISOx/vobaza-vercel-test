@@ -80,7 +80,7 @@ const CompareListItem: FC<Props> = ({ good, deleteGood }) => {
       </div>
       <div className={styles.compareListItemTitle}>
         <Link href={`/product/${good.slug}-${good.sku}`} passHref>
-          <a target="_blank">{good.name}</a>
+          <a target="_blank">{good.seo?.page_name || good.name}</a>
         </Link>
       </div>
       <div className={styles.compareListItemPrices}>

@@ -78,6 +78,9 @@ export interface IGoodCard {
     attribute: IAttribute;
     value: any;
   }[];
+  seo?: {
+    page_name?: string;
+  }
 }
 
 export type ProductVariantValue = boolean | number | string | number[] | string[];
@@ -187,6 +190,9 @@ export interface IGoodCompare {
   };
   brand: string;
   parent_categories: { id: number; name: string }[];
+  seo?: {
+    page_name?: string;
+  };
 }
 
 export const goodStatusDictionary = {
