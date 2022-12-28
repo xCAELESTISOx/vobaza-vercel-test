@@ -25,9 +25,10 @@ interface Props {
   newGoods: IGoodCard[];
   popularCategories: ICategory[];
   collections: ICollection[];
+  collectionName: string;
 }
 
-export default function Home({ banners, hits, newGoods, popularCategories, collections }: Props) {
+export default function Home({ banners, hits, newGoods, popularCategories, collections, collectionName }: Props) {
   return (
     <div className={styles.homePage}>
       <CartModal />
@@ -53,7 +54,7 @@ export default function Home({ banners, hits, newGoods, popularCategories, colle
       {collections && collections.length > 0 && (
         <section className={styles.popularCategoriesBlock}>
           <div className="container">
-            <h2 className={styles.sectionTitle}>Коллекции этого сезона </h2>
+            <h2 className={styles.sectionTitle}>{collectionName}</h2>
           </div>
           <Collections collections={collections} />
         </section>
@@ -85,9 +86,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
   let newGoods = null;
   let popularCategories = null;
   let collections = null;
+  let collectionName = '';
 
   try {
-    const [sliderBannersRes, miniatureBannersRes, hitsRes, newGoodsRes, popularCategoriesRes, collectionsRes] =
+    const [sliderBannersRes, miniatureBannersRes, hitsRes, newGoodsRes, popularCategoriesRes, collectionsRes, collectionNameRes] =
       await Promise.all([
         api.getBanners({ type: 'SLIDER' }),
         api.getBanners({ type: 'MINIATURE', limit: 3 }),
@@ -95,6 +97,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
         api.getNewGoods(),
         api.getPopularCategories(),
         api.getCollections(),
+        api.getCollectionName(),
       ]);
 
     banners.slider = sliderBannersRes.data.data;
@@ -103,6 +106,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
     newGoods = normalizeGoods(newGoodsRes.data.data);
     popularCategories = popularCategoriesRes.data.data;
     collections = normalizeCollections(collectionsRes.data.data);
+    collectionName = collectionNameRes.data.data.name;
   } catch (error) {
     console.error(error);
   }
@@ -114,6 +118,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
       newGoods,
       popularCategories,
       collections,
+      collectionName,
     },
   };
 };

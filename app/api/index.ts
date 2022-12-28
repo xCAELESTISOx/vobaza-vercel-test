@@ -81,6 +81,9 @@ export const api = {
   getCollections() {
     return axios.get('/v1/collections');
   },
+  getCollectionName() {
+    return axios.get('/v1/collections/groups');
+  },
   //Goods
   getGoods(params) {
     return axios.get(`/v1/products`, { params });
