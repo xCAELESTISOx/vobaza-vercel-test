@@ -21,10 +21,12 @@ const sortFiltersItems = (filters: IFilter[]) => {
       const metaItems = [...filterItem.meta.items];
       metaItems.sort((a, b) => (a > b ? 1 : -1));
 
-      return { ...filterItem, meta: { ...filterItem.meta, items: metaItems } };
-    }
+      const newFilter = { ...filterItem, meta: { ...filterItem.meta, items: [...metaItems] } };
 
-    return filterItem;
+      return newFilter;
+    } else {
+      return filterItem;
+    }
   });
 };
 
@@ -52,24 +54,24 @@ const CategoryFiltersList = ({
   const router = useRouter();
   const { id, city, page, sort, text, ...activeFilters } = router.query;
 
-  const sortedFilters = sortFiltersItems(filters);
+  const sortedBaseFilters = sortFiltersItems(baseFilters);
 
   return (
     <div className={styles.filtersBlock}>
       <div className={styles.filters}>
-        {sortedFilters.map(
+        {filters.map(
           (filter) =>
             filter.visibility_type === 'MAIN' && (
               <Filter
                 key={filter.id}
                 filter={filter}
-                baseFilter={baseFilters.find((item) => item.id === filter.id)}
+                baseFilter={sortedBaseFilters.find((item) => item.id === filter.id)}
                 currentFilter={currentFilters?.[filter.id]}
                 addFilter={addFilter}
               />
             )
         )}
-        {sortedFilters.length > 0 && (
+        {filters.length > 0 && (
           <button className={styles.filtersButton} onClick={toggleMenu}>
             Еще фильтры
           </button>
