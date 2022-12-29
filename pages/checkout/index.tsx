@@ -89,7 +89,8 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
   });
 
   const ecommerceAfterPurchase = () => {
-    (window as any).dataLayer?.push({
+    (window as any).dataLayer = [...((window as any).dataLayer || [])];
+    (window as any)?.dataLayer?.push({
       ecommerce: {
         currencyCode: 'RUB',
         purchase: {

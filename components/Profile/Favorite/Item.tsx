@@ -58,8 +58,8 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
   const addToCartHandler = () => {
     addToCart();
     const categories = good.parent_categories.map(({ name }) => name);
-
-    (window as any).dataLayer?.push({
+    (window as any).dataLayer = [...((window as any).dataLayer || [])];
+    (window as any)?.dataLayer?.push({
       ecommerce: {
         currencyCode: 'RUB',
         add: {
