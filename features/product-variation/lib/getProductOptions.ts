@@ -8,7 +8,7 @@ type GetProductOptions = (
   selectedOptions: Record<number, (string | number)[]>
 ) => IProductVariant<{ product: IVariantProduct; param: Variant }>[];
 
-/** Возвращает опции вариации товара */
+/** Возвращает базовые опции вариаций товара */
 export const getProductOptions: GetProductOptions = (productId, variants, selectedOptions) => {
   const options: IProductVariant<{ product: IVariantProduct; param: Variant }>[] = variants?.variants
     ?.map((variant) => {
@@ -39,10 +39,12 @@ export const getProductOptions: GetProductOptions = (productId, variants, select
               if (!params[attr.id]) return true;
 
               if (Array.isArray(attr.value)) {
-                return (attr.value as string[]).every((el) => {
-                  // console.log(el);
-                  return params[attr.id].map(String).includes(String(el));
-                });
+                return (
+                  (attr.value as string[]).every((el) => {
+                    // console.log(el);
+                    return params[attr.id].map(String).includes(String(el));
+                  }) && attr.value.length === params[attr.id].length
+                );
               } else {
                 return params[attr.id].map(String).includes(String(attr.value));
               }

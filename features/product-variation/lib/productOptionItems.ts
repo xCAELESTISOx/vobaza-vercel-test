@@ -9,6 +9,7 @@ export const getDropdownVariationItems: GetDropdownVariationItems = (option, han
   }));
 };
 
+/** Получение опций характеристик вариации типа IMAGE */
 export const getImagesVariationItems: GetImagesVariationItems = (
   currentOption,
   products,
