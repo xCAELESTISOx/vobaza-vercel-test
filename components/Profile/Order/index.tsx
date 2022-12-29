@@ -88,11 +88,15 @@ const ProfileOrder: FC<Props> = ({ order }) => {
             {order.products.map((product) => (
               <div key={product.sku} className={styles.orderItem}>
                 <div className={styles.orderItemImage}>
-                  {product.image ? (
-                    <Image {...getImageVariantProps(product.image.variants, 'small')} objectFit="contain" alt="" />
-                  ) : (
-                    <Image src={PlaceholderImage} objectFit="contain" alt="" unoptimized />
-                  )}
+                  <Link href={`/product/${product.slug}-${product.sku}`} passHref>
+                    <a target="_blank">
+                      {product.image ? (
+                        <Image {...getImageVariantProps(product.image.variants, 'small')} objectFit="contain" alt="" />
+                      ) : (
+                        <Image src={PlaceholderImage} objectFit="contain" alt="" unoptimized />
+                      )}
+                    </a>
+                  </Link>
                 </div>
                 <div className={styles.orderItemInfoBlock}>
                   <Link href={`/product/${product.slug}-${product.sku}`} passHref>
