@@ -31,8 +31,11 @@ export const getImagesVariationProducts = (
     // Добавление текста тултипа
     .map((product) => {
       const text = product.attributes.find((attr) => attr.id === displayableAttribute.attribute.id);
+      let tooltipText = String(text.value);
 
-      return { ...product, tooltipText: String(text.value) };
+      if (text.data_type === 'BOOLEAN') tooltipText = String(text.value) === 'true' ? 'Да' : 'Нет';
+
+      return { ...product, tooltipText };
     });
 
   return newProducts;

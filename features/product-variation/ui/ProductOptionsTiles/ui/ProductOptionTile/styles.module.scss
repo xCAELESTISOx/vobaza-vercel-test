@@ -3,11 +3,11 @@
 .productOptionTileWrapper {
     width: 33.333%;
     padding-right: 8px;
+    margin-bottom: 8px;
 }
 
 .productOptionTile {
     border: 1px solid $light-grey;
-    margin-bottom: 8px;
     min-height: 32px;
     height: 100%;
     flex-grow: 1;

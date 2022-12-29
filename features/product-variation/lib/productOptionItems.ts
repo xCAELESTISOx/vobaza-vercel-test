@@ -19,10 +19,6 @@ export const getImagesVariationItems: GetImagesVariationItems = (
 
   return (
     productVariants
-      .map((product) => {
-        const attr = product.attributes.find(({ id }) => id == currentOption.attribute.id);
-        return { ...product, tooltipText: String(attr.value) };
-      })
       // Перенос активного элемента в начало списка
       .reduce((acc, element) => {
         if (selectedOptions[currentOption.attribute.id] == element.tooltipText) {

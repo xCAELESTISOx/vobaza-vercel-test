@@ -40,6 +40,7 @@ export const getProductOptions: GetProductOptions = (productId, variants, select
 
               if (Array.isArray(attr.value)) {
                 return (attr.value as string[]).every((el) => {
+                  // console.log(el);
                   return params[attr.id].map(String).includes(String(el));
                 });
               } else {
@@ -67,7 +68,7 @@ export const getProductOptions: GetProductOptions = (productId, variants, select
 };
 
 const convertVariantValue = (val: ProductVariantValue, dataType: AttributeDataType): Variant => {
-  let newValue;
+  let newValue: Variant;
   switch (dataType) {
     case 'BOOLEAN':
       (() => {
