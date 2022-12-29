@@ -168,6 +168,9 @@ export interface IOrderItemFull {
     item_list_price: number;
     image: Image;
     slug: string;
+    seo?: {
+      page_name?: string;
+    }
   }[];
   item_list_price: number;
   recipient: {

@@ -96,7 +96,7 @@ const ProfileOrder: FC<Props> = ({ order }) => {
                 </div>
                 <div className={styles.orderItemInfoBlock}>
                   <Link href={`/product/${product.slug}-${product.sku}`} passHref>
-                    <a target="_blank">{product.name}</a>
+                    <a target="_blank">{product.seo?.page_name || product.name}</a>
                   </Link>
                   <div className={styles.orderItemPrices}>
                     {product.item_list_price && (

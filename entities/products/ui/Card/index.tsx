@@ -54,6 +54,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
         },
       },
     });
+
     addToCart();
   };
 

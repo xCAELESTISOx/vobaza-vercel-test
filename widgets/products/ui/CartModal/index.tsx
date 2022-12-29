@@ -70,7 +70,7 @@ const CartModal: FC = () => {
                     <div className={styles.favoriteModalItemSku}>Артикул: {cartGood.sku}</div>
                     <Link href={`/product/${cartGood.slug}-${cartGood.sku}`} passHref>
                       <a className={styles.favoriteModalItemTitle} target="_blank">
-                        {cartGood.name}
+                        {cartGood.seo?.page_name || cartGood.name}
                       </a>
                     </Link>
                   </div>
