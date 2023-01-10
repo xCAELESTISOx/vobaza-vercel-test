@@ -117,11 +117,11 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
               passHref
             >
               <a target="_blank">
-                {good.main_image ? (
+                {good.main_image?.variants.medium_webp ? (
                   <Image
                     {...getImageVariantProps(
                       currentImage ? currentImage.main_image?.variants : good.main_image?.variants,
-                      'medium'
+                      'medium_webp'
                     )}
                     {...displayImageSize}
                     height={278}
@@ -143,9 +143,9 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
           <div className={styles.cardVariants}>
             <Link href={`/product/${good.slug}-${good.sku}`} passHref>
               <a onMouseEnter={resetImage} target="_blank" className={styles.cardVariant}>
-                {good.main_image ? (
+                {good.main_image?.variants.small_webp ? (
                   <Image
-                    {...getImageVariantProps(good.main_image.variants, 'extra_small')}
+                    {...getImageVariantProps(good.main_image.variants, 'small_webp')}
                     objectFit="contain"
                     alt={good.name}
                     className={styles.variantImg}

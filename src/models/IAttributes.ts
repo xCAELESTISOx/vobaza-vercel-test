@@ -42,6 +42,9 @@ export interface IAttribute {
   categories?: IAttributeRelatedCategory[];
 }
 
+/** Аттрибут товаров в списке продуктов (PUBLIC_LIST) */
+export interface IProductCardAttribute extends Pick<IAttribute, 'id' | 'name' | 'data_type' | 'type'> {}
+
 export interface IAttributeCompare {
   id: string | number;
   name: string;

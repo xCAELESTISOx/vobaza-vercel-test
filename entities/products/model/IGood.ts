@@ -1,7 +1,7 @@
 import type { Image } from '../../../src/models/IImage';
 import type { IDictionaryItem } from '../../../src/models/IDictionary';
 import type { CategoryStatus } from '../../categories/model/ICategory';
-import type { AttributeDataType, IAttribute, IAttributes } from '../../../src/models/IAttributes';
+import type { AttributeDataType, IAttributes, IProductCardAttribute } from '../../../src/models/IAttributes';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 
 export enum GoodStatus {
@@ -65,22 +65,29 @@ export interface IGoodCard {
   name: string;
   slug: string;
   sku: string;
+  /** Текущая цена */
   price: number;
+  /** Цена до скидки */
   list_price?: number;
   merchant: IGoodMerchant;
   brand?: string;
   parent_categories: { id: number; name: string }[];
+  /** Этикетки (метки) товара */
   labels?: IDictionaryItem[];
   main_image?: Image;
+  /** Варианты товара */
   variant_products?: IVariantProduct[];
+  /**  Наличие */
   is_available: boolean;
+  /** Пять первых основных характеристик товара */
   valuable_attributes?: {
-    attribute: IAttribute;
-    value: any;
+    attribute: IProductCardAttribute;
+    value: string[] | string | number | boolean;
   }[];
+  /** Данные для SEO */
   seo?: {
     page_name?: string;
-  }
+  };
 }
 
 export type ProductVariantValue = boolean | number | string | number[] | string[];
@@ -137,6 +144,7 @@ export interface IGood {
   creditMinimalPayment: number;
 
   price: number;
+  /** Цена до скидки */
   list_price?: number;
   quantity: number;
   minimal_order?: number;
@@ -182,6 +190,7 @@ export interface IGoodCompare {
   sku: string;
   slug: string;
   price: number;
+  /** Цена до скидки */
   list_price?: number;
   is_available: boolean;
   main_image?: Image;
