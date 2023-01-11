@@ -46,8 +46,10 @@ const CartList: FC<Props> = ({ initialGoods, withCountChange = false, setOrderPr
       console.error(error);
     }
   };
+
   const changeItem = async (id: number, quantity: number) => {
     if (quantity === 0) return;
+
     try {
       let res = null;
       if (quantity > 0) {

@@ -23,7 +23,7 @@ type Props = {
   isFixedHeight?: boolean;
 };
 
-const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
+const GoodsCard: FC<Props> = React.memo(({ good, isFixedHeight = true }) => {
   const [currentImage, setCurrentImage] = useState(null);
   const cardRef = useRef(null);
   const cardContainerRef = useRef(null);
@@ -36,8 +36,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
 
   const addToCartHandler = () => {
     const categories = good.parent_categories.map(({ name }) => name);
-    (window as any).dataLayer = [...((window as any).dataLayer || [])];
-    (window as any)?.dataLayer?.push({
+    ((window as any)?.dataLayer || [])?.push({
       ecommerce: {
         currencyCode: 'RUB',
         add: {
@@ -62,7 +61,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
 
   //Обработка случая когда на строке остается один элемент и при ховере он теряет высоту
   const setCardHeight = () => {
-    cardContainerRef.current.style.minHeight = `${cardRef.current.clientHeight + 0.5}px`;
+    cardContainerRef.current.style.minHeight = `${cardRef.current.clientHeight + -2}px`;
   };
 
   // const renderFeatureValue = (feature: { attribute: IAttribute; value: any }) => {
@@ -239,6 +238,6 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
       </div>
     </div>
   );
-};
+});
 
 export { GoodsCard };

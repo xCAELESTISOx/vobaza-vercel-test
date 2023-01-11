@@ -110,7 +110,7 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
           <a target="_blank">
             {good.product.main_image ? (
               <Image
-                {...getImageVariantProps(good.product.main_image.variants, 'small')}
+                {...getImageVariantProps(good.product.main_image.variants, 'small_webp')}
                 objectFit="contain"
                 alt={good.product.name}
               />

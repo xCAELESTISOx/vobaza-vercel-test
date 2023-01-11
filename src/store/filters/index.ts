@@ -15,7 +15,7 @@ const initialState: IFiltersState = {
   hasInvalidFilters: false,
 };
 
-export const filtersSlice = createSlice({
+const filtersSlice = createSlice({
   name: 'filters',
   initialState,
   reducers: {

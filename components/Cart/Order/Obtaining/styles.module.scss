@@ -223,13 +223,20 @@
   display: flex;
   align-items: center;
 }
+.orderAssemblyCheckbox {
+  width: 40px;
+}
 .orderAssemblyProductContent {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   margin-left: 8px;
+  width: 100%;
+  text-align: right;
 }
 .orderAssemblyProductName {
   margin-left: 16px;
+  margin-right: 16px;
 
   font-weight: 400;
   font-size: 15px;

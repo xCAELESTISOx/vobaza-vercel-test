@@ -147,7 +147,7 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
                   style={isCodeTimeout ? { color: '#212121', fontWeight: 'normal' } : {}}
                   text={isCodeTimeout ? `Код придет в течение ${isCodeTimeout} сек` : 'Получить код'}
                   size="big"
-                  isFullScreen={true}
+                  isFullScreen
                   onClick={handleSubmitForm}
                 />
               </div>

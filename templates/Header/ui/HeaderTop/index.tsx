@@ -31,8 +31,8 @@ export const HeaderTop: FC = () => {
     <div className={styles.smallHeader}>
       <div className="container">
         <nav className={styles.smallHeaderNav}>
-          {routes.map((route: any) => (
-            <Link href={route.href} key={route.title}>
+          {routes.map((route) => (
+            <Link href={route.href} key={route.title} prefetch={false}>
               <a className={styles.smallHeaderItem}>{route.title}</a>
             </Link>
           ))}
