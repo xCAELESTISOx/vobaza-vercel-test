@@ -171,7 +171,7 @@ export default function Catalog({
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUrl, query }) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ res, resolvedUrl, query }) => {
   const { page, id, sort, city, ...activeFilters } = query;
   const activeQueryFilters = { ...activeFilters };
   let category: ICategory;
@@ -202,6 +202,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ resolvedUr
   let params: Record<string, string | number | boolean | string[]> = initialParams;
 
   const tagsQueryFilters: { [key: string]: string | string[] } = {};
+
+  res.setHeader('Cache-Control', 'public, max-age=60, immutable');
+
   // Получение категории и тегов товаров
   try {
     const categoryRes = await api.getCategoryByPath(resolvedUrl.split('?')[0].replace('/ekspress-dostavka', ''));
