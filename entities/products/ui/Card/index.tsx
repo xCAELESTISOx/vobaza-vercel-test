@@ -111,7 +111,7 @@ const GoodsCard: FC<Props> = React.memo(({ good, isFixedHeight = true }) => {
           <div className={`${styles.cardImage} card__image`}>
             <Link
               href={
-                currentImage ? `/product/${currentImage.slug}-${currentImage.sku}` : `/product/${good.slug}-${good.sku}`
+                currentImage ? `/product/${currentImage.slug}` : `/product/${good.slug}`
               }
               passHref
             >
@@ -140,7 +140,7 @@ const GoodsCard: FC<Props> = React.memo(({ good, isFixedHeight = true }) => {
             )}
           </div>
           <div className={styles.cardVariants}>
-            <Link href={`/product/${good.slug}-${good.sku}`} passHref>
+            <Link href={`/product/${good.slug}`} passHref>
               <a onMouseEnter={resetImage} target="_blank" className={styles.cardVariant}>
                 {good.main_image?.variants.small_webp ? (
                   <Image
@@ -166,7 +166,7 @@ const GoodsCard: FC<Props> = React.memo(({ good, isFixedHeight = true }) => {
             <CardProductVariants good={good} setCurrentImage={setCurrentImage} />
           </div>
           <div className={styles.cardContent}>
-            <Link href={`/product/${good.slug}-${good.sku}`} passHref>
+            <Link href={`/product/${good.slug}`} passHref>
               <a className={styles.cardTitle} title={good.name} target="_blank">
                 {good.seo?.page_name || good.name}
               </a>

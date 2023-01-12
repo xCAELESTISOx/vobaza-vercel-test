@@ -106,7 +106,7 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
   return (
     <div className={styles.cartListItem}>
       <div className={styles.cartListItemImageBlock}>
-        <Link href={`/product/${good.product.slug}-${good.product.sku}`} passHref>
+        <Link href={`/product/${good.product.slug}`} passHref>
           <a target="_blank">
             {good.product.main_image ? (
               <Image
@@ -121,7 +121,7 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
         </Link>
       </div>
       <div className={styles.cartListItemContent}>
-        <Link href={`/product/${good.product.slug}-${good.product.sku}`} passHref>
+        <Link href={`/product/${good.product.slug}`} passHref>
           <a className={styles.cartListItemTitle} target="_blank">
             {good.product?.seo?.page_name || good.product.name}
           </a>

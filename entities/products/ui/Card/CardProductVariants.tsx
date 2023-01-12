@@ -24,7 +24,7 @@ const CardProductVariants = ({ good, setCurrentImage }: Props) => {
     <>
       {good.variant_products?.length > 0 &&
         good.variant_products.slice(0, VARIANTS_LIMIT).map((item) => (
-          <Link key={item.id} href={`/product/${item.slug}-${item.sku}`}>
+          <Link key={item.id} href={`/product/${item.slug}`}>
             <a
               onMouseEnter={() => {
                 setCurrentImage(item);
@@ -57,7 +57,7 @@ const CardProductVariants = ({ good, setCurrentImage }: Props) => {
           </Link>
         ))}
       {good.variant_products?.length > VARIANTS_LIMIT && (
-        <Link href={`/product/${good.slug}-${good.sku}`}>
+        <Link href={`/product/${good.slug}`}>
           <a target="_blank" className={styles.moreVariants}>
             +{good.variant_products.length - VARIANTS_LIMIT}
           </a>

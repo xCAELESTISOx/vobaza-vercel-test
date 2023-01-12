@@ -96,9 +96,9 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, options, breadcrumbs }) =
     options[id] = variantProduct.attributes.find((attr) => attr.id == id)?.value;
 
     // Определение товара, соответствующего выбранным опциям вариации
-    const { slug, sku } = variantProduct;
+    const { slug } = variantProduct;
 
-    router.push(`/product/${slug}-${sku}`, undefined, { scroll: false });
+    router.push(`/product/${slug}`, undefined, { scroll: false });
 
     setSelectedOptions(options);
   };
