@@ -85,8 +85,8 @@ const CartList: FC<Props> = ({ initialGoods, withCountChange = false, setOrderPr
       }
       return res.data.data.changed_quantity;
     } catch (error) {
-      if (error.response.data.errors[0].code === '1') {
-        setErrorTitle(error.response.data.errors[0].title);
+      if (error.response?.status === 422) {
+        setErrorTitle('Недостаточно данного товара для заказа. Количество было уменьшено до доступного.');
         setIsCountChangeModal(true);
         throw new Error();
       }
