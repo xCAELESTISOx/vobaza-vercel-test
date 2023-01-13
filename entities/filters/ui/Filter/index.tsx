@@ -221,8 +221,8 @@ export const Filter: FC<Props> = ({ filter, baseFilter, ...props }) => {
       {
         {
           NUMERIC_RANGE: <NumericFilter filter={filter} baseFilter={baseFilter} {...props} />,
-          LISTED: <ListedFilter filter={filter} baseFilter={baseFilter} {...props} />,
-        }[filter.type]
+          MANY_FROM_MANY: <ListedFilter filter={filter} baseFilter={baseFilter} {...props} />,
+        }[filter.display_type]
       }
     </div>
   );

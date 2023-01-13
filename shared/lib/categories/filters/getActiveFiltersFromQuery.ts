@@ -18,7 +18,7 @@ export const getActiveFiltersFromQuery = (
     if (filter) {
       // Конвертация данных значений фильтра в зависимости от типа данных фильтра
       let values = null;
-      if (filter.type === 'NUMERIC_RANGE') {
+      if (filter.display_type === 'NUMERIC_RANGE') {
         values = queryValue.toString().split('%-%');
         if (filter.value_type === 'PRICE') {
           values = values.map((value) => value / 100);
@@ -35,7 +35,7 @@ export const getActiveFiltersFromQuery = (
       activeFilters[key] = {
         id: filter.id,
         name: filter.name,
-        type: filter.type,
+        type: filter.display_type,
         value_type: filter.value_type,
         display_name: filter.display_name,
         values,
