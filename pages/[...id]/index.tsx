@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -14,6 +14,7 @@ import { getProductsList } from 'shared/lib/products/getProductsList';
 import { getTagsByUrl } from 'shared/lib/categories/getTagsByUrl';
 import { formatAxiosError } from 'shared/lib/formatAxiosError';
 import { useDispatch } from 'shared/lib/hooks/useDispatch';
+import { useSelector } from 'shared/lib/hooks/useSelector';
 
 import Breadcrumbs from 'shared/ui/Breadcrumbs';
 
@@ -79,10 +80,13 @@ export default function Catalog({
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [meta, setMeta] = useState(null);
+  const initialCity = useRef(null);
+  const isInitialRender = useRef(true);
 
   const dispatch = useDispatch();
-
   const router = useRouter();
+
+  const city = useSelector((state) => state.auth.city);
 
   const isExpress = router.asPath.includes('/ekspress-dostavka');
   const breadcrumbs = getCategoryBreadcrumps([...category.ancestors, category], currentTags, isExpress);
@@ -102,6 +106,10 @@ export default function Catalog({
   };
 
   useEffect(() => {
+    isInitialRender.current = false;
+  }, []);
+
+  useEffect(() => {
     dispatch(setTags(tags));
     dispatch(setCurrentTags(currentTags));
     if (hasInvalidTags) dispatch(markTagsAsInvalid());
@@ -114,6 +122,13 @@ export default function Catalog({
   useEffect(() => {
     getProducts();
   }, [params]);
+
+  useEffect(() => {
+    if (!isInitialRender.current && initialCity.current !== city && currentFilters) {
+      router.replace(router.asPath);
+      initialCity.current = city;
+    }
+  }, [city]);
 
   useEffect(() => {
     dispatch(setBaseFilters(baseFilters));
