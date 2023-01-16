@@ -17,7 +17,6 @@ import type { IOrderItemFull } from '../../../src/models/IOrder';
 import ProfileOrderDateTime from './Item/ProfileOrderDateTime';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
-
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 
 import styles from './styles.module.scss';
@@ -61,7 +60,7 @@ const ProfileOrder: FC<Props> = ({ order }) => {
         <div className={styles.orderUser}>
           <div className={styles.orderUserTitle}>Получатель</div>
           <div className={styles.orderUserInfo}>
-            <div>{order.recipient?.name || order.customer.name + ' ' + order.customer.surname}</div>
+            <div>{order.recipient?.name || order.customer.name + ' ' + (order.customer.surname || '')}</div>
             {order.customer.email && <div>{order.customer.email}</div>}
             <div>{order.recipient?.phone || order.customer.phone}</div>
           </div>
