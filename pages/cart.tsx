@@ -18,7 +18,7 @@ type Props = {
   initialGoods: ICartGood[];
 };
 
-export default function Cart({ initialGoods, initialPrice, withCountChange }) {
+export default function Cart({ initialGoods, initialPrice, withCountChange }: Props) {
   const [orderPrice, setOrderPrice] = useState(initialPrice);
   const dispatch = useDispatch();
 

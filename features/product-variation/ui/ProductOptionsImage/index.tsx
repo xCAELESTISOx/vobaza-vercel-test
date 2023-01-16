@@ -16,7 +16,7 @@ type Props = {
 
 const ProductOptionsImage: FC<Props> = ({ item, active = false }) => {
   return (
-    <Link href={`/product/${item.slug}-${item.sku}`} passHref>
+    <Link href={`/product/${item.slug}`} passHref>
       <Tooltip placement="top" overlay={<span>{item.tooltipText}</span>}>
         <a className={`${styles.variant} ${active ? styles.variantActive : ''}`} title={item.slug}>
           <div className={styles.variantImg}>

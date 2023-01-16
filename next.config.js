@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  compress: true,
   images: {
     domains: [
       'cdn.dev.immelman.ru',

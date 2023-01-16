@@ -154,17 +154,20 @@ const DeliveryAssembly = ({ address, assemblyPrice, goods, setFieldValue, setAss
             <div className={styles.orderAssemblyItem}>
               {productsList.map((item, index) => (
                 <div className={styles.orderAssemblyProduct} key={item.position_id}>
-                  <InputCheckbox
-                    variation="secondary"
-                    label=""
-                    initialValue={item.assembly}
-                    onChange={(val) => onAssemblyProductChange(val, index)}
-                  />
+                  <div className={styles.orderAssemblyCheckbox}>
+                    <InputCheckbox
+                      variation="secondary"
+                      label=""
+                      initialValue={item.assembly}
+                      onChange={(val) => onAssemblyProductChange(val, index)}
+                    />
+                  </div>
                   <div className={styles.orderAssemblyProductContent}>
-                    <div style={{ maxWidth: '48px', maxHeight: '48px' }}>
+                    <h4 className={styles.orderAssemblyProductName}>{item.name}</h4>
+                    <div style={{ width: 48, height: 48, minWidth: 48, minHeight: 48 }}>
                       {item?.main_image?.variants ? (
                         <Image
-                          src={item.main_image.variants.small.url}
+                          src={item.main_image.variants.small_webp.url}
                           objectFit="contain"
                           height="100%"
                           width="100%"
@@ -181,8 +184,6 @@ const DeliveryAssembly = ({ address, assemblyPrice, goods, setFieldValue, setAss
                         />
                       )}
                     </div>
-
-                    <h4 className={styles.orderAssemblyProductName}>{item.name}</h4>
                   </div>
                 </div>
               ))}

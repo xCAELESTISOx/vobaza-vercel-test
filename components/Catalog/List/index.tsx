@@ -17,7 +17,8 @@ type Props = {
 };
 
 const getHref = (routerPath: string, category: ICategory) => {
-  if (!category.ancestors?.length) return '/' + category.slug;
+  const isExpress = routerPath.includes('ekspress-dostavka');
+  if (!category.ancestors?.length) return isExpress ? `/${category.slug}/ekspress-dostavka` : `/${category.slug}`;
 
   let path = '';
 
@@ -25,10 +26,9 @@ const getHref = (routerPath: string, category: ICategory) => {
     path += '/' + ancestor.slug;
   });
 
-  if (routerPath.includes('ekspress-dostavka'))
-    return `${path.replace('/ekspress-dostavka', '')}/${category.slug}/ekspress-dostavka`;
-
-  return `${path}/${category.slug}`;
+  return isExpress
+    ? `${path.replace('/ekspress-dostavka', '')}/${category.slug}/ekspress-dostavka`
+    : `${path}/${category.slug}`;
 };
 
 const CatalogList: FC<Props> = ({ list }) => {

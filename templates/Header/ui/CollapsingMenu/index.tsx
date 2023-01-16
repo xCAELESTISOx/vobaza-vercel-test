@@ -14,6 +14,7 @@ type Props = {
   withRoot?: boolean;
   menu: IMenuItem | IMenuItem[];
   closeMenu?: () => void;
+  isSideMenu: boolean;
 };
 
 // Разделяет категории по полю is_sticky для переноса
@@ -31,7 +32,7 @@ const getGroupedCategories = (list: IMenuItem[] = []) => {
   return res;
 };
 
-export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
+export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu, isSideMenu }) => {
   const [currentMenuItem, setCurrentMenuItem] = useState<IMenuItem>(withRoot ? menu[0] : menu);
   const [groupedCategories, setGroupedCategories] = useState<IMenuItem[][]>([]);
 
@@ -110,7 +111,11 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
           </div>
         )}
         {Boolean(currentMenuItem.children?.length) && (
-          <div className={`${styles.collapsingMenuBody} ${withRoot ? styles.big : ''}`}>
+          <div
+            className={`${styles.collapsingMenuBody} ${withRoot ? styles.big : ''} ${
+              isSideMenu ? styles.sideMenu : ''
+            }`}
+          >
             <>
               {groupedCategories.map((block, index) => {
                 return (

@@ -23,7 +23,7 @@ type Props = {
   isFixedHeight?: boolean;
 };
 
-const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
+const GoodsCard: FC<Props> = React.memo(({ good, isFixedHeight = true }) => {
   const [currentImage, setCurrentImage] = useState(null);
   const cardRef = useRef(null);
   const cardContainerRef = useRef(null);
@@ -36,8 +36,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
 
   const addToCartHandler = () => {
     const categories = good.parent_categories.map(({ name }) => name);
-    (window as any).dataLayer = [...((window as any).dataLayer || [])];
-    (window as any)?.dataLayer?.push({
+    ((window as any)?.dataLayer || [])?.push({
       ecommerce: {
         currencyCode: 'RUB',
         add: {
@@ -62,7 +61,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
 
   //Обработка случая когда на строке остается один элемент и при ховере он теряет высоту
   const setCardHeight = () => {
-    cardContainerRef.current.style.minHeight = `${cardRef.current.clientHeight + 0.5}px`;
+    cardContainerRef.current.style.minHeight = `${cardRef.current.clientHeight + -2}px`;
   };
 
   // const renderFeatureValue = (feature: { attribute: IAttribute; value: any }) => {
@@ -112,7 +111,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
           <div className={`${styles.cardImage} card__image`}>
             <Link
               href={
-                currentImage ? `/product/${currentImage.slug}-${currentImage.sku}` : `/product/${good.slug}-${good.sku}`
+                currentImage ? `/product/${currentImage.slug}` : `/product/${good.slug}`
               }
               passHref
             >
@@ -141,7 +140,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
             )}
           </div>
           <div className={styles.cardVariants}>
-            <Link href={`/product/${good.slug}-${good.sku}`} passHref>
+            <Link href={`/product/${good.slug}`} passHref>
               <a onMouseEnter={resetImage} target="_blank" className={styles.cardVariant}>
                 {good.main_image?.variants.small_webp ? (
                   <Image
@@ -167,7 +166,7 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
             <CardProductVariants good={good} setCurrentImage={setCurrentImage} />
           </div>
           <div className={styles.cardContent}>
-            <Link href={`/product/${good.slug}-${good.sku}`} passHref>
+            <Link href={`/product/${good.slug}`} passHref>
               <a className={styles.cardTitle} title={good.name} target="_blank">
                 {good.seo?.page_name || good.name}
               </a>
@@ -239,6 +238,6 @@ const GoodsCard: FC<Props> = ({ good, isFixedHeight = true }) => {
       </div>
     </div>
   );
-};
+});
 
 export { GoodsCard };

@@ -46,8 +46,10 @@ const CartList: FC<Props> = ({ initialGoods, withCountChange = false, setOrderPr
       console.error(error);
     }
   };
+
   const changeItem = async (id: number, quantity: number) => {
     if (quantity === 0) return;
+
     try {
       let res = null;
       if (quantity > 0) {
@@ -83,8 +85,8 @@ const CartList: FC<Props> = ({ initialGoods, withCountChange = false, setOrderPr
       }
       return res.data.data.changed_quantity;
     } catch (error) {
-      if (error.response.data.errors[0].code === '1') {
-        setErrorTitle(error.response.data.errors[0].title);
+      if (error.response?.status === 422) {
+        setErrorTitle('Недостаточно данного товара для заказа. Количество было уменьшено до доступного.');
         setIsCountChangeModal(true);
         throw new Error();
       }
@@ -98,11 +100,7 @@ const CartList: FC<Props> = ({ initialGoods, withCountChange = false, setOrderPr
   return (
     <div className={styles.cartList}>
       {isCountChangeModal && (
-        <CartItemChangeModal
-          onClose={closeModal}
-          description={errorTitle}
-          title="Недостаточно данного товара для заказа. Количество было уменьшено до доступного."
-        />
+        <CartItemChangeModal onClose={closeModal} description={errorTitle} title="Количество товара ограничено." />
       )}
       {goods && goods.length > 0 ? (
         <div className={`${styles.cartContent} ${styles.small}`}>

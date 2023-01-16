@@ -13,7 +13,7 @@ const initialState: ITagsState = {
   hasInvalidTags: false,
 };
 
-export const tagsSlice = createSlice({
+const tagsSlice = createSlice({
   name: 'tags',
   initialState,
   reducers: {
