@@ -36,6 +36,7 @@ export const HeaderMenu: FC<Props> = ({ mainMenu, sideMenu }) => {
       setCurrentMenu(null);
     }
   };
+
   const closeMenu = () => {
     setWithRoot(false);
     setCurrentMenu(null);
@@ -45,7 +46,9 @@ export const HeaderMenu: FC<Props> = ({ mainMenu, sideMenu }) => {
 
   return (
     <div className={`${styles.menuContainer}`} onMouseLeave={closeMenu}>
-      {(currentMenu || isSideMenu) && <CollapsingMenu menu={currentMenu} withRoot={isSideMenu} closeMenu={closeMenu} />}
+      {(isSideMenu || (!isSideMenu && currentMenu?.children)) && (
+        <CollapsingMenu menu={currentMenu} withRoot={isSideMenu} closeMenu={closeMenu} isSideMenu={isSideMenu} />
+      )}
       <nav className={styles.menu}>
         <Link href={katalogLink}>
           <a
@@ -57,7 +60,7 @@ export const HeaderMenu: FC<Props> = ({ mainMenu, sideMenu }) => {
         </Link>
         <div className={styles.headerMenuItems}>
           {mainMenu?.map((item, index) => (
-            <HeaderMenuItem key={item.id} index={index} item={item} openFullMenu={openFullMenu} />
+            <HeaderMenuItem key={item.id} index={index} item={item} openFullMenu={openFullMenu} closeMenu={closeMenu} />
           ))}
         </div>
       </nav>
@@ -65,9 +68,9 @@ export const HeaderMenu: FC<Props> = ({ mainMenu, sideMenu }) => {
   );
 };
 
-type MainMenuItemProps = { index: number; item: IMenuItem; openFullMenu: (e: any) => void };
+type MainMenuItemProps = { index: number; item: IMenuItem; openFullMenu: (e: any) => void; closeMenu: () => void };
 
-const HeaderMenuItem = ({ index, item, openFullMenu }: MainMenuItemProps) => {
+const HeaderMenuItem = ({ index, item, openFullMenu, closeMenu }: MainMenuItemProps) => {
   const router = useRouter();
   const isExpress = router.asPath.includes('/ekspress-dostavka');
   const link = getLinkFromMenuItem(item, isExpress);
@@ -78,6 +81,9 @@ const HeaderMenuItem = ({ index, item, openFullMenu }: MainMenuItemProps) => {
         className={` ${styles.headerCategory} ${router.asPath.includes(link) ? styles.active : ''}`}
         data-index={index}
         onMouseEnter={openFullMenu}
+        onClick={() => {
+          closeMenu();
+        }}
       >
         {item.name}
       </a>
