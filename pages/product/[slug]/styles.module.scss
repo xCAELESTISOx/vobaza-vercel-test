@@ -1,5 +1,5 @@
-@import "~app/styles/Home.module.scss";
-@import "~app/styles/variables.global.scss";
+@import '~app/styles/Home.module.scss';
+@import '~app/styles/variables.global.scss';
 
 .productInfo {
   display: flex;
@@ -233,6 +233,12 @@
 .productBlockList {
   + .productBlockList {
     margin-top: 32px;
+  }
+
+  padding-bottom: 80px;
+
+  @media screen and (max-width: 767px) {
+    padding-bottom: 20px;
   }
 }
 

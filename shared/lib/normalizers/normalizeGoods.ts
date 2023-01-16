@@ -41,6 +41,10 @@ export const normalizeProductInfo = (productObject) => {
     return { ...item, price: getPrice(item.price), list_price: getPrice(item.list_price) };
   });
 
+  newProduct.set = newProduct.set.map((item) => {
+    return { ...item, price: getPrice(item.price), list_price: getPrice(item.list_price) };
+  });
+
   return newProduct;
 };
 

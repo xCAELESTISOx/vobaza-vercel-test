@@ -261,7 +261,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, options, breadcrumbs }) =
 
           {/* FIXME: Компонент ниже вызывает:
               "Hydration failed because the initial UI does not match what was rendered on the server" */}
-          <div className="container container--for-cards">
+          <div className="container container--for-cards" style={{ marginTop: '20px' }}>
             {product.similar_products && product.similar_products.length > 0 && (
               <div className={styles.productBlockList}>
                 <h2 className={styles.productBlockTitle}>Похожие товары </h2>
