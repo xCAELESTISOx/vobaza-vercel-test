@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useLightbox } from 'simple-react-lightbox';
 import { Navigation, Thumbs, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -9,7 +8,7 @@ import PlaceholderImageFull from 'assets/images/placeholder.png';
 import PlaceholderImage from 'assets/images/placeholder_small.png';
 import type { ImageVariant } from 'src/models/IImage';
 
-import { LightboxViewer } from './LightboxViewer';
+import { FullImageSwiper } from 'features/modal-swiper';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 import styles from './styles.module.scss';
@@ -48,22 +47,24 @@ const renderEmptyPlaceholder = (isThumb?: boolean) => {
 const ProductImages = ({ images }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [mainSwiper, setMainSwiper] = useState(null);
-
-  const { openLightbox } = useLightbox();
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   const fullImages = getImagesUrlsFromVariant(images, 'original');
   const mainImages = getImagesUrlsFromVariant(images, 'large');
   const thumbsImages = getImagesUrlsFromVariant(images, 'small');
 
-  const handleLightboxClosed = (e) => {
+  const handleClose = () => {
+    setIsFullScreen(false);
     if (mainSwiper) {
-      mainSwiper.slideTo(+e.currentSlide.id + 1);
+      mainSwiper.slideToLoop(currentSlide);
     }
   };
 
   const handleClickSlide = (index) => {
     return () => {
-      openLightbox(index);
+      setIsFullScreen(true);
+      setCurrentSlide(index);
     };
   };
 
@@ -86,16 +87,27 @@ const ProductImages = ({ images }) => {
       </SwiperSlide>
     ));
   };
-  const moreOneImage = mainImages.length > 1;
 
-  const lightboxViewerButtons = {
-    showNextButton: moreOneImage,
-    showPrevButton: moreOneImage,
-  };
+  useEffect(() => {
+    if (isFullScreen) {
+      document.body.style.overflowY = 'hidden';
+    } else {
+      document.body.style.overflowY = 'auto';
+    }
+  }, [isFullScreen]);
+
+  const moreOneImage = mainImages.length > 1;
 
   return (
     <>
-      <LightboxViewer images={fullImages} onClose={handleLightboxClosed} buttons={lightboxViewerButtons} />
+      <FullImageSwiper
+        onClose={handleClose}
+        images={fullImages}
+        isOpen={isFullScreen}
+        thumbsImages={thumbsImages}
+        currentSlide={currentSlide}
+        onCurrentSlide={setCurrentSlide}
+      />
 
       <div className={styles.images}>
         {mainImages.length > 0 ? (
@@ -127,7 +139,7 @@ const ProductImages = ({ images }) => {
         )}
         {moreOneImage && (
           <>
-            <div className={`${styles.pagination} product-images-pagination`}></div>
+            <div className={`${styles.pagination} product-images-pagination`} />
             <div className={styles.thumbsSwiper}>
               <Swiper
                 className={styles.swiper}
