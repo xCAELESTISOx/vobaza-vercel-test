@@ -125,7 +125,7 @@ export default function Catalog({
 
   useEffect(() => {
     if (!isInitialRender.current && initialCity.current !== city && currentFilters) {
-      router.replace(router.asPath);
+      router.reload();
       initialCity.current = city;
     }
   }, [city]);
