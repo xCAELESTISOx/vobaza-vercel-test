@@ -39,7 +39,7 @@ const ProfileMenu: FC<Props> = ({ isOpen, close }) => {
       </div>
       <div>
         <div className={styles.profileMobileMenuTitle}>Профиль</div>
-        <ProfileSidebar />
+        <ProfileSidebar close={close} />
       </div>
     </div>
   );
