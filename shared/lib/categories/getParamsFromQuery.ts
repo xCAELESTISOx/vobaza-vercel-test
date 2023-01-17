@@ -13,14 +13,14 @@ export const getParamsFromQuery = (
 
   Object.entries(activeFilters).forEach(([key, value], index) => {
     newParams[`filter[filters][${index}][id]`] = key;
-    const filterValue = value.toString().split('%-%');
+    const filterValue = value?.toString()?.split('%-%');
 
-    if (filterValue.length === 1) {
+    if (filterValue?.length === 1) {
       const values = filterValue[0].split(',');
       values.forEach((value, valueIndex) => {
         newParams[`filter[filters][${index}][values][${valueIndex}]`] = value;
       });
-    } else if (filterValue.length === 2) {
+    } else if (filterValue?.length === 2) {
       const [min, max] = filterValue;
       newParams[`filter[filters][${index}][min]`] = min;
       newParams[`filter[filters][${index}][max]`] = max;

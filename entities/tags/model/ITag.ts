@@ -22,4 +22,5 @@ export interface ITagFitlerFront extends Omit<IFilterFront, 'name' | 'values'> {
   min?: number;
   max?: number;
   name?: string;
+  type?: "NUMERIC_RANGE" | "LISTED"
 }

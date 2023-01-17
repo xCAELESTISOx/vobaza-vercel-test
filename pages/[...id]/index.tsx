@@ -96,6 +96,7 @@ export default function Catalog({
     setIsLoading(true);
 
     setProducts([]);
+
     const { products, meta, withError } = await getProductsList(params, currentTags);
     hasInvalidFilters = withError;
 
@@ -259,7 +260,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ res, resol
     tagFilters.forEach((filter) => {
       let value: string | string[] = filter.values;
 
-      if (filter.display_type === 'NUMERIC_RANGE') {
+      if (filter.type === 'NUMERIC_RANGE' && filter.value_type !== 'PRICE') {
         value = `${filter.min}%-%${filter.max}`;
       }
 
