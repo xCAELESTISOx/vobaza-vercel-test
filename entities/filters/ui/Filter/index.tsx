@@ -95,9 +95,10 @@ const NumericFilter: FC<Props> = ({ filter, full = false, currentFilter, addFilt
 
 const ListedFilter: FC<Props> = ({ filter, baseFilter, full = false, currentFilter, addFilter }) => {
   const [isTouched, setIsTouched] = useState(false);
+
   const [values, setValues] = useState<IFilterSelectVariant[]>(
     baseFilter.meta.items
-      .map((item) => {
+      ?.map((item) => {
         return {
           value: item === 'true' ? 'Да' : item === 'false' ? 'Нет' : item,
           code: item,
@@ -122,10 +123,11 @@ const ListedFilter: FC<Props> = ({ filter, baseFilter, full = false, currentFilt
         })
       );
     } else {
-      setValues((prevArray) =>
-        prevArray.map((item) => {
-          return { ...item, isActive: false };
-        })
+      setValues(
+        (prevArray) =>
+          prevArray?.map((item) => {
+            return { ...item, isActive: false };
+          }) || []
       );
     }
     setIsTouched(false);
@@ -166,7 +168,7 @@ const ListedFilter: FC<Props> = ({ filter, baseFilter, full = false, currentFilt
 
   useEffect(() => {
     const filteredBaseFilters = baseFilter.meta.items
-      .map((item) => {
+      ?.map((item) => {
         let isActive = false;
         if (currentFilter?.values.includes(item)) isActive = true;
 
@@ -181,6 +183,8 @@ const ListedFilter: FC<Props> = ({ filter, baseFilter, full = false, currentFilt
 
     setValues(filteredBaseFilters);
   }, [baseFilter]);
+
+  if (!baseFilter.meta.items) return null;
 
   return (
     <div className={styles.filter}>
