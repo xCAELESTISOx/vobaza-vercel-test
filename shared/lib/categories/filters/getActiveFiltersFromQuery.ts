@@ -35,9 +35,9 @@ export const getActiveFiltersFromQuery = (
       activeFilters[key] = {
         id: filter.id,
         name: filter.name,
-        type: filter.display_type,
+        display_type: filter.display_type,
         value_type: filter.value_type,
-        display_name: filter.display_name,
+        display_name: filter.display_name || null,
         values,
       };
     } else {
