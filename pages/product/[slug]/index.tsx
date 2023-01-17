@@ -281,8 +281,10 @@ const getProductSlug = (slug: string): string | null => {
   return parseSlug || null;
 };
 
-export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({ res, query }) => {
   const slug = getProductSlug(query.slug as string);
+
+  res.setHeader('Cache-Control', 'public, max-age=180, immutable');
 
   try {
     const productRes = await api.getGoodBySlug(slug);

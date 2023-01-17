@@ -73,51 +73,49 @@ const PhoneCallModal: FC<Props> = ({ isActive, onClose }) => {
   };
 
   return (
-    <>
-      {isActive && (
-        <ModalLayout onClose={onClose}>
-          <div className={styles.inlineModal}>
-            <div className={styles.inlineModalContent}>
-              <Title element="h2" className={styles.inlineModalTitle}>
-                Заказать звонок
-              </Title>
-              <form>
-                <div className={styles.inlineModalItem}>
-                  <InputText
-                    label="Имя"
-                    name="name"
-                    value={values.name}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={errors?.name}
-                  />
-                </div>
-                <div className={styles.inlineModalItem}>
-                  <InputPhone
-                    label="Номер телефона"
-                    name="phone"
-                    value={values.phone}
-                    onChange={handlePhoneChange}
-                    onBlur={handleBlur}
-                    error={errors?.phone}
-                    required
-                    disabled={isLoading}
-                  />
-                </div>
-                <Button
-                  onClick={handleSubmitForm}
-                  text="Заказать звонок"
-                  size="big"
-                  isFullScreen={true}
-                  className={styles.inlineModalButton}
+    <div style={!isActive ? { display: 'none' } : {}}>
+      <ModalLayout onClose={onClose}>
+        <div className={styles.inlineModal}>
+          <div className={styles.inlineModalContent}>
+            <Title element="h2" className={styles.inlineModalTitle}>
+              Заказать звонок
+            </Title>
+            <form>
+              <div className={styles.inlineModalItem}>
+                <InputText
+                  label="Имя"
+                  name="name"
+                  value={values.name}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors?.name}
+                />
+              </div>
+              <div className={styles.inlineModalItem}>
+                <InputPhone
+                  label="Номер телефона"
+                  name="phone"
+                  value={values.phone}
+                  onChange={handlePhoneChange}
+                  onBlur={handleBlur}
+                  error={errors?.phone}
+                  required
                   disabled={isLoading}
                 />
-              </form>
-            </div>
+              </div>
+              <Button
+                onClick={handleSubmitForm}
+                text="Заказать звонок"
+                size="big"
+                isFullScreen={true}
+                className={styles.inlineModalButton}
+                disabled={isLoading}
+              />
+            </form>
           </div>
-        </ModalLayout>
-      )}
-    </>
+        </div>
+      </ModalLayout>
+    </div>
   );
 };
 export default PhoneCallModal;

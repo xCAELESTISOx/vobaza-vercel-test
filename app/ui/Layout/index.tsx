@@ -3,13 +3,13 @@ import { Provider } from 'react-redux';
 
 import { MobileBottomMenu } from 'templates/MobileBottomMenu';
 import PhoneCallModal from 'shared/ui/PhoneCallModal';
-import { MainHead } from './MainHead';
 import AuthModal from '../../../components/Auth';
-import store from 'src/store';
 import Footer from '../../../templates/Footer';
+import Header from 'templates/Header';
+import { MainHead } from './MainHead';
 
 import styles from './styles.module.scss';
-import Header from 'templates/Header';
+import store from 'src/store';
 
 interface ILayoutChildren {
   children: React.ReactNode;
@@ -18,9 +18,7 @@ interface ILayoutChildren {
 export default function Layout({ children }: ILayoutChildren) {
   const [isPhoneCallOpen, setIsPhoneCallOpen] = useState(false);
 
-  const toggleIsPhoneCall = () => {
-    setIsPhoneCallOpen(!isPhoneCallOpen);
-  };
+  const toggleIsPhoneCall = () => setIsPhoneCallOpen((prev) => !prev);
 
   return (
     <Provider store={store}>

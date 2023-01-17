@@ -41,17 +41,15 @@ const AuthModal: FC = () => {
   };
 
   return (
-    <>
-      {isModalOpen && (
-        <ModalLayout onClose={onClose}>
-          {isRegistration ? (
-            <RegistrationForm goLogin={toggleIsRegistration} onSuccess={onSuccess} />
-          ) : (
-            <LoginForm goRegister={toggleIsRegistration} onSuccess={onSuccess} />
-          )}
-        </ModalLayout>
-      )}
-    </>
+    <div style={!isModalOpen ? { display: 'none' } : {}}>
+      <ModalLayout onClose={onClose}>
+        {isRegistration ? (
+          <RegistrationForm goLogin={toggleIsRegistration} onSuccess={onSuccess} />
+        ) : (
+          <LoginForm goRegister={toggleIsRegistration} onSuccess={onSuccess} />
+        )}
+      </ModalLayout>
+    </div>
   );
 };
 export default AuthModal;

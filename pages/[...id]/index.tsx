@@ -218,7 +218,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ res, resol
 
   const tagsQueryFilters: { [key: string]: string | string[] } = {};
 
-  res.setHeader('Cache-Control', 'public, max-age=60, immutable');
+  res.setHeader('Cache-Control', 'public, max-age=180, immutable');
 
   // Получение категории и тегов товаров
   try {

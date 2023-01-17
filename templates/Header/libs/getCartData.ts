@@ -34,7 +34,7 @@ export const getCartData = async () => {
       withCountChange = true;
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return {
       initialGoods,
       initialPrice,
