@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, MouseEvent } from 'react';
+import React, { FC, useEffect, useState, MouseEvent } from 'react';
 
 import type { IFilter, IFilterFront } from 'entities/filters/model/IFilter';
 
@@ -17,9 +17,9 @@ type Props = {
   addFilter: (filter: IFilterFront) => void;
 };
 
-const NumericFilter: FC<Props> = ({ filter, full = false, currentFilter, addFilter }) => {
-  const [values, setValues] = useState<[number, number]>([filter.meta.min || 0, filter.meta.max || 100]);
+const NumericFilter: FC<Props> = React.memo(({ filter, full = false, currentFilter, addFilter }) => {
   const [filterValues, setFilterValues] = useState<[number, number]>([filter.meta.min || 0, filter.meta.max || 100]);
+  const [rangeFilter, setRangeFilter] = useState<{ filter: IFilter; values: [number, number] } | null>(null);
   const onClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
@@ -48,50 +48,66 @@ const NumericFilter: FC<Props> = ({ filter, full = false, currentFilter, addFilt
     });
   };
 
+  const handleIncomeValues = (values: [number, number]) => {
+    setRangeFilter((prevRangeFilter) => ({
+      ...prevRangeFilter,
+      values,
+    }));
+  };
+
   useEffect(() => {
     if (currentFilter) {
-      const newValues = [...currentFilter.values] as [number, number];
-
-      newValues[0] = Math.max(currentFilter.values[0], filter.meta.min);
-      newValues[1] = Math.min(currentFilter.values[1], filter.meta.max);
-
-      setValues(newValues);
+      setRangeFilter({
+        filter,
+        values: [
+          Math.max(currentFilter.values[0], filter.meta.min),
+          Math.min(currentFilter.values[1], filter.meta.max),
+        ] as [number, number],
+      });
     } else {
-      setValues([filter.meta.min || 0, filter.meta.max || 100]);
+      setRangeFilter({
+        filter,
+        values: [filter.meta.min || 0, filter.meta.max || 100] as [number, number],
+      });
     }
-  }, [currentFilter, filter]);
+  }, [filter, currentFilter]);
 
   return (
-    <div className={styles.filter}>
-      {full ? (
-        <div className={styles.filterNumeric}>
-          <RangeBlock
-            min={filter.meta.min}
-            max={filter.meta.max}
-            incomeValues={values}
-            setIncomeValue={setValues}
-            onChange={setFilterValues}
-          />
-          <button style={{ display: 'none' }} onClick={onClick} className="filtersJsButton" />
+    <>
+      {rangeFilter && (
+        <div className={styles.filter}>
+          {full ? (
+            <div className={styles.filterNumeric}>
+              <RangeBlock
+                min={rangeFilter.filter.meta.min}
+                max={rangeFilter.filter.meta.max}
+                incomeValues={rangeFilter.values}
+                setIncomeValue={handleIncomeValues}
+                onChange={setFilterValues}
+              />
+
+              <button style={{ display: 'none' }} onClick={onClick} className="filtersJsButton" />
+            </div>
+          ) : (
+            <FilterSelect
+              variation="secondary"
+              variants={[
+                { code: 'min', value: rangeFilter.filter.meta.min },
+                { code: 'max', value: rangeFilter.filter.meta.max },
+              ]}
+              type="range"
+              incomeValues={rangeFilter.values}
+              setIncomeValues={handleIncomeValues}
+              placeholder={rangeFilter.filter.display_name || rangeFilter.filter.name}
+              buttonText="Показать"
+              onButtonClick={onButtonClick}
+            />
+          )}
         </div>
-      ) : (
-        <FilterSelect
-          variation="secondary"
-          variants={[
-            { code: 'min', value: filter.meta.min },
-            { code: 'max', value: filter.meta.max },
-          ]}
-          type="range"
-          incomeValues={values}
-          setIncomeValues={setValues}
-          placeholder={filter.display_name || filter.name}
-          buttonText="Показать"
-          onButtonClick={onButtonClick}
-        />
       )}
-    </div>
+    </>
   );
-};
+});
 
 const ListedFilter: FC<Props> = ({ filter, baseFilter, full = false, currentFilter, addFilter }) => {
   const [isTouched, setIsTouched] = useState(false);
