@@ -54,6 +54,9 @@ export const HeaderMenu: FC<Props> = ({ mainMenu, sideMenu }) => {
           <a
             className={`${styles.headerCategory} ${styles.headerCategoryAll} ${withRoot ? styles.active : ''}`}
             onMouseEnter={openMenuAll}
+            onClick={() => {
+              closeMenu();
+            }}
           >
             <Icon name="MenuBurger" /> Каталог
           </a>
