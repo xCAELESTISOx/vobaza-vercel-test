@@ -24,7 +24,7 @@ export interface IFilterFront {
   name: string;
   tag_slug?: string;
   value_type?: 'NUMBER' | 'PRICE' | 'STRING';
-  type: 'NUMERIC_RANGE' | 'LISTED';
+  display_type: 'NUMERIC_RANGE' | 'MANY_FROM_MANY';
   values: any[];
   display_name?: string;
 }
