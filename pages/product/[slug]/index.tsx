@@ -273,7 +273,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, options, breadcrumbs }) =
 };
 
 const getProductSlug = (slug: string): string | null => {
-  const parseSlug = slug.replace('/ekspress-dostavka', '').split('-')[0];
+  const parseSlug = slug.replace('/ekspress-dostavka', '');
 
   return parseSlug || null;
 };

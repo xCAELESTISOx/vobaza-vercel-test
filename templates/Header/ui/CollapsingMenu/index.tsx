@@ -156,7 +156,6 @@ export const CollapsingMenuItem = ({ menuBlock, closeMenu }: ICollapsingMenuItem
       ) : (
         <div className={styles.collapsingMenuBlockTitle}>{menuBlock.name}</div>
       )}
-
       {Boolean(items?.length) && (
         <div className={styles.collapsingMenuBlockItems}>
           {items.map((item) =>
