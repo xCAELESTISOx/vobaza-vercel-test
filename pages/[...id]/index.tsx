@@ -1,7 +1,8 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import Head from 'next/head';
 
 import type { ITag, ITagFitlerFront } from 'entities/tags';
@@ -80,13 +81,13 @@ export default function Catalog({
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [meta, setMeta] = useState(null);
-  const initialCity = useRef(null);
-  const isInitialRender = useRef(true);
+
+  const city = useSelector((state) => state.auth.city);
+  const prevCity = Cookies.get('prevCity');
+  const savedCity = Cookies.get('city') || '';
 
   const dispatch = useDispatch();
   const router = useRouter();
-
-  const city = useSelector((state) => state.auth.city);
 
   const isExpress = router.asPath.includes('/ekspress-dostavka');
   const breadcrumbs = getCategoryBreadcrumps([...category.ancestors, category], currentTags, isExpress);
@@ -107,10 +108,6 @@ export default function Catalog({
   };
 
   useEffect(() => {
-    isInitialRender.current = false;
-  }, []);
-
-  useEffect(() => {
     dispatch(setTags(tags));
     dispatch(setCurrentTags(currentTags));
     if (hasInvalidTags) dispatch(markTagsAsInvalid());
@@ -125,9 +122,22 @@ export default function Catalog({
   }, [params]);
 
   useEffect(() => {
-    if (!isInitialRender.current && initialCity.current !== city && currentFilters) {
+    // если prevCity есть, но он не идентичен городу(перешли на другую стр и поменяли город, то актуализируем)
+    if (prevCity && (city || savedCity) && prevCity !== (city || savedCity)) {
+      Cookies.set('prevCity', city || savedCity);
+    }
+  }, []);
+
+  useEffect(() => {
+    // prevCity необходим для изменения сео при смене города
+
+    // если нет куки - ставим
+    if (!prevCity && (city || savedCity)) Cookies.set('prevCity', city || savedCity);
+
+    if (prevCity && city && prevCity !== city && currentFilters) {
+      Cookies.set('prevCity', city);
+
       router.reload();
-      initialCity.current = city;
     }
   }, [city]);
 
