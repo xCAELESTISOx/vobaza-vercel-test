@@ -26,7 +26,7 @@ export const ActiveFilterLabel: FC<Props> = ({ filter, removeFilter, isLoading }
 
   return (
     <>
-      {filter.type === 'NUMERIC_RANGE' ? (
+      {filter.display_type === 'NUMERIC_RANGE' ? (
         <div className={`${styles.active} ${styles.filtersButton}`}>
           {renderNumericText(filter)}
           <button

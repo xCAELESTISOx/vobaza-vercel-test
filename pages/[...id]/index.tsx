@@ -259,7 +259,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ res, resol
     tagFilters.forEach((filter) => {
       let value: string | string[] = filter.values;
 
-      if (filter.type === 'NUMERIC_RANGE') {
+      if (filter.display_type === 'NUMERIC_RANGE') {
         value = `${filter.min}%-%${filter.max}`;
       }
 
