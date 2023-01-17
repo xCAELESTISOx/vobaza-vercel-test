@@ -33,7 +33,7 @@ const NumericFilter: FC<Props> = ({ filter, full = false, currentFilter, addFilt
       id: filter.id,
       name: filter.display_name || filter.name,
       value_type: filter.value_type,
-      type: filter.type,
+      display_type: filter.display_type,
       values: filterValues,
     });
   };
@@ -43,7 +43,7 @@ const NumericFilter: FC<Props> = ({ filter, full = false, currentFilter, addFilt
       id: filter.id,
       name: filter.display_name || filter.name,
       value_type: filter.value_type,
-      type: filter.type,
+      display_type: filter.display_type,
       values: newValues,
     });
   };
@@ -145,7 +145,7 @@ const ListedFilter: FC<Props> = ({ filter, baseFilter, full = false, currentFilt
     addFilter({
       id: filter.id,
       name: filter.display_name || filter.name,
-      type: filter.type,
+      display_type: filter.display_type,
       values: newValues,
     });
   };
@@ -221,8 +221,8 @@ export const Filter: FC<Props> = ({ filter, baseFilter, ...props }) => {
       {
         {
           NUMERIC_RANGE: <NumericFilter filter={filter} baseFilter={baseFilter} {...props} />,
-          LISTED: <ListedFilter filter={filter} baseFilter={baseFilter} {...props} />,
-        }[filter.type]
+          MANY_FROM_MANY: <ListedFilter filter={filter} baseFilter={baseFilter} {...props} />,
+        }[filter.display_type]
       }
     </div>
   );
