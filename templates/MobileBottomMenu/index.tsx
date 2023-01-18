@@ -1,4 +1,5 @@
-import React, { FC, useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { FC, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 
@@ -13,6 +14,7 @@ import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import styles from './styles.module.scss';
 
 export const MobileBottomMenu: FC = () => {
+  const router = useRouter();
   const [isProfileMenuOpen, setIsProfileOpen] = useState(false);
 
   const favoriteIds = useSelector((state) => state.goods.favoriteIds);
@@ -34,6 +36,10 @@ export const MobileBottomMenu: FC = () => {
   const toggleProfileMenu = () => {
     setIsProfileOpen(!isProfileMenuOpen);
   };
+
+  useEffect(() => {
+    if (isProfileMenuOpen) setIsProfileOpen(false);
+  }, [router.asPath]);
 
   return (
     <>
