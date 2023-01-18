@@ -2,9 +2,9 @@ import type { Image, ImageVariants } from '../../src/models/IImage';
 
 import PlaceholderImage from 'assets/images/placeholder.png';
 
-const getImageVariantByFieldname = (image: Image, fieldname: string) => {
+const getImageVariantByFieldname = (image: Image, fieldname: string, altVariant?: string) => {
   try {
-    return image.variants[fieldname];
+    return image.variants[fieldname] || image.variants[altVariant];
   } catch (err) {
     console.error(err);
   }

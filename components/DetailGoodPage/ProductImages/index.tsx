@@ -18,12 +18,12 @@ const thumbsBreakpoints = {
   1550: { slidesPerView: 8 },
 };
 
-const getImagesUrlsFromVariant = (images, fieldname: string): ImageVariant[] => {
+const getImagesUrlsFromVariant = (images, fieldname: string, altVariant?: string): ImageVariant[] => {
   const urls = [];
 
   if (Array.isArray(images))
     images.forEach((image) => {
-      const imageVariant = getImageVariantByFieldname(image, fieldname);
+      const imageVariant = getImageVariantByFieldname(image, fieldname, altVariant);
 
       if (imageVariant)
         urls.push({
@@ -51,7 +51,7 @@ const ProductImages = ({ images }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const fullImages = getImagesUrlsFromVariant(images, 'original');
-  const mainImages = getImagesUrlsFromVariant(images, 'large');
+  const mainImages = getImagesUrlsFromVariant(images, 'large', 'original');
   const thumbsImages = getImagesUrlsFromVariant(images, 'small');
 
   const handleClose = () => {
