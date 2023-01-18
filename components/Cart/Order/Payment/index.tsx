@@ -30,7 +30,13 @@ const OrderPayment: FC = () => {
           <span>При получении</span>
         </div>
         <div className={styles.cartButtonWrapper}>
-          <Button className={styles.cartButton} text="Изменить" color="#fafafa" isFullScreen />
+          <Button
+            className={styles.cartButton}
+            text="Изменить"
+            color="#fafafa"
+            isFullScreen
+            onClick={toggleChangePaymentDrawer}
+          />
         </div>
       </div>
     </div>

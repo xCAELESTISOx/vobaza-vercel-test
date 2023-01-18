@@ -26,6 +26,7 @@ interface IProps {
   setFieldValue: (name: string, value: any) => void;
   onDateSelect: (val: Date) => void;
   setTime: (time: Variant) => void;
+  onClickChange: () => void;
 }
 
 export const ObtainingDelivery = ({
@@ -39,6 +40,7 @@ export const ObtainingDelivery = ({
   onDateSelect,
   setFieldValue,
   setTime,
+  onClickChange,
 }: IProps) => {
   const { delivery, lift, address } = order;
 
@@ -89,7 +91,7 @@ export const ObtainingDelivery = ({
       )}
       <DeliveryItems goods={goods} />
       <div className={styles.cartButtonWrapper}>
-        <Button className={styles.cartButton} text="Изменить" color="#fafafa" isFullScreen />
+        <Button className={styles.cartButton} text="Изменить" color="#fafafa" isFullScreen onClick={onClickChange} />
       </div>
     </>
   );

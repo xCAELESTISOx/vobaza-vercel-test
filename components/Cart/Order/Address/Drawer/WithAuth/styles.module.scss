@@ -14,6 +14,11 @@
   &.active {
     border-color: #af1ebe;
   }
+
+  @media screen and (max-width: 576px) {
+    padding: 16px;
+    min-height: 64px;
+  }
 }
 .orderAddressAdd {
   display: flex;

@@ -26,9 +26,10 @@ interface IProps {
   setTime: (time: Variant) => void;
   delivery: ILocalOrderDelivery;
   goods: ICartGood[];
+  onClickChange: () => void;
 }
 
-export const ObtainingSelfDelivery = ({ minDate, onDateSelect, setTime, delivery, goods }: IProps) => {
+export const ObtainingSelfDelivery = ({ minDate, onDateSelect, setTime, delivery, goods, onClickChange }: IProps) => {
   const deliveryDate = delivery.date ? new Date(delivery.date) : undefined;
   const normalizedTimeSlots = normalizeTimeSlots(selfDeliveryTimeSlots, deliveryDate);
 
@@ -63,7 +64,7 @@ export const ObtainingSelfDelivery = ({ minDate, onDateSelect, setTime, delivery
       )}
       <DeliveryItems goods={goods} />
       <div className={styles.cartButtonWrapper}>
-        <Button className={styles.cartButton} text="Изменить" color="#fafafa" isFullScreen />
+        <Button className={styles.cartButton} text="Изменить" color="#fafafa" isFullScreen onChange={onClickChange} />
       </div>
     </>
   );

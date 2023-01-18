@@ -166,6 +166,7 @@ const OrderObtaining: FC<Props> = ({
             setTime={setTime}
             delivery={data.delivery}
             goods={goods}
+            onClickChange={toggleChangeDeliveryDrawer}
           />
         ) : (
           <ObtainingDelivery
@@ -179,6 +180,7 @@ const OrderObtaining: FC<Props> = ({
             liftPrice={liftPrice}
             goods={goods}
             setAssemblyPrice={setAssemblyPrice}
+            onClickChange={toggleChangeDeliveryDrawer}
           />
         )}
       </div>

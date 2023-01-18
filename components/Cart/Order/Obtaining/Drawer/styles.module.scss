@@ -3,7 +3,7 @@
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 16px;
 
-  @media screen and (max-width: 576px) {
+  @media screen and (max-width: 468px) {
     display: block;
   }
 }
@@ -26,6 +26,10 @@
     .deliveryDrawerCardIcon {
       display: block;
     }
+  }
+
+  @media screen and (max-width: 468px) {
+    margin-bottom: 20px;
   }
 }
 .deliveryDrawerCardIcon {
