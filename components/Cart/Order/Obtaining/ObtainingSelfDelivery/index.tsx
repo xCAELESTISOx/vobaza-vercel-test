@@ -64,7 +64,7 @@ export const ObtainingSelfDelivery = ({ minDate, onDateSelect, setTime, delivery
       )}
       <DeliveryItems goods={goods} />
       <div className={styles.cartButtonWrapper}>
-        <Button className={styles.cartButton} text="Изменить" color="#fafafa" isFullScreen onChange={onClickChange} />
+        <Button className={styles.cartButton} text="Изменить" color="#fafafa" isFullScreen onClick={onClickChange} />
       </div>
     </>
   );
