@@ -78,7 +78,7 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
       .join('/');
 
     return {
-      id: item.product.id,
+      id: item.product.id?.toString(),
       name: item.product.name,
       price: item.price,
       quantity: item.quantity,
@@ -88,12 +88,14 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
     };
   });
 
-  const ecommerceAfterPurchase = () => {
+  const ecommerceAfterPurchase = (purchaseId?: string | number) => {
+    if (!purchaseId) return;
     (window as any).dataLayer = [...((window as any).dataLayer || [])];
     (window as any)?.dataLayer?.push({
       ecommerce: {
         currencyCode: 'RUB',
         purchase: {
+          actionField: { id: purchaseId.toString() },
           products: ecommerceGoods,
         },
       },
@@ -111,10 +113,10 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
 
       if (token) {
         res = await api.createAuthOrder(data);
-        ecommerceAfterPurchase();
+        ecommerceAfterPurchase(res?.data?.data?.number);
       } else {
         res = await api.createOrder(data);
-        ecommerceAfterPurchase();
+        ecommerceAfterPurchase(res?.data?.data?.number);
       }
       dispatch(setCartSize(0));
 
