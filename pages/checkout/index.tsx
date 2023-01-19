@@ -80,7 +80,7 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
     return {
       id: item.product.id?.toString(),
       name: item.product.name,
-      price: item.price,
+      price: item.product.price / 100,
       quantity: item.quantity,
       // код ниже закомментирован до правок бэка
       // brand: product.product.brand,
