@@ -64,7 +64,10 @@ export const ProductOptions: FC<Props> = ({
                     ? selectedOptions[attribute.id] === 'true'
                       ? { code: 'true', value: 'Да' }
                       : { code: 'false', value: 'Нет' }
-                    : selectedOptions[attribute.id];
+                    : {
+                        code: selectedOptions[attribute.id],
+                        value: selectedOptions[attribute.id],
+                      };
 
                 return (
                   <InputSelect

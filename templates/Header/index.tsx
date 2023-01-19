@@ -47,7 +47,7 @@ const Header: FC<Props> = ({ openPhoneCallModal }) => {
         mobile: mobileMenuRes.data.data,
       };
 
-      setMenus(newMenus as any);
+      setMenus(newMenus);
     } catch (error) {
       console.error(error);
     }

@@ -2,10 +2,12 @@ import { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+import type { IBlogPost } from 'src/mock/blog/blogPosts';
+
 import styles from './styles.module.scss';
 
 interface Props {
-  post: any;
+  post: IBlogPost;
 }
 
 const BlogItem: FC<Props> = ({ post }) => {

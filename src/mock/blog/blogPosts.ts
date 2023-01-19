@@ -1,3 +1,4 @@
+import { StaticImageData } from 'next/image';
 import cover1 from './img/temp1.jpg';
 import cover2 from './img/temp2.jpg';
 import cover3 from './img/temp3.jpg';
@@ -5,7 +6,16 @@ import cover4 from './img/temp4.jpg';
 import cover5 from './img/temp5.jpg';
 import cover6 from './img/temp6.jpg';
 
-const blogPosts = [
+export interface IBlogPost {
+  id: number;
+  slug: string;
+  cover: StaticImageData;
+  created_at: string;
+  title: string;
+  htmlContent: string;
+}
+
+const blogPosts: IBlogPost[] = [
   {
     id: 1,
     slug: 'dvuhyarusnaya-krovat-dlya-detey-za-i-protiv',
