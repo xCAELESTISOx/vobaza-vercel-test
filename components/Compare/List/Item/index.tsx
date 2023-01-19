@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -9,7 +9,6 @@ import { getImageVariantProps } from 'shared/lib/images';
 import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { setOneClickGood } from 'src/store/goods';
 
-import ItemCounter from 'shared/ui/ItemCounter';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import { Button } from '@nebo-team/vobaza.ui.button';
 
@@ -25,7 +24,6 @@ type Props = {
 const CompareListItem: FC<Props> = ({ good, deleteGood }) => {
   const { addToCart } = useCart(good);
   const dispatch = useDispatch();
-  const [count, setCount] = useState(1);
 
   const deleteGoodHandler = () => {
     deleteGood(good);
@@ -55,7 +53,7 @@ const CompareListItem: FC<Props> = ({ good, deleteGood }) => {
         },
       },
     });
-    addToCart(count);
+    addToCart();
   };
 
   return (
@@ -92,12 +90,6 @@ const CompareListItem: FC<Props> = ({ good, deleteGood }) => {
       </div>
       {good.is_available ? (
         <>
-          <div className={styles.compareListItemCart}>
-            <label htmlFor="count" className={styles.compareListItemCartLabel}>
-              Кол-во:
-            </label>
-            <ItemCounter minCount={1} itemCount={count} setItemCount={setCount} />
-          </div>
           <div className={styles.compareListItemCartButtons}>
             <Button text="В корзину" onClick={addToCartHandler} />
             <div>
