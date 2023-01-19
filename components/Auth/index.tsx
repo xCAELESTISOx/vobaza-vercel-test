@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 
 import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { useSelector } from 'shared/lib/hooks/useSelector';
@@ -39,6 +39,14 @@ const AuthModal: FC = () => {
     }
     dispatch(toggleModal());
   };
+
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflowY = 'hidden';
+    } else {
+      document.body.style.overflowY = 'auto';
+    }
+  }, [isModalOpen]);
 
   return (
     <div style={!isModalOpen ? { display: 'none' } : {}}>

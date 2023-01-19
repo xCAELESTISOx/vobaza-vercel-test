@@ -128,6 +128,10 @@ const CategoryFilters: FC<Props> = ({ isLoading, setIsLoading }) => {
     };
   }, []);
 
+  useEffect(() => {
+    toggleMenu(false);
+  }, [router.asPath]);
+
   return (
     <>
       <FiltersModal

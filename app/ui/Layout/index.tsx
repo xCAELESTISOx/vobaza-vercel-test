@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Provider } from 'react-redux';
 
 import { MobileBottomMenu } from 'templates/MobileBottomMenu';
@@ -19,6 +19,14 @@ export default function Layout({ children }: ILayoutChildren) {
   const [isPhoneCallOpen, setIsPhoneCallOpen] = useState(false);
 
   const toggleIsPhoneCall = () => setIsPhoneCallOpen((prev) => !prev);
+
+  useEffect(() => {
+    if (isPhoneCallOpen) {
+      document.body.style.overflowY = 'hidden';
+    } else {
+      document.body.style.overflowY = 'auto';
+    }
+  }, [isPhoneCallOpen]);  
 
   return (
     <Provider store={store}>

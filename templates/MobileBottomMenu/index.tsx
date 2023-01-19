@@ -20,6 +20,8 @@ export const MobileBottomMenu: FC = () => {
   const favoriteIds = useSelector((state) => state.goods.favoriteIds);
   const cartSize = useSelector((state) => state.goods.cartSize);
   const compareIds = useSelector((state) => state.goods.compareIds);
+  const [activeTab, setActiveTab] = useState('');
+  const tab = router.asPath;
 
   const dispatch = useDispatch();
 
@@ -37,8 +39,18 @@ export const MobileBottomMenu: FC = () => {
     setIsProfileOpen(!isProfileMenuOpen);
   };
 
+  const updateActiveTab = (tab) => {
+    if (tab === '/') setActiveTab('MAIN');
+    else if (tab.includes('/cart')) setActiveTab('CART');
+    else if (tab.includes('/wishlist')) setActiveTab('WISHLIST');
+    else if (tab.includes('/compare')) setActiveTab('COMPARE');
+    else if (tab.includes('/profile')) setActiveTab('PROFILE');
+    else setActiveTab('');
+  };
+
   useEffect(() => {
     if (isProfileMenuOpen) setIsProfileOpen(false);
+    updateActiveTab(tab);
   }, [router.asPath]);
 
   return (
@@ -46,7 +58,7 @@ export const MobileBottomMenu: FC = () => {
       <ProfileMenu isOpen={isProfileMenuOpen} close={toggleProfileMenu} />
       <div className={styles.tabbar}>
         <Link href="/">
-          <a className={styles.tab} onClick={closeMenu}>
+          <a className={`${styles.tab} ${activeTab === 'MAIN' ? styles.tabActive : ''}`} onClick={closeMenu}>
             <div className={styles.tabIcon}>
               <Icon name="SmallLogo" />
             </div>
@@ -55,7 +67,7 @@ export const MobileBottomMenu: FC = () => {
           </a>
         </Link>
         <Link href="/cart">
-          <a className={styles.tab}>
+          <a className={`${styles.tab} ${activeTab === 'CART' ? styles.tabActive : ''}`}>
             <div className={styles.tabIcon}>
               <Icon name="Cart" />
               {cartSize > 0 && <div className={styles.tabBadge}>{cartSize}</div>}
@@ -64,7 +76,7 @@ export const MobileBottomMenu: FC = () => {
           </a>
         </Link>
         <Link href="/profile/wishlist">
-          <a className={styles.tab}>
+          <a className={`${styles.tab} ${activeTab === 'WISHLIST' ? styles.tabActive : ''}`}>
             <div className={styles.tabIcon}>
               <Icon name="Favorite" />
               {favoriteIds?.length > 0 && <div className={styles.tabBadge}>{favoriteIds.length}</div>}
@@ -73,7 +85,7 @@ export const MobileBottomMenu: FC = () => {
           </a>
         </Link>
         <Link href="/compare">
-          <a className={styles.tab} onClick={closeMenu}>
+          <a className={`${styles.tab} ${activeTab === 'COMPARE' ? styles.tabActive : ''}`} onClick={closeMenu}>
             <div className={styles.tabIcon}>
               <Icon name="Compare" />
               {compareIds && compareIds.length > 0 && <span className={styles.tabBadge}>{compareIds.length}</span>}
@@ -81,7 +93,7 @@ export const MobileBottomMenu: FC = () => {
             <div className={styles.tabTitle}>Сравнение</div>
           </a>
         </Link>
-        <div className={styles.tab} onClick={profileClickHandler}>
+        <div className={`${styles.tab} ${activeTab === 'PROFILE' ? styles.tabActive : ''}`} onClick={profileClickHandler}>
           <div className={styles.tabIcon}>
             <Icon name="Person" />
           </div>
