@@ -77,10 +77,13 @@ export default function Partnership() {
   });
 
   const handleChange = async (e: any) => {
-    await setFieldValue(e.target.name, e.target.value);
+    const fieldName = e.target.name === 'vendorName' ? 'name' : e.target.name;
+
+    await setFieldValue(fieldName, e.target.value);
   };
   const handleBlur = async (e: any) => {
-    validateField(e.target.name);
+    const fieldName = e.target.name === 'vendorName' ? 'name' : e.target.name;
+    validateField(fieldName);
   };
 
   const handlePhoneChange = async (value: string) => {
@@ -115,7 +118,7 @@ export default function Partnership() {
             />
             <InputText
               label="Название организации"
-              name="name"
+              name="vendorName"
               value={values.name}
               onChange={handleChange}
               onBlur={handleBlur}

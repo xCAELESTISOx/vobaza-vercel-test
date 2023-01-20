@@ -64,13 +64,17 @@ const CreateReviewModal: FC<CreateReviewModal> = ({ active, onClose = () => {}, 
   });
 
   const handleChange = async (e: any) => {
-    await setFieldValue(e.target.name, e.target.value);
+    const fieldName = e.target.name === 'reviewName' ? 'name' : e.target.name;
+
+    await setFieldValue(fieldName, e.target.value);
   };
   const handleChangeCustomField = async (name: string, value: any) => {
     await setFieldValue(name, value);
   };
   const handleBlur = async (e: any) => {
-    validateField(e.target.name);
+    const fieldName = e.target.name === 'reviewName' ? 'name' : e.target.name;
+
+    validateField(fieldName);
   };
 
   const productImageURL = productInfo.image ? productInfo.image.url : null;
@@ -104,7 +108,7 @@ const CreateReviewModal: FC<CreateReviewModal> = ({ active, onClose = () => {}, 
             <form className={styles.reviewModalForm}>
               <div className={styles.reviewModalField}>
                 <InputText
-                  name="name"
+                  name="reviewName"
                   label="Ваше имя"
                   value={values.name}
                   onChange={handleChange}

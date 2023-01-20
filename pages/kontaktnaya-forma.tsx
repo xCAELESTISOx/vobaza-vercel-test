@@ -63,10 +63,13 @@ export default function ContactForm() {
   });
 
   const handleChange = async (e: any) => {
-    await setFieldValue(e.target.name, e.target.value);
+    const fieldName = e.target.name === 'contactName' ? 'name' : e.target.name;
+
+    await setFieldValue(fieldName, e.target.value);
   };
   const handleBlur = async (e: any) => {
-    validateField(e.target.name);
+    const fieldName = e.target.name === 'contactName' ? 'name' : e.target.name;
+    validateField(fieldName);
   };
 
   return (
@@ -88,7 +91,7 @@ export default function ContactForm() {
             />
             <InputText
               label="Ваше Имя"
-              name="name"
+              name="contactName"
               value={values.name}
               onChange={handleChange}
               onBlur={handleBlur}

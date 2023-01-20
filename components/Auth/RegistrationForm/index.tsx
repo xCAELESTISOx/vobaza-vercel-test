@@ -122,7 +122,9 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
   };
 
   const handleChange = async (e: any) => {
-    await setFieldValue(e.target.name, e.target.value);
+    const fieldName = e.target.name === 'registerName' ? 'name' : e.target.name;
+
+    await setFieldValue(fieldName, e.target.value);
   };
   const handlePhoneChange = async (value: string) => {
     await setFieldValue('phone', value);
@@ -137,9 +139,11 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
     validateField('isAgree');
   };
   const handleBlur = async (e: any) => {
-    validateField(e.target.name);
-  };
+    const fieldName = e.target.name === 'registerName' ? 'name' : e.target.name;
 
+    validateField(fieldName);
+  };
+  
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
 
@@ -165,7 +169,7 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
           <div className={styles.inlineModalItem}>
             <InputText
               label="Имя"
-              name="name"
+              name="registerName"
               value={values.name}
               onChange={handleChange}
               onBlur={handleBlur}

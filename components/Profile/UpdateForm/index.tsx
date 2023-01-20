@@ -74,7 +74,9 @@ const ProfileUpdateForm: FC<Props> = ({ initialUser }) => {
     setIsChanged(false);
   };
   const handleChange = async (e: any) => {
-    await setFieldValue(e.target.name, e.target.value);
+    const fieldName = e.target.name === 'profileName' ? 'name' : e.target.name;
+
+    await setFieldValue(fieldName, e.target.value);
     setIsChanged(true);
   };
   const handlePhoneChange = async (value: string) => {
@@ -82,7 +84,9 @@ const ProfileUpdateForm: FC<Props> = ({ initialUser }) => {
     setIsChanged(true);
   };
   const handleBlur = async (e: any) => {
-    validateField(e.target.name);
+    const fieldName = e.target.name === 'profileName' ? 'name' : e.target.name;
+
+    validateField(fieldName);
   };
 
   return (
@@ -93,7 +97,7 @@ const ProfileUpdateForm: FC<Props> = ({ initialUser }) => {
           <div className={styles.profileFormInput}>
             <InputText
               label="Имя"
-              name="name"
+              name="profileName"
               value={values.name}
               onChange={handleChange}
               onBlur={handleBlur}

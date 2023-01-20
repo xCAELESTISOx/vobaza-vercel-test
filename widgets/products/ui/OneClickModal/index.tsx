@@ -103,7 +103,9 @@ const OneClickModal: FC = () => {
   };
 
   const handleBlur = async (e: any) => {
-    validateField(e.target.name);
+    const fieldName = e.target.name === 'oneClickName' ? 'name' : e.target.name;
+
+    validateField(fieldName);
   };
 
   // Handle fields changing
@@ -111,7 +113,9 @@ const OneClickModal: FC = () => {
     await setFieldValue('phone', value);
   };
   const handleOnChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    await setFieldValue(e.target.name, e.target.value);
+    const fieldName = e.target.name === 'oneClickName' ? 'name' : e.target.name;
+
+    await setFieldValue(fieldName, e.target.value);
   };
 
   useEffect(() => {
@@ -177,8 +181,8 @@ const OneClickModal: FC = () => {
               <div className={styles.formItemWrapper}>
                 <div className={styles.formItem}>
                   <InputText
-                    label={'Имя'}
-                    name={'name'}
+                    label="Имя"
+                    name="oneClickName"
                     value={values.name}
                     error={errors.name}
                     onBlur={handleBlur}
@@ -189,7 +193,7 @@ const OneClickModal: FC = () => {
               <div className={styles.formItemWrapper}>
                 <div className={styles.formHalfItem}>
                   <InputPhone
-                    name={'phone'}
+                    name="phone"
                     value={values.phone}
                     error={errors.phone}
                     onChange={handlePhoneChange}
@@ -198,8 +202,8 @@ const OneClickModal: FC = () => {
                 </div>
                 <div className={styles.formHalfItem}>
                   <InputText
-                    label={'Электронная почта'}
-                    name={'email'}
+                    label="Электронная почта"
+                    name="email"
                     value={values.email}
                     error={errors.email}
                     onBlur={handleBlur}

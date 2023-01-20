@@ -116,7 +116,8 @@ const OrderReceiver: FC<Props> = forwardRef(({ initialUser, createOrder }, ref) 
   });
 
   const handleChange = async (e: SyntheticEvent<HTMLInputElement>) => {
-    await setFieldValue(e.currentTarget.name, e.currentTarget.value);
+    const fieldName = e.currentTarget.name === 'receiverName' ? 'name' : e.currentTarget.name;
+    await setFieldValue(fieldName, e.currentTarget.value);
   };
   const changeAnotherRecipient = (val: 'true' | 'false') => {
     if (val === 'true') setFieldValue('recipient', { phone: '7', name: '' });
@@ -124,6 +125,7 @@ const OrderReceiver: FC<Props> = forwardRef(({ initialUser, createOrder }, ref) 
 
     setGetsAnotherRecipient(val);
   };
+
   const handlePhoneChange = async (value: string) => {
     await setFieldValue('phone', value);
   };
@@ -131,7 +133,8 @@ const OrderReceiver: FC<Props> = forwardRef(({ initialUser, createOrder }, ref) 
     await setFieldValue('recipient.phone', value);
   };
   const handleBlur = async (e: SyntheticEvent<HTMLInputElement>) => {
-    validateField(e.currentTarget.name);
+    const fieldName = e.currentTarget.name === 'receiverName' ? 'name' : e.currentTarget.name;
+    validateField(fieldName);
   };
 
   const openLoginModal = () => {
@@ -181,7 +184,7 @@ const OrderReceiver: FC<Props> = forwardRef(({ initialUser, createOrder }, ref) 
                 <div className={styles.orderReceiverFormItem}>
                   <InputText
                     label="Имя"
-                    name="name"
+                    name="receiverName"
                     value={values.name}
                     onChange={handleChange}
                     onBlur={handleBlur}
