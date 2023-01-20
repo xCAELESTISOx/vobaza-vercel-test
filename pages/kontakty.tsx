@@ -6,8 +6,8 @@ import Breadcrumbs, { BreadcrumbType } from 'shared/ui/Breadcrumbs';
 import StaticPagesMenu from '../components/StaticPages/Menu';
 
 import VkIcon from '../templates/Footer/Credentials/VkIcon';
-import InstaIcon from '../templates/Footer/Credentials/InstaIcon';
-import FbIcon from '../templates/Footer/Credentials/FbIcon';
+// import InstaIcon from '../templates/Footer/Credentials/InstaIcon';
+// import FbIcon from '../templates/Footer/Credentials/FbIcon';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 const breadcrumbs: BreadcrumbType[] = [
@@ -64,14 +64,14 @@ export default function Contacts() {
             <div className={styles.staticPageInfo}>
               <div className={`${styles.staticPageText} ${styles.bold}`}>Подпишитесь в&nbsp;социальных сетях</div>
               <div className={styles.contactsSocial}>
-                <a
+                {/* <a
                   href="https://www.facebook.com/vobaza.ru"
                   target="_blank"
                   className={styles.contactsSocialItem}
                   rel="noreferrer"
                 >
                   <FbIcon />
-                </a>
+                </a> */}
                 <a
                   href="https://vk.com/vobaza_official"
                   target="_blank"
@@ -80,14 +80,14 @@ export default function Contacts() {
                 >
                   <VkIcon />
                 </a>
-                <a
+                {/* <a
                   href="https://www.instagram.com/vobaza.ru/"
                   target="_blank"
                   className={styles.contactsSocialItem}
                   rel="noreferrer"
                 >
                   <InstaIcon />
-                </a>
+                </a> */}
               </div>
             </div>
           </div>
