@@ -39,7 +39,7 @@ const CategoryHeader: FC<Props> = ({ isExpress, currentTag, category, filtersTit
         </Link>
       </div>
       <h1 className={styles.sectionTitle}>
-        {filtersTitle || currentTag?.page_title || category.name} {page && page !== '1' && ` – страница ${page}`}  
+        {currentTag?.page_title || filtersTitle || category.name} {page && page !== '1' && ` – страница ${page}`}  
       </h1>
       {category.children?.length > 0 && <CatalogList list={category.children} />}
       <div className={styles.bannerBlock}>

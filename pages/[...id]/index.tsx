@@ -157,15 +157,15 @@ export default function Catalog({
     <>
       <Head>
         {(filtersMeta.title || category.seo_title || currentTag?.title) && (
-          <title>{filtersMeta.title || currentTag?.title || category.seo_title}</title>
+          <title>{currentTag?.title || filtersMeta.title || category.seo_title}</title>
         )}
         {(filtersMeta.keywords || category.keywords || currentTag?.keywords) && (
-          <meta name="keywords" content={filtersMeta.keywords || currentTag?.keywords || category.keywords} />
+          <meta name="keywords" content={currentTag?.keywords || filtersMeta.keywords || category.keywords} />
         )}
         {(filtersMeta.description || category.seo_description || currentTag?.description) && (
           <meta
             name="description"
-            content={filtersMeta.description || currentTag?.description || category.seo_description}
+            content={currentTag?.description || filtersMeta.description || category.seo_description}
           />
         )}
       </Head>
