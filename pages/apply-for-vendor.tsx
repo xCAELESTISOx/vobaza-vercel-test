@@ -82,6 +82,7 @@ export default function Partnership() {
   const handleBlur = async (e: any) => {
     validateField(e.target.name);
   };
+
   const handlePhoneChange = async (value: string) => {
     await setFieldValue('phone', value);
   };

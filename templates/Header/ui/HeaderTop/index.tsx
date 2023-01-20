@@ -3,11 +3,12 @@ import Link from 'next/link';
 
 import styles from './styles.module.scss';
 
+// TODO: занести код обратно в массив routes
+// {
+//   title: 'Стать продавцом',
+//   href: '/apply-for-vendor',
+// },
 const routes = [
-  {
-    title: 'Стать продавцом',
-    href: '/apply-for-vendor',
-  },
   {
     title: 'Доставка',
     href: '/dostavka',

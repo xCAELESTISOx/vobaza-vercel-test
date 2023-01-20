@@ -1,11 +1,11 @@
 import Image from 'next/image';
-import Link from 'next/link';
+// import Link from 'next/link';
 
 import styles from 'app/styles/Partners.module.scss';
 
 import Breadcrumbs, { BreadcrumbType } from 'shared/ui/Breadcrumbs';
 import StaticPagesMenu from '../components/StaticPages/Menu';
-import { Button } from '@nebo-team/vobaza.ui.button/dist';
+// import { Button } from '@nebo-team/vobaza.ui.button/dist';
 
 const breadcrumbs: BreadcrumbType[] = [
   {
@@ -109,11 +109,11 @@ export default function About() {
             </div>
           </div>
           <div className={styles.staticPageInfo}>
-            <Link href="/apply-for-vendor" prefetch={false}>
+            {/* <Link href="/apply-for-vendor" prefetch={false}>
               <a>
                 <Button className={styles.staticPageButton} size="big" text="Оставить заявку на партнерство" />
               </a>
-            </Link>
+            </Link> */}
             <div className={styles.staticPageText}>
               За&nbsp;подробной информацией обращайтесь по&nbsp;номеру
               <br />
