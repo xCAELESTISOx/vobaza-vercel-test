@@ -332,7 +332,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ res, resol
         max = (priceStr.match(/до (\d+)/g) || [''])[0].replace(/[^0-9]+/g, '');
       }
       // Заменяем всю строку цена - от <digits> до <digits> на новую
-      if (min && max) filtersMeta[key] = filtersMeta[key].replace(priceStr, `цена - от ${+min / 100} до ${+max / 100}`);
+      if (min && max) filtersMeta[key] = filtersMeta[key].replace(priceStr, `цена - от ${+min / 100} ₽ до ${+max / 100} ₽`);
     });
 
     const { activeFilters: newActiveFilters, hasInvalidFilters: newHasInvalidFilters } = getActiveFiltersFromQuery(
