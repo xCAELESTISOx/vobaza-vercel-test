@@ -35,7 +35,7 @@ const ProfileOrder: FC<Props> = ({ order }) => {
   const obtainingTimeInterval =
     order.obtaining?.delivery?.time_interval || order.obtaining?.self_delivery?.time_interval;
   const obtainingDate = order.obtaining?.delivery?.date || order.obtaining?.self_delivery?.date;
-  const onlyPriceGoods = (order.price.list_price - order.price.services_price) / 100;
+  const onlyPriceGoods = (order.price.price - order.price.services_price) / 100;
 
   return (
     <>
