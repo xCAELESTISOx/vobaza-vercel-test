@@ -55,7 +55,21 @@ const OneClickModal: FC = () => {
     };
 
     try {
-      await api.createOneClickOrder(product.id, data);
+      const res = await api.createOneClickOrder(product.id, data);
+
+      if (!res.data.data.id) {
+        (window as any).dataLayer = [...((window as any).dataLayer || [])];
+        (window as any)?.dataLayer?.push({
+          ecommerce: {
+            currencyCode: 'RUB',
+            purchase: {
+              actionField: { id: res.data.data.id },
+              products: [product.id],
+            },
+          },
+        });
+      }
+
       dispatch(closeOneClickModal());
     } catch (e) {
       const errors = e.response?.data?.errors || [];
@@ -71,13 +85,14 @@ const OneClickModal: FC = () => {
     }
   };
 
-  const { values, errors, validateField, setFieldValue, handleSubmit, resetForm, setErrors } = useFormik<IOneClickOrder>({
-    initialValues,
-    validationSchema,
-    validateOnBlur: false,
-    validateOnChange: false,
-    onSubmit: createOrder,
-  });
+  const { values, errors, validateField, setFieldValue, handleSubmit, resetForm, setErrors } =
+    useFormik<IOneClickOrder>({
+      initialValues,
+      validationSchema,
+      validateOnBlur: false,
+      validateOnChange: false,
+      onSubmit: createOrder,
+    });
 
   const handleSubmitForm = () => {
     handleSubmit();
@@ -101,7 +116,7 @@ const OneClickModal: FC = () => {
 
   useEffect(() => {
     resetForm();
-    setErrors({})
+    setErrors({});
   }, [product]);
 
   // Чтобы окно не оставалось открытым при открытии другой ссылки,

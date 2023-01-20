@@ -38,7 +38,7 @@ export const ordersAPI = {
     await axios.post('/v1/callback', data);
   },
   async createOneClickOrder(productId: number, data: { name: string; phone: string; email?: string }) {
-    return axios.post(`/v1/products/${productId}/oneClickOrder`, data);
+    return axios.post<{ data: { id: number } }>(`/v1/products/${productId}/oneClickOrder`, data);
   },
   async getOrderPaymentResult(payment_system_id: string) {
     const params = { payment_system_id };
