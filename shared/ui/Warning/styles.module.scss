@@ -1,0 +1,9 @@
+@import '~app/styles/variables.global.scss';
+
+.warningBlock {
+  border-radius: 8px;
+  background: $error-15;
+  padding: 12px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}

@@ -11,6 +11,7 @@ import { Button } from '@nebo-team/vobaza.ui.button/dist';
 import { Title } from '@nebo-team/vobaza.ui.title/dist';
 import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone/dist';
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
+import Warning from 'shared/ui/Warning';
 
 interface Login {
   phone: string;
@@ -127,6 +128,11 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
             <div className={styles.inlineModalText}>
               Введите ваш телефон и&nbsp;мы&nbsp;отправим вам смс-код для входа
             </div>
+            <Warning>
+              <p>Вы находитесь на новой версии сайта.</p>
+              <p>При проблемах с авторизацией, пожалуйста, зарегистрируйтесь снова.</p>
+              <p>Приносим извинения за доставленные неудобства!</p>
+            </Warning>
             <div className={styles.inlineModalItem}>
               <InputPhone
                 label="Номер телефона"

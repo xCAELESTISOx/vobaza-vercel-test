@@ -5,6 +5,7 @@ import type { IOrder } from '../../../src/models/IOrder';
 import ProfileSidebar from '../../../components/Profile/Sidebar';
 import ProfileEmptyField from '../../../components/Profile/EmptyField';
 import ProfileOrderItem from '../../../components/Profile/Order/Item';
+import Warning from 'shared/ui/Warning';
 
 import checkAuth from '../../../app/api/auth';
 import { api } from '../../../app/api';
@@ -26,7 +27,16 @@ export default function ProfileOrders({ orders }: IProps) {
             </div>
             <div className={styles.profileContentBlock}>
               <h2 className={styles.profileSubtitle}>Мои заказы</h2>
-
+              <Warning>
+                <p>Вы находитесь на новой версии сайта.</p>
+                <br />
+                <p>
+                  Ранее заполненные вами данные профиля могут отсутствовать. Пожалуйста, заполните их снова. Узнать
+                  статус активных заказов вы можете по телефону: +7 (495) 899-09-09.
+                </p>
+                <br />
+                <p>Приносим извинения за доставленные неудобства!</p>
+              </Warning>
               {orders && orders.length > 0 ? (
                 <div>
                   {orders.map((order) => (

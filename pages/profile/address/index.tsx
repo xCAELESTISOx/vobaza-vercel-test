@@ -8,6 +8,7 @@ import styles from 'app/styles/Profile.module.scss';
 
 import ProfileSidebar from '../../../components/Profile/Sidebar';
 import ProfileAddresses from '../../../components/Profile/Addresses';
+import Warning from 'shared/ui/Warning';
 
 type Props = {
   addreses: IAddress[];
@@ -25,6 +26,16 @@ export default function ProfileAddress({ addreses }: Props) {
             </div>
             <div className={styles.profileContentBlock}>
               <h2 className={styles.profileSubtitle}>Мои адреса</h2>
+              <Warning>
+                <p>Вы находитесь на новой версии сайта.</p>
+                <br />
+                <p>
+                  Ранее заполненные вами данные профиля могут отсутствовать. Пожалуйста, заполните их снова. Узнать
+                  статус активных заказов вы можете по телефону: +7 (495) 899-09-09.
+                </p>
+                <br />
+                <p>Приносим извинения за доставленные неудобства!</p>
+              </Warning>
               <ProfileAddresses addreses={addreses} />
             </div>
           </div>

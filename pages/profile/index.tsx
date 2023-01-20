@@ -8,6 +8,7 @@ import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import ProfileSidebar from '../../components/Profile/Sidebar';
 import ProfileData from '../../components/Profile/Data';
 import ProfileOrderItem from '../../components/Profile/Order/Item';
+import Warning from 'shared/ui/Warning';
 
 import checkAuth from '../../app/api/auth';
 import { api } from '../../app/api';
@@ -40,6 +41,16 @@ export default function Profile({ user, lastOrder }) {
                 </div>
               </div>
               <h2 className={styles.profileSubtitle}>Здравствуйте, {user.name}!</h2>
+              <Warning>
+                <p>Вы находитесь на новой версии сайта.</p>
+                <br />
+                <p>
+                  Ранее заполненные вами данные профиля могут отсутствовать. Пожалуйста, заполните их снова. Узнать
+                  статус активных заказов вы можете по телефону: +7 (495) 899-09-09.
+                </p>
+                <br />
+                <p>Приносим извинения за доставленные неудобства!</p>
+              </Warning>
               <ProfileData user={user} />
               {lastOrder && <ProfileOrderItem order={lastOrder} isLast={true} />}
             </div>

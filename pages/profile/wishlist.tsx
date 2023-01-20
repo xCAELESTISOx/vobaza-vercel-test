@@ -9,6 +9,7 @@ import normalizeGoods from '../../shared/lib/normalizers/normalizeGoods';
 import ProfileSidebar from '../../components/Profile/Sidebar';
 import ProfileEmptyField from '../../components/Profile/EmptyField';
 import ProfileFavoriteItem, { FavoriteGood } from '../../components/Profile/Favorite/Item';
+import Warning from 'shared/ui/Warning';
 import { CartModal } from 'widgets/products';
 import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { setFavorites } from 'src/store/goods';
@@ -44,7 +45,16 @@ export default function Home({ initialGoods }: Props) {
             </div>
             <div className={styles.profileContentBlock}>
               <h2 className={styles.profileSubtitle}>Избранное</h2>
-
+              <Warning>
+                <p>Вы находитесь на новой версии сайта.</p>
+                <br />
+                <p>
+                  Ранее заполненные вами данные профиля могут отсутствовать. Пожалуйста, заполните их снова. Узнать
+                  статус активных заказов вы можете по телефону: +7 (495) 899-09-09.
+                </p>
+                <br />
+                <p>Приносим извинения за доставленные неудобства!</p>
+              </Warning>
               {goods?.length > 0 ? (
                 <div>
                   {goods.map((good) => (
