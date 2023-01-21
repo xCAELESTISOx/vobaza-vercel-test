@@ -55,7 +55,7 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
       })
       .join('/');
 
-    (window as any).dataLayer = [...((window as any).dataLayer || [])];
+    (window as any).dataLayer = (window as any)?.dataLayer || [];
     (window as any)?.dataLayer?.push({
       ecommerce: {
         currencyCode: 'RUB',

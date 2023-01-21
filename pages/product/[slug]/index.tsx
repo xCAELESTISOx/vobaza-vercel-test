@@ -71,7 +71,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, options, breadcrumbs }) =
 
   const addToCartHandler = () => {
     addToCart();
-    (window as any).dataLayer = [...((window as any).dataLayer || [])];
+    (window as any).dataLayer = (window as any)?.dataLayer || [];
     (window as any)?.dataLayer?.push({
       ecommerce: {
         currencyCode: 'RUB',
@@ -107,7 +107,7 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, options, breadcrumbs }) =
   };
 
   useEffect(() => {
-    (window as any).dataLayer = [...((window as any).dataLayer || [])];
+    (window as any).dataLayer = (window as any)?.dataLayer || [];
     (window as any)?.dataLayer?.push({
       ecommerce: {
         currencyCode: 'RUB',

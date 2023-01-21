@@ -35,7 +35,7 @@ const CompareListItem: FC<Props> = ({ good, deleteGood }) => {
 
   const addToCartHandler = () => {
     const categories = good.parent_categories.map(({ name }) => name);
-    (window as any).dataLayer = [...((window as any).dataLayer || [])];
+    (window as any).dataLayer = (window as any)?.dataLayer || [];
     (window as any)?.dataLayer?.push({
       ecommerce: {
         currencyCode: 'RUB',

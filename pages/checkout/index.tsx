@@ -90,7 +90,8 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
 
   const ecommerceAfterPurchase = (purchaseId?: string | number) => {
     if (!purchaseId) return;
-    (window as any).dataLayer = [...((window as any).dataLayer || [])];
+    (window as any).dataLayer = (window as any)?.dataLayer || [];
+
     (window as any)?.dataLayer?.push({
       ecommerce: {
         currencyCode: 'RUB',
@@ -100,6 +101,8 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
         },
       },
     });
+
+    console.debug('dataLayer: ', (window as any)?.dataLayer);
   };
 
   const createOrder = async (customer: IReceiver) => {
