@@ -11,11 +11,12 @@ import OrderWithAuthAddressDrawer from './Drawer/WithAuth';
 import styles from './styles.module.scss';
 
 type Props = {
+  authorized?: boolean;
   address: IOrderAddress;
   addresses: IAddressFull[];
   setFieldValue: (name: string, value: any) => void;
 };
-const OrderAddress: FC<Props> = ({ address, addresses, setFieldValue }) => {
+const OrderAddress: FC<Props> = ({ authorized, address, addresses, setFieldValue }) => {
   const [isDrawer, setIsDrawer] = useState(false);
 
   const toggleChangeAddressDrawer = () => {
@@ -28,7 +29,7 @@ const OrderAddress: FC<Props> = ({ address, addresses, setFieldValue }) => {
 
   return (
     <div className={styles.orderAddress}>
-      {addresses.length ? (
+      {authorized ? (
         // Адресс авторизованного пользователя
         <OrderWithAuthAddressDrawer
           addresses={addresses}

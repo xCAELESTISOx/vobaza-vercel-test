@@ -18,7 +18,7 @@ type Props = {
 
 const OrderWithAuthAddressDrawer: FC<Props> = ({ addresses: initialAddresses, isOpen = false, onClose, onSubmit }) => {
   const [addresses, setAddresses] = useState(initialAddresses);
-  const [isNewOpened, setIsNewOpened] = useState(false);
+  const [isNewOpened, setIsNewOpened] = useState(!addresses.length);
   const [currentAddress, setCurrentAddress] = useState(addresses.find((address) => address.is_default));
 
   const handleSubmit = () => {
@@ -36,7 +36,7 @@ const OrderWithAuthAddressDrawer: FC<Props> = ({ addresses: initialAddresses, is
   };
 
   useEffect(() => {
-    isNewOpened && setIsNewOpened(false);
+    isNewOpened && setIsNewOpened(!addresses.length);
   }, [isOpen]);
 
   return (

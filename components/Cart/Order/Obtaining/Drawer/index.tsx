@@ -50,9 +50,7 @@ const OrderDeliveryDrawer: FC<Props> = ({
   };
 
   const setDeliveryHandler = () => {
-    if (deliveryTag === currentVariant?.tag) {
-      return onClose();
-    }
+    if (deliveryTag === currentVariant?.tag) return onClose();
 
     try {
       if (currentVariant) {
@@ -152,9 +150,7 @@ const OrderDeliveryDrawer: FC<Props> = ({
             <div
               key={variant.tag}
               className={`${styles.deliveryDrawerCard} ${styleOrderDelivery(variant)}`}
-              onClick={() => {
-                setCurrentVariant(variant);
-              }}
+              onClick={() => setCurrentVariant(variant)}
             >
               <Icon className={styles.deliveryDrawerCardIcon} name="Checkmark" />
               <div className={styles.deliveryDrawerCardType}>{variant.name}</div>
@@ -163,9 +159,7 @@ const OrderDeliveryDrawer: FC<Props> = ({
           ))}
         <div
           className={`${styles.deliveryDrawerCard} ${!currentVariant ? styles.active : ''}`}
-          onClick={() => {
-            setCurrentVariant(null);
-          }}
+          onClick={() => setCurrentVariant(null)}
         >
           <Icon className={styles.deliveryDrawerCardIcon} name="Checkmark" />
           <div className={styles.deliveryDrawerCardType}>Оформить заказ с менеджером</div>
@@ -175,9 +169,7 @@ const OrderDeliveryDrawer: FC<Props> = ({
         {/* Самовывоз */}
         <div
           className={`${styles.deliveryDrawerCard} ${styleOrderDelivery(selfDeliveryItem)}`}
-          onClick={() => {
-            setCurrentVariant(selfDeliveryItem);
-          }}
+          onClick={() => setCurrentVariant(selfDeliveryItem)}
         >
           <Icon className={styles.deliveryDrawerCardIcon} name="Checkmark" />
           <div className={styles.deliveryDrawerCardType}>{selfDeliveryItem.name}</div>

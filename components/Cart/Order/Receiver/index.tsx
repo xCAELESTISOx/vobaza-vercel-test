@@ -37,7 +37,7 @@ const initialValues: IReceiver = {
 
 type Props = {
   ref: any;
-  initialUser: IProfile;
+  initialUser?: IProfile;
   createOrder: (data: IReceiver) => void;
 };
 
@@ -231,10 +231,7 @@ const OrderReceiver: FC<Props> = forwardRef(({ initialUser, createOrder }, ref) 
             <div className={`${styles.orderReceiverFormItem} ${styles.orderReceiverFormRadioItem}`}>
               <div className={styles.orderReceiverFormRadio}>
                 <InputRadio
-                  currentValue={{
-                    code: 'false',
-                    value: 'false',
-                  }}
+                  currentValue={{ code: 'false', value: 'false' }}
                   label="Получу я"
                   value={getsAnotherRecipient}
                   name="withElevator"
@@ -254,30 +251,34 @@ const OrderReceiver: FC<Props> = forwardRef(({ initialUser, createOrder }, ref) 
                 />
               </div>
             </div>
-            <div className={styles.orderReceiverFormItem}>
-              <InputPhone
-                label="Номер телефона получателя"
-                name="recipient.phone"
-                value={values.recipient?.phone || '+7'}
-                onChange={handleOtherPhoneChange}
-                onBlur={handleBlur}
-                error={errors?.recipient?.phone || ''}
-                required
-                disabled={isLoading || getsAnotherRecipient === 'false'}
-              />
-            </div>
-            <div className={styles.orderReceiverFormItem}>
-              <InputText
-                label="Имя получателя"
-                name="recipient.name"
-                value={values.recipient?.name || ''}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors?.recipient?.name || ''}
-                disabled={isLoading || getsAnotherRecipient === 'false'}
-                required
-              />
-            </div>
+            {values.recipient && (
+              <>
+                <div className={styles.orderReceiverFormItem}>
+                  <InputPhone
+                    label="Номер телефона получателя"
+                    name="recipient.phone"
+                    value={values.recipient?.phone || '+7'}
+                    onChange={handleOtherPhoneChange}
+                    onBlur={handleBlur}
+                    error={errors?.recipient?.phone || ''}
+                    required
+                    disabled={isLoading || getsAnotherRecipient === 'false'}
+                  />
+                </div>
+                <div className={styles.orderReceiverFormItem}>
+                  <InputText
+                    label="Имя получателя"
+                    name="recipient.name"
+                    value={values.recipient?.name || ''}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={errors?.recipient?.name || ''}
+                    disabled={isLoading || getsAnotherRecipient === 'false'}
+                    required
+                  />
+                </div>
+              </>
+            )}
           </form>
         )}
       </div>

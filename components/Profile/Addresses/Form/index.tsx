@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import Cookies from 'js-cookie';
 
+import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 import type { ElevatorType, IAddressFull } from 'src/models/IAddress';
 import type { IError } from 'src/models/IError';
 import { useClickOutside } from '@nebo-team/vobaza.ui.filter-select/dist/filter-select';
@@ -86,7 +87,7 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
     onSubmit: submitHandler,
   });
 
-  const handleChangeAddress = async (e) => {
+  const handleChangeAddress = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddreses([]);
     setFieldTouched('address');
     handleChange(e);
@@ -235,7 +236,7 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
             value="FREIGHT"
             label="Грузовой"
             name="elevator"
-            onChange={handleElevatorChange as any}
+            onChange={(val) => handleElevatorChange(val as Variant<string, ElevatorType>)}
             disabled={values.elevator === 'NONE'}
           />
           <InputRadio
@@ -243,7 +244,7 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
             value="PASSENGER"
             label="Пассажирский"
             name="elevator"
-            onChange={handleElevatorChange as any}
+            onChange={(val) => handleElevatorChange(val as Variant<string, ElevatorType>)}
             disabled={values.elevator === 'NONE'}
           />
         </div>

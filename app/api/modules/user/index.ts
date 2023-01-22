@@ -1,5 +1,6 @@
 import cookies from 'js-cookie';
 
+import type { IProfile } from 'components/Profile/Data';
 import type { GetGlobalInfo } from './user';
 
 import { axios, setToken, setTokenWithGuest } from '../../axios';
@@ -7,7 +8,7 @@ import { axios, setToken, setTokenWithGuest } from '../../axios';
 export const userAPI = {
   getProfile() {
     setToken();
-    return axios.get('/customer/v1/profile');
+    return axios.get<{ data: IProfile }>('/customer/v1/profile');
   },
   updateProfile(data: { name: string; surname: string; email: string }) {
     setToken();

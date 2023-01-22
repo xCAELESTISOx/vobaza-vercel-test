@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, FocusEvent, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import Cookies from 'js-cookie';
 import * as yup from 'yup';
@@ -13,7 +13,7 @@ import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone/dist';
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
 import Warning from 'shared/ui/Warning';
 
-interface Login {
+interface LoginForm {
   phone: string;
   code: string;
 }
@@ -21,7 +21,7 @@ interface Login {
 const initialValues = {
   phone: '',
   code: '',
-} as Login;
+} as LoginForm;
 
 const validationSchema = yup.object({
   phone: yup.string().required('Обязательное поле'),
@@ -79,7 +79,7 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
     }
   };
 
-  const { values, setFieldValue, validateField, errors, handleSubmit, setErrors } = useFormik<Login>({
+  const { values, setFieldValue, validateField, errors, handleSubmit, setErrors } = useFormik<LoginForm>({
     initialValues,
     validationSchema,
     validateOnBlur: false,
@@ -87,11 +87,9 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
     onSubmit: getCodeHandler,
   });
 
-  const handleSubmitForm = () => {
-    handleSubmit();
-  };
+  const handleSubmitForm = () => handleSubmit();
 
-  const handleCodeChange = async (e: any) => {
+  const handleCodeChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length <= 5) {
       await setFieldValue(e.target.name, e.target.value);
     }
@@ -99,7 +97,7 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
   const handlePhoneChange = async (value: string) => {
     await setFieldValue('phone', value);
   };
-  const handleBlur = async (e: any) => {
+  const handleBlur = async (e: FocusEvent<HTMLInputElement, Element>) => {
     validateField(e.target.name);
   };
 
@@ -177,7 +175,7 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
             text="Зарегистрироваться"
             variation="secondary"
             size="big"
-            isFullScreen={true}
+            isFullScreen
             className={styles.inlineModalItem}
             onClick={goRegister}
           />

@@ -30,12 +30,12 @@ import styles from 'app/styles/Cart.module.scss';
 type Props = {
   price: number;
   weight: number;
-  user: IProfile;
+  user?: IProfile;
   goods: ICartGood[];
   addresses: IAddressFull[];
 };
 
-export default function Checkout({ price, weight, user, addresses, goods }) {
+export default function Checkout({ price, weight, user, addresses, goods }: Props) {
   const [isErrorModalOpen, toggleErrorModal] = useToggle(false);
 
   const city = useSelector((state) => state.auth.city);
@@ -157,7 +157,13 @@ export default function Checkout({ price, weight, user, addresses, goods }) {
           <div className={styles.cartContent}>
             <div className={styles.cartContentBlock}>
               <OrderReceiver ref={formRef} initialUser={user} createOrder={createOrder} />
-              <OrderAddress address={values.address} addresses={addresses} setFieldValue={setFieldValue} />
+              <OrderAddress
+                // Если пользователь авторизован, у него должен быть номер телефона
+                authorized={Boolean(user?.phone)}
+                address={values.address}
+                addresses={addresses}
+                setFieldValue={setFieldValue}
+              />
               <OrderObtaining
                 orderWeight={weight}
                 data={values}
