@@ -8,6 +8,7 @@ import Drawer from 'src/hoc/withDrawer';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 import styles from './styles.module.scss';
+import Link from 'next/link';
 
 type Props = {
   addresses: IAddressFull[];
@@ -18,8 +19,10 @@ type Props = {
 
 const OrderWithAuthAddressDrawer: FC<Props> = ({ addresses: initialAddresses, isOpen = false, onClose, onSubmit }) => {
   const [addresses, setAddresses] = useState(initialAddresses);
-  const [isNewOpened, setIsNewOpened] = useState(!addresses.length);
-  const [currentAddress, setCurrentAddress] = useState(addresses.find((address) => address.is_default));
+  // Флаг, отвечающий за активность формы добавления адреса
+  // Активно по-умолчанию, если у пользователя нет адресов
+  const [isNewOpened, setIsNewOpened] = useState(!initialAddresses.length);
+  const [currentAddress, setCurrentAddress] = useState(initialAddresses.find((address) => address.is_default));
 
   const handleSubmit = () => {
     onSubmit(currentAddress);
@@ -36,7 +39,7 @@ const OrderWithAuthAddressDrawer: FC<Props> = ({ addresses: initialAddresses, is
   };
 
   useEffect(() => {
-    isNewOpened && setIsNewOpened(!addresses.length);
+    isNewOpened && setIsNewOpened(!initialAddresses.length);
   }, [isOpen]);
 
   return (
@@ -50,6 +53,19 @@ const OrderWithAuthAddressDrawer: FC<Props> = ({ addresses: initialAddresses, is
             setCurrentAddress={setCurrentAddress}
           />
         ))}
+        <div
+          style={{
+            fontSize: 14,
+            color: 'grey',
+            marginTop: 12,
+            marginBottom: 16,
+          }}
+        >
+          Вы можете изменить существующий адрес в{' '}
+          <Link href="/profile/address">
+            <a style={{ color: '#af1ebe' }}>профиле</a>
+          </Link>
+        </div>
         {isNewOpened ? (
           <AuthorizedAddressForm onSubmit={addNewAddress} inline />
         ) : (
