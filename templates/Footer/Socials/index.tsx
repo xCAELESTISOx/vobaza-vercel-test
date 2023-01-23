@@ -29,7 +29,7 @@ const Socials: FC = () => {
       <a href="https://vk.com/vobaza_official" target="_blank" className={styles.socialsListItem} rel="noreferrer">
         <VkIconPrimary />
       </a>
-      <a href="https://sk.ru" target="_blank" className={styles.socialsListItem} rel="noreferrer">
+      <a href="https://navigator.sk.ru/orn/1123813" target="_blank" className={styles.socialsListItem} rel="noreferrer">
         <SKIconPrimary />
       </a>
     </div>

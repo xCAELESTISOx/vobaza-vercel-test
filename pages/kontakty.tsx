@@ -82,7 +82,7 @@ export default function Contacts() {
                   <VkIcon />
                 </a>
                 <a
-                  href="https://sk.ru"
+                  href="https://navigator.sk.ru/orn/1123813"
                   target="_blank"
                   className={styles.contactsSocialItemWide}
                   rel="noreferrer"

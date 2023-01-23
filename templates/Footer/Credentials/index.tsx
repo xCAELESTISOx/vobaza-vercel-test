@@ -32,7 +32,7 @@ const Credentials: FC = () => {
         <a href="https://vk.com/vobaza_official" target="_blank" className={styles.socialItem} rel="noreferrer">
           <VkIcon />
         </a>
-        <a href="https://sk.ru" target="_blank" className={styles.socialItem} rel="noreferrer">
+        <a href="https://navigator.sk.ru/orn/1123813" target="_blank" className={styles.socialItem} rel="noreferrer">
           <SKIcon />
         </a>
         {/* <a
