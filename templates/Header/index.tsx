@@ -1,55 +1,35 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
-import type { IMenuItem } from 'src/models/IMenu';
 import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { setCartSize, setCompare, setFavorites } from 'src/store/goods';
 import { useSelector } from 'shared/lib/hooks/useSelector';
+import { getCartData } from './libs/getCartData';
+import { useMenu } from './libs/hooks/useMenu';
 
 import { HeaderTop } from './ui/HeaderTop';
 import { HeaderBody } from './ui/HeaderBody';
 import { HeaderMenu } from './ui/HeaderMenu';
 
 import { api } from 'app/api';
-import { getCartData } from './libs/getCartData';
 
 type Props = {
   openPhoneCallModal: () => void;
 };
 
 const Header: FC<Props> = ({ openPhoneCallModal }) => {
-  const [menus, setMenus] = useState<{ main: IMenuItem[]; side: IMenuItem[]; mobile: IMenuItem[] }>(null);
-
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const menus = useMenu();
+
   const setCompareFromCookie = () => {
     const ids = Cookies.get('compareIds');
     if (ids) {
       dispatch(setCompare(ids.split(',').map(Number)));
-    }
-  };
-
-  const getMenus = async () => {
-    try {
-      const [topMenuRes, sideMenuRes, mobileMenuRes] = await Promise.all([
-        api.getMenu('TOP'),
-        api.getMenu('LEFT_SIDE'),
-        api.getMenu('MOBILE'),
-      ]);
-
-      const newMenus = {
-        main: topMenuRes.data.data,
-        side: sideMenuRes.data.data,
-        mobile: mobileMenuRes.data.data,
-      };
-
-      setMenus(newMenus);
-    } catch (error) {
-      console.error(error);
     }
   };
 
@@ -78,7 +58,6 @@ const Header: FC<Props> = ({ openPhoneCallModal }) => {
 
   useEffect(() => {
     getGlobalInfo();
-    getMenus();
   }, [isLoggedIn]);
 
   const setCartData = async () => {
