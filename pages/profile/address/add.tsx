@@ -1,7 +1,7 @@
 import styles from 'app/styles/Profile.module.scss';
 
 import ProfileSidebar from '../../../components/Profile/Sidebar';
-import { AuthorizedAddressForm } from 'components/Profile/Addresses/Form/Presenters/AuthorizedForm';
+import { AuthorizedAddressForm } from 'widgets/profile';
 
 export default function ProfileAddressAdd() {
   return (

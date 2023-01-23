@@ -69,7 +69,7 @@ export interface ILocalOrder {
     date: string;
     time_interval: ITimeInterval;
   };
-  address: IOrderAddress;
+  address: IAddressFull;
   // customer: IReceiver;
   recipient?: {
     name: string;
@@ -170,7 +170,7 @@ export interface IOrderItemFull {
     slug: string;
     seo?: {
       page_name?: string;
-    }
+    };
   }[];
   item_list_price: number;
   recipient: {

@@ -1,8 +1,11 @@
-import { api } from 'app/api';
-import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { ElevatorType, IAddressFull } from 'src/models/IAddress';
-import ProfileAddressesForm from '..';
+import { useRouter } from 'next/router';
+
+import type { ElevatorType, IAddressFull } from 'src/models/IAddress';
+
+import { ProfileAddressesForm } from 'features/profile';
+
+import { api } from 'app/api';
 
 const initialValues: IAddressFull = {
   address: '',

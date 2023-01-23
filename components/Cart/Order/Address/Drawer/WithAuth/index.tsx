@@ -1,37 +1,51 @@
 import { FC, useEffect, useState } from 'react';
+import Link from 'next/link';
 
 import type { IAddressFull } from 'src/models/IAddress';
 
-import { AuthorizedAddressForm } from 'components/Profile/Addresses/Form/Presenters/AuthorizedForm';
+import { AuthorizedAddressForm } from 'widgets/profile';
 import OrderWithAuthAddressItem from './item';
 import Drawer from 'src/hoc/withDrawer';
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 import styles from './styles.module.scss';
-import Link from 'next/link';
 
 type Props = {
   addresses: IAddressFull[];
+  currentAddress: IAddressFull;
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (t: IAddressFull) => void;
 };
 
-const OrderWithAuthAddressDrawer: FC<Props> = ({ addresses: initialAddresses, isOpen = false, onClose, onSubmit }) => {
+const OrderWithAuthAddressDrawer: FC<Props> = ({
+  addresses: initialAddresses,
+  currentAddress,
+  isOpen = false,
+  onClose,
+  onSubmit,
+}) => {
   const [addresses, setAddresses] = useState(initialAddresses);
   // Флаг, отвечающий за активность формы добавления адреса
   // Активно по-умолчанию, если у пользователя нет адресов
   const [isNewOpened, setIsNewOpened] = useState(!initialAddresses.length);
-  const [currentAddress, setCurrentAddress] = useState(initialAddresses.find((address) => address.is_default));
+  // Текущий выделенный адресс
+  const [selectedAddress, setSelectedAddress] = useState<IAddressFull | null>(currentAddress);
 
   const handleSubmit = () => {
-    onSubmit(currentAddress);
+    onSubmit(selectedAddress);
+    setSelectedAddress(initialAddresses.find((address) => address.is_default) || initialAddresses[0]);
+  };
+
+  const onDrawerClose = () => {
+    setSelectedAddress(currentAddress || null);
+    onClose();
   };
 
   const addNewAddress = (item: IAddressFull) => {
     onSubmit(item);
+    setSelectedAddress(item);
     setAddresses([...addresses, item]);
-    setCurrentAddress(item);
     setIsNewOpened(false);
   };
   const openNewAddress = () => {
@@ -42,15 +56,25 @@ const OrderWithAuthAddressDrawer: FC<Props> = ({ addresses: initialAddresses, is
     isNewOpened && setIsNewOpened(!initialAddresses.length);
   }, [isOpen]);
 
+  useEffect(() => {
+    setSelectedAddress(currentAddress);
+  }, [currentAddress]);
+
   return (
-    <Drawer title="Адрес" buttonText="Подтвердить" isOpen={isOpen} onClose={onClose} onButtonClick={handleSubmit}>
+    <Drawer
+      title="Адрес"
+      buttonText={!isNewOpened ? 'Подтвердить' : ''}
+      isOpen={isOpen}
+      onClose={onDrawerClose}
+      onButtonClick={handleSubmit}
+    >
       <>
         {addresses.map((address) => (
           <OrderWithAuthAddressItem
             key={address.id}
             address={address}
-            currentAddress={currentAddress}
-            setCurrentAddress={setCurrentAddress}
+            current={selectedAddress?.id == address.id}
+            setSelectedAddress={setSelectedAddress}
           />
         ))}
         <div

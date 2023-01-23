@@ -1,8 +1,8 @@
 import React from 'react';
 
-import type { IAddressFull } from 'src/models/IAddress';
+import { ProfileAddressesForm } from 'features/profile';
 
-import ProfileAddressesForm from '..';
+import type { IAddressFull } from 'src/models/IAddress';
 
 const initialValues: IAddressFull = {
   address: '',

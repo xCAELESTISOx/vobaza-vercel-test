@@ -4,7 +4,7 @@ import checkAuth from 'app/api/auth';
 import type { IAddressFull } from 'src/models/IAddress';
 
 import ProfileSidebar from '../../../components/Profile/Sidebar';
-import { AuthorizedAddressForm } from 'components/Profile/Addresses/Form/Presenters/AuthorizedForm';
+import { AuthorizedAddressForm } from 'widgets/profile';
 
 import styles from 'app/styles/Profile.module.scss';
 import { api } from 'app/api';

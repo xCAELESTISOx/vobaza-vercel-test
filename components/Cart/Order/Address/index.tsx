@@ -1,6 +1,5 @@
 import { FC, useState } from 'react';
 
-import type { IOrderAddress } from '../../../../src/models/IOrder';
 import type { IAddressFull } from 'src/models/IAddress';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
@@ -11,12 +10,13 @@ import OrderWithAuthAddressDrawer from './Drawer/WithAuth';
 import styles from './styles.module.scss';
 
 type Props = {
+  addressError?: boolean;
   authorized?: boolean;
-  address: IOrderAddress;
+  address: IAddressFull;
   addresses: IAddressFull[];
   setFieldValue: (name: string, value: any) => void;
 };
-const OrderAddress: FC<Props> = ({ authorized, address, addresses, setFieldValue }) => {
+const OrderAddress: FC<Props> = ({ addressError, authorized, address, addresses = [], setFieldValue }) => {
   const [isDrawer, setIsDrawer] = useState(false);
 
   const toggleChangeAddressDrawer = () => {
@@ -27,11 +27,15 @@ const OrderAddress: FC<Props> = ({ authorized, address, addresses, setFieldValue
     setFieldValue('address', address);
   };
 
+  const displayableAddress =
+    address?.id || !authorized ? address.address || 'Укажите полный адрес' : 'Укажите полный адрес';
+
   return (
     <div className={styles.orderAddress}>
       {authorized ? (
         // Адресс авторизованного пользователя
         <OrderWithAuthAddressDrawer
+          currentAddress={address}
           addresses={addresses}
           isOpen={isDrawer}
           onClose={toggleChangeAddressDrawer}
@@ -42,7 +46,7 @@ const OrderAddress: FC<Props> = ({ authorized, address, addresses, setFieldValue
         <OrderAddressDrawer setOuterFieldValue={setFieldValue} onClose={toggleChangeAddressDrawer} isOpen={isDrawer} />
       )}
 
-      <div className={styles.cartContent}>
+      <div className={`${styles.cartContent} ${addressError ? styles.error : ''}`}>
         <div className={styles.cartHeader}>
           <h2 className={styles.cartTitle}>Адрес</h2>
           <div className={styles.cartHeaderButtons}>
@@ -51,9 +55,12 @@ const OrderAddress: FC<Props> = ({ authorized, address, addresses, setFieldValue
             </button>
           </div>
         </div>
-        <div className={styles.orderAddressText} onClick={toggleChangeAddressDrawer}>
+        <div
+          className={`${styles.orderAddressText} ${addressError ? styles.error : ''}`}
+          onClick={toggleChangeAddressDrawer}
+        >
           <Icon name="Geoposition" />
-          <span>{address.address}</span>
+          <span>{displayableAddress}</span>
         </div>
         <div className={styles.cartButtonWrapper}>
           <Button

@@ -1,9 +1,9 @@
 import { FC } from 'react';
 
 import Drawer from 'src/hoc/withDrawer';
+import { UnauthorizedAddressForm } from 'widgets/profile';
 
-import { IAddressFull } from 'src/models/IAddress';
-import { UnauthorizedAddressForm } from 'components/Profile/Addresses/Form/Presenters/UnauthorizedForm';
+import type { IAddressFull } from 'src/models/IAddress';
 
 type Props = {
   setOuterFieldValue: (name: string, value: any) => void;

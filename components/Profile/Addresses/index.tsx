@@ -28,16 +28,14 @@ const ProfileAddresses: FC<Props> = ({ addreses }) => {
   return (
     <div>
       {(!addresses || addresses.length === 0) && (
-        <div className={styles.profileAddressesText}>
-          Пока что вы&nbsp;не&nbsp;сохранили ни&nbsp;одного адреса
-        </div>
+        <div className={styles.profileAddressesText}>Пока что вы&nbsp;не&nbsp;сохранили ни&nbsp;одного адреса</div>
       )}
       <div className={styles.profileAddresses}>
         {addresses.map((address) => (
           <ProfileAddress
             key={address.id}
             address={address}
-            onDelete={deleteAddress}
+            onDelete={addresses.length > 1 && deleteAddress}
             onToggleDefault={toggleDefault}
           />
         ))}

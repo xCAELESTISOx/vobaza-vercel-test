@@ -10,7 +10,7 @@ import styles from './styles.module.scss';
 
 type Props = {
   address: IAddress;
-  onDelete: (id: number) => void;
+  onDelete?: (id: number) => void;
   onToggleDefault: (id: number) => void;
 };
 const ProfileAddress: FC<Props> = ({ address, onDelete, onToggleDefault }) => {
@@ -51,7 +51,7 @@ const ProfileAddress: FC<Props> = ({ address, onDelete, onToggleDefault }) => {
         <div className={styles.profileAddressButton} onClick={editAddress}>
           <Icon name="WritePencil" /> Редактировать
         </div>
-        {!address.is_default && (
+        {!address.is_default && onDelete && (
           <div className={styles.profileAddressButton} onClick={deleteAddress}>
             <Icon name="Trash" /> Удалить
           </div>

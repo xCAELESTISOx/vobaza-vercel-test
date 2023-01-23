@@ -15,7 +15,6 @@ import type { IAddressFull } from 'src/models/IAddress';
 import type { IReceiver } from '../../components/Cart/Order/Receiver';
 import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { setCartSize } from 'src/store/goods';
-import { useSelector } from 'shared/lib/hooks/useSelector';
 
 import CartSidebar from '../../components/Cart/Sidebar';
 import OrderReceiver from '../../components/Cart/Order/Receiver';
@@ -37,8 +36,8 @@ type Props = {
 
 export default function Checkout({ price, weight, user, addresses, goods }: Props) {
   const [isErrorModalOpen, toggleErrorModal] = useToggle(false);
+  const [addressError, setAddressError] = useState(false);
 
-  const city = useSelector((state) => state.auth.city);
   const dispatch = useDispatch();
 
   const formRef = useRef(null);
@@ -51,17 +50,19 @@ export default function Checkout({ price, weight, user, addresses, goods }: Prop
       tag: EOrderDeliveryType.none,
       min_date: '',
     },
-    address: addresses.find((item: IAddressFull) => item.is_default) || {
-      address: '',
-      floor: 1,
-      elevator: 'NONE',
-    },
+    address: addresses.find((item: IAddressFull) => item.is_default) ||
+      addresses[0] || {
+        address: '',
+        floor: 1,
+        elevator: 'NONE',
+        is_default: false,
+      },
   };
 
   const [liftPrice, setLiftPrice] = useState(null);
   const [assemblyPrice, setAssemblyPrice] = useState(null);
 
-  const { values, setFieldValue } = useFormik({
+  const { values, setFieldValue, setValues } = useFormik({
     initialValues: initialValues,
     validateOnBlur: false,
     onSubmit: () => {},
@@ -101,8 +102,6 @@ export default function Checkout({ price, weight, user, addresses, goods }: Prop
         },
       },
     });
-
-    console.debug('dataLayer: ', (window as any)?.dataLayer);
   };
 
   const createOrder = async (customer: IReceiver) => {
@@ -129,18 +128,23 @@ export default function Checkout({ price, weight, user, addresses, goods }: Prop
         if (error.response.data.errors[0].code === 'empty_basket') {
           toggleErrorModal();
         }
+        if (error.response.data.errors[0].source === 'obtaining.delivery.address_id') {
+          setAddressError(true);
+        }
         throw error;
       }
     }
   };
 
-  useEffect(() => {
-    const cookieCity = Cookies.get('city');
+  useEffect;
 
-    if ((router.query.city || city || cookieCity) && !values.address.address) {
-      setFieldValue('address.address', router.query.city?.toString() || city || cookieCity);
-    }
-  }, [city]);
+  useEffect(() => {
+    setAddressError(false);
+  }, [values.address]);
+
+  useEffect(() => {
+    setValues(initialValues);
+  }, [addresses]);
 
   return (
     <div>
@@ -158,6 +162,7 @@ export default function Checkout({ price, weight, user, addresses, goods }: Prop
             <div className={styles.cartContentBlock}>
               <OrderReceiver ref={formRef} initialUser={user} createOrder={createOrder} />
               <OrderAddress
+                addressError={addressError}
                 // Если пользователь авторизован, у него должен быть номер телефона
                 authorized={Boolean(user?.phone)}
                 address={values.address}

@@ -276,4 +276,4 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
     </form>
   );
 };
-export default ProfileAddressesForm;
+export { ProfileAddressesForm };
