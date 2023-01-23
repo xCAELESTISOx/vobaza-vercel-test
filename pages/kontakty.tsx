@@ -6,6 +6,7 @@ import Breadcrumbs, { BreadcrumbType } from 'shared/ui/Breadcrumbs';
 import StaticPagesMenu from '../components/StaticPages/Menu';
 
 import VkIcon from '../templates/Footer/Credentials/VkIcon';
+import SKIcon from '../templates/Footer/Credentials/SKIcon';
 // import InstaIcon from '../templates/Footer/Credentials/InstaIcon';
 // import FbIcon from '../templates/Footer/Credentials/FbIcon';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
@@ -79,6 +80,14 @@ export default function Contacts() {
                   rel="noreferrer"
                 >
                   <VkIcon />
+                </a>
+                <a
+                  href="https://sk.ru"
+                  target="_blank"
+                  className={styles.contactsSocialItemWide}
+                  rel="noreferrer"
+                >
+                  <SKIcon />
                 </a>
                 {/* <a
                   href="https://www.instagram.com/vobaza.ru/"

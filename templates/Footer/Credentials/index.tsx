@@ -8,6 +8,7 @@ import MirIcon from './MirIcon';
 // import InstaIcon from './InstaIcon';
 // import FbIcon from './FbIcon';
 import VkIcon from './VkIcon';
+import SKIcon from './SKIcon';
 
 const Credentials: FC = () => {
   return (
@@ -30,6 +31,9 @@ const Credentials: FC = () => {
       <div className={styles.social}>
         <a href="https://vk.com/vobaza_official" target="_blank" className={styles.socialItem} rel="noreferrer">
           <VkIcon />
+        </a>
+        <a href="https://sk.ru" target="_blank" className={styles.socialItem} rel="noreferrer">
+          <SKIcon />
         </a>
         {/* <a
           href="https://www.instagram.com/vobaza.ru/"

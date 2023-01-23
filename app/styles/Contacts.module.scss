@@ -28,8 +28,19 @@
     margin-left: 20px;
   }
 
+  + .contactsSocialItemWide {
+    margin-left: 20px;
+  }
+
   svg {
     width: 38px;
+    height: 38px;
+  }
+}
+
+.contactsSocialItemWide {
+  svg {
+    width: 135px;
     height: 38px;
   }
 }

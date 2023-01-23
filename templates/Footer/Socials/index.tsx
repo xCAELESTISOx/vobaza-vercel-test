@@ -5,6 +5,7 @@ import styles from './styles.module.scss';
 // import InstaIconPrimary from './InstaIconPrimary';
 // import FbIconPrimary from './FbIconPrimary';
 import VkIconPrimary from './VkIconPrimary';
+import SKIconPrimary from './SKIconPrimary';
 
 const Socials: FC = () => {
   return (
@@ -27,6 +28,9 @@ const Socials: FC = () => {
       </a> */}
       <a href="https://vk.com/vobaza_official" target="_blank" className={styles.socialsListItem} rel="noreferrer">
         <VkIconPrimary />
+      </a>
+      <a href="https://sk.ru" target="_blank" className={styles.socialsListItem} rel="noreferrer">
+        <SKIconPrimary />
       </a>
     </div>
   );
