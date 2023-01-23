@@ -7,7 +7,6 @@ import Cookies from 'js-cookie';
 import { useToggle } from 'shared/lib/hooks/useToggle';
 import checkAuth from '../../app/api/auth';
 import { normalizeOrder } from 'shared/lib/normalizers/normalizeOrder';
-import { EOrderDeliveryType } from '../../src/models/IOrder';
 import type { ILocalOrder } from '../../src/models/IOrder';
 import type { ICartGood } from '../../components/Cart/ListItem';
 import type { IProfile } from '../../components/Profile/Data';
@@ -44,12 +43,7 @@ export default function Checkout({ price, weight, user, addresses, goods }: Prop
   const router = useRouter();
 
   const initialValues: ILocalOrder = {
-    delivery: {
-      name: '',
-      price: 0,
-      tag: EOrderDeliveryType.none,
-      min_date: '',
-    },
+    delivery: null,
     address: addresses.find((item: IAddressFull) => item.is_default) ||
       addresses[0] || {
         address: '',
@@ -136,8 +130,6 @@ export default function Checkout({ price, weight, user, addresses, goods }: Prop
     }
   };
 
-  useEffect;
-
   useEffect(() => {
     setAddressError(false);
   }, [values.address]);
@@ -163,7 +155,7 @@ export default function Checkout({ price, weight, user, addresses, goods }: Prop
               <OrderReceiver ref={formRef} initialUser={user} createOrder={createOrder} />
               <OrderAddress
                 addressError={addressError}
-                // Если пользователь авторизован, у него должен быть номер телефона
+                // По наличию номера определяем авторизован ли юзер
                 authorized={Boolean(user?.phone)}
                 address={values.address}
                 addresses={addresses}

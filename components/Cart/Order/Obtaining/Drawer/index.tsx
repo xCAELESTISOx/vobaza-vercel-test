@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 
 import type { IDeliveryVariants, ILocalOrderDelivery } from 'src/models/IOrder';
-import { EOrderDeliveryType } from '../../../../../src/models/IOrder';
+import { EOrderDeliveryType } from 'src/models/IOrder';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import Drawer from 'src/hoc/withDrawer';
@@ -38,7 +38,9 @@ const OrderDeliveryDrawer: FC<Props> = ({
   onClose,
   deliveryTag,
 }) => {
+  // Варианты доставки
   const [variants, setVariants] = useState<ILocalOrderDelivery[]>([]);
+  // Текущий вариант доставки
   const [currentVariant, setCurrentVariant] = useState<ILocalOrderDelivery>(null);
 
   const selfDeliveryItem: ILocalOrderDelivery = {
@@ -88,49 +90,23 @@ const OrderDeliveryDrawer: FC<Props> = ({
   };
 
   useEffect(() => {
-    async function getDeliveryPrice() {
+    const getDeliveryPrice = async () => {
       try {
-        const res = await api.getDeliveryTypes(address);
-        const { types, time_slots } = res.data.data;
-
-        const variantsArr = [];
-        if (types) {
-          if (types.normal) {
-            const newItem: ILocalOrderDelivery = {
-              name: 'Доставка',
-              price: Math.round(types.normal.price / 100),
-              tag: EOrderDeliveryType.normal,
-              date: null,
-              min_date: types.normal.min_date,
-            };
-            variantsArr.push(newItem);
-          }
-          if (types.express) {
-            const newItem: ILocalOrderDelivery = {
-              name: 'Экспресс-доставка',
-              price: Math.round(types.express.price / 100),
-              tag: EOrderDeliveryType.express,
-              date: null,
-              min_date: types.express.min_date,
-            };
-            variantsArr.push(newItem);
-          }
-        }
+        const [variants, timeSlots] = await getDeliveryTypes(address);
 
         const deliveryVariants = {
-          time_slots,
-          types: variantsArr,
+          time_slots: timeSlots,
+          types: variants,
         };
-        setDeliveryVariants(deliveryVariants);
 
-        setVariants(variantsArr);
+        setDeliveryVariants(deliveryVariants);
+        setVariants(variants);
       } catch (error) {
         console.error(error);
       }
-    }
+    };
     if (address) {
       setCurrentVariant(null);
-      // setDelivery(null);
       setFieldValue('delivery', null);
       getDeliveryPrice();
     }
@@ -185,4 +161,36 @@ const OrderDeliveryDrawer: FC<Props> = ({
     </Drawer>
   );
 };
-export default OrderDeliveryDrawer;
+
+export { OrderDeliveryDrawer };
+
+const getDeliveryTypes = async (address: string) => {
+  const res = await api.getDeliveryTypes(address);
+  const { types, time_slots } = res.data.data;
+
+  const variantsArr: ILocalOrderDelivery[] = [];
+  if (types) {
+    if (types.normal) {
+      const newItem = {
+        name: 'Доставка',
+        price: Math.round(types.normal.price / 100),
+        tag: EOrderDeliveryType.normal,
+        date: null,
+        min_date: types.normal.min_date,
+      };
+      variantsArr.push(newItem);
+    }
+    if (types.express) {
+      const newItem = {
+        name: 'Экспресс-доставка',
+        price: Math.round(types.express.price / 100),
+        tag: EOrderDeliveryType.express,
+        date: null,
+        min_date: types.express.min_date,
+      };
+      variantsArr.push(newItem);
+    }
+  }
+
+  return [variantsArr, time_slots || []];
+};

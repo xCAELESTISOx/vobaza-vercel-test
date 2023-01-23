@@ -3,16 +3,16 @@ import React, { FC, useEffect, useState } from 'react';
 import { formatDate } from 'shared/lib/normalizers/normalizeTimeSlots';
 import { useToggle } from 'shared/lib/hooks/useToggle';
 import useDebounce from 'shared/lib/hooks/useDebounce';
-import type { ICartGood } from '../../ListItem';
 import { num2str } from 'shared/lib';
-import type { IDeliveryVariants, ILocalOrder, ILocalOrderDelivery, ITimeInterval } from '../../../../src/models/IOrder';
-import type { IAssemblyPrice } from 'src/models/IDelivery';
+import type { IDeliveryVariants, ILocalOrder, ILocalOrderDelivery, ITimeInterval } from 'src/models/IOrder';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select/dist';
-import { EOrderDeliveryType } from '../../../../src/models/IOrder';
+import type { IAssemblyPrice } from 'src/models/IDelivery';
+import type { ICartGood } from '../../ListItem';
+import { EOrderDeliveryType } from 'src/models/IOrder';
 
-import OrderDeliveryDrawer from './Drawer';
-import { ObtainingDelivery } from './ObtainingDelivery';
 import { ObtainingSelfDelivery } from './ObtainingSelfDelivery';
+import { ObtainingDelivery } from './ObtainingDelivery';
+import { OrderDeliveryDrawer } from './Drawer';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
 import { api } from 'app/api';
