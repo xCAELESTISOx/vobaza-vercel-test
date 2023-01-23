@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import type { IAddressFull } from 'src/models/IAddress';
 
@@ -32,6 +32,8 @@ const OrderWithAuthAddressDrawer: FC<Props> = ({
   // Текущий выделенный адресс
   const [selectedAddress, setSelectedAddress] = useState<IAddressFull | null>(currentAddress);
 
+  const router = useRouter();
+
   const handleSubmit = () => {
     onSubmit(selectedAddress);
     setSelectedAddress(initialAddresses.find((address) => address.is_default) || initialAddresses[0]);
@@ -50,6 +52,13 @@ const OrderWithAuthAddressDrawer: FC<Props> = ({
   };
   const openNewAddress = () => {
     setIsNewOpened(true);
+  };
+
+  const handleClickLink = (e: React.SyntheticEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onClose();
+    router.push('/profile/address');
   };
 
   useEffect(() => {
@@ -86,9 +95,9 @@ const OrderWithAuthAddressDrawer: FC<Props> = ({
           }}
         >
           Вы можете изменить существующий адрес в{' '}
-          <Link href="/profile/address">
-            <a style={{ color: '#af1ebe' }}>профиле</a>
-          </Link>
+          <a style={{ color: '#af1ebe', cursor: 'pointer' }} onClick={handleClickLink}>
+            профиле
+          </a>
         </div>
         {isNewOpened ? (
           <AuthorizedAddressForm onSubmit={addNewAddress} inline />
