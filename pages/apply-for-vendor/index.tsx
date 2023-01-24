@@ -73,17 +73,26 @@ export default function Partnership() {
       router.push(`/apply-for-vendor/complete`);
     } catch (e) {
       console.error(e);
+      const err = e?.response?.data?.errors;
+      const errs = err.reduce((acc: object, cur: any) => {
+        if (cur?.source) {
+          return { ...acc, [cur.source]: cur.title };
+        }
+        return acc;
+      }, {});
+      setErrors(errs);
     }
     setIsLoading(false);
   };
 
-  const { values, handleChange, setFieldValue, handleBlur, errors, handleSubmit } = useFormik<PartnershipForm>({
-    initialValues,
-    validationSchema,
-    validateOnBlur: false,
-    validateOnChange: false,
-    onSubmit: sendForm,
-  });
+  const { values, handleChange, setFieldValue, handleBlur, errors, handleSubmit, setErrors } =
+    useFormik<PartnershipForm>({
+      initialValues,
+      validationSchema,
+      validateOnBlur: false,
+      validateOnChange: false,
+      onSubmit: sendForm,
+    });
 
   const handlePhoneChange = (e) => {
     setFieldValue('contact_phone', e);
