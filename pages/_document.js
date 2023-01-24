@@ -1,6 +1,8 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
 
+const yaMetrikaId = process.env.YANDEX_METRIKA_ID;
+
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
     const sheet = new ServerStyleSheet();
@@ -40,8 +42,8 @@ export default class MyDocument extends Document {
                 (function (d, w, c) {
                   (w[c] = w[c] || []).push(function() {
                       try {
-                          w.yaCounter91593418 = new Ya.Metrika({
-                              id:91593418,
+                          w.yaCounter${yaMetrikaId} = new Ya.Metrika({
+                              id:${yaMetrikaId},
                               clickmap:true,
                               trackLinks:true,
                               accurateTrackBounce:true,
@@ -69,6 +71,15 @@ export default class MyDocument extends Document {
               `,
             }}
           />
+          <noscript>
+            <div>
+              <img
+                src={'https://mc.yandex.ru/watch/' + yaMetrikaId}
+                style={{ position: 'absolute', left: -9999 }}
+                alt=""
+              />
+            </div>
+          </noscript>
           <script
             dangerouslySetInnerHTML={{
               __html: `
@@ -76,11 +87,6 @@ export default class MyDocument extends Document {
             `,
             }}
           ></script>
-          <noscript>
-            <div>
-              <img src="https://mc.yandex.ru/watch/91593418" style={{ position: 'absolute', left: -9999 }} alt="" />
-            </div>
-          </noscript>
         </Head>
         <body>
           <Main />
