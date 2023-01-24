@@ -38,15 +38,29 @@ const CategoryFilters: FC<Props> = ({ isLoading, setIsLoading }) => {
 
   const isInitialized = useRef(false);
 
+  const query = { ...router.query };
+
   //Sort
   const setSort = (value: Variant<keyof typeof GoodsSortTypes>) => {
     setIsLoading(true);
     setCurrentSort(value);
 
+    const queryWithoutUtm = Object.fromEntries(
+      Object.entries(query).filter((item) => item[0] === 'city' || !isNaN(+item[0]))
+    );
+
+    const newQuery = { ...(!hasInvalidFilters && queryWithoutUtm) };
+
+    const href = router.asPath.split('?')[0];
+
     if (value.code !== 'POPULARITY') {
-      replaceRouterQuery({ sort: value.code }, ['page']);
+      router.push({ pathname: href, query: { ...newQuery, sort: value.code } }, undefined, {
+        scroll: false,
+      });
     } else {
-      replaceRouterQuery({}, ['page', 'sort']);
+      router.push({ pathname: href, query: { ...newQuery } }, undefined, {
+        scroll: false,
+      });
     }
   };
 
@@ -55,7 +69,13 @@ const CategoryFilters: FC<Props> = ({ isLoading, setIsLoading }) => {
     setIsLoading(true);
 
     let href = router.asPath.split('?')[0];
-    const query = { ...router.query };
+
+    const queryWithoutUtm = Object.fromEntries(
+      Object.entries(query).filter(
+        (item) => item[0] === 'sort' || item[0] === 'city' || item[0] === 'page' || !isNaN(+item[0])
+      )
+    );
+
     const { queryFilters, excludeFilterId } = getQueryFromFilters([filter]);
     ['page', 'city', 'id', excludeFilterId].forEach((item) => delete query[item]);
 
@@ -72,7 +92,7 @@ const CategoryFilters: FC<Props> = ({ isLoading, setIsLoading }) => {
     }
     //
 
-    const newQuery = { ...(!hasInvalidFilters && query), ...queryFilters };
+    const newQuery = { ...(!hasInvalidFilters && queryWithoutUtm), ...queryFilters };
 
     router.push({ pathname: href, query: newQuery }, undefined, {
       scroll: false,
@@ -80,10 +100,14 @@ const CategoryFilters: FC<Props> = ({ isLoading, setIsLoading }) => {
   };
 
   // Удаляет фильтр целиком, либо одно из значений фильтра
-  const removeFilter = ({ id, tag_slug }: IFilterFront, value?: string) => {
+  const removeFilter = ({ id, tag_slug }: IFilterFront) => {
+    const queryWithoutUtm = Object.fromEntries(
+      Object.entries(query).filter(
+        (item) => item[0] === 'sort' || item[0] === 'city' || item[0] === 'page' || !isNaN(+item[0])
+      )
+    );
+    let href = router.asPath.split('?')[0];
     if (tag_slug) {
-      let href = router.asPath;
-
       currentTags.forEach((tag, index) => {
         if (tag.slug === tag_slug) {
           const excludingTags = currentTags.splice(index);
@@ -92,17 +116,33 @@ const CategoryFilters: FC<Props> = ({ isLoading, setIsLoading }) => {
           });
         }
       });
-
       router.push(href, undefined, { scroll: false });
     } else {
-      let newValues = null;
-      if (value) newValues = currentFilters[id].values.filter((item) => item !== value);
+      // let newValues = null;
+      // if (value) newValues = currentFilters[id].values.filter((item) => item !== value || isNaN(+item));
 
-      if (newValues && newValues.length > 0) {
-        replaceRouterQuery({ [id]: newValues }, ['page']);
-      } else {
-        replaceRouterQuery({}, ['page', id]);
-      }
+      const newQuery = { ...(!hasInvalidFilters && queryWithoutUtm) };
+
+      delete newQuery[id];
+
+      router.push({ pathname: href, query: { ...newQuery } }, undefined, {
+        scroll: false,
+      });
+
+      // if (newValues && newValues.length > 0) {
+      //   delete newQuery[id];
+      //   // replaceRouterQuery({ [id]: newValues }, ['page']);
+
+      //   router.push({ pathname: href, query: { ...newQuery } }, undefined, {
+      //     scroll: false,
+      //   });
+      // } else {
+      //   delete newQuery[id];
+
+      //   router.push({ pathname: href, query: { ...newQuery } }, undefined, {
+      //     scroll: false,
+      //   });
+      // }
     }
     setIsLoading(true);
   };

@@ -9,6 +9,7 @@ import type { ITag, ITagFitlerFront } from 'entities/tags';
 import type { ICategory } from '../../entities/categories/model/ICategory';
 import type { IFilter, IFilterFront, IFilterMeta } from '../../entities/filters/model/IFilter';
 import { getActiveFiltersFromQuery } from 'shared/lib/categories/filters/getActiveFiltersFromQuery';
+
 import { getCategoryBreadcrumps } from 'shared/lib/categories/getCategoryBreadcrumps';
 import { getParamsFromQuery } from 'shared/lib/categories/getParamsFromQuery';
 import { getProductsList } from 'shared/lib/products/getProductsList';
@@ -198,8 +199,16 @@ export default function Catalog({
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({ res, resolvedUrl, query }) => {
-  const { page, id, sort, city, ...activeFilters } = query;
+  const queryWithoutUtm = Object.fromEntries(
+    Object.entries(query).filter(
+      (item) => item[0] === 'sort' || item[0] === 'city' || item[0] === 'page' || item[0] === 'id' || !isNaN(+item[0])
+    )
+  );
+
+  const { page, id, sort, city, ...activeFilters } = queryWithoutUtm;
+
   const activeQueryFilters = { ...activeFilters };
+
   let category: ICategory;
   let tags: ITag[] = [];
   let activeTags: ITag[] = [];
@@ -304,14 +313,24 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ res, resol
 
   try {
     const paramsFromQuery = getParamsFromQuery(params, activeQueryFilters);
+
+    // paramsFromQuery = Object.fromEntries(
+    //   Object.entries({ ...paramsFromQuery })?.filter(
+    //     (item) => !item[0]?.includes('utm_') || !item[0]?.includes('_tm') || !item[0]?.includes('_c')
+    //   )
+    // );
+
     const location: string = typeof city === 'string' ? city : 'Москва';
     const [baseFiltersRes, filtersRes] = await Promise.all([
       api.getCategoryFilters(category.id),
       api.getCategoryFilters(category.id, location, paramsFromQuery),
     ]);
 
+    // console.log(baseFiltersRes.data.data);
+
     // const baseFiltersRes = await api.getCategoryFilters(category.id);
     baseFilters = convertFiltersIfPrice(baseFiltersRes.data.data);
+
     // const filtersRes = await api.getCategoryFilters(category.id, getParamsFromQuery(params, activeQueryFilters));
     filters = convertFiltersIfPrice(filtersRes.data.data);
 
@@ -332,7 +351,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ res, resol
         max = (priceStr.match(/до (\d+)/g) || [''])[0].replace(/[^0-9]+/g, '');
       }
       // Заменяем всю строку цена - от <digits> до <digits> на новую
-      if (min && max) filtersMeta[key] = filtersMeta[key].replace(priceStr, `цена - от ${+min / 100} ₽ до ${+max / 100} ₽`);
+      if (min && max)
+        filtersMeta[key] = filtersMeta[key].replace(priceStr, `цена - от ${+min / 100} ₽ до ${+max / 100} ₽`);
     });
 
     const { activeFilters: newActiveFilters, hasInvalidFilters: newHasInvalidFilters } = getActiveFiltersFromQuery(

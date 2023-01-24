@@ -12,9 +12,9 @@ import { CategoryFilters } from '../../widgets/categories';
 import { CartModal } from '../../widgets/products';
 import { ProductsList } from '../../widgets/products';
 import Toggle from 'shared/ui/Toggle';
+import Preloader from 'shared/ui/Preloader';
 
 import styles from './styles.module.scss';
-import Preloader from 'shared/ui/Preloader';
 
 type Props = {
   withoutExpress?: boolean;
@@ -58,11 +58,17 @@ export const GoodsBlock: FC<Props> = ({
     delete query['page'];
     delete query['id'];
 
+    const queryWithoutUtm = Object.fromEntries(
+      Object.entries(query).filter(
+        (item) => item[0] === 'sort' || item[0] === 'city' || item[0] === 'page' || !isNaN(+item[0])
+      )
+    );
+
     if (!isOnlyExpress) {
       router.push(
         {
           pathname: router.asPath.split('?')[0] + '/ekspress-dostavka',
-          query,
+          query: queryWithoutUtm,
         },
         null,
         { scroll: false }
@@ -72,7 +78,7 @@ export const GoodsBlock: FC<Props> = ({
       router.push(
         {
           pathname: router.asPath.split('?')[0].replace('/ekspress-dostavka', ''),
-          query,
+          query: queryWithoutUtm,
         },
         null,
         { scroll: false }
