@@ -35,42 +35,6 @@ export default class MyDocument extends Document {
           <link rel="icon" href="/favicon.ico" />
           <NextScript />
           <script
-            // dangerouslySetInnerHTML={{
-            //   __html: `
-            //   (function (d, w, c) {
-            //     (w[c] = w[c] || []).push(function() {
-            //         try {
-            //             w.yaCounter68012902 = new Ya.Metrika({
-            //                 id:68012902,
-            //                 clickmap:true,
-            //                 trackLinks:true,
-            //                 accurateTrackBounce:true,
-            //                 webvisor:true,
-            //                 ecommerce:"dataLayer"
-            //             });
-            //         } catch(e) {
-            //           console.error(e)
-            //          }
-            //     });
-
-            //     var n = d.getElementsByTagName("script")[0],
-            //         x = "https://mc.yandex.ru/metrika/watch.js",
-            //         s = d.createElement("script"),
-            //         f = function () { n.parentNode.insertBefore(s, n); };
-            //     for (var i = 0; i < document.scripts.length; i++) {
-            //         if (document.scripts[i].src === x) { return; }
-            //     }
-            //     s.type = "text/javascript";
-            //     s.async = true;
-            //     s.src = x;
-
-            //     if (w.opera == "[object Opera]") {
-            //         d.addEventListener("DOMContentLoaded", f, false);
-            //     } else { f(); }
-            // })(document, window, "yandex_metrika_callbacks");
-            // window.dataLayer = window.dataLayer || [];
-            //   `,
-            // }}
             dangerouslySetInnerHTML={{
               __html: `
                 (function (d, w, c) {
@@ -107,10 +71,11 @@ export default class MyDocument extends Document {
           />
           <script
             dangerouslySetInnerHTML={{
-              __html: `(function(w,d,n,c){w.CalltouchDataObject=n;w[n]=function(){w[n]["callbacks"].push(arguments)};if(!w[n]["callbacks"]){w[n]["callbacks"]=[]}w[n]["loaded"]=false;if(typeof c!=="object"){c=[c]}w[n]["counters"]=c;for(var i=0;i<c.length;i+=1){p(c[i])}function p(cId){var a=d.getElementsByTagName("script")[0],s=d.createElement("script"),i=function(){a.parentNode.insertBefore(s,a)},m=typeof Array.prototype.find === 'function',n=m?"init-min.js":"init.js";s.async=true;s.src="[https://mod.calltouch.ru/"+n+"?id="+cId;if(w.opera=="](https://mod.calltouch.ru/"+n+"?id="+cId;if(w.opera==")[object Opera]"){d.addEventListener("DOMContentLoaded",i,false)}else{i()}}})(window,document,"ct","4p63ahxk");`
+              __html: `
+                 (function(w,d,n,c){w.CalltouchDataObject=n;w[n]=function(){w[n]["callbacks"].push(arguments)};if(!w[n]["callbacks"]){w[n]["callbacks"]=[]}w[n]["loaded"]=false;if(typeof c!=="object"){c=[c]}w[n]["counters"]=c;for(var i=0;i<c.length;i+=1){p(c[i])}function p(cId){var a=d.getElementsByTagName("script")[0],s=d.createElement("script"),i=function(){a.parentNode.insertBefore(s,a)},m=typeof Array.prototype.find === 'function',n=m?"init-min.js":"init.js";s.async=true;s.src="https://mod.calltouch.ru/"+n+"?id="+cId;if(w.opera=="[object Opera]"){d.addEventListener("DOMContentLoaded",i,false)}else{i()}}})(window,document,"ct","4p63ahxk");
+            `,
             }}
-          >
-          </script>
+          ></script>
           <noscript>
             <div>
               <img src="https://mc.yandex.ru/watch/91593418" style={{ position: 'absolute', left: -9999 }} alt="" />
