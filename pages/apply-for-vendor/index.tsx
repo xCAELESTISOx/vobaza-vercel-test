@@ -1,14 +1,16 @@
+import { useState } from 'react';
 import Link from 'next/link';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-
-import styles from 'app/styles/Partners.module.scss';
+import { useRouter } from 'next/router';
 
 import Breadcrumbs, { BreadcrumbType } from 'shared/ui/Breadcrumbs';
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
 import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
-import { useState } from 'react';
+
+import styles from 'app/styles/Partners.module.scss';
+import { api } from 'app/api';
 
 const breadcrumbs: BreadcrumbType[] = [
   {
@@ -17,36 +19,42 @@ const breadcrumbs: BreadcrumbType[] = [
   },
 ];
 
-interface Address {
-  address: string;
-  categ: string;
-  name: string;
+interface PartnershipForm {
+  cities: string;
+  categories: string;
+  organization_name: string;
   inn: string;
-  fio: string;
-  phone: string;
+  contact_name: string;
+  contact_phone: string;
   email: string;
 }
 
 const initialValues = {
-  address: '',
-  categ: '',
-  name: '',
+  cities: '',
+  categories: '',
+  organization_name: '',
   inn: '',
-  fio: '',
-  phone: '',
+  contact_name: '',
+  contact_phone: '',
   email: '',
-} as Address;
+} as PartnershipForm;
 
 const validationSchema = yup.object({
-  address: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
-  categ: yup.string().max(255, 'Количество символов в поле должно быть не больше 255'),
-  name: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
+  cities: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
+  categories: yup.string().max(255, 'Количество символов в поле должно быть не больше 255'),
+  organization_name: yup
+    .string()
+    .max(255, 'Количество символов в поле должно быть не больше 255')
+    .required('Обязательное поле'),
   inn: yup
     .string()
-    .test('len', 'Поле ИНН должно содержать 10 или 12 цифр', (val: any) => val.length === 10 || val.length === 12)
+    .test('len', 'Поле ИНН должно содержать 10 или 12 цифр', (val: any) => val?.length === 10 || val?.length === 12)
     .required('Обязательное поле'),
-  fio: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
-  phone: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
+  contact_name: yup
+    .string()
+    .max(255, 'Количество символов в поле должно быть не больше 255')
+    .required('Обязательное поле'),
+  contact_phone: yup.string().required('Обязательное поле'),
   email: yup
     .string()
     .email('Не валидный email')
@@ -55,20 +63,21 @@ const validationSchema = yup.object({
 });
 
 export default function Partnership() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  const sendForm = () => {
+  const sendForm = async () => {
     try {
       setIsLoading(true);
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 2000);
+      await api.createPartnershipRequest(values);
+      router.push(`/apply-for-vendor/complete`);
     } catch (e) {
       console.error(e);
     }
+    setIsLoading(false);
   };
 
-  const { values, setFieldValue, validateField, errors } = useFormik<Address>({
+  const { values, handleChange, setFieldValue, handleBlur, errors, handleSubmit } = useFormik<PartnershipForm>({
     initialValues,
     validationSchema,
     validateOnBlur: false,
@@ -76,53 +85,43 @@ export default function Partnership() {
     onSubmit: sendForm,
   });
 
-  const handleChange = async (e: any) => {
-    const fieldName = e.target.name === 'vendorName' ? 'name' : e.target.name;
-
-    await setFieldValue(fieldName, e.target.value);
-  };
-  const handleBlur = async (e: any) => {
-    const fieldName = e.target.name === 'vendorName' ? 'name' : e.target.name;
-    validateField(fieldName);
-  };
-
-  const handlePhoneChange = async (value: string) => {
-    await setFieldValue('phone', value);
+  const handlePhoneChange = (e) => {
+    setFieldValue('contact_phone', e);
   };
 
   return (
     <div>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <div className={`${styles.staticPage} container`}>
-        <div className={styles.staticPageContent}>
+        <form className={styles.staticPageContent}>
           <h1 className={styles.staticPageTitle}>Оставить заявку на&nbsp;партнерство</h1>
           <div className={styles.staticPageInfo}>
             <InputText
               label="Города присутствия (через запятую)"
-              name="address"
-              value={values.address}
+              name="cities"
+              value={values.cities}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={errors?.address}
+              error={errors?.cities}
               disabled={isLoading}
               required
             />
             <InputText
               label="Категории продаваемых товаров"
-              name="categ"
-              value={values.categ}
+              name="categories"
+              value={values.categories}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={errors?.categ}
+              error={errors?.categories}
               disabled={isLoading}
             />
             <InputText
               label="Название организации"
-              name="vendorName"
-              value={values.name}
+              name="organization_name"
+              value={values.organization_name}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={errors?.name}
+              error={errors?.organization_name}
               disabled={isLoading}
               required
             />
@@ -139,21 +138,21 @@ export default function Partnership() {
             />
             <InputText
               label="ФИО"
-              name="fio"
-              value={values.fio}
+              name="contact_name"
+              value={values.contact_name}
               onChange={handleChange}
               onBlur={handleBlur}
-              error={errors?.fio}
+              error={errors?.contact_name}
               disabled={isLoading}
               required
             />
             <InputPhone
               label="Мобильный номер телефона"
-              name="phone"
-              value={values.phone}
+              name="contact_phone"
+              value={values.contact_phone}
               onChange={handlePhoneChange}
               onBlur={handleBlur}
-              error={errors?.phone}
+              error={errors?.contact_phone}
               required
               disabled={isLoading}
             />
@@ -171,14 +170,14 @@ export default function Partnership() {
               Нажимая &laquo;Отправить&raquo; вы&nbsp;соглашаетесь с&nbsp;
               <Link href="/">
                 <a className={`${styles.staticPageText} ${styles.link}`}>договором оферты</a>
-              </Link>{' '}
+              </Link>
               и&nbsp;подтверждаете своё согласие на&nbsp;обработку персональных данных
             </div>
             <div>
-              <Button style={{ marginLeft: 'auto' }} text="Отправить" />
+              <Button style={{ marginLeft: 'auto' }} text="Отправить" type="button" onClick={() => handleSubmit()} />
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

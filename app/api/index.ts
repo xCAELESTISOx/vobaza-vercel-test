@@ -5,6 +5,7 @@ import { axios, setToken, setTokenWithGuest } from './axios';
 import { CategoriesAPI } from './modules/categories/endpoints';
 import { ordersAPI } from './modules/orders';
 import { userAPI } from './modules/user';
+import {partnershipAPI} from './modules/partnership'
 
 export const api = {
   getMenu(type: 'TOP' | 'LEFT_SIDE' | 'MOBILE') {
@@ -146,4 +147,5 @@ export const api = {
   ...CategoriesAPI,
   ...ordersAPI,
   ...userAPI,
+  ...partnershipAPI
 };
