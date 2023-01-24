@@ -59,6 +59,10 @@ export const api = {
   getBanners(params: { type: 'SLIDER' | 'MINIATURE'; limit?: number }) {
     return axios.get('/v1/banners', { params });
   },
+  //Contacts
+  sendFeedback(data: { email: string; name: string; subject: string; message: string }) {
+    return axios.post('/v1/feedback/contactForm', data);
+  },
   //MainPage
   getHits() {
     const params = {
