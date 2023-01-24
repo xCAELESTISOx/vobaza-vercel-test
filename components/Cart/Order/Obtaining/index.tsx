@@ -15,8 +15,8 @@ import { ObtainingDelivery } from './ObtainingDelivery';
 import { OrderDeliveryDrawer } from './Drawer';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 
-import { api } from 'app/api';
 import styles from './styles.module.scss';
+import { api } from 'app/api';
 
 const getMinDate = (): Date => {
   const today = new Date();
@@ -55,12 +55,8 @@ const OrderObtaining: FC<Props> = ({
 
   const { delivery, lift, address } = data;
 
-  const setTime = (time: Variant) => {
-    setFieldValue('delivery.time', time);
-  };
-  const toggleChangeDeliveryDrawer = () => {
-    toggleDrawer(!isDrawerOpen);
-  };
+  const setTime = (time: Variant) => setFieldValue('delivery.time', time);
+  const toggleChangeDeliveryDrawer = () => toggleDrawer(!isDrawerOpen);
 
   const getLiftPrice = async () => {
     if (!delivery || !lift) return null;
@@ -109,6 +105,14 @@ const OrderObtaining: FC<Props> = ({
   }, [lift, address.floor]);
 
   const isSelfDelivery = delivery?.tag === EOrderDeliveryType.self;
+  // Отображаемый заголовок
+  const title = delivery?.tag
+    ? {
+        [EOrderDeliveryType.normal]: 'Доставка ВоБаза',
+        [EOrderDeliveryType.self]: 'Самовывоз',
+        [EOrderDeliveryType.express]: 'Экспресс-доставка ВоБаза',
+      }[delivery.tag]
+    : 'Оформить заказ с менеджером';
 
   const deliveryTimeSlots = convertTimeslots(deliveryVariants?.time_slots);
 
@@ -135,7 +139,7 @@ const OrderObtaining: FC<Props> = ({
 
       <div className={styles.cartContent}>
         <div className={styles.cartHeader}>
-          <h2 className={styles.cartTitle}>{isSelfDelivery ? 'Самовывоз' : 'Доставка Вобаза'}</h2>
+          <h2 className={styles.cartTitle}>{title}</h2>
           <div className={styles.cartHeaderButtons}>
             <button className={styles.cartHeaderButton} onClick={toggleChangeDeliveryDrawer}>
               Изменить
