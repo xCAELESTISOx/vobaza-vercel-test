@@ -115,16 +115,19 @@ export default function Checkout({ price, weight, user, addresses, goods }: Prop
         ecommerceAfterPurchase(res?.data?.data?.number);
       }
       dispatch(setCartSize(0));
-
       router.push(`/checkout/complete?order_id=${res.data.data.number}`);
     } catch (error) {
       if (error.response.data.errors) {
         if (error.response.data.errors[0].code === 'empty_basket') {
           toggleErrorModal();
         }
-        if (error.response.data.errors[0].source === 'obtaining.delivery.address_id') {
+        if (
+          error.response.data.errors[0].source === 'obtaining.delivery.address_id' ||
+          error.response.data.errors[0].source === 'obtaining.delivery.address.address'
+        ) {
           setAddressError(true);
         }
+
         throw error;
       }
     }
