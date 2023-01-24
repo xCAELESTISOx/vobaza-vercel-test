@@ -26,7 +26,8 @@ export type ICartGood = {
       id: number;
       slug: string;
       name: string;
-      status: string;
+      parent_id: number;
+      brand: string;
     }[];
     brand?: string;
     seo?: {
@@ -49,11 +50,7 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const deleteItemHandler = () => {
-    const category = good.product.parent_categories
-      .map(({ name }) => {
-        return name;
-      })
-      .join('/');
+    const category = good.product.parent_categories.map(({ name }) => name).join('/');
 
     (window as any).dataLayer = (window as any)?.dataLayer || [];
     (window as any)?.dataLayer?.push({

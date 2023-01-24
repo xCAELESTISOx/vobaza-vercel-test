@@ -134,8 +134,8 @@ const MainFooter: FC = () => {
               </div>
               <div className={styles.mainFooterColumnItem}>
                 <div className={styles.mainFooterColumnSubtitle}>Электронная почта</div>
-                <a href="mailto:notify@vobaza.ru" className={styles.mainFooterColumnEmail}>
-                  notify@vobaza.ru
+                <a href="mailto:info@vobaza.ru" className={styles.mainFooterColumnEmail}>
+                  info@vobaza.ru
                 </a>
               </div>
             </div>
