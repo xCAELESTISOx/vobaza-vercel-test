@@ -17,8 +17,14 @@ export const CategoryTagItem: FC<Props> = ({ isActive, tag, getTagUrl, getTagQue
   const href = getTagUrl(tag.id);
   const params = getTagQuery(tag.id);
 
+  const queryWithoutUtm = Object.fromEntries(
+    Object.entries(params).filter(
+      (item) => item[0] === 'sort' || item[0] === 'city' || item[0] === 'page' || !isNaN(+item[0])
+    )
+  );
+
   return (
-    <Link href={{ pathname: href, query: params }}>
+    <Link href={{ pathname: href, query: queryWithoutUtm }}>
       <a className={`${styles.tag} ${isActive ? styles.active : ''}`} onClick={onClick}>
         {tag.name}
       </a>
