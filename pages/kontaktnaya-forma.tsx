@@ -1,5 +1,5 @@
 import { GetServerSideProps } from 'next';
-import { useState } from 'react';
+import { ChangeEvent, FocusEvent, useState } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
@@ -23,7 +23,7 @@ const breadcrumbs: BreadcrumbType[] = [
 ];
 
 interface Props {
-  user: IProfile;
+  user: IProfile | null;
 }
 
 interface Address {
@@ -33,9 +33,9 @@ interface Address {
   message: string;
 }
 
-const getInitialValues = (user: IProfile): Address => ({
-  email: `${user.email ? user.email : ''}`,
-  name: `${user.name}${user.surname ? ' ' + user.surname : ''}`,
+const getInitialValues = (user: IProfile | null): Address => ({
+  email: user ? `${user.email || ''}` : '',
+  name: user ? `${user.name}${user.surname ? ' ' + user.surname : ''}` : '',
   subject: '',
   message: '',
 });
@@ -67,7 +67,6 @@ const validationSchema = yup.object({
 export default function ContactForm({ user }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const initialValues = getInitialValues(user);
 
   const sendForm = async () => {
     try {
@@ -93,7 +92,7 @@ export default function ContactForm({ user }: Props) {
   };
 
   const { values, setFieldValue, validateField, errors, handleSubmit, resetForm, setErrors } = useFormik<Address>({
-    initialValues,
+    initialValues: getInitialValues(user),
     validationSchema,
     validateOnBlur: false,
     validateOnChange: false,
@@ -104,12 +103,12 @@ export default function ContactForm({ user }: Props) {
     handleSubmit();
   };
 
-  const handleChange = async (e: any) => {
+  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const fieldName = e.target.name === 'contactName' ? 'name' : e.target.name;
 
     await setFieldValue(fieldName, e.target.value);
   };
-  const handleBlur = async (e: any) => {
+  const handleBlur = async (e: FocusEvent<HTMLInputElement>) => {
     const fieldName = e.target.name === 'contactName' ? 'name' : e.target.name;
     validateField(fieldName);
   };
@@ -198,22 +197,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => 
 
     user = propfileRes.data.data;
   } catch (error) {
-    user = {
-      name: '',
-      phone: '',
-      email: '',
-      surname: '',
-    };
     return {
-      props: {
-        user,
-      },
+      props: { user },
     };
   }
 
   return {
-    props: {
-      user,
-    },
+    props: { user },
   };
 };

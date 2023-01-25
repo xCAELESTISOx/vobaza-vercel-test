@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Link from 'next/link';
-import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
@@ -9,6 +8,7 @@ import Breadcrumbs, { BreadcrumbType } from 'shared/ui/Breadcrumbs';
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
 import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
+import { getInitialValues, PartnershipForm, partnershipValidationSchema } from 'features/partnership';
 import type { IProfile, Props } from 'components/Profile/Data';
 
 import styles from 'app/styles/Partners.module.scss';
@@ -25,55 +25,6 @@ const breadcrumbs: BreadcrumbType[] = [
 interface IProps {
   user: IProfile;
 }
-
-interface PartnershipForm {
-  cities: string;
-  categories: string;
-  organization_name: string;
-  inn: string;
-  contact_name: string;
-  contact_phone: string;
-  email: string;
-}
-
-const getInitialValues = (user: IProfile) => ({
-  cities: '',
-  categories: '',
-  organization_name: '',
-  inn: '',
-  contact_name: `${user.name} ${user.surname || ''}` || '',
-  contact_phone: '',
-  email: user.email || '',
-});
-
-const validationSchema = yup.object({
-  cities: yup
-    .string()
-    .trim()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
-  categories: yup.string().trim().max(255, 'Количество символов в поле должно быть не больше 255'),
-  organization_name: yup
-    .string()
-    .trim()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
-  inn: yup
-    .string()
-    .test('len', 'Поле ИНН должно содержать 10 или 12 цифр', (val: any) => val?.length === 10 || val?.length === 12)
-    .required('Обязательное поле'),
-  contact_name: yup
-    .string()
-    .trim()
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
-  contact_phone: yup.string().required('Обязательное поле'),
-  email: yup
-    .string()
-    .email('Не валидный email')
-    .max(255, 'Количество символов в поле должно быть не больше 255')
-    .required('Обязательное поле'),
-});
 
 export default function Partnership({ user }: IProps) {
   const router = useRouter();
@@ -109,7 +60,7 @@ export default function Partnership({ user }: IProps) {
   const { values, handleChange, setFieldValue, handleBlur, errors, handleSubmit, setErrors } =
     useFormik<PartnershipForm>({
       initialValues,
-      validationSchema,
+      validationSchema: partnershipValidationSchema,
       validateOnBlur: false,
       validateOnChange: false,
       onSubmit: sendForm,
