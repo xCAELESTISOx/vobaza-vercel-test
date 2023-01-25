@@ -1,5 +1,6 @@
 import NextNProgress from 'nextjs-progressbar';
 import type { AppProps } from 'next/app';
+import Script from 'next/script';
 
 import 'app/styles/normalize.scss';
 import 'react-calendar/dist/Calendar.css';
@@ -16,6 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Layout>
         <Component {...pageProps} />
       </Layout>
+      <Script src="//cdn.callibri.ru/callibri.js" type="text/javascript" charSet="utf-8" />
     </>
   );
 }
