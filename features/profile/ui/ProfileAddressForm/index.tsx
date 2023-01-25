@@ -31,21 +31,25 @@ const validationSchema = yup.object({
     .typeError(BASIC_FLOOR_ERROR)
     .min(1, BASIC_FLOOR_ERROR)
     .max(100, EXCEEDING_FLOOR_ERROR)
-    .required(BASIC_FLOOR_ERROR),
+    .required(BASIC_FLOOR_ERROR)
+    .test('no-leading-zero', 'Значение не должно начинаться с нуля', (_, context) => {
+      return !String((context as any)?.originalValue).startsWith('0');
+    }),
   intercom: yup.string(),
 });
 
 type Props = {
-  initialValues: IAddressFull;
-  unauth?: boolean;
-
-  inline?: boolean;
-  title?: string;
   buttonText?: string;
-  onSubmit?: (t: IAddressFull) => void;
+  isLoading?: boolean;
+  inline?: boolean;
+  unauth?: boolean;
+  title?: string;
+
+  initialValues: IAddressFull;
+  onSubmit?: (t: IAddressFull) => Promise<void>;
 };
 
-const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title, buttonText, onSubmit }) => {
+const ProfileAddressesForm: FC<Props> = ({ unauth, isLoading, initialValues, inline, title, buttonText, onSubmit }) => {
   const [addreses, setAddreses] = useState([]);
   const isAddressDefault = initialValues.is_default;
 
@@ -56,10 +60,9 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
 
   const submitHandler = async () => {
     try {
-      onSubmit(values);
+      await onSubmit(values);
     } catch (errs) {
       const backErrors = {} as any;
-
       errs.forEach((err: IError) => {
         err.source && err.source !== ''
           ? (backErrors[err.source] = err.title)
@@ -151,7 +154,10 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
   }, [city]);
 
   return (
-    <form className={`${styles.addressForm} ${inline ? styles.inline : ''}`} onSubmit={submitHandler}>
+    <form
+      className={`${styles.addressForm} ${inline ? styles.inline : ''} ${isLoading ? styles.loading : ''}`}
+      onSubmit={submitHandler}
+    >
       <div className={styles.addressFormTitle}>{title || 'Редактировать адрес'}</div>
       <div className={styles.addressFormItem}>
         <InputText

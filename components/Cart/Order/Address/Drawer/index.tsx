@@ -12,7 +12,7 @@ type Props = {
 };
 
 const OrderAddressDrawer: FC<Props> = ({ isOpen = false, setOuterFieldValue, onClose }) => {
-  const handleSubmit = (values: IAddressFull) => {
+  const handleSubmit = async (values: IAddressFull) => {
     try {
       setOuterFieldValue('address', values);
       onClose();

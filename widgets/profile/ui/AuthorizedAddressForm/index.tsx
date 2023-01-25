@@ -60,11 +60,11 @@ const AuthorizedAddressForm = ({ inline, address, onSubmit }: Props) => {
         router.push('/profile/address');
       }
     } catch (error) {
+      setIsLoading(false);
       const errs = error.response.data.errors;
 
-      throw new Error(errs);
+      throw errs;
     }
-    setIsLoading(false);
   };
 
   return (
@@ -73,6 +73,7 @@ const AuthorizedAddressForm = ({ inline, address, onSubmit }: Props) => {
       buttonText="Добавить"
       onSubmit={saveAddress}
       inline={inline}
+      isLoading={isLoading}
     />
   );
 };

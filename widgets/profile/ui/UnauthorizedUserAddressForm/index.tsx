@@ -15,7 +15,7 @@ const initialValues: IAddressFull = {
 
 type Props = {
   inline?: boolean;
-  onSubmit?: (values: IAddressFull) => void;
+  onSubmit?: (values: IAddressFull) => Promise<void>;
 };
 
 const UnauthorizedAddressForm = ({ onSubmit, inline }: Props) => {
