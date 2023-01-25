@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, FocusEvent, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
@@ -9,7 +9,6 @@ import type { ElevatorType, IAddressFull } from 'src/models/IAddress';
 import type { IError } from 'src/models/IError';
 import { useClickOutside } from '@nebo-team/vobaza.ui.filter-select/dist/filter-select';
 import useDebounce from 'shared/lib/hooks/useDebounce';
-import { dadataApi } from 'app/api/dadata';
 import { useSelector } from 'shared/lib/hooks/useSelector';
 
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
@@ -18,6 +17,7 @@ import { InputRadio } from '@nebo-team/vobaza.ui.inputs.input-radio';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 
 import styles from './styles.module.scss';
+import { dadataApi } from 'app/api/dadata';
 
 const BASIC_FLOOR_ERROR = 'Укажите этаж';
 const EXCEEDING_FLOOR_ERROR = 'Номер этажа должен быть не более 100';
@@ -78,6 +78,7 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
     errors,
     setErrors,
     handleChange,
+    setFieldError,
     handleSubmit,
   } = useFormik({
     initialValues,
@@ -117,15 +118,19 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, initialValues, inline, title,
     await setFieldValue('is_default', bool);
   };
 
-  const handleBlur: React.FocusEventHandler = async (e: any) => {
+  const handleBlur = async (e: FocusEvent<HTMLInputElement>) => {
     validateField(e.target.name);
   };
 
   const searchAddress = async () => {
-    const res = await dadataApi.findAddress(values.address);
-    const json = await res.json();
-    const addresesFromRes = json.suggestions;
-    setAddreses(addresesFromRes);
+    try {
+      const res = await dadataApi.findAddress(values.address);
+      const json = await res.json();
+      const addresesFromRes = json.suggestions;
+      setAddreses(addresesFromRes);
+    } catch (err) {
+      setFieldError('address', 'Что-то пошло не так, адрес не найден. Пожалуйста, попробуйте позже');
+    }
   };
   const debouncedSearchAddress = useDebounce(searchAddress, 800);
 
