@@ -104,14 +104,14 @@ const footerLinks = [
         title: 'Информация для поставщиков',
         href: '/postavschikam-partneram',
       },
+      {
+        title: 'Стать партнером',
+        href: '/apply-for-vendor',
+      },
     ],
   },
 ];
-// TODO: добавить после Информация для поставщиков
-// {
-//       title: 'Стать партнером',
-//       href: '/apply-for-vendor',
-//     },
+
 const MainFooter: FC = () => {
   return (
     <>
