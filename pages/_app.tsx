@@ -7,6 +7,7 @@ import 'react-calendar/dist/Calendar.css';
 import 'rc-tooltip/assets/bootstrap.css';
 import 'app/styles/globals.scss';
 import 'swiper/scss';
+import 'app/styles/callibri.scss';
 
 import Layout from '../app/ui/Layout';
 

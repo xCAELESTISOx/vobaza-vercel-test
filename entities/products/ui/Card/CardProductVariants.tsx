@@ -34,7 +34,7 @@ const CardProductVariants = ({ good, setCurrentImage }: Props) => {
               <div className={styles.cardVariant}>
                 {item.main_image ? (
                   <Image
-                    {...getImageVariantProps(item.main_image.variants, 'small')}
+                    {...getImageVariantProps(item.main_image.variants, 'small_webp')}
                     objectFit="contain"
                     alt={good.name}
                     className={styles.variantImg}
