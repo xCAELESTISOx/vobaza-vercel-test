@@ -101,7 +101,7 @@ export default function Contacts() {
             </div>
           </div>
           <div>
-            {/* <div className={styles.staticPageInfo}>
+            <div className={styles.staticPageInfo}>
               <div className={`${styles.staticPageText} ${styles.bold}`}>Обратная связь</div>
               <div className={styles.staticPageText}>Если у&nbsp;вас возник вопрос&nbsp;&mdash; напишите нам</div>
               <Link href="/kontaktnaya-forma">
@@ -109,7 +109,7 @@ export default function Contacts() {
                   Написать <Icon name="ArrowRight" />
                 </a>
               </Link>
-            </div> */}
+            </div>
             <div className={styles.staticPageInfo}>
               <div className={`${styles.staticPageText} ${styles.bold}`}>Поставщикам</div>
               <div className={styles.staticPageText}>Узнайте подробные условия для сотрудничества</div>

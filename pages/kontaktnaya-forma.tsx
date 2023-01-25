@@ -1,8 +1,12 @@
+import { GetServerSideProps } from 'next';
 import { useState } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+import checkAuth from 'app/api/auth';
 import { api } from 'app/api';
+import type { IError } from 'src/models/IError';
+import type { IProfile } from 'components/Profile/Data';
 
 import Breadcrumbs, { BreadcrumbType } from 'shared/ui/Breadcrumbs';
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
@@ -18,6 +22,10 @@ const breadcrumbs: BreadcrumbType[] = [
   },
 ];
 
+interface Props {
+  user: IProfile;
+}
+
 interface Address {
   email: string;
   name: string;
@@ -25,27 +33,41 @@ interface Address {
   message: string;
 }
 
-const initialValues = {
-  email: '',
-  name: '',
+const getInitialValues = (user: IProfile): Address => ({
+  email: `${user.email ? user.email : ''}`,
+  name: `${user.name}${user.surname ? ' ' + user.surname : ''}`,
   subject: '',
   message: '',
-} as Address;
+});
 
 const validationSchema = yup.object({
-  name: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
-  subject: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
-  message: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
+  name: yup
+    .string()
+    .trim()
+    .max(255, 'Количество символов в поле должно быть не больше 255')
+    .required('Обязательное поле'),
+  subject: yup
+    .string()
+    .trim()
+    .max(255, 'Количество символов в поле должно быть не больше 255')
+    .required('Обязательное поле'),
+  message: yup
+    .string()
+    .trim()
+    .max(255, 'Количество символов в поле должно быть не больше 255')
+    .required('Обязательное поле'),
   email: yup
     .string()
+    .trim()
     .email('Не валидный email')
     .max(255, 'Количество символов в поле должно быть не больше 255')
     .required('Обязательное поле'),
 });
 
-export default function ContactForm() {
+export default function ContactForm({ user }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const initialValues = getInitialValues(user);
 
   const sendForm = async () => {
     try {
@@ -53,15 +75,24 @@ export default function ContactForm() {
       await api.sendFeedback(values);
 
       resetForm();
-      setIsLoading(false);
       setIsSuccess(true);
-    } catch (e) {
-      console.error(e);
+      setIsLoading(false);
+    } catch (error) {
+      const errs = error.response.data.errors;
+      const backErrors = {} as any;
+
+      errs.forEach((err: IError) => {
+        err.source && err.source !== ''
+          ? (backErrors[err.source] = err.title.replace('subject', 'Тема').replace('message', 'Сообщение'))
+          : (backErrors.message = err.title ? err.title : 'Непредвиденная ошибка, попробуйте ещё раз');
+      });
+
+      setErrors(backErrors);
       setIsLoading(false);
     }
   };
 
-  const { values, setFieldValue, validateField, errors, handleSubmit, resetForm } = useFormik<Address>({
+  const { values, setFieldValue, validateField, errors, handleSubmit, resetForm, setErrors } = useFormik<Address>({
     initialValues,
     validationSchema,
     validateOnBlur: false,
@@ -141,7 +172,12 @@ export default function ContactForm() {
                   required
                 />
                 <div>
-                  <Button style={{ margin: '0 auto' }} text="Отправить" onClick={handleSubmitForm} />
+                  <Button
+                    style={{ margin: '0 auto' }}
+                    text="Отправить"
+                    onClick={handleSubmitForm}
+                    disabled={isLoading}
+                  />
                 </div>
               </div>
             </>
@@ -151,3 +187,33 @@ export default function ContactForm() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => {
+  let user = null;
+
+  try {
+    await checkAuth(req);
+
+    const propfileRes = await api.getProfile();
+
+    user = propfileRes.data.data;
+  } catch (error) {
+    user = {
+      name: '',
+      phone: '',
+      email: '',
+      surname: '',
+    };
+    return {
+      props: {
+        user,
+      },
+    };
+  }
+
+  return {
+    props: {
+      user,
+    },
+  };
+};
