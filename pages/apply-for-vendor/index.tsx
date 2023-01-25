@@ -101,7 +101,7 @@ export default function Partnership() {
   return (
     <div>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <div className={`${styles.staticPage} container`}>
+      <div className={`${styles.staticPageCentered} container`}>
         <form className={styles.staticPageContent}>
           <h1 className={styles.staticPageTitle}>Оставить заявку на&nbsp;партнерство</h1>
           <div className={styles.staticPageInfo}>
