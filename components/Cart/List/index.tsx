@@ -60,10 +60,7 @@ const CartList: FC<Props> = ({ initialGoods, withCountChange = false, setOrderPr
           include: 'prices',
         });
       }
-      dispatch({
-        type: 'changeCartSize',
-        payload: res.data.data.changed_quantity,
-      });
+      dispatch(addToCartSize(res.data.data.changed_quantity));
       setGoods((prevArray) =>
         prevArray.map((item) => {
           if (item.product.id === id) {
