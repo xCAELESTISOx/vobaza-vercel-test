@@ -3,13 +3,16 @@ import Link from 'next/link';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
 
 import Breadcrumbs, { BreadcrumbType } from 'shared/ui/Breadcrumbs';
 import { InputText } from '@nebo-team/vobaza.ui.inputs.input-text/dist';
 import { InputPhone } from '@nebo-team/vobaza.ui.inputs.input-phone/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
+import type { IProfile, Props } from 'components/Profile/Data';
 
 import styles from 'app/styles/Partners.module.scss';
+import checkAuth from 'app/api/auth';
 import { api } from 'app/api';
 
 const breadcrumbs: BreadcrumbType[] = [
@@ -18,6 +21,10 @@ const breadcrumbs: BreadcrumbType[] = [
     href: '/apply-for-vendor',
   },
 ];
+
+interface IProps {
+  user: IProfile;
+}
 
 interface PartnershipForm {
   cities: string;
@@ -29,21 +36,26 @@ interface PartnershipForm {
   email: string;
 }
 
-const initialValues = {
+const getInitialValues = (user: IProfile) => ({
   cities: '',
   categories: '',
   organization_name: '',
   inn: '',
-  contact_name: '',
+  contact_name: `${user.name} ${user.surname || ''}` || '',
   contact_phone: '',
-  email: '',
-} as PartnershipForm;
+  email: user.email || '',
+});
 
 const validationSchema = yup.object({
-  cities: yup.string().max(255, 'Количество символов в поле должно быть не больше 255').required('Обязательное поле'),
-  categories: yup.string().max(255, 'Количество символов в поле должно быть не больше 255'),
+  cities: yup
+    .string()
+    .trim()
+    .max(255, 'Количество символов в поле должно быть не больше 255')
+    .required('Обязательное поле'),
+  categories: yup.string().trim().max(255, 'Количество символов в поле должно быть не больше 255'),
   organization_name: yup
     .string()
+    .trim()
     .max(255, 'Количество символов в поле должно быть не больше 255')
     .required('Обязательное поле'),
   inn: yup
@@ -52,6 +64,7 @@ const validationSchema = yup.object({
     .required('Обязательное поле'),
   contact_name: yup
     .string()
+    .trim()
     .max(255, 'Количество символов в поле должно быть не больше 255')
     .required('Обязательное поле'),
   contact_phone: yup.string().required('Обязательное поле'),
@@ -62,17 +75,23 @@ const validationSchema = yup.object({
     .required('Обязательное поле'),
 });
 
-export default function Partnership() {
+export default function Partnership({ user }: IProps) {
   const router = useRouter();
+  const [generalErrors, setGeneralErrors] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const initialValues = getInitialValues(user);
 
   const sendForm = async () => {
+    setGeneralErrors('');
     try {
       setIsLoading(true);
       await api.createPartnershipRequest(values);
-      router.push(`/apply-for-vendor/complete`);
+      await router.push(`/apply-for-vendor/complete`);
     } catch (e) {
       console.error(e);
+      if (e?.response.data.message) {
+        setGeneralErrors('Что-то пошло не так. Пожалуйста, попробуйте позже.');
+      }
       const err = e?.response?.data?.errors;
       const errs = err.reduce((acc: object, cur: any) => {
         if (cur?.source) {
@@ -80,9 +99,11 @@ export default function Partnership() {
         }
         return acc;
       }, {});
+
       setErrors(errs);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const { values, handleChange, setFieldValue, handleBlur, errors, handleSubmit, setErrors } =
@@ -178,12 +199,19 @@ export default function Partnership() {
             <div className={styles.staticPageText}>
               Нажимая &laquo;Отправить&raquo; вы&nbsp;соглашаетесь с&nbsp;
               <Link href="/">
-                <a className={`${styles.staticPageText} ${styles.link}`}>договором оферты</a>
+                <a className={`${styles.staticPageText} ${styles.link}`}>договором оферты </a>
               </Link>
               и&nbsp;подтверждаете своё согласие на&nbsp;обработку персональных данных
             </div>
+            {generalErrors && <p className={styles.errorText}>{generalErrors}</p>}
             <div>
-              <Button style={{ marginLeft: 'auto' }} text="Отправить" type="button" onClick={() => handleSubmit()} />
+              <Button
+                style={{ marginLeft: 'auto' }}
+                text="Отправить"
+                type="button"
+                onClick={() => handleSubmit()}
+                disabled={isLoading}
+              />
             </div>
           </div>
         </form>
@@ -191,3 +219,33 @@ export default function Partnership() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => {
+  let user = null;
+
+  try {
+    await checkAuth(req);
+
+    const propfileRes = await api.getProfile();
+
+    user = propfileRes.data.data;
+  } catch (error) {
+    user = {
+      name: '',
+      phone: '',
+      email: '',
+      surname: '',
+    };
+    return {
+      props: {
+        user,
+      },
+    };
+  }
+
+  return {
+    props: {
+      user,
+    },
+  };
+};

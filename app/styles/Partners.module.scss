@@ -39,3 +39,9 @@ button.staticPageButton {
   justify-content: center;
   align-items: center;
 }
+
+.errorText {
+  font-size: 12px;
+  color: var(--error, #e73030);
+  margin: 30 0 30px 0;
+}
