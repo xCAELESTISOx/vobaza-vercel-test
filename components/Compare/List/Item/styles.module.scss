@@ -6,12 +6,13 @@
   > * + * {
     margin-top: 8px;
   }
-
-  &:hover {
-    .compareListItemDelete {
-      opacity: 1;
+    @media screen and (min-width: 767px) {
+      &:hover {
+        .compareListItemDelete {
+          opacity: 1;
+        }
+      }
     }
-  }
 }
 .compareListItemDelete {
   display: flex;
@@ -22,11 +23,17 @@
   white-space: nowrap;
   opacity: 0;
 
-  &:hover {
-    svg {
-      color: #ccc;
-    }
+  @media screen and (max-width: 767px) {
+    opacity: 1;
   }
+
+  @media screen and (min-width: 767px) {
+      &:hover {
+        svg {
+          color: #ccc;
+        }
+      }
+    }
 
   svg {
     width: 16px;
