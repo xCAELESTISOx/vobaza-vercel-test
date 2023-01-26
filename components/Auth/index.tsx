@@ -50,7 +50,7 @@ const AuthModal: FC = () => {
 
   return (
     <div style={!isModalOpen ? { display: 'none' } : {}}>
-      <ModalLayout onClose={onClose}>
+      <ModalLayout onClose={onClose} isFloat>
         {isRegistration ? (
           <RegistrationForm goLogin={toggleIsRegistration} onSuccess={onSuccess} />
         ) : (

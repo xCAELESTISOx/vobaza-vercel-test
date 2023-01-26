@@ -20,6 +20,12 @@
   background: #ffffff;
   border-radius: 8px;
 
+  &.float {
+    @media screen and (max-width: 767px) {
+      margin-bottom: 100px;
+    }
+  }
+
   &.wide {
     max-width: 946px;
   }
