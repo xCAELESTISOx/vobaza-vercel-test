@@ -215,7 +215,7 @@ const GoodsCard: FC<Props> = React.memo(({ good, isFixedHeight = true }) => {
               </div> */}
               <div className={styles.cardCart}>
                 {good.is_available ? (
-                  <Button icon="Cart" text="В корзину" onClick={addToCartHandler} />
+                  <Button icon="Cart" text="В корзину" onClick={addToCartHandler} disabled={!good.price} />
                 ) : (
                   <div className={styles.cardStock}>
                     <Icon name={'Cross'} /> Нет в наличии
