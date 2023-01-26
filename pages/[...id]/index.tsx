@@ -94,6 +94,12 @@ export default function Catalog({
   const breadcrumbs = getCategoryBreadcrumps([...category.ancestors, category], currentTags, isExpress);
   const currentTag = currentTags[currentTags?.length - 1] || null;
 
+  // TODO MOCK DATA
+  const currentTagRobots = currentTag?.robots?.join(', ');
+
+  // TODO MOCK DATA
+  const currentTagCanonicalLink = currentTag?.canonical_link;
+
   const getProducts = async () => {
     setIsLoading(true);
 
@@ -169,6 +175,10 @@ export default function Catalog({
             content={currentTag?.description || filtersMeta.description || category.seo_description}
           />
         )}
+
+        {!!currentTagRobots && <meta name="robots" content={currentTagRobots} />}
+
+        {!!currentTagCanonicalLink && <link rel="canonical" href={currentTagCanonicalLink} />}
       </Head>
       <div className={styles.page}>
         <Breadcrumbs breadcrumbs={breadcrumbs} />

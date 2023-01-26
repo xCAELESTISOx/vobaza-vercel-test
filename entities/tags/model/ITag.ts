@@ -1,6 +1,8 @@
 import { AttributeDataType } from 'src/models/IAttributes';
 import { IFilterFront } from 'entities/filters/model/IFilter';
 
+export type DeviceType = 'MOBILE' | 'DESKTOP';
+
 export interface ITag {
   id: number;
   slug: string;
@@ -14,6 +16,9 @@ export interface ITag {
   type: 'FILTER' | 'REDIRECT';
   redirect_url?: string;
   url: string;
+  robots?: string[],
+  device_to_hide?: DeviceType[],
+  canonical_link?: string,
 }
 
 export interface ITagFitlerFront extends Omit<IFilterFront, 'name' | 'values'> {

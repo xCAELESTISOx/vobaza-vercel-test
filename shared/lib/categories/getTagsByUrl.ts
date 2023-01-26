@@ -36,7 +36,11 @@ export const getTagsByUrl = (url: string, tags: ITag[], categoriesSlugs: string[
       hasInvalidTags = true;
     }
   });
+
+  const testCurrentTags = [...currentTagsLevel];
+  // testCurrentTags[0] = {...currentTagsLevel[0], device_to_hide: ['MOBILE']}
+  // testCurrentTags[1] = {...currentTagsLevel[1], device_to_hide: ['DESKTOP']}
   //
 
-  return { currentTags, currentTagsLevel, hasInvalidTags };
+  return { currentTags, currentTagsLevel: testCurrentTags, hasInvalidTags };
 };
