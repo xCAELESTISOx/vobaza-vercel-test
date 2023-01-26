@@ -10,6 +10,8 @@ import CitySelect from '../CitySelect';
 import { MobileMenuBlock } from './ui/MobileMenuBlock';
 
 import styles from './styles.module.scss';
+import { getLinkFromMenuItem } from 'shared/lib/getLinkFromMenuItem';
+import { useRouter } from 'next/router';
 
 type Props = {
   menu?: IMenuItem[];
@@ -105,15 +107,22 @@ const MobileMenuGroup = ({
   item: IMenuItem;
   setCurrentMenuItem: Dispatch<SetStateAction<IMenuItem>>;
 }) => {
+  const router = useRouter();
+  const isExpress = router.asPath.includes('/ekspress-dostavka');
+
   return (
     <div key={item.id} className={styles.headerMobileMenuList}>
       <div className={styles.headerMobileMenuListTitle}>{item.name}</div>
       <div className={styles.headerMobileMenuContent}>
         {item.children?.map((menuItem) => (
-          <div key={menuItem.id} className={styles.headerMobileMenuItem} onClick={() => setCurrentMenuItem(menuItem)}>
-            {menuItem.icon && <Image src={menuItem.icon} width={28} height={28} alt="" />}
-            <span>{menuItem.name}</span>
-            <Icon name="SmallArrowUp" />
+          <div key={menuItem.id} className={styles.headerMobileMenuItem}>
+            <Link href={getLinkFromMenuItem(menuItem, isExpress)}>
+              <a>
+                {menuItem.icon && <Image src={menuItem.icon} width={28} height={28} alt="" />}
+                <span>{menuItem.name}</span>
+              </a>
+            </Link>
+            {menuItem.children && <Icon name="SmallArrowUp" onClick={() => setCurrentMenuItem(menuItem)} />}
           </div>
         ))}
       </div>
