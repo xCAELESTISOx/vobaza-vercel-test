@@ -79,10 +79,6 @@
 .inlineModalSubContent {
   padding: 40px 24px;
   background: #fafafa;
-
-  @media screen and (max-width: 767px) {
-    padding-bottom: 90px;
-  }
 }
 .inlineModalSubContentText {
   font-size: 16px;
