@@ -4,8 +4,8 @@
   padding-right: 12px;
 
   @media screen and (max-width: 979px) {
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 .cardContainer {
@@ -18,9 +18,9 @@
   padding: 24px;
 
   @media screen and (max-width: 1024px) {
-    // margin: -20px;
-    margin: 0;
-    padding: 20px;
+    margin: 0px;
+    padding: 12px;
+    width: 100%;
     max-width: 100%;
   }
 
@@ -140,6 +140,7 @@
   border-radius: 8px;
   padding: 4px;
   background: #ffffff;
+  height: 100%;
 
   cursor: pointer;
   user-select: none;
@@ -202,12 +203,12 @@
   }
 
   @media screen and (max-width: 768px) {
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 2px;
   }
 
-  @media screen and (max-width: 400px) {
-    font-size: 12px;
+  @media screen and (max-width: 440px) {
+    font-size: 10px;
   }
 }
 
@@ -215,6 +216,10 @@
   display: flex;
   flex-direction: column;
   margin-top: 16px;
+
+  @media screen and (max-width: 768px) {
+    margin-top: 8px;
+  }
 }
 .cardTitle {
   display: -webkit-box;
@@ -246,6 +251,8 @@
 
   @media screen and (max-width: 767px) {
     margin-top: 0;
+    max-height: 20px;
+    min-height: 20px;
   }
 }
 .cardPrice {
@@ -271,7 +278,7 @@
 }
 .cardSale {
   margin-left: auto;
-  padding: 3px 8px 5px;
+  padding: 3px 8px 3px;
   max-width: max-content;
   font-size: 14px;
   font-weight: 700;
