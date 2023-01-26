@@ -216,8 +216,16 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, options, breadcrumbs }) =
               {product.inStonk && (
                 <>
                   <div className={styles.productOrderBtns}>
-                    <Button text="В корзину" icon="Cart" size="big" onClick={addToCartHandler} />
-                    <Button text="Заказать в 1 клик" variation="dashed" onClick={openOneClickModal} />
+                    <Button
+                      text="В корзину"
+                      icon="Cart"
+                      size="big"
+                      onClick={addToCartHandler}
+                      disabled={!product.price}
+                    />
+                    {!!product.price && (
+                      <Button text="Заказать в 1 клик" variation="dashed" onClick={openOneClickModal} />
+                    )}
                   </div>
 
                   <ProductDelivery className={styles.productInfoBlock} delivery={mockProduct.delivery} />

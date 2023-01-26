@@ -91,15 +91,17 @@ const CompareListItem: FC<Props> = ({ good, deleteGood }) => {
       {good.is_available ? (
         <>
           <div className={styles.compareListItemCartButtons}>
-            <Button text="В корзину" onClick={addToCartHandler} />
-            <div>
-              <Button
-                text="Заказать в 1 клик"
-                variation="dashed"
-                style={{ fontSize: '14px' }}
-                onClick={openOneClickOrder}
-              />
-            </div>
+            <Button text="В корзину" onClick={addToCartHandler} disabled={!good.price} />
+            {!!good.price && (
+              <div>
+                <Button
+                  text="Заказать в 1 клик"
+                  variation="dashed"
+                  style={{ fontSize: '14px' }}
+                  onClick={openOneClickOrder}
+                />
+              </div>
+            )}
           </div>
         </>
       ) : (

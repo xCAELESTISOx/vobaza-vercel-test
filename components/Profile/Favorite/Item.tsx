@@ -113,7 +113,7 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
 
         <div className={styles.profileFavoriteItemCart}>
           {good.is_available ? (
-            <Button text="В корзину" onClick={addToCartHandler} />
+            <Button text="В корзину" onClick={addToCartHandler} disabled={!good.price} />
           ) : (
             <div className={styles.notAavailable}>Нет в наличии</div>
           )}

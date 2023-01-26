@@ -1,7 +1,6 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import styles from './styles.module.scss';
 import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { addToCartSize } from 'src/store/goods';
 
@@ -10,15 +9,17 @@ import CartListItem, { ICartGood } from '../ListItem';
 import CartItemChangeModal from '../Modal/CartItemChangeModal';
 
 import { api } from '../../../app/api';
+import styles from './styles.module.scss';
 
 type Props = {
-  initialGoods: ICartGood[];
+  goods: ICartGood[];
   withCountChange?: boolean;
   setOrderPrice: (price: number) => void;
+  onChangeGoods?: (goods: ICartGood[]) => void;
 };
 
-const CartList: FC<Props> = ({ initialGoods, withCountChange = false, setOrderPrice }) => {
-  const [goods, setGoods] = useState(initialGoods);
+const CartList: FC<Props> = ({ goods, withCountChange = false, setOrderPrice, onChangeGoods }) => {
+  // const [goods, setGoods] = useState(initialGoods);
   const [isCountChangeModal, setIsCountChangeModal] = useState(withCountChange);
   const [errorTitle, setErrorTitle] = useState('');
   const router = useRouter();
@@ -38,7 +39,7 @@ const CartList: FC<Props> = ({ initialGoods, withCountChange = false, setOrderPr
         quantity: quantity,
         include: 'prices',
       });
-      setGoods((prevArray) => prevArray.filter((good) => good.product.id !== id));
+      onChangeGoods(goods.filter((good) => good.product.id !== id));
 
       dispatch(addToCartSize(res.data.data.changed_quantity));
       setOrderPrice(res.data.data.order_price / 100);
@@ -61,8 +62,8 @@ const CartList: FC<Props> = ({ initialGoods, withCountChange = false, setOrderPr
         });
       }
       dispatch(addToCartSize(res.data.data.changed_quantity));
-      setGoods((prevArray) =>
-        prevArray.map((item) => {
+      onChangeGoods(
+        goods.map((item) => {
           if (item.product.id === id) {
             return {
               ...item,
@@ -89,10 +90,6 @@ const CartList: FC<Props> = ({ initialGoods, withCountChange = false, setOrderPr
       }
     }
   };
-
-  useEffect(() => {
-    setGoods(initialGoods);
-  }, [initialGoods]);
 
   return (
     <div className={styles.cartList}>

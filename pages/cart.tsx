@@ -20,6 +20,7 @@ type Props = {
 
 export default function Cart({ initialGoods, initialPrice, withCountChange }: Props) {
   const [orderPrice, setOrderPrice] = useState(initialPrice);
+  const [goodsList, setGoodsList] = useState(initialGoods);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -32,6 +33,10 @@ export default function Cart({ initialGoods, initialPrice, withCountChange }: Pr
     dispatch(setCartSize(newCartSize));
   }, [initialGoods]);
 
+  const handleDeleteGood = (products: ICartGood[]) => {
+    setGoodsList(products);
+  };
+
   return (
     <div>
       <div className="container">
@@ -39,10 +44,15 @@ export default function Cart({ initialGoods, initialPrice, withCountChange }: Pr
           <h2 className={styles.cartTitle}>Корзина</h2>
           <div className={styles.cartContent}>
             <div className={styles.cartContentBlock}>
-              <CartList initialGoods={initialGoods} setOrderPrice={setOrderPrice} withCountChange={withCountChange} />
+              <CartList
+                goods={goodsList}
+                setOrderPrice={setOrderPrice}
+                withCountChange={withCountChange}
+                onChangeGoods={handleDeleteGood}
+              />
             </div>
             <div>
-              <CartSidebar price={orderPrice} />
+              <CartSidebar price={orderPrice} goods={goodsList} />
             </div>
           </div>
         </div>
