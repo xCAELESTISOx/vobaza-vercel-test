@@ -2,6 +2,7 @@ import { FC } from 'react';
 import Link from 'next/link';
 
 import { toNumberWithSpaces } from 'shared/lib/formatters';
+import type { ICartGood } from '../ListItem';
 
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 
@@ -14,6 +15,8 @@ type Props = {
   assemblyPrice?: number;
   isOrder?: boolean;
   onButtonClick?: () => void;
+  goods: ICartGood[];
+  isBasket?: boolean;
 };
 
 const CartSidebar: FC<Props> = ({
@@ -23,7 +26,10 @@ const CartSidebar: FC<Props> = ({
   assemblyPrice = 0,
   isOrder = false,
   onButtonClick,
+  goods,
 }) => {
+  const hasNullPriceProduct = goods?.some((item) => !item.price);
+
   return (
     <div className={styles.cartSidebar}>
       <h3 className={styles.cartSidebarTitle}>Ваш заказ:</h3>
@@ -61,10 +67,16 @@ const CartSidebar: FC<Props> = ({
       </div>
       {isOrder && (
         <div className={styles.cartSidebarButton}>
-          <Button onClick={onButtonClick} text="Оформить заказ" size="big" isFullScreen />
+          <Button
+            onClick={onButtonClick}
+            text="Оформить заказ"
+            size="big"
+            isFullScreen
+            disabled={hasNullPriceProduct}
+          />
         </div>
       )}
-      {!isOrder && Boolean(price) && (
+      {!isOrder && !hasNullPriceProduct && Boolean(price) && (
         <Link href="/checkout">
           <a className={styles.cartSidebarButton}>
             <Button text="Перейти к оформлению" size="big" isFullScreen />

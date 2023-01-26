@@ -184,6 +184,7 @@ export default function Checkout({ price, weight, user, addresses, goods }: Prop
                 liftPrice={liftPrice}
                 onButtonClick={submitHandler}
                 isOrder
+                goods={goods}
               />
             </div>
           </div>
