@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
@@ -6,7 +6,7 @@ import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { setCartSize, setCompare, setFavorites } from 'src/store/goods';
 import { useSelector } from 'shared/lib/hooks/useSelector';
 import { getCartData } from './libs/getCartData';
-import { useMenu } from './libs/hooks/useMenu';
+import type { IMenuItem } from 'src/models/IMenu';
 
 import { HeaderTop } from './ui/HeaderTop';
 import { HeaderBody } from './ui/HeaderBody';
@@ -19,12 +19,38 @@ type Props = {
 };
 
 const Header: FC<Props> = ({ openPhoneCallModal }) => {
+  const [menus, setMenus] = useState<{ main: IMenuItem[]; side: IMenuItem[]; mobile: IMenuItem[] }>(null);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const menus = useMenu();
+  const fetchMobileMenu = async () => {
+    try {
+      const resp = await api.getMenu('MOBILE');
+      const mobile = resp?.data.data;
+      setMenus((prev) => ({ ...prev, mobile }));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchDesktopMenus = async () => {
+    try {
+      const [topMenuRes, sideMenuRes] = await Promise.all([api.getMenu('TOP'), api.getMenu('LEFT_SIDE')]);
+
+      const fetchedDesktopMenus = {
+        main: topMenuRes.data.data,
+        side: sideMenuRes.data.data,
+      };
+
+      setMenus((prev) => {
+        return { ...prev, ...fetchedDesktopMenus };
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const setCompareFromCookie = () => {
     const ids = Cookies.get('compareIds');
@@ -60,15 +86,17 @@ const Header: FC<Props> = ({ openPhoneCallModal }) => {
     getGlobalInfo();
   }, [isLoggedIn]);
 
+  useEffect(() => {
+    fetchMobileMenu();
+    fetchDesktopMenus();
+  }, []);
+
   const setCartData = async () => {
     const cartData = await getCartData();
 
     const newCartSize = cartData.initialGoods.reduce((acc, item) => acc + item.quantity, 0);
 
-    dispatch({
-      type: 'setCartSize',
-      payload: newCartSize,
-    });
+    dispatch(setCartSize(newCartSize));
   };
 
   useEffect(() => {

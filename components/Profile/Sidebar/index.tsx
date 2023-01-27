@@ -14,7 +14,7 @@ import styles from './styles.module.scss';
 
 interface IProps {
   close?: () => void;
-};
+}
 
 const ProfileSidebar = ({ close = () => {} }: IProps) => {
   const favoriteIds = useSelector((state) => state.goods.favoriteIds);
@@ -43,7 +43,10 @@ const ProfileSidebar = ({ close = () => {} }: IProps) => {
   return (
     <div className={styles.profileSidebar}>
       <Link href="/profile">
-        <a className={`${styles.profileSidebarItem} ${router.pathname === '/profile' ? styles.active : ''}`} onClick={close}>
+        <a
+          className={`${styles.profileSidebarItem} ${router.pathname === '/profile' ? styles.active : ''}`}
+          onClick={close}
+        >
           <Icon name="Home" />
           Главная
           <div className={styles.profileSidebarIcons}>
@@ -52,7 +55,10 @@ const ProfileSidebar = ({ close = () => {} }: IProps) => {
         </a>
       </Link>
       <Link href="/profile/address">
-        <a className={`${styles.profileSidebarItem} ${router.pathname === '/profile/address' ? styles.active : ''}`} onClick={close}>
+        <a
+          className={`${styles.profileSidebarItem} ${router.pathname === '/profile/address' ? styles.active : ''}`}
+          onClick={close}
+        >
           <Icon name="Geoposition" />
           Мои адреса
           <div className={styles.profileSidebarIcons}>
@@ -60,8 +66,11 @@ const ProfileSidebar = ({ close = () => {} }: IProps) => {
           </div>
         </a>
       </Link>
-      <Link href="/profile/wishlist">
-        <a className={`${styles.profileSidebarItem} ${router.pathname === '/profile/wishlist' ? styles.active : ''}`} onClick={close}>
+      <Link href="/profile/wishlist" prefetch={false}>
+        <a
+          className={`${styles.profileSidebarItem} ${router.pathname === '/profile/wishlist' ? styles.active : ''}`}
+          onClick={close}
+        >
           <Icon name="Favorite" />
           Избранное
           {favoriteIds?.length > 0 && <div className={styles.profileSidebarBadge}>{favoriteIds.length}</div>}
@@ -71,7 +80,10 @@ const ProfileSidebar = ({ close = () => {} }: IProps) => {
         </a>
       </Link>
       <Link href="/profile/update">
-        <a className={`${styles.profileSidebarItem} ${router.pathname === '/profile/update' ? styles.active : ''}`} onClick={close}>
+        <a
+          className={`${styles.profileSidebarItem} ${router.pathname === '/profile/update' ? styles.active : ''}`}
+          onClick={close}
+        >
           <Icon name="Identification" />
           Личные данные
           <div className={styles.profileSidebarIcons}>
@@ -80,7 +92,10 @@ const ProfileSidebar = ({ close = () => {} }: IProps) => {
         </a>
       </Link>
       <Link href="/profile/orders">
-        <a className={`${styles.profileSidebarItem} ${router.pathname === '/profile/orders' ? styles.active : ''}`} onClick={close}>
+        <a
+          className={`${styles.profileSidebarItem} ${router.pathname === '/profile/orders' ? styles.active : ''}`}
+          onClick={close}
+        >
           <Icon name="Box" />
           Мои заказы
           <div className={styles.profileSidebarIcons}>

@@ -93,7 +93,10 @@ export const MobileBottomMenu: FC = () => {
             <div className={styles.tabTitle}>Сравнение</div>
           </a>
         </Link>
-        <div className={`${styles.tab} ${activeTab === 'PROFILE' ? styles.tabActive : ''}`} onClick={profileClickHandler}>
+        <div
+          className={`${styles.tab} ${activeTab === 'PROFILE' ? styles.tabActive : ''}`}
+          onClick={profileClickHandler}
+        >
           <div className={styles.tabIcon}>
             <Icon name="Person" />
           </div>
