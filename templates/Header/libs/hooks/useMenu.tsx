@@ -4,7 +4,10 @@ import type { IMenuItem } from 'src/models/IMenu';
 
 import { api } from 'app/api';
 
-export const useMenu = (): { main: IMenuItem[]; side: IMenuItem[]; mobile: IMenuItem[] } | null => {
+type UseMenu = () => { main: IMenuItem[]; side: IMenuItem[]; mobile: IMenuItem[] } | null;
+
+//
+export const useMenu: UseMenu = () => {
   const [menus, setMenus] = useState<{ main: IMenuItem[]; side: IMenuItem[]; mobile: IMenuItem[] }>(null);
   const [screenWidth, setScreenWidth] = useState<number | null>(null);
   const [isLoading, setLoading] = useState(false);
@@ -14,7 +17,7 @@ export const useMenu = (): { main: IMenuItem[]; side: IMenuItem[]; mobile: IMenu
     try {
       const resp = await api.getMenu('MOBILE');
       const mobile = resp?.data.data;
-      setMenus({ ...menus, mobile });
+      setMenus((prev) => ({ ...prev, mobile }));
     } catch (error) {
       console.error(error);
     }
@@ -58,7 +61,7 @@ export const useMenu = (): { main: IMenuItem[]; side: IMenuItem[]; mobile: IMenu
     } else if (!isMobile && !menus?.main?.length) {
       fetchDesktopMenus();
     }
-  }, [screenWidth, isLoading]);
+  }, [screenWidth]);
 
   return menus;
 };

@@ -83,9 +83,7 @@ const OrderObtaining: FC<Props> = ({
   const debouncedCheckLiftPrice = useDebounce(checkLiftPrice, 800);
 
   const onDateSelect = (newDate: Date) => {
-    if (Boolean(newDate) && formatDate(newDate) === formatDate(delivery!.date)) {
-      return;
-    }
+    if (Boolean(newDate) && formatDate(newDate) === formatDate(delivery!.date)) return;
 
     const date = newDate ? new Date(newDate.getTime() - newDate.getTimezoneOffset() * 60000) : null;
     setFieldValue('delivery.date', date);
@@ -112,7 +110,7 @@ const OrderObtaining: FC<Props> = ({
         [EOrderDeliveryType.self]: 'Самовывоз',
         [EOrderDeliveryType.express]: 'Экспресс-доставка ВоБаза',
       }[delivery.tag]
-    : 'Оформить заказ с менеджером';
+    : 'Способ получения';
 
   const deliveryTimeSlots = convertTimeslots(deliveryVariants?.time_slots);
 
@@ -150,7 +148,9 @@ const OrderObtaining: FC<Props> = ({
           <div className={styles.orderDeliveryTextItem}>
             <Icon name="Car" />
             <span>
-              {delivery ? `${delivery.name}, ${delivery.price} ₽` : `Нажмите "Оформить Заказ", мы свяжемся с Вами`}
+              {delivery
+                ? `${delivery.name}, ${delivery.price} ₽`
+                : `Нажмите "Оформить Заказ", мы свяжемся с Вами для уточнения деталей`}
             </span>
           </div>
           {orderWeight && (
