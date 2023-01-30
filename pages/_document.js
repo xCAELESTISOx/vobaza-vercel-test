@@ -98,6 +98,14 @@ export default class MyDocument extends Document {
           <noscript>
             <p><img src="https//matomo.vobaza.ru/matomo.php?idsite=2&rec=1" style={{ border: 0 }} alt="" /></p>
           </noscript>
+          <script
+            type="text/javascript"
+            dangerouslySetInnerHTML={{
+              __html: `
+              (function ab(){ var request = new XMLHttpRequest(); request.open('GET', "https://scripts.botfaqtor.ru/one/12204", false); request.send(); if(request.status == 200) eval(request.responseText); })(); 
+            `,
+            }}
+          />
         </Head>
         <body>
           <Main />
