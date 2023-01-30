@@ -288,11 +288,12 @@ const getProductSlug = (slug: string): string | null => {
 
 export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({ res, query }) => {
   const slug = getProductSlug(query.slug as string);
+  const encodedSlug = encodeURI(slug);
 
   res.setHeader('Cache-Control', 'public, max-age=180, immutable');
 
   try {
-    const productRes = await api.getGoodBySlug(slug);
+    const productRes = await api.getGoodBySlug(encodedSlug);
 
     let product = normalizeProductInfo(productRes.data.data);
 
