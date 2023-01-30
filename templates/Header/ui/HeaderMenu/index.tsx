@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, MouseEvent } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
@@ -71,7 +71,12 @@ export const HeaderMenu: FC<Props> = ({ mainMenu, sideMenu }) => {
   );
 };
 
-type MainMenuItemProps = { index: number; item: IMenuItem; openFullMenu: (e: any) => void; closeMenu: () => void };
+type MainMenuItemProps = {
+  index: number;
+  item: IMenuItem;
+  openFullMenu: (e: MouseEvent<HTMLAnchorElement>) => void;
+  closeMenu: () => void;
+};
 
 const HeaderMenuItem = ({ index, item, openFullMenu, closeMenu }: MainMenuItemProps) => {
   const router = useRouter();

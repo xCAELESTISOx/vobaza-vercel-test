@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, FocusEvent, ChangeEvent } from 'react';
 import * as yup from 'yup';
 import { FormikErrors, useFormik } from 'formik';
 
@@ -73,7 +73,7 @@ const ProfileUpdateForm: FC<Props> = ({ initialUser }) => {
     resetForm();
     setIsChanged(false);
   };
-  const handleChange = async (e: any) => {
+  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const fieldName = e.target.name === 'profileName' ? 'name' : e.target.name;
 
     await setFieldValue(fieldName, e.target.value);
@@ -83,7 +83,7 @@ const ProfileUpdateForm: FC<Props> = ({ initialUser }) => {
     await setFieldValue('phone', value);
     setIsChanged(true);
   };
-  const handleBlur = async (e: any) => {
+  const handleBlur = async (e: FocusEvent<HTMLInputElement>) => {
     const fieldName = e.target.name === 'profileName' ? 'name' : e.target.name;
 
     validateField(fieldName);

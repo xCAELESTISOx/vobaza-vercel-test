@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { ChangeEvent, FC, useState, FocusEvent } from 'react';
 import Image from 'next/image';
 
 import * as yup from 'yup';
@@ -63,7 +63,7 @@ const CreateReviewModal: FC<CreateReviewModal> = ({ active, onClose = () => {}, 
     onSubmit: createReview,
   });
 
-  const handleChange = async (e: any) => {
+  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const fieldName = e.target.name === 'reviewName' ? 'name' : e.target.name;
 
     await setFieldValue(fieldName, e.target.value);
@@ -71,7 +71,7 @@ const CreateReviewModal: FC<CreateReviewModal> = ({ active, onClose = () => {}, 
   const handleChangeCustomField = async (name: string, value: any) => {
     await setFieldValue(name, value);
   };
-  const handleBlur = async (e: any) => {
+  const handleBlur = async (e: FocusEvent<HTMLInputElement>) => {
     const fieldName = e.target.name === 'reviewName' ? 'name' : e.target.name;
 
     validateField(fieldName);

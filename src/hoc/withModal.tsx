@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { MouseEvent, useEffect } from 'react';
 
 import styles from './withModal.module.scss';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
@@ -22,7 +22,7 @@ export default function ModalLayout({
     };
   }, []);
 
-  const modalClick = (e: any) => {
+  const modalClick = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
 

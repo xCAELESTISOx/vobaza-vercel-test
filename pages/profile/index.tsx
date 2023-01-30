@@ -76,7 +76,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => 
         price: lastOrderRes.data.data[0].price / 100,
       };
     }
-  } catch (error: any) {
+  } catch (error) {
     return {
       redirect: {
         destination: '/',

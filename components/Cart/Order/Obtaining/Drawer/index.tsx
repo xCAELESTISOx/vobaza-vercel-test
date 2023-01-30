@@ -11,11 +11,11 @@ import styles from './styles.module.scss';
 
 type Props = {
   address: string;
+  isOpen: boolean;
+  deliveryTag: EOrderDeliveryType | null;
+  onClose: () => void;
   setFieldValue: (name: string, value: any) => void;
   setDeliveryVariants: (variants: IDeliveryVariants) => void;
-  isOpen: boolean;
-  onClose: () => void;
-  deliveryTag: EOrderDeliveryType | null;
 };
 
 const getTommorrow = () => {

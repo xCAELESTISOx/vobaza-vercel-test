@@ -7,7 +7,7 @@ import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 type Props = {
   children: ReactNode;
   title: string;
-  className?: any;
+  className?: string;
 };
 
 const Accordeon: FC<Props> = ({ children, title, className }) => {

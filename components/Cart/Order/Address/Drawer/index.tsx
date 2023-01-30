@@ -6,9 +6,9 @@ import { UnauthorizedAddressForm } from 'widgets/profile';
 import type { IAddressFull } from 'src/models/IAddress';
 
 type Props = {
-  setOuterFieldValue: (name: string, value: any) => void;
   isOpen: boolean;
   onClose: () => void;
+  setOuterFieldValue: (name: string, value: any) => void;
 };
 
 const OrderAddressDrawer: FC<Props> = ({ isOpen = false, setOuterFieldValue, onClose }) => {

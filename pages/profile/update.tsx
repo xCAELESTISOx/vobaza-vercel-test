@@ -61,7 +61,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req }) => 
     const [propfileRes] = await Promise.all([api.getProfile()]);
 
     user = propfileRes.data.data;
-  } catch (error: any) {
+  } catch (error) {
     return {
       redirect: {
         destination: '/',

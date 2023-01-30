@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
 
 import { api } from '../../../app/api';
 
@@ -42,13 +42,13 @@ const Subscription: FC = () => {
     }
   };
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
 
     if (!isValidEmail) setIsValidEmail(true);
   };
 
-  const handleKeyUp = (e: any) => {
+  const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     const isEnter = e.key === 'Enter' || e.code === 'Enter';
 
     if (isEnter) subscribeMailing();

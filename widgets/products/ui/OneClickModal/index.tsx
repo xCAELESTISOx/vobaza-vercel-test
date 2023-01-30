@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, FocusEvent, useEffect } from 'react';
 import { FormikErrors, useFormik } from 'formik';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -102,7 +102,7 @@ const OneClickModal: FC = () => {
     dispatch(closeOneClickModal());
   };
 
-  const handleBlur = async (e: any) => {
+  const handleBlur = async (e: FocusEvent<HTMLInputElement>) => {
     const fieldName = e.target.name === 'oneClickName' ? 'name' : e.target.name;
 
     validateField(fieldName);

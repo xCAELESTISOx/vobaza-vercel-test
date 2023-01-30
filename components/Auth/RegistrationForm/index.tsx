@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, FocusEvent, useEffect, useState } from 'react';
 import { FormikErrors, useFormik } from 'formik';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
@@ -121,7 +121,7 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
     handleSubmit();
   };
 
-  const handleChange = async (e: any) => {
+  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const fieldName = e.target.name === 'registerName' ? 'name' : e.target.name;
 
     await setFieldValue(fieldName, e.target.value);
@@ -129,16 +129,16 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
   const handlePhoneChange = async (value: string) => {
     await setFieldValue('phone', value);
   };
-  const handleCodeChange = async (e: any) => {
+  const handleCodeChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length <= 5) {
       await setFieldValue(e.target.name, e.target.value);
     }
   };
-  const handleCheckChange = async (e: any) => {
-    await setFieldValue('isAgree', e);
+  const handleCheckChange = async (val: boolean) => {
+    await setFieldValue('isAgree', val);
     validateField('isAgree');
   };
-  const handleBlur = async (e: any) => {
+  const handleBlur = async (e: FocusEvent<HTMLInputElement>) => {
     const fieldName = e.target.name === 'registerName' ? 'name' : e.target.name;
 
     validateField(fieldName);

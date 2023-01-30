@@ -42,7 +42,7 @@ export type ICartGood = {
 type Props = {
   good: ICartGood;
   deleteItem: (id: number, quantity: number) => void;
-  changeItem: (id: number, quantity: number) => Promise<any>;
+  changeItem: (id: number, quantity: number) => Promise<number>;
 };
 
 const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
