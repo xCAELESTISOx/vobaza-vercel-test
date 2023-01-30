@@ -94,10 +94,8 @@ export default function Catalog({
   const breadcrumbs = getCategoryBreadcrumps([...category.ancestors, category], currentTags, isExpress);
   const currentTag = currentTags[currentTags?.length - 1] || null;
 
-  // TODO MOCK DATA
   const currentTagRobots = currentTag?.robots?.join(', ') || 'index, follow';
 
-  // TODO MOCK DATA
   const currentTagCanonicalLink = currentTag?.canonical;
 
   const getProducts = async () => {
