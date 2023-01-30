@@ -1,17 +1,15 @@
-import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useState } from 'react';
 
 import type { ITag } from 'entities/tags';
 import type { DeviceType } from 'entities/tags/model/ITag';
 import { getTagsByUrl } from 'shared/lib/categories/getTagsByUrl';
 import { useAdvancedRouter } from 'shared/lib/useAdvancedRouter';
+import { useMatchScreen } from 'shared/lib/hooks/useMatchScreen';
+import { filterTagsByScreenWidth } from 'widgets/categories/lib/filterTagsByScreenWidth';
 
 import { CategoryTagItem } from 'entities/tags/ui/CategoryTagItem';
 
 import styles from './styles.module.scss';
-
-const filterByDevice = (tags: ITag[], currentDevice: DeviceType, showHiddenTags: boolean) => {
-  return tags.filter((tag) => showHiddenTags || !tag.device_to_hide || !tag.device_to_hide?.includes(currentDevice));
-};
 
 type Props = {
   categorySlug: string;
@@ -20,7 +18,6 @@ type Props = {
 };
 
 export const CategoryTags: FC<Props> = ({ categorySlug, tags, setIsLoading }) => {
-  const [screenWidth, setScreenWidth] = useState<number | null>(null);
   const [showMore, setShowMore] = useState<Record<DeviceType, boolean>>({
     MOBILE: false,
     DESKTOP: false,
@@ -28,10 +25,11 @@ export const CategoryTags: FC<Props> = ({ categorySlug, tags, setIsLoading }) =>
   const { router } = useAdvancedRouter();
 
   const { currentTags, currentTagsLevel } = getTagsByUrl(router.asPath, tags, ['divany', categorySlug]);
-
   const currentTag = currentTags[currentTags.length - 1];
-
-  const currentDevice: DeviceType = screenWidth === null ? null : screenWidth <= 500 ? 'MOBILE' : 'DESKTOP';
+  const matchScreen = useMatchScreen(500);
+  const currentDevice: DeviceType = matchScreen === null ? null : matchScreen ? 'MOBILE' : 'DESKTOP';
+  const filteredTags = filterTagsByScreenWidth(currentTagsLevel, currentDevice, !!showMore[currentDevice], currentTag);
+  const isVisibleMoreButton = filteredTags.length < currentTagsLevel.length;
 
   const getTagUrl = (tagId: number) => {
     const tag = currentTagsLevel.find((item) => item.id === tagId);
@@ -63,22 +61,11 @@ export const CategoryTags: FC<Props> = ({ categorySlug, tags, setIsLoading }) =>
     setIsLoading(true);
   };
 
-  const filteredTags = filterByDevice(currentTagsLevel, currentDevice, !!showMore[currentDevice]);
-  const isVisibleMoreButton = filteredTags.length < currentTagsLevel.length;
-
   const handleClick = () => {
     setShowMore((prev) => {
       return { ...prev, [currentDevice]: !prev[currentDevice] };
     });
   };
-
-  useEffect(() => {
-    const handleResize = () => setScreenWidth(window?.innerWidth);
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   return (
     <>
@@ -87,7 +74,7 @@ export const CategoryTags: FC<Props> = ({ categorySlug, tags, setIsLoading }) =>
           {filteredTags.map((tag) => (
             <CategoryTagItem
               key={tag.id}
-              isActive={currentTag?.id === tag.id}
+              isActive={currentTag?.id === tag?.id}
               tag={tag}
               getTagUrl={getTagUrl}
               getTagQuery={getTagQuery}

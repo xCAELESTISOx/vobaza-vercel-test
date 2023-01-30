@@ -18,7 +18,7 @@ export interface ITag {
   url: string;
   robots?: string[],
   device_to_hide?: DeviceType[],
-  canonical_link?: string,
+  canonical?: string,
 }
 
 export interface ITagFitlerFront extends Omit<IFilterFront, 'name' | 'values'> {

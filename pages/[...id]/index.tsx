@@ -95,10 +95,10 @@ export default function Catalog({
   const currentTag = currentTags[currentTags?.length - 1] || null;
 
   // TODO MOCK DATA
-  const currentTagRobots = currentTag?.robots?.join(', ');
+  const currentTagRobots = currentTag?.robots?.join(', ') || 'index, follow';
 
   // TODO MOCK DATA
-  const currentTagCanonicalLink = currentTag?.canonical_link;
+  const currentTagCanonicalLink = currentTag?.canonical;
 
   const getProducts = async () => {
     setIsLoading(true);
@@ -178,7 +178,7 @@ export default function Catalog({
 
         {!!currentTagRobots && <meta name="robots" content={currentTagRobots} />}
 
-        {!!currentTagCanonicalLink && <link rel="canonical" href={currentTagCanonicalLink} />}
+        <link rel="canonical" href={currentTagCanonicalLink} />
       </Head>
       <div className={styles.page}>
         <Breadcrumbs breadcrumbs={breadcrumbs} />
@@ -269,7 +269,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ res, resol
       },
     };
   }
-  //
 
   try {
     const { data: tagsData } = await api.getCategoryTags(category.id);
