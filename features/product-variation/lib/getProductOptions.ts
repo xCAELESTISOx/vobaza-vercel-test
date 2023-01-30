@@ -41,7 +41,6 @@ export const getProductOptions: GetProductOptions = (productId, variants, select
               if (Array.isArray(attr.value)) {
                 return (
                   (attr.value as string[]).every((el) => {
-                    // console.log(el);
                     return params[attr.id].map(String).includes(String(el));
                   }) && attr.value.length === params[attr.id].length
                 );
