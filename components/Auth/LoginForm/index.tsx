@@ -1,5 +1,5 @@
 import { ChangeEvent, FocusEvent, useEffect, useState } from 'react';
-import { useFormik } from 'formik';
+import { FormikErrors, useFormik } from 'formik';
 import Cookies from 'js-cookie';
 import * as yup from 'yup';
 
@@ -48,7 +48,7 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
       setIsLoading(false);
     } catch (error: any) {
       const errs = error.response.data.errors;
-      const backErrors = {} as any;
+      const backErrors = {} as FormikErrors<LoginForm>;
 
       errs.forEach((err: IError) => {
         err.source && err.source !== ''
@@ -69,7 +69,7 @@ const LoginForm = ({ goRegister, onSuccess }: Props) => {
       onSuccess();
     } catch (error: any) {
       const errs = error.response.data.errors;
-      const backErrors = {} as any;
+      const backErrors = {} as FormikErrors<LoginForm>;
 
       errs.forEach((err: IError) => {
         backErrors.code = err.title ? err.title : 'Непредвиденная ошибка, попробуйте ещё раз';

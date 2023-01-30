@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { ChangeEvent, FocusEvent, useState } from 'react';
-import { useFormik } from 'formik';
+import { FormikErrors, useFormik } from 'formik';
 import * as yup from 'yup';
 
 import checkAuth from 'app/api/auth';
@@ -78,7 +78,7 @@ export default function ContactForm({ user }: Props) {
       setIsLoading(false);
     } catch (error) {
       const errs = error.response.data.errors;
-      const backErrors = {} as any;
+      const backErrors = {} as FormikErrors<Address>;
 
       errs.forEach((err: IError) => {
         err.source && err.source !== ''

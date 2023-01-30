@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { useFormik } from 'formik';
+import { FormikErrors, useFormik } from 'formik';
 import * as yup from 'yup';
 
 import type { IError } from 'src/models/IError';
@@ -43,7 +43,7 @@ const PhoneCallModal: FC<Props> = ({ isActive, onClose }) => {
       resetForm();
     } catch (error) {
       const errs = error.response.data.errors;
-      const backErrors = {} as any;
+      const backErrors = {} as FormikErrors<PhoneCall>;
 
       errs.forEach((err: IError) => {
         err.source && err.source !== ''

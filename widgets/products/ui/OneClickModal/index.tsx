@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { useFormik } from 'formik';
+import { FormikErrors, useFormik } from 'formik';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import * as yup from 'yup';
@@ -73,7 +73,7 @@ const OneClickModal: FC = () => {
       dispatch(closeOneClickModal());
     } catch (e) {
       const errors = e.response?.data?.errors || [];
-      const backErrors = {} as any;
+      const backErrors = {} as FormikErrors<IOneClickOrder>;
 
       errors.forEach((err: IError) => {
         if (err.source) {

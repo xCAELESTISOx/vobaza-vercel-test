@@ -1,13 +1,13 @@
 import React, { FC, FocusEvent, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import * as yup from 'yup';
-import { useFormik } from 'formik';
+import { FormikErrors, useFormik } from 'formik';
 import Cookies from 'js-cookie';
 
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 import type { ElevatorType, IAddressFull } from 'src/models/IAddress';
 import type { IError } from 'src/models/IError';
 import { useClickOutside } from '@nebo-team/vobaza.ui.filter-select/dist/filter-select';
+import { addressValidationSchema } from '../../lib/addressValidationSchema';
 import useDebounce from 'shared/lib/hooks/useDebounce';
 import { useSelector } from 'shared/lib/hooks/useSelector';
 
@@ -16,27 +16,8 @@ import { InputCheckbox } from '@nebo-team/vobaza.ui.inputs.input-checkbox/dist';
 import { InputRadio } from '@nebo-team/vobaza.ui.inputs.input-radio';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
 
-import styles from './styles.module.scss';
 import { dadataApi } from 'app/api/dadata';
-
-const BASIC_FLOOR_ERROR = 'Укажите этаж';
-const EXCEEDING_FLOOR_ERROR = 'Номер этажа должен быть не более 100';
-
-const validationSchema = yup.object({
-  address: yup.string().required('Обязательное поле'),
-  flat: yup.string(),
-  entrance: yup.string(),
-  floor: yup
-    .number()
-    .typeError(BASIC_FLOOR_ERROR)
-    .min(1, BASIC_FLOOR_ERROR)
-    .max(100, EXCEEDING_FLOOR_ERROR)
-    .required(BASIC_FLOOR_ERROR)
-    .test('no-leading-zero', 'Значение не должно начинаться с нуля', (_, context) => {
-      return !String((context as any)?.originalValue).startsWith('0');
-    }),
-  intercom: yup.string(),
-});
+import styles from './styles.module.scss';
 
 type Props = {
   buttonText?: string;
@@ -51,18 +32,18 @@ type Props = {
 
 const ProfileAddressesForm: FC<Props> = ({ unauth, isLoading, initialValues, inline, title, buttonText, onSubmit }) => {
   const [addreses, setAddreses] = useState([]);
-  const isAddressDefault = initialValues.is_default;
-
   const suggestRef = useRef(null);
-  const router = useRouter();
 
+  const router = useRouter();
   const city = useSelector((state) => state.auth.city);
+
+  const isAddressDefault = initialValues.is_default;
 
   const submitHandler = async () => {
     try {
       await onSubmit(values);
     } catch (errs) {
-      const backErrors = {} as any;
+      const backErrors: FormikErrors<IAddressFull> = {};
       errs.forEach((err: IError) => {
         err.source && err.source !== ''
           ? (backErrors[err.source] = err.title)
@@ -85,7 +66,7 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, isLoading, initialValues, inl
     handleSubmit,
   } = useFormik({
     initialValues,
-    validationSchema,
+    validationSchema: addressValidationSchema,
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: submitHandler,
@@ -117,13 +98,9 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, isLoading, initialValues, inl
 
   const save = () => handleSubmit();
 
-  const handleCheckChange = async (bool: boolean) => {
-    await setFieldValue('is_default', bool);
-  };
+  const handleCheckChange = async (bool: boolean) => setFieldValue('is_default', bool);
 
-  const handleBlur = async (e: FocusEvent<HTMLInputElement>) => {
-    validateField(e.target.name);
-  };
+  const handleBlur = async (e: FocusEvent<HTMLInputElement>) => validateField(e.target.name);
 
   const searchAddress = async () => {
     try {
@@ -135,10 +112,10 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, isLoading, initialValues, inl
       setFieldError('address', 'Что-то пошло не так, адрес не найден. Пожалуйста, попробуйте позже');
     }
   };
-  const debouncedSearchAddress = useDebounce(searchAddress, 800);
 
   useClickOutside(suggestRef, () => setAddreses([]));
 
+  const debouncedSearchAddress = useDebounce(searchAddress, 800);
   useEffect(() => {
     if (touched.address && values.address) {
       debouncedSearchAddress();
@@ -153,11 +130,10 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, isLoading, initialValues, inl
     }
   }, [city]);
 
+  const formStyles = [styles.addressForm, inline ? styles.inline : '', isLoading ? styles.loading : ''].join(' ');
+
   return (
-    <form
-      className={`${styles.addressForm} ${inline ? styles.inline : ''} ${isLoading ? styles.loading : ''}`}
-      onSubmit={submitHandler}
-    >
+    <form className={formStyles} onSubmit={submitHandler}>
       <div className={styles.addressFormTitle}>{title || 'Редактировать адрес'}</div>
       <div className={styles.addressFormItem}>
         <InputText
@@ -278,7 +254,7 @@ const ProfileAddressesForm: FC<Props> = ({ unauth, isLoading, initialValues, inl
       <div className={styles.addressFormButtons}>
         <Button
           text={buttonText || 'Сохранить'}
-          size={'big'}
+          size="big"
           type="submit"
           style={inline ? { width: '100%' } : {}}
           onClick={save}

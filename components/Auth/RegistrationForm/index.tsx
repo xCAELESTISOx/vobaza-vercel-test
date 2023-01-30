@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useFormik } from 'formik';
+import { FormikErrors, useFormik } from 'formik';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 import * as yup from 'yup';
@@ -68,7 +68,7 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
       setIsLoading(false);
     } catch (error: any) {
       const errs = error.response.data.errors;
-      const backErrors = {} as any;
+      const backErrors = {} as FormikErrors<Auth>;
 
       errs.forEach((err: IError) => {
         if (err.source && err.source !== '') {
@@ -99,7 +99,7 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
       onSuccess();
     } catch (error: any) {
       const errs = error.response.data.errors;
-      const backErrors = {} as any;
+      const backErrors = {} as FormikErrors<Auth>;
 
       errs.forEach((err: IError) => {
         backErrors.code = err.title ? err.title : 'Непредвиденная ошибка, попробуйте ещё раз';
@@ -143,7 +143,7 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
 
     validateField(fieldName);
   };
-  
+
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
 

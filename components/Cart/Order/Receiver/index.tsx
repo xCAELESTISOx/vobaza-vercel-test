@@ -1,6 +1,6 @@
 import { FC, forwardRef, SyntheticEvent, useEffect, useImperativeHandle, useState } from 'react';
 import * as yup from 'yup';
-import { useFormik } from 'formik';
+import { FormikErrors, useFormik } from 'formik';
 import Cookies from 'js-cookie';
 
 import type { IProfile } from '../../../Profile/Data';
@@ -82,7 +82,7 @@ const OrderReceiver: FC<Props> = forwardRef(({ initialUser, createOrder }, ref) 
       setIsLoading(true);
       await createOrder(values);
     } catch (error) {
-      const newErrors = {} as any;
+      const newErrors = {} as FormikErrors<IReceiver>;
       error.response.data.errors.forEach((err) => {
         if (err.source) {
           const errSourse = err.source.split('.');

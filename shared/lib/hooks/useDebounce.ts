@@ -1,9 +1,9 @@
 import { useRef } from 'react';
 
-export default function useDebounce(func: (...args: any[]) => any, delay: number) {
+export default function useDebounce(func: (...args: unknown[]) => any, delay: number) {
   const ref = useRef<NodeJS.Timer | null>(null);
 
-  return (...args: any) => {
+  return (...args) => {
     clearTimeout(ref.current!);
     ref.current = setTimeout(() => func(...args), delay);
   };

@@ -61,9 +61,7 @@ export default function Checkout({ price, weight, user, addresses, goods }: Prop
     validateOnBlur: false,
     onSubmit: () => {},
   });
-  const submitHandler = () => {
-    formRef.current.submitForm();
-  };
+  const submitHandler = () => formRef.current.submitForm();
 
   const ecommerceGoods = goods.map((item) => {
     const category = item.product.parent_categories

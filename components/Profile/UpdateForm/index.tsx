@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import * as yup from 'yup';
-import { useFormik } from 'formik';
+import { FormikErrors, useFormik } from 'formik';
 
 import { IProfile } from '../Data';
 import styles from './styles.module.scss';
@@ -40,7 +40,7 @@ const ProfileUpdateForm: FC<Props> = ({ initialUser }) => {
       setIsLoading(false);
     } catch (error) {
       const errs = error.response.data.errors;
-      const backErrors = {} as any;
+      const backErrors = {} as FormikErrors<IProfile>;
 
       errs.forEach((err: IError) => {
         err.source && err.source !== ''
