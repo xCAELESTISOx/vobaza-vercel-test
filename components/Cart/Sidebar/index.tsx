@@ -28,7 +28,7 @@ const CartSidebar: FC<Props> = ({
   onButtonClick,
   goods,
 }) => {
-  const hasNullPriceProduct = goods?.some((item) => !item.price);
+  const goodsWithoutNullPrice = goods?.filter((item) => !!item.price);
 
   return (
     <div className={styles.cartSidebar}>
@@ -72,11 +72,11 @@ const CartSidebar: FC<Props> = ({
             text="Оформить заказ"
             size="big"
             isFullScreen
-            disabled={hasNullPriceProduct}
+            disabled={!goodsWithoutNullPrice.length}
           />
         </div>
       )}
-      {!isOrder && !hasNullPriceProduct && Boolean(price) && (
+      {!isOrder && (
         <Link href="/checkout">
           <a className={styles.cartSidebarButton}>
             <Button text="Перейти к оформлению" size="big" isFullScreen />
