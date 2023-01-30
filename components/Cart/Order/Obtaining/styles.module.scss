@@ -1,5 +1,5 @@
-@import "~app/styles/variables.global.scss";
-@import "./../../styles.module.scss";
+@import '~app/styles/variables.global.scss';
+@import './../../styles.module.scss';
 
 .orderDeliveryText {
   align-items: center;
@@ -240,4 +240,11 @@
 
   font-weight: 400;
   font-size: 15px;
+}
+
+.deliveryTimeNotion {
+  font-size: 13px;
+  margin-top: 5px;
+  color: #333;
+  padding-left: 6px;
 }

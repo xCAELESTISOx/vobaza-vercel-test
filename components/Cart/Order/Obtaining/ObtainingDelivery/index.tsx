@@ -4,10 +4,10 @@ import type { ILocalOrder } from 'src/models/IOrder';
 import type { IAssemblyPrice } from 'src/models/IDelivery';
 import type { ICartGood } from 'components/Cart/ListItem';
 import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
-import { normalizeTimeSlots } from 'shared/lib/normalizers/normalizeTimeSlots';
+// import { normalizeTimeSlots } from 'shared/lib/normalizers/normalizeTimeSlots';
 
 import { InputCalendar } from 'shared/ui/InputCalendar';
-import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select';
+// import { InputSelect } from '@nebo-team/vobaza.ui.inputs.input-select';
 import { Button } from '@nebo-team/vobaza.ui.button';
 import DeliveryAssembly from '../ObtainingDeliveryParts/DeliveryAssembly';
 import DeliveryItems from '../ObtainingDeliveryParts/DeliveryItems';
@@ -31,7 +31,7 @@ interface IProps {
 
 export const ObtainingDelivery = ({
   minDate,
-  timeSlots,
+  // timeSlots,
   order,
   assemblyPrice,
   liftPrice,
@@ -39,14 +39,14 @@ export const ObtainingDelivery = ({
   setAssemblyPrice,
   onDateSelect,
   setFieldValue,
-  setTime,
+  // setTime,
   onClickChange,
 }: IProps) => {
   const { delivery, lift, address } = order;
 
   const deliveryDate = delivery?.date ? new Date(delivery.date) : undefined;
 
-  const newTimeSlots = normalizeTimeSlots(timeSlots, deliveryDate);
+  // const newTimeSlots = normalizeTimeSlots(timeSlots, deliveryDate);
 
   return (
     <>
@@ -63,16 +63,18 @@ export const ObtainingDelivery = ({
                 }}
                 onChange={onDateSelect}
               />
+              <p className={styles.deliveryTimeNotion}>Доставка осуществляется с 09:00 до 20:00</p>
             </div>
+
             <div className={styles.orderDeliveryInput}>
-              <InputSelect
+              {/* <InputSelect
                 name="time"
                 label="Время доставки"
                 currentValue={delivery.time}
                 variants={newTimeSlots}
                 onChange={setTime}
                 keyField="value"
-              />
+              /> */}
             </div>
           </div>
 

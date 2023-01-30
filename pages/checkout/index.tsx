@@ -139,6 +139,13 @@ export default function Checkout({ price, weight, user, addresses, goods }: Prop
     setValues(initialValues);
   }, [addresses]);
 
+  useEffect(() => {
+    const defaultTime = { code: '09:00-20:00', value: '09:00-20:00' };
+    if (values.delivery && !values.delivery.time) {
+      setFieldValue('delivery.time', defaultTime);
+    }
+  }, [values.delivery]);
+
   return (
     <div>
       <div className="container">
