@@ -94,7 +94,17 @@ export default function Catalog({
   const breadcrumbs = getCategoryBreadcrumps([...category.ancestors, category], currentTags, isExpress);
   const currentTag = currentTags[currentTags?.length - 1] || null;
 
-  const currentTagRobots = currentTag?.robots?.join(', ') || 'index, follow';
+  const index =
+    currentTag?.robots
+      ?.find((item) => item.toLocaleLowerCase() === 'index' || item.toLocaleLowerCase() === 'noindex')
+      ?.toLocaleLowerCase() || 'index';
+
+  const follow =
+    currentTag?.robots
+      ?.find((item) => item.toLocaleLowerCase() === 'follow' || item.toLocaleLowerCase() === 'nofollow')
+      ?.toLocaleLowerCase() || 'follow';
+
+  const currentTagRobots = `${index}, ${follow}`;
 
   const currentTagCanonical = currentTag?.canonical;
 
@@ -180,7 +190,7 @@ export default function Catalog({
           />
         )}
 
-        {!!currentTagRobots && <meta name="robots" content={currentTagRobots} />}
+        <meta name="robots" content={currentTagRobots} />
 
         {!!currentTagCanonical && <link rel="canonical" href={currentTagCanonicalLink} />}
       </Head>
