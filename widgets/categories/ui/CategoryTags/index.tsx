@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useLayoutEffect, useState } from 'react';
 
 import type { ITag } from 'entities/tags';
 import type { DeviceType } from 'entities/tags/model/ITag';
@@ -66,6 +66,15 @@ export const CategoryTags: FC<Props> = ({ categorySlug, tags, setIsLoading }) =>
       return { ...prev, [currentDevice]: !prev[currentDevice] };
     });
   };
+
+  useLayoutEffect(() => {
+    setShowMore((prev) => {
+      return {
+        ...prev,
+        [currentDevice]: false,
+      };
+    });
+  }, [router.query.id]);
 
   return (
     <>
