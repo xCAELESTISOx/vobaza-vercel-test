@@ -1,47 +1,18 @@
-import React, { FC } from 'react';
+import { useRouter } from 'next/router';
+import React, { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 
-import styles from './styles.module.scss';
+import { useSelector } from 'shared/lib/hooks/useSelector';
+import { getLinkFromMenuItem } from 'shared/lib/getLinkFromMenuItem';
 
 import Accordeon from 'shared/ui/Accordeon';
+
+import styles from './styles.module.scss';
 
 const footerLinks = [
   {
     title: 'Каталог',
-    links: [
-      {
-        title: 'Диваны',
-        href: '/katalog/divany',
-      },
-      {
-        title: 'Кресла',
-        href: '/katalog/kresla',
-      },
-      {
-        title: 'Кровати',
-        href: '/katalog/krovati',
-      },
-      {
-        title: 'Матрасы',
-        href: '/katalog/matrasy',
-      },
-      {
-        title: 'Шкафы',
-        href: '/katalog/shkafy',
-      },
-      {
-        title: 'Тумбы',
-        href: '/katalog/tumby',
-      },
-      {
-        title: 'Столы',
-        href: '/katalog/stoly',
-      },
-      {
-        title: 'Все товары',
-        href: '/katalog',
-      },
-    ],
+    links: [],
   },
   {
     title: 'Покупателям',
@@ -113,6 +84,40 @@ const footerLinks = [
 ];
 
 const MainFooter: FC = () => {
+  const [menuLinks, setMenuLinks] = useState(footerLinks);
+  const sideMenuLinks = useSelector((state) => state.menus.sideMenu);
+  const router = useRouter();
+  const isExpress = router.asPath.includes('/ekspress-dostavka');
+
+  useEffect(() => {
+    if (sideMenuLinks.length) {
+      const catalogueLinks = [];
+
+      sideMenuLinks.forEach((item) => {
+        if (item.children?.length) {
+          item.children.forEach((catalogueItem) => {
+            if (getLinkFromMenuItem(catalogueItem, isExpress)) {
+              catalogueLinks.push({
+                title: catalogueItem.name || catalogueItem.category.name,
+                href: getLinkFromMenuItem(catalogueItem, isExpress),
+              });
+            }
+          });
+        }
+      });
+
+      setMenuLinks((prev) => {
+        const newLinks = prev.slice(1);
+        newLinks.unshift({
+          title: 'Каталог',
+          links: [...catalogueLinks],
+        });
+
+        return newLinks;
+      });
+    }
+  }, [sideMenuLinks]);
+
   return (
     <>
       <div className={styles.mainFooter}>
@@ -139,7 +144,7 @@ const MainFooter: FC = () => {
                 </a>
               </div>
             </div>
-            {footerLinks.map((item) => (
+            {menuLinks.map((item) => (
               <div className={styles.mainFooterColumn} key={item.title}>
                 <div className={styles.mainFooterColumnTitle}>{item.title}</div>
                 {item.links.map((link) => (
@@ -154,7 +159,7 @@ const MainFooter: FC = () => {
           </div>
         </div>
         <div className={styles.mainFooterContentPhone}>
-          {footerLinks.map((item) => (
+          {menuLinks.map((item) => (
             <Accordeon key={item.title} title={item.title}>
               {item.links.map((link) => (
                 <div className={styles.mainFooterColumnItem} key={link.title} style={{ lineHeight: 'initial' }}>

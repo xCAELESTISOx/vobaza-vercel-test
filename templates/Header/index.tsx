@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 
 import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { setCartSize, setCompare, setFavorites } from 'src/store/goods';
+import { setMenu } from 'src/store/menus';
 import { useSelector } from 'shared/lib/hooks/useSelector';
 import { getCartData } from './libs/getCartData';
 import type { IMenuItem } from 'src/models/IMenu';
@@ -47,6 +48,7 @@ const Header: FC<Props> = ({ openPhoneCallModal }) => {
       setMenus((prev) => {
         return { ...prev, ...fetchedDesktopMenus };
       });
+      dispatch(setMenu(sideMenuRes.data.data));
     } catch (error) {
       console.error(error);
     }
@@ -84,7 +86,7 @@ const Header: FC<Props> = ({ openPhoneCallModal }) => {
 
   useEffect(() => {
     getGlobalInfo();
-  }, [isLoggedIn]);
+  }, [isLoggedIn, router.asPath]);
 
   useEffect(() => {
     fetchMobileMenu();

@@ -4,6 +4,7 @@ import filtersReducer from './filters';
 import tagsReducer from './tags';
 import goodsReducer from './goods';
 import authReducer from './auth';
+import menusReducer from './menus';
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     tags: tagsReducer,
     filters: filtersReducer,
     goods: goodsReducer,
+    menus: menusReducer,
   },
 });
 
