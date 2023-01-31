@@ -9,6 +9,7 @@ import type { IError } from 'src/models/IError';
 import { getImageVariantProps } from 'shared/lib/images';
 import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { useSelector } from 'shared/lib/hooks/useSelector';
+import { metric } from 'features/metric';
 
 import { Title } from '@nebo-team/vobaza.ui.title/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
@@ -46,8 +47,6 @@ const OneClickModal: FC = () => {
   const dispatch = useDispatch();
 
   const createOrder = async () => {
-    // По API приходится НЕ добавлять email в запрос, если соответствующее поле пустое,
-    // иначе выдает ошибку
     const data = {
       name: values.name,
       phone: values.phone,
@@ -57,18 +56,7 @@ const OneClickModal: FC = () => {
     try {
       const res = await api.createOneClickOrder(product.id, data);
 
-      if (!res.data.data.id) {
-        (window as any).dataLayer = [...((window as any).dataLayer || [])];
-        (window as any)?.dataLayer?.push({
-          ecommerce: {
-            currencyCode: 'RUB',
-            purchase: {
-              actionField: { id: res.data.data.id },
-              products: [product.id],
-            },
-          },
-        });
-      }
+      if (res.data.data.id) metric.purchase([product], res.data.data.id);
 
       dispatch(closeOneClickModal());
     } catch (e) {

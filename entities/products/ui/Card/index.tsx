@@ -7,6 +7,7 @@ import type { IGoodCard } from '../../model/IGood';
 import { useFavorite } from '../../../../shared/lib/hooks/useFavorite';
 import { toNumberWithSpaces } from 'shared/lib/formatters';
 import { getImageVariantProps } from 'shared/lib/images';
+import { metric } from 'features/metric';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
 import { Button } from '@nebo-team/vobaza.ui.button/dist';
@@ -36,24 +37,7 @@ const GoodsCard: FC<Props> = React.memo(({ good, isFixedHeight = true }) => {
 
   const addToCartHandler = () => {
     const categories = good.parent_categories.map(({ name }) => name);
-    (window as any).dataLayer = (window as any)?.dataLayer || [];
-    (window as any)?.dataLayer?.push({
-      ecommerce: {
-        currencyCode: 'RUB',
-        add: {
-          products: [
-            {
-              id: good.id,
-              name: good.name,
-              price: good.list_price || good.price,
-              brand: good.brand,
-              category: categories.join('/'),
-              quantity: 1,
-            },
-          ],
-        },
-      },
-    });
+    metric.addProduct(good, categories.join('/'));
 
     addToCart();
   };

@@ -28,7 +28,7 @@ const SelectTabs: FC<SelectTabs> = ({ label = '', value = null, variants = [], k
 
           return (
             <div key={tab[keyField] || tab.value} className={styles.item}>
-              <Tab active={isActive} text={tab.value} onClick={() => handleClickTab(tab)} />
+              <Tab active={isActive} text={tab.value} onClick={!isActive ? () => handleClickTab(tab) : () => {}} />
             </div>
           );
         })}

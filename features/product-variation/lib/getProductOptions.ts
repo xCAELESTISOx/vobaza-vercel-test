@@ -26,7 +26,7 @@ export const getProductOptions: GetProductOptions = (productId, variants, select
       //     return [...acc, element];
       //   }, []);
 
-      // // Опции для селектов
+      // Опции для селектов
       const values = sortedValues
         .map((val) => {
           // Поиск товара, все аттрибуты которого сходятся с аттрибутами текущего товара,

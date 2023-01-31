@@ -2,6 +2,8 @@ import { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+import { metric } from 'features/metric';
+
 import { toNumberWithSpaces } from 'shared/lib/formatters';
 import { Image as IImage } from '../../../src/models/IImage';
 import { getImageVariantProps } from 'shared/lib/images';
@@ -52,23 +54,7 @@ const CartListItem: FC<Props> = ({ good, deleteItem, changeItem }) => {
   const deleteItemHandler = () => {
     const category = good.product.parent_categories.map(({ name }) => name).join('/');
 
-    (window as any).dataLayer = (window as any)?.dataLayer || [];
-    (window as any)?.dataLayer?.push({
-      ecommerce: {
-        currencyCode: 'RUB',
-        remove: {
-          products: [
-            {
-              id: good.product.id,
-              name: good.product.name,
-              brand: good.product.brand || '',
-              category,
-              quantity: good.quantity,
-            },
-          ],
-        },
-      },
-    });
+    metric.removeProduct(good.product, category, good.quantity);
     deleteItem(good.product.id, good.quantity);
   };
 

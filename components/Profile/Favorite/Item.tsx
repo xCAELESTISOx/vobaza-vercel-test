@@ -16,6 +16,7 @@ import PlaceholderImage from 'assets/images/placeholder_small.png';
 
 import { api } from '../../../app/api';
 import styles from './styles.module.scss';
+import { metric } from 'features/metric';
 
 export type FavoriteGood = {
   id: number;
@@ -57,25 +58,9 @@ const ProfileFavoriteItem: FC<Props> = ({ good, onDelete }) => {
 
   const addToCartHandler = () => {
     addToCart();
+
     const categories = good.parent_categories.map(({ name }) => name);
-    (window as any).dataLayer = (window as any)?.dataLayer || [];
-    (window as any)?.dataLayer?.push({
-      ecommerce: {
-        currencyCode: 'RUB',
-        add: {
-          products: [
-            {
-              id: good.id,
-              name: good.name,
-              price: good.price,
-              brand: good.brand,
-              category: categories.join('/'),
-              quantity: 1,
-            },
-          ],
-        },
-      },
-    });
+    metric.addProduct(good, categories.join('/'));
   };
 
   return (

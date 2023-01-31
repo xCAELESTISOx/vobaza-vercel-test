@@ -2,17 +2,15 @@ import React, { FC, useEffect, useState } from 'react';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import axios from 'axios';
 
-import { normalizeProductAttributes, normalizeProductInfo } from 'shared/lib/normalizers/normalizeGoods';
-import { getProductBreadcrumbs } from 'shared/lib/categories/getCategoryBreadcrumps';
-import { mockProduct } from '../../../src/mock/detailProductPage';
-import { formatAxiosError } from 'shared/lib/formatAxiosError';
+import { getFullProductProps, getProductInitialOptions } from 'entities/products';
 import { useFavorite } from '../../../shared/lib/hooks/useFavorite';
+import { mockProduct } from '../../../src/mock/detailProductPage';
 import { useCart } from '../../../shared/lib/hooks/useCart';
 import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { setOneClickGood } from 'src/store/goods';
-import { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
+import { metric } from 'features/metric';
+import type { Variant } from '@nebo-team/vobaza.ui.inputs.input-select';
 import type { IGood, IProductVariant, IVariantProduct } from 'entities/products';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
@@ -33,31 +31,12 @@ import { ProductsList, CartModal, OneClickModal, ProductOptions } from 'widgets/
 import { SelectVariationOption } from 'features/product-variation';
 
 import styles from './styles.module.scss';
-import { api } from 'app/api';
-import { getProductOptions } from 'features/product-variation/lib/getProductOptions';
 
 interface DetailGoodPage {
   product: IGood;
   options: IProductVariant<{ product: IVariantProduct; param: Variant }>[];
   breadcrumbs: BreadcrumbType[];
 }
-
-const getProductInitialOptions = (
-  variation: IGood['variants'],
-  productId: number
-): Record<number, (string | number)[]> | null => {
-  if (!variation?.variants) return null;
-  const { products } = variation;
-
-  const currentProduct = products.find(({ id }) => id === productId);
-  const options = {};
-
-  currentProduct.attributes.forEach((attribute) => {
-    options[attribute.id] = attribute.value;
-  });
-
-  return options;
-};
 
 const DetailGoodPage: FC<DetailGoodPage> = ({ product, options, breadcrumbs }) => {
   const { currentFavorite, toggleFavorite } = useFavorite(product);
@@ -67,27 +46,9 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, options, breadcrumbs }) =
   const dispatch = useDispatch();
   const router = useRouter();
 
-  // const productVariants = normalizeProductVariation(product.variants);
-
   const addToCartHandler = () => {
     addToCart();
-    (window as any).dataLayer = (window as any)?.dataLayer || [];
-    (window as any)?.dataLayer?.push({
-      ecommerce: {
-        currencyCode: 'RUB',
-        add: {
-          products: [
-            {
-              id: product.id,
-              name: product.name,
-              price: product.price,
-              brand: product.brand,
-              category: product.main_category.slug,
-            },
-          ],
-        },
-      },
-    });
+    metric.addProduct(product, product.main_category.slug);
   };
 
   const handelSelectOption: SelectVariationOption = (id, variantProduct) => {
@@ -102,28 +63,10 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, options, breadcrumbs }) =
     setSelectedOptions(options);
   };
 
-  const openOneClickModal = () => {
-    dispatch(setOneClickGood(product));
-  };
+  const openOneClickModal = () => dispatch(setOneClickGood(product));
 
   useEffect(() => {
-    (window as any).dataLayer = (window as any)?.dataLayer || [];
-    (window as any)?.dataLayer?.push({
-      ecommerce: {
-        currencyCode: 'RUB',
-        detail: {
-          products: [
-            {
-              id: product.id,
-              name: product.name,
-              price: product.price,
-              brand: product.brand,
-              category: product?.main_category.slug,
-            },
-          ],
-        },
-      },
-    });
+    metric.detail(product);
   }, []);
 
   useEffect(() => {
@@ -182,14 +125,6 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, options, breadcrumbs }) =
 
               {selectedOptions && (
                 <div className={styles.productOptionList}>
-                  {/* <div className={styles.productOption}>
-                    <ProductVariants
-                      productId={product.id}
-                      selectedOptions={selectedOptions}
-                      productVariants={product.variants.products}
-                      attributesVariants={product.variants.variants}
-                    />
-                  </div> */}
                   <ProductOptions
                     currentProductId={product.id}
                     options={options}
@@ -280,55 +215,6 @@ const DetailGoodPage: FC<DetailGoodPage> = ({ product, options, breadcrumbs }) =
   );
 };
 
-const getProductSlug = (slug: string): string | null => {
-  const parseSlug = slug.replace('/ekspress-dostavka', '');
-
-  return parseSlug || null;
-};
-
-export const getServerSideProps: GetServerSideProps<DetailGoodPage> = async ({ res, query }) => {
-  const slug = getProductSlug(query.slug as string);
-  const encodedSlug = encodeURI(slug);
-
-  res.setHeader('Cache-Control', 'public, max-age=180, immutable');
-
-  try {
-    const productRes = await api.getGoodBySlug(encodedSlug);
-
-    let product = normalizeProductInfo(productRes.data.data);
-
-    const attributesRes = await api.getGoodAttributes(product.id);
-
-    const attributes = normalizeProductAttributes(attributesRes.data.data);
-
-    product = { ...product, attributes };
-
-    const category = await api.getCategoryBySlug(product.main_category.slug);
-    const { ancestors } = category.data.data;
-
-    const breadcrumbs = getProductBreadcrumbs(ancestors, product.main_category);
-
-    // Опции вариаций товаров
-    const selectedOptions = getProductInitialOptions(product.variants, product.id);
-    const options = getProductOptions(product.id, product.variants, selectedOptions);
-
-    return {
-      props: { product, options, breadcrumbs },
-    };
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      const text = formatAxiosError(err);
-      console.error(text);
-    } else {
-      console.error(err);
-    }
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
-};
+export const getServerSideProps: GetServerSideProps<DetailGoodPage> = getFullProductProps;
 
 export default DetailGoodPage;

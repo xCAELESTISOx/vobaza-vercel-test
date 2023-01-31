@@ -8,6 +8,7 @@ import { toNumberWithSpaces } from 'shared/lib/formatters';
 import { getImageVariantProps } from 'shared/lib/images';
 import { useDispatch } from 'shared/lib/hooks/useDispatch';
 import { setOneClickGood } from 'src/store/goods';
+import { metric } from 'features/metric';
 
 import { Icon } from '@nebo-team/vobaza.ui.icon';
 import { Button } from '@nebo-team/vobaza.ui.button';
@@ -35,24 +36,7 @@ const CompareListItem: FC<Props> = ({ good, deleteGood }) => {
 
   const addToCartHandler = () => {
     const categories = good.parent_categories.map(({ name }) => name);
-    (window as any).dataLayer = (window as any)?.dataLayer || [];
-    (window as any)?.dataLayer?.push({
-      ecommerce: {
-        currencyCode: 'RUB',
-        add: {
-          products: [
-            {
-              id: good.id,
-              name: good.name,
-              price: good.list_price || good.price,
-              brand: good.brand,
-              category: categories.join('/'),
-              quantity: 1,
-            },
-          ],
-        },
-      },
-    });
+    metric.addProduct(good, categories.join('/'));
     addToCart();
   };
 

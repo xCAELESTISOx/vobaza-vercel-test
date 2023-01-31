@@ -39,6 +39,16 @@ export const ProductOptions: FC<Props> = ({
         else if (display?.display_type === 'DROPDOWN' || display?.display_type === 'CHOICE' || !display?.display_type)
           items = getDropdownVariationItems(option, handelSelectOption);
 
+        const convertedValue: Variant =
+          attribute.data_type === 'BOOLEAN'
+            ? String(selectedOptions[attribute.id]) === 'true'
+              ? { code: 'true', value: 'Да' }
+              : { code: 'false', value: 'Нет' }
+            : {
+                code: String(selectedOptions[attribute.id]),
+                value: String(selectedOptions[attribute.id]),
+              };
+
         return (
           <div className={styles.productOption} key={attribute.id + attribute.name}>
             {{
@@ -59,53 +69,29 @@ export const ProductOptions: FC<Props> = ({
                 </>
               ),
               DROPDOWN: (() => {
-                const convertedValue =
-                  attribute.data_type === 'BOOLEAN'
-                    ? selectedOptions[attribute.id] === 'true'
-                      ? { code: 'true', value: 'Да' }
-                      : { code: 'false', value: 'Нет' }
-                    : {
-                        code: selectedOptions[attribute.id],
-                        value: selectedOptions[attribute.id],
-                      };
-
                 return (
                   <InputSelect
                     name={attribute.id.toString()}
                     label={attribute.name}
                     currentValue={convertedValue}
                     variants={items}
+                    style={{ marginTop: 8 }}
                   />
                 );
               })(),
-              CHOICE: (
-                <SelectTabs
-                  label={attribute.name}
-                  value={{
-                    code: String(selectedOptions[attribute.id]),
-                    value: String(selectedOptions[attribute.id]),
-                  }}
-                  variants={items}
-                />
-              ),
+              CHOICE: <SelectTabs label={attribute.name} value={convertedValue} variants={items} />,
             }[display?.display_type] ?? (
               <>
                 {values.length > 3 ? (
                   <InputSelect
                     name={attribute.id.toString()}
                     label={attribute.name}
-                    currentValue={selectedOptions[attribute.id]}
+                    currentValue={convertedValue}
                     variants={items}
+                    style={{ marginTop: 8 }}
                   />
                 ) : (
-                  <SelectTabs
-                    value={{
-                      code: String(selectedOptions[attribute.id]),
-                      value: String(selectedOptions[attribute.id]),
-                    }}
-                    label={attribute.name}
-                    variants={items}
-                  />
+                  <SelectTabs value={convertedValue} label={attribute.name} variants={items} />
                 )}
               </>
             )}

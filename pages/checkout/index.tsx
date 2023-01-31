@@ -24,6 +24,7 @@ import CartItemChangeModal from 'components/Cart/Modal/CartItemChangeModal';
 
 import { api } from '../../app/api';
 import styles from 'app/styles/Cart.module.scss';
+import { metric } from 'features/metric';
 
 type Props = {
   price: number;
@@ -83,17 +84,8 @@ export default function Checkout({ price, weight, user, addresses, goods }: Prop
 
   const ecommerceAfterPurchase = (purchaseId?: string | number) => {
     if (!purchaseId) return;
-    (window as any).dataLayer = (window as any)?.dataLayer || [];
 
-    (window as any)?.dataLayer?.push({
-      ecommerce: {
-        currencyCode: 'RUB',
-        purchase: {
-          actionField: { id: purchaseId.toString() },
-          products: ecommerceGoods,
-        },
-      },
-    });
+    metric.purchase(ecommerceGoods, purchaseId);
   };
 
   const createOrder = async (customer: IReceiver) => {
