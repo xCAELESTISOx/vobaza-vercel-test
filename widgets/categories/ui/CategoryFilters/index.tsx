@@ -100,13 +100,16 @@ const CategoryFilters: FC<Props> = ({ isLoading, setIsLoading }) => {
   };
 
   // Удаляет фильтр целиком, либо одно из значений фильтра
-  const removeFilter = ({ id, tag_slug }: IFilterFront) => {
+  const removeFilter = (filter: IFilterFront, val: string) => {
+    const { id, tag_slug, display_type } = filter;
+
     const queryWithoutUtm = Object.fromEntries(
       Object.entries(query).filter(
         (item) => item[0] === 'sort' || item[0] === 'city' || item[0] === 'page' || !isNaN(+item[0])
       )
     );
     let href = router.asPath.split('?')[0];
+
     if (tag_slug) {
       currentTags.forEach((tag, index) => {
         if (tag.slug === tag_slug) {
@@ -123,7 +126,9 @@ const CategoryFilters: FC<Props> = ({ isLoading, setIsLoading }) => {
 
       const newQuery = { ...(!hasInvalidFilters && queryWithoutUtm) };
 
-      delete newQuery[id];
+      display_type === 'MANY_FROM_MANY' && typeof newQuery[id] !== 'string' && !!newQuery[id].length
+        ? (newQuery[id] = (newQuery[id] as string[])?.filter((el) => el !== val))
+        : delete newQuery[id];
 
       router.push({ pathname: href, query: { ...newQuery } }, undefined, {
         scroll: false,
