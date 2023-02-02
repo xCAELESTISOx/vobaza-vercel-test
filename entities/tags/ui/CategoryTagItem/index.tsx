@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import Link from 'next/link';
 
 import type { ITag } from 'entities/tags';
+import { parseTagTitle } from 'widgets/categories';
 
 import styles from './styles.module.scss';
 
@@ -25,9 +26,11 @@ export const CategoryTagItem: FC<Props> = ({ isActive, tag, getTagUrl, getTagQue
 
   return (
     <Link href={{ pathname: href, query: queryWithoutUtm }}>
-      <a className={`${styles.tag} ${isActive ? styles.active : ''}`} onClick={onClick}>
-        {tag.name}
-      </a>
+      <a
+        className={`${styles.tag} ${isActive ? styles.active : ''}`}
+        onClick={onClick}
+        dangerouslySetInnerHTML={{ __html: parseTagTitle(tag.name) }}
+      />
     </Link>
   );
 };
