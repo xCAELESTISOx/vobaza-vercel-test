@@ -62,7 +62,7 @@ export const HeaderMenu: FC<Props> = ({ mainMenu, sideMenu }) => {
   return (
     <div className={`${styles.menuContainer}`} onMouseLeave={closeMenu}>
       {(isSideMenu || (!isSideMenu && currentMenu?.children)) && (
-        <CollapsingMenu menu={currentMenu} withRoot={isSideMenu} closeMenu={closeMenu} isSideMenu={isSideMenu} />
+        <CollapsingMenu menu={currentMenu} withRoot={isSideMenu} closeMenu={closeMenu} />
       )}
       <nav className={styles.menu}>
         <Link href={katalogLink}>

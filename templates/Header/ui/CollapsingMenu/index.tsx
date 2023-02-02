@@ -14,7 +14,6 @@ type Props = {
   withRoot?: boolean;
   menu: IMenuItem | IMenuItem[];
   closeMenu?: () => void;
-  isSideMenu: boolean;
 };
 
 // Разделяет категории по полю is_sticky для переноса
@@ -32,7 +31,7 @@ const getGroupedCategories = (list: IMenuItem[] = []) => {
   return res;
 };
 
-export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu, isSideMenu }) => {
+export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu }) => {
   const [currentMenuItem, setCurrentMenuItem] = useState<IMenuItem>(withRoot ? menu[0] : menu);
   const [groupedCategories, setGroupedCategories] = useState<IMenuItem[][]>([]);
 
@@ -41,18 +40,14 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu, isSideMen
   const router = useRouter();
   const isExpress = router.asPath.includes('/ekspress-dostavka');
 
-  const menuTabHover = (e, parentId: number) => {
+  const menuTabHover = (e, id: number, parentId: number) => {
     e.preventDefault();
     e.stopPropagation();
     setAllProducts(false);
-    if (e.target.dataset.id) {
-      const currentGroup = (menu as IMenuItem[]).find(({ id }) => id === parentId);
-      const newCurrentItem = currentGroup.children.find((item) => item.id === +e.target.dataset.id);
+    const currentGroup = (menu as IMenuItem[]).find(({ id }) => id === parentId);
+    const newCurrentItem = currentGroup.children.find((item) => item.id === +id);
 
-      setCurrentMenuItem(newCurrentItem || menu[0]);
-    } else {
-      setCurrentMenuItem(menu[0]);
-    }
+    setCurrentMenuItem(newCurrentItem || menu[0]);
   };
 
   useEffect(() => {
@@ -79,7 +74,7 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu, isSideMen
                       <Link href={getLinkFromMenuItem(item, isExpress)}>
                         <a
                           data-id={item.id}
-                          onMouseEnter={(e) => menuTabHover(e, group.id)}
+                          onMouseEnter={(e) => menuTabHover(e, item.id, group.id)}
                           onClick={closeMenu}
                           className={`${styles.rootMenuLink}
                       ${!allProducts && currentMenuItem.id === item.id ? styles.active : ''}`}
@@ -93,7 +88,7 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu, isSideMen
                     ) : (
                       <div
                         data-id={item.id}
-                        onMouseEnter={(e) => menuTabHover(e, group.id)}
+                        onMouseEnter={(e) => menuTabHover(e, item.id, group.id)}
                         onClick={closeMenu}
                         className={`${styles.rootMenuLink}
                      ${!allProducts && currentMenuItem.id === item.id ? styles.active : ''}`}
@@ -112,9 +107,7 @@ export const CollapsingMenu: FC<Props> = ({ menu, withRoot, closeMenu, isSideMen
         )}
         {Boolean(currentMenuItem.children?.length) && (
           <div
-            className={`${styles.collapsingMenuBody} ${withRoot ? styles.big : ''} ${
-              isSideMenu ? styles.sideMenu : ''
-            }`}
+            className={`${styles.collapsingMenuBody} ${withRoot ? styles.big : ''} ${withRoot ? styles.sideMenu : ''}`}
           >
             <>
               {groupedCategories.map((block, index) => {
