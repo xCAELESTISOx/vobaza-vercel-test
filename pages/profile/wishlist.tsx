@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 
 import styles from 'app/styles/Profile.module.scss';
 import { api } from '../../app/api';
 import checkAuth from '../../app/api/auth';
 import normalizeGoods from '../../shared/lib/normalizers/normalizeGoods';
+import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 import ProfileSidebar from '../../components/Profile/Sidebar';
 import ProfileEmptyField from '../../components/Profile/EmptyField';
@@ -22,6 +24,11 @@ export default function Home({ initialGoods }: Props) {
   const [goods, setGoods] = useState(initialGoods);
 
   const dispatch = useDispatch();
+  const router = useRouter();
+
+  const goBack = () => {
+    router.back();
+  };
 
   const onDelete = (id: number) => {
     setGoods((prevArray) => prevArray.filter((item) => item.id !== id));
@@ -44,6 +51,11 @@ export default function Home({ initialGoods }: Props) {
               <ProfileSidebar />
             </div>
             <div className={styles.profileContentBlock}>
+              <div className={styles.profileTop}>
+                <div className={styles.profileBack} onClick={goBack}>
+                  <Icon name="ArrowLeft" /> Назад
+                </div>
+              </div>
               <h2 className={styles.profileSubtitle}>Избранное</h2>
               <Warning>
                 <p>Вы находитесь на новой версии сайта.</p>

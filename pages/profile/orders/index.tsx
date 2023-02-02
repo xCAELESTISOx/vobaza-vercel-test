@@ -1,6 +1,8 @@
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 
 import type { IOrder } from '../../../src/models/IOrder';
+import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 import ProfileSidebar from '../../../components/Profile/Sidebar';
 import ProfileEmptyField from '../../../components/Profile/EmptyField';
@@ -16,6 +18,12 @@ type IProps = {
 };
 
 export default function ProfileOrders({ orders }: IProps) {
+  const router = useRouter();
+
+  const goBack = () => {
+    router.back();
+  };
+
   return (
     <div>
       <div className="container">
@@ -26,6 +34,11 @@ export default function ProfileOrders({ orders }: IProps) {
               <ProfileSidebar />
             </div>
             <div className={styles.profileContentBlock}>
+              <div className={styles.profileTop}>
+                <div className={styles.profileBack} onClick={goBack}>
+                  <Icon name="ArrowLeft" /> Назад
+                </div>
+              </div>
               <h2 className={styles.profileSubtitle}>Мои заказы</h2>
               <Warning>
                 <p>Вы находитесь на новой версии сайта.</p>

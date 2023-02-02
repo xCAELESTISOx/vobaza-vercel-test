@@ -1,5 +1,5 @@
 import { GetServerSideProps } from 'next';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import checkAuth from '../../app/api/auth';
 import { api } from '../../app/api';
@@ -16,6 +16,12 @@ interface Props {
 }
 
 export default function ProfileWishlist({ user }) {
+  const router = useRouter();
+
+  const goBack = () => {
+    router.back();
+  };
+
   return (
     <div>
       <div className="container">
@@ -27,13 +33,11 @@ export default function ProfileWishlist({ user }) {
             </div>
             <div className={styles.profileContentBlock}>
               <div className={styles.profileTop}>
-                <Link href="/profile">
-                  <a className={styles.profileBack}>
-                    <Icon name="ArrowLeft" /> Назад
-                  </a>
-                </Link>
+                <div className={styles.profileBack} onClick={goBack}>
+                  <Icon name="ArrowLeft" /> Назад
+                </div>
               </div>
-              <h2 className={styles.profileSubtitle}>Личные данные </h2>
+              <h2 className={styles.profileSubtitle}>Личные данные</h2>
               <Warning>
                 <p>Вы находитесь на новой версии сайта.</p>
                 <br />

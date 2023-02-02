@@ -1,8 +1,10 @@
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 
 import { api } from 'app/api';
 import checkAuth from 'app/api/auth';
 import { IAddress } from 'src/models/IAddress';
+import { Icon } from '@nebo-team/vobaza.ui.icon';
 
 import styles from 'app/styles/Profile.module.scss';
 
@@ -15,6 +17,11 @@ type Props = {
 };
 
 export default function ProfileAddress({ addreses }: Props) {
+  const router = useRouter();
+  const goBack = () => {
+    router.back();
+  };
+
   return (
     <div>
       <div className="container">
@@ -25,6 +32,11 @@ export default function ProfileAddress({ addreses }: Props) {
               <ProfileSidebar />
             </div>
             <div className={styles.profileContentBlock}>
+              <div className={styles.profileTop}>
+                <div className={styles.profileBack} onClick={goBack}>
+                  <Icon name="ArrowLeft" /> Назад
+                </div>
+              </div>
               <h2 className={styles.profileSubtitle}>Мои адреса</h2>
               <Warning>
                 <p>Вы находитесь на новой версии сайта.</p>
