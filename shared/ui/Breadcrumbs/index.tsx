@@ -1,8 +1,10 @@
 import { FC, Fragment } from 'react';
 import Link from 'next/link';
 
-import styles from './styles.module.scss';
 import { Icon } from '@nebo-team/vobaza.ui.icon/dist';
+import { parseTagTitle } from 'features/categories';
+
+import styles from './styles.module.scss';
 
 export type BreadcrumbType = {
   title: string;
@@ -27,9 +29,10 @@ const Breadcrumbs: FC<Props> = ({ breadcrumbs }) => {
               <Icon name="SmallArrowRight" />
             </div>
             <Link key={'title' + breadcrumb.title} href={breadcrumb.href}>
-              <a className={`${styles.breadcrumb} ${breadcrumb.clickableLast ? styles.clickable : ''}`}>
-                {breadcrumb.title}
-              </a>
+              <a
+                className={`${styles.breadcrumb} ${breadcrumb.clickableLast ? styles.clickable : ''}`}
+                dangerouslySetInnerHTML={{ __html: parseTagTitle(breadcrumb.title) }}
+              />
             </Link>
           </Fragment>
         ))}
