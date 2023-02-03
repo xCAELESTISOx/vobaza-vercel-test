@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 
 import type { ICategory } from 'entities/categories/model/ICategory';
 import type { ITag } from 'entities/tags';
+import { parseTagTitle } from 'features/categories';
 
 import tmpBannerImg1 from 'src/tmp/bannerFilter.jpg';
 import tmpBannerImg2 from 'src/tmp/bannerFilterMob.jpg';
@@ -38,9 +39,18 @@ const CategoryHeader: FC<Props> = ({ isExpress, currentTag, category, filtersTit
           </a>
         </Link>
       </div>
-      <h1 className={styles.sectionTitle}>
-        {currentTag?.page_title || filtersTitle || category.name} {page && page !== '1' && ` – страница ${page}`}  
-      </h1>
+
+      {currentTag?.page_title ? (
+        <h1
+          className={styles.sectionTitle}
+          dangerouslySetInnerHTML={{ __html: parseTagTitle(currentTag?.page_title) }}
+        />
+      ) : (
+        <h1 className={styles.sectionTitle}>
+          {filtersTitle || category.name} {page && page !== '1' && ` – страница ${page}`}
+        </h1>
+      )}
+
       {category.children?.length > 0 && <CatalogList list={category.children} />}
       <div className={styles.bannerBlock}>
         <div className={!isExpress ? styles.displayNone : ''}>
