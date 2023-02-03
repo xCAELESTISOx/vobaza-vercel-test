@@ -1,0 +1,1 @@
+export { parseTagTitle } from './lib/parseTagTitle';

@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import Link from 'next/link';
 
 import type { ITag } from 'entities/tags';
-import { parseTagTitle } from 'widgets/categories';
+import { parseTagTitle } from 'features/categories';
 
 import styles from './styles.module.scss';
 

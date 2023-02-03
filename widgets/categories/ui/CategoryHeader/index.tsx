@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 
 import type { ICategory } from 'entities/categories/model/ICategory';
 import type { ITag } from 'entities/tags';
-import { parseTagTitle } from 'widgets/categories/lib/parseTagTitle';
+import { parseTagTitle } from 'features/categories';
 
 import tmpBannerImg1 from 'src/tmp/bannerFilter.jpg';
 import tmpBannerImg2 from 'src/tmp/bannerFilterMob.jpg';
