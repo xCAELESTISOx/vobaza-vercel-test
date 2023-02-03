@@ -29,7 +29,7 @@ export default function Contacts() {
             <h1 className={styles.staticPageTitle}>Контакты</h1>
             <div className={styles.staticPageInfo}>
               <a href="tel:+74951725818" className={styles.staticPageSubTitle}>
-                +7(495) 172-58-18
+                +7 (495) 172-58-18
               </a>
               <div className={`${styles.staticPageText} ${styles.gray}`}>Звонок бесплатный</div>
               <div className={styles.staticPageText}>

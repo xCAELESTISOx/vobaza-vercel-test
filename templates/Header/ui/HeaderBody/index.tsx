@@ -82,7 +82,7 @@ export const HeaderBody: FC<Props> = ({ mobileMenu, openPhoneCallModal }) => {
           <Search />
         </div>
         <div className={styles.phoneWraper}>
-          <div className={styles.phone}>+7(495) 172-57-64</div>
+          <div className={styles.phone}>+7 (495) 172-57-64</div>
           <div className={styles.phoneLink} onClick={openPhoneCallModal}>
             Заказать звонок
           </div>

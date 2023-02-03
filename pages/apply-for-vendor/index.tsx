@@ -149,8 +149,10 @@ export default function Partnership({ user }: IProps) {
             />
             <div className={styles.staticPageText}>
               Нажимая &laquo;Отправить&raquo; вы&nbsp;соглашаетесь с&nbsp;
-              <Link href="/">
-                <a className={`${styles.staticPageText} ${styles.link}`}>договором оферты </a>
+              <Link href="/politika-obrabotki-dannyh">
+                <a className={`${styles.staticPageText} ${styles.link}`} target="_blank">
+                  договором оферты{' '}
+                </a>
               </Link>
               и&nbsp;подтверждаете своё согласие на&nbsp;обработку персональных данных
             </div>

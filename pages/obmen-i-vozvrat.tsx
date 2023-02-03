@@ -91,7 +91,7 @@ export default function ExchangeAndReturn() {
               </a>{' '}
               или по&nbsp;телефону{' '}
               <a href="tel:+74951545483" className={`${styles.staticPageText} ${styles.link}`}>
-                8(495) 154-54-83
+                +7 (495) 154-54-83
               </a>{' '}
               для согласования даты возврата товара
             </div>
@@ -118,7 +118,7 @@ export default function ExchangeAndReturn() {
               </a>{' '}
               либо связаться с&nbsp;нами по&nbsp;телефону:{' '}
               <a href="tel:+74951545483" className={`${styles.staticPageText} ${styles.link}`}>
-                8(495) 154-54-83
+                +7 (495) 154-54-83
               </a>
             </div>
           </div>

@@ -17,10 +17,19 @@ interface ProductDeliveryItem {
 }
 
 const ProductDeliveryItem: FC<ProductDeliveryItem> = ({ title, children }) => {
+  // Экспресс-доставка
+  const deliveryAnchor =
+    title.toLocaleLowerCase() === 'доставка'
+      ? '#delivery'
+      : title.toLocaleLowerCase() === 'экспресс-доставка'
+      ? '#express'
+      : '';
   return (
     <div className={styles.productDeliveryItem}>
-      <Link href="#">
-        <a className={styles.productDeliveryItemType}>{title}</a>
+      <Link href={`/dostavka${deliveryAnchor}`}>
+        <a target="_blank" className={styles.productDeliveryItemType}>
+          {title}
+        </a>
       </Link>
       {children}
     </div>

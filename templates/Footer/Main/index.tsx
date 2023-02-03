@@ -127,13 +127,17 @@ const MainFooter: FC = () => {
               <div className={styles.mainFooterColumnTitle}>Контактная информация</div>
               <div className={styles.mainFooterColumnItem}>
                 <div className={styles.mainFooterColumnSubtitle}>Горячая линия</div>
-                <a href="tel:+74951725526">+7(495) 172-55-26</a>
+                <a className={styles.link} href="tel:+74951725526">
+                  +7 (495) 172-55-26
+                </a>
                 <div>ежедневно</div>
                 <div>с 9:00 до 21:00</div>
               </div>
               <div className={styles.mainFooterColumnItem}>
                 <div className={styles.mainFooterColumnSubtitle}>Доставка заказов</div>
-                <a href="tel:+74951725526">+7(495) 172-55-26 </a>
+                <a className={styles.link} href="tel:+74951725526">
+                  +7 (495) 172-55-26{' '}
+                </a>
                 <div>ежедневно</div>
                 <div>с 9:00 до 21:00</div>
               </div>

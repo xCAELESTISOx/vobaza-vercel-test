@@ -257,7 +257,7 @@ const RegistrationForm = ({ goLogin, onSuccess }: Props) => {
           </div>
           <div className={styles.inlineModalItem}>
             <InputText
-              label="Код из смс"
+              label="Код из СМС"
               name="code"
               value={values.code}
               onChange={handleCodeChange}

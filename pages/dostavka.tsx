@@ -37,7 +37,9 @@ export default function Delivery() {
             </Link>
           </div>
           <div className={styles.staticPageInfo}>
-            <div className={styles.staticPageSubTitle}>Курьерская доставка</div>
+            <div className={styles.staticPageSubTitle} id="delivery">
+              Курьерская доставка
+            </div>
             <div className={styles.staticPageText}>
               Доставка осуществляется 7&nbsp;дней в&nbsp;неделю с&nbsp;8:00 до&nbsp;24:00
             </div>
@@ -62,7 +64,9 @@ export default function Delivery() {
             </div>
           </div>
           <div className={styles.staticPageInfo}>
-            <div className={styles.staticPageSubTitle}>Экспресс-доставка за&nbsp;1&nbsp;день</div>
+            <div className={styles.staticPageSubTitle} id="express">
+              Экспресс-доставка за&nbsp;1&nbsp;день
+            </div>
             <div className={styles.staticPageText}>
               Доставка осуществляется в&nbsp;течение 3-6&nbsp;часов, если заказ сделан до&nbsp;17:00. Если заказ сделан
               после 17:00, то&nbsp;доставка осуществляется на&nbsp;следующий день.

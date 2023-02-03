@@ -9,6 +9,14 @@
     padding: 0;
     border-top: 1px solid #e3e3e3;
   }
+
+  .link {
+    color: #af1ebe;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .mainFooterContent {
@@ -62,7 +70,7 @@
     margin-bottom: 16px;
   }
 
-  +.mainFooterColumnItem {
+  + .mainFooterColumnItem {
     margin-top: 14px;
 
     @media screen and (max-width: 767px) {

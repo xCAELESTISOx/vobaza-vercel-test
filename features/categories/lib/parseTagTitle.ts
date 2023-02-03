@@ -10,7 +10,7 @@ export const parseTagTitle = (text: string) => {
   const tagsEntries = Object.entries(tagRegs);
   const stringTitle = tagsEntries.reduce((acc, item) => {
     return acc.replace(item[1], `<${item[0]}>$1</${item[0]}>`);
-  }, text).replace(/\\([*_])/gi, `$1`);
+  }, text).replace(/\\([*_\\])/gi, `$1`);
 
   return stringTitle;
 };

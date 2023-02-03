@@ -73,8 +73,11 @@ export default function FAQ() {
             >
               <div className={styles.staticPageInfo}>
                 <div className={styles.staticPageText}>
-                  В&nbsp;этом случае вы&nbsp;можете позвонить по&nbsp;номеру клиентской поддержки&nbsp;+7 (495)
-                  899-09-09. График работы клиентской поддержки: с&nbsp;09:00 до&nbsp;21:00 без выходных.
+                  В&nbsp;этом случае вы&nbsp;можете позвонить по&nbsp;номеру клиентской поддержки&nbsp;
+                  <a href="tel:+74951545483" className={`${styles.staticPageText} ${styles.link}`}>
+                    +7 (495) 899-09-09
+                  </a>
+                  . График работы клиентской поддержки: с&nbsp;09:00 до&nbsp;21:00 без выходных.
                 </div>
               </div>
             </Accordeon>

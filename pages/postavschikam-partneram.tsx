@@ -118,7 +118,7 @@ export default function About() {
               За&nbsp;подробной информацией обращайтесь по&nbsp;номеру
               <br />
               <a href="tel:+74951340990" className={`${styles.staticPageText} ${styles.link}`}>
-                +7(495)134-09-90
+                +7 (495) 134-09-90
               </a>
               <br />
               или пишите на&nbsp;почту{' '}
